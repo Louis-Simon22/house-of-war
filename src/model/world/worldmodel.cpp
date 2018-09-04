@@ -1,8 +1,8 @@
 #include "worldmodel.h"
+#include <QDebug>
 
 WorldModel::WorldModel() : QAbstractListModel()
 {
-
 }
 
 WorldModel::WorldModel(QVector<Cell*> *points) : QAbstractListModel()
@@ -13,8 +13,8 @@ WorldModel::WorldModel(QVector<Cell*> *points) : QAbstractListModel()
 QHash<int, QByteArray> WorldModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[PosX] = "x";
-    roles[PosY] = "y";
+    roles[PosX] = "posX";
+    roles[PosY] = "posY";
     return roles;
 }
 
@@ -30,6 +30,7 @@ QVariant WorldModel::headerData(int section, Qt::Orientation orientation, int ro
 
 int WorldModel::rowCount(const QModelIndex &parent) const
 {
+    qDebug() << "Size : " + (*this->points)->size();
     return (*this->points)->size();
 }
 

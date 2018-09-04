@@ -37,7 +37,7 @@ BaseMenu {
         MenuButton {
             text: "Generate"
             onClicked: {
-                newGameScene.gameManager.startNewGame(parseInt(worldWidth.input), parseInt(worldHeight.input), parseInt(originPointsCount.input))
+                newGameScene.gameManager.prepareNewGame(parseInt(worldWidth.input), parseInt(worldHeight.input), parseInt(originPointsCount.input))
                 newGameScene.newGameCreated()
             }
         }

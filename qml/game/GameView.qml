@@ -8,17 +8,28 @@ Item {
 
     property GameManager gameManager
 
+    signal instantiateWorld
+
+    onInstantiateWorld: {
+        gameManager.instantiateWorld();
+        state = "map";
+    }
+
     Loader {
         id: mapSceneLoader
         anchors.fill: parent
         active: false
+        sourceComponent: MapView {
+            id: mapView
+        }
     }
 
     Text {
         id: loadingView
         anchors.centerIn: parent
-        color: "white"
+        color: "black"
         text: "Loading..."
+        opacity: 0
     }
 
     state: "loading"
@@ -33,11 +44,9 @@ Item {
         },
         State {
             name: "map"
-            StateChangeScript {
-                name: "Load map"
-                script: {
-                    mapSceneLoader.setSource("MapScene.qml", { gameManager: gameView.gameManager })
-                }
+            PropertyChanges {
+                target: mapSceneLoader
+                active: true
             }
         }
     ]

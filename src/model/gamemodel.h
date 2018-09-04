@@ -2,7 +2,7 @@
 #define GAMEMODEL_H
 
 #include <memory>
-#include "geography/worldmodel.h"
+#include "world/worldmodel.h"
 
 using namespace std;
 

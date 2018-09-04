@@ -7,10 +7,13 @@ Project {
         "src/model/gamemodel.h",
         "src/utils/utils.h",
         "src/control/gamemanager.h",
-        "src/model/geography/poissondisksamplingpointsgenerator.h",
-        "src/model/geography/worldbuilder.h",
-        "src/model/geography/cell.h",
-        "src/model/geography/worldmodel.h"
+        "src/model/world/poissondisksamplingpointsgenerator.h",
+        "src/model/world/worldbuilder.h",
+        "src/model/world/cell.h",
+        "src/model/world/worldmodel.h",
+        "src/model/generation/gamebuildprogresslistener.h",
+        "src/model/generation/gamebuilder.h",
+        "src/model/generation/gamebuildstep.h",
     ]
 
     property pathList cpp_files: [
@@ -18,10 +21,11 @@ Project {
         "src/model/gamemodel.cpp",
         "src/utils/utils.cpp",
         "src/control/gamemanager.cpp",
-        "src/model/geography/poissondisksamplingpointsgenerator.cpp",
-        "src/model/geography/worldbuilder.cpp",
-        "src/model/geography/cell.cpp",
-        "src/model/geography/worldmodel.cpp"
+        "src/model/world/poissondisksampling^pointsgenerator.cpp",
+        "src/model/world/worldbuilder.cpp",
+        "src/model/world/cell.cpp",
+        "src/model/world/worldmodel.cpp",
+        "src/model/generation/gamebuilder.cpp",
     ]
 
     property pathList qml_files: ["qml.qrc"]

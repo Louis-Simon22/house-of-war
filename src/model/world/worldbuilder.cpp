@@ -32,5 +32,7 @@ WorldModel* WorldBuilder::build()
 //    return new WorldModel(cells);
     QVector<Cell*>* cells = new QVector<Cell*>();
     cells->append(new Cell(new QVector2D(50, 50)));
+    cells->append(new Cell(new QVector2D(150, 150)));
+    cells->append(new Cell(new QVector2D(250, 250)));
     return new WorldModel(cells);
 }

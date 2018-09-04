@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/game/map/MapScene.qml</file>
+        <file>qml/game/map/MapView.qml</file>
         <file>qml/game/GameView.qml</file>
         <file>qml/menu/CreditsMenu.qml</file>
         <file>qml/menu/IntroMenu.qml</file>
