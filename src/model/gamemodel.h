@@ -3,17 +3,20 @@
 
 #include <memory>
 #include "world/worldmodel.h"
+#include <QRect>
 
 using namespace std;
 
 class GameModel
 {
 public:
-    GameModel(WorldModel* worldModel);
-    WorldModel* getWorldModel();
+    GameModel(WorldModel* worldModel, QRect* worldDimensions);
+    WorldModel* getWorldModel() const;
+    QRect* getWorldDimensions() const;
 
 private:
     unique_ptr<WorldModel> worldModel;
+    QRect* worldDimensions;
 
 };
 

@@ -1,24 +1,27 @@
 #ifndef CELL_H
 #define CELL_H
 
+#include <QObject>
 #include <QPoint>
 #include <QVector2D>
 
-class Cell
+class Cell : public QObject
 {
-    public:
-        Cell(int posX, int posY);
-        Cell(QVector2D* posV);
-        Cell(QPoint* pos);
+    Q_OBJECT
+    Q_PROPERTY(float posX READ getPosX CONSTANT)
+    Q_PROPERTY(float posY READ getPosY CONSTANT)
 
-        int x();
-        int y();
-        QPoint* pos();
-        QVector2D* posV();
+    public:
+        Cell(float posX, float posY);
+        Cell(QVector2D* posV2D);
+
+        float getPosX() const;
+        float getPosY() const;
+        QVector2D* posV2D() const;
 
     private:
-        int posX;
-        int posY;
+        float m_posX;
+        float m_posY;
 };
 
 #endif // CELL_H

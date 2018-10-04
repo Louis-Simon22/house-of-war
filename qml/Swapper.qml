@@ -42,7 +42,7 @@ Item {
         }
         onLoaded: {
             item.gameManager = gameManager;
-            item.instantiateWorld();
+            item.instantiateGame();
         }
     }
 

@@ -7,7 +7,7 @@ WorldModel::WorldModel() : QAbstractListModel()
 
 WorldModel::WorldModel(QVector<Cell*> *points) : QAbstractListModel()
 {
-    this->points = unique_ptr<QVector<Cell*>*>(&points);
+    this->points = unique_ptr<QVector<Cell*>>(points);
 }
 
 QHash<int, QByteArray> WorldModel::roleNames() const
@@ -18,30 +18,32 @@ QHash<int, QByteArray> WorldModel::roleNames() const
     return roles;
 }
 
-Qt::ItemFlags WorldModel::flags(const QModelIndex &index) const
+Qt::ItemFlags WorldModel::flags(const QModelIndex&) const
 {
     return Qt::ItemIsSelectable;
 }
 
-QVariant WorldModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant WorldModel::headerData(int, Qt::Orientation, int) const
 {
     return QVariant();
 }
 
-int WorldModel::rowCount(const QModelIndex &parent) const
+int WorldModel::rowCount(const QModelIndex&) const
 {
-    qDebug() << "Size : " + (*this->points)->size();
-    return (*this->points)->size();
+    return this->points->size();
 }
 
 QVariant WorldModel::data(const QModelIndex &index, int role) const
 {
-    Cell* cell = (*this->points)->at(index.row());
+    Cell* cell = this->points->at(index.row());
     switch (role) {
         case PosX:
-            return cell->x();
+            qDebug() << "PosX: " << cell->getPosX();
+            return cell->getPosX();
         case PosY:
-            return cell->y();
+            qDebug() << "PosY: " << cell->getPosY();
+            return cell->getPosY();
+        default:
+            return 0;
     }
-    return 0;
 }

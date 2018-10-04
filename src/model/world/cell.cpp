@@ -1,37 +1,24 @@
 #include "cell.h"
 
-Cell::Cell(int posX, int posY)
+Cell::Cell(float posX, float posY) : m_posX(posX), m_posY(posY)
 {
-    this->posX = posX;
-    this->posY = posY;
 }
 
-Cell::Cell(QVector2D *posV)
+Cell::Cell(QVector2D *posV) : m_posX(posV->x()), m_posY(posV->y())
 {
-    Cell(posV->x(), posV->y());
 }
 
-Cell::Cell(QPoint *pos)
+float Cell::getPosX() const
 {
-    Cell(pos->x(), pos->y());
+    return this->m_posX;
 }
 
-int Cell::x()
+float Cell::getPosY() const
 {
-    return posX;
+    return this->m_posY;
 }
 
-int Cell::y()
+QVector2D* Cell::posV2D() const
 {
-    return posY;
-}
-
-QPoint *Cell::pos()
-{
-    return new QPoint(posX, posY);
-}
-
-QVector2D *Cell::posV()
-{
-    return new QVector2D(posX, posY);
+    return new QVector2D(this->m_posX, this->m_posY);
 }

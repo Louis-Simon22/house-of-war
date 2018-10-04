@@ -4,21 +4,21 @@
 #include <QRandomGenerator>
 #include <QVector2D>
 
-#include "worldmodel.h"
-#include "cell.h"
+#include "../worldmodel.h"
 
 class WorldBuilder{
 public:
     WorldBuilder();
 
     WorldBuilder* setSourcesCount(int sourcesCount);
-    WorldBuilder* setMapDimensions(int width, int height);
-    WorldModel* build();
+    WorldBuilder* setWorldDimensions(int width, int height);
+    WorldModel* build() const;
 
-private:
     QRandomGenerator* random;
     int sourcesCount;
     QRect* worldDimensions;
+
+private:
 };
 
 #endif

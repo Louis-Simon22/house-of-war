@@ -8,9 +8,9 @@ Item {
 
     property GameManager gameManager
 
-    signal instantiateWorld
+    signal instantiateGame
 
-    onInstantiateWorld: {
+    onInstantiateGame: {
         gameManager.instantiateWorld();
         state = "map";
     }
@@ -21,6 +21,10 @@ Item {
         active: false
         sourceComponent: MapView {
             id: mapView
+        }
+        onLoaded: {
+            item.gameManager = gameManager;
+            item.instantiateMap();
         }
     }
 

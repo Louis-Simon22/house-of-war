@@ -3,21 +3,22 @@
 
 #include <QObject>
 #include <memory>
+#include <QRect>
 #include "../model/gamemodel.h"
 #include "../model/world/worldmodel.h"
-#include "../model/world/worldbuilder.h"
+#include "../model/world/worldgeneration/worldbuilder.h"
 
 using namespace std;
 
 class GameManager : public QObject {
     Q_OBJECT
-private:
-    unique_ptr<GameModel> gameModelPtr;
-    unique_ptr<WorldBuilder> worldBuilder;
-    bool shouldCreateNewGame = false;
+    Q_PROPERTY(GameModel* gameModel READ getGameModel CONSTANT)
+    Q_PROPERTY(WorldModel* worldModel READ getWorldModel CONSTANT)
+    Q_PROPERTY(QRect worldDimensions READ getWorldDimensions CONSTANT)
 
-    Q_PROPERTY(GameModel gameModel READ getGameModel)
-    Q_PROPERTY(WorldModel worldModel READ getWorldModel)
+signals:
+
+public slots:
 
 public:
     explicit GameManager(QObject *parent = nullptr);
@@ -26,10 +27,12 @@ public:
 
     GameModel* getGameModel() const;
     WorldModel* getWorldModel() const;
+    QRect getWorldDimensions() const;
 
-signals:
-
-public slots:
+private:
+    unique_ptr<GameModel> gameModelPtr;
+    unique_ptr<WorldBuilder> worldBuilder;
+    bool shouldCreateNewWorld = false;
 };
 
 #endif
