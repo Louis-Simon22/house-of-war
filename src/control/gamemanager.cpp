@@ -41,6 +41,5 @@ WorldModel* GameManager::getWorldModel() const
 
 QRect GameManager::getWorldDimensions() const
 {
-    QRect worldDimensions = *this->gameModelPtr->getWorldDimensions();
-    return worldDimensions;
+    return this->gameModelPtr->getWorldDimensions();
 }

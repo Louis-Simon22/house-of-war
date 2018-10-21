@@ -38,10 +38,8 @@ QVariant WorldModel::data(const QModelIndex &index, int role) const
     Cell* cell = this->points->at(index.row());
     switch (role) {
         case PosX:
-            qDebug() << "PosX: " << cell->getPosX();
             return cell->getPosX();
         case PosY:
-            qDebug() << "PosY: " << cell->getPosY();
             return cell->getPosY();
         default:
             return 0;

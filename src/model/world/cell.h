@@ -13,11 +13,11 @@ class Cell : public QObject
 
     public:
         Cell(float posX, float posY);
-        Cell(QVector2D* posV2D);
+        Cell(QVector2D getPosV2D);
 
         float getPosX() const;
         float getPosY() const;
-        QVector2D* posV2D() const;
+        QVector2D getPosV2D() const;
 
     private:
         float m_posX;

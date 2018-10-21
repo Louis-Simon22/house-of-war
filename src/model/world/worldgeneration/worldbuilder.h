@@ -5,6 +5,7 @@
 #include <QVector2D>
 
 #include "../worldmodel.h"
+#include <QRect>
 
 class WorldBuilder{
 public:
@@ -16,7 +17,7 @@ public:
 
     QRandomGenerator* random;
     int sourcesCount;
-    QRect* worldDimensions;
+    QRect worldDimensions;
 
 private:
 };

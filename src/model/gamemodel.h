@@ -10,13 +10,13 @@ using namespace std;
 class GameModel
 {
 public:
-    GameModel(WorldModel* worldModel, QRect* worldDimensions);
+    GameModel(WorldModel* worldModel, QRect worldDimensions);
     WorldModel* getWorldModel() const;
-    QRect* getWorldDimensions() const;
+    QRect getWorldDimensions() const;
 
 private:
     unique_ptr<WorldModel> worldModel;
-    QRect* worldDimensions;
+    QRect worldDimensions;
 
 };
 
