@@ -31,7 +31,7 @@ WorldModel* WorldBuilder::build() const
     {
         cells->replace(i, new Cell(points[i]));
     }
-    const auto& fortune = new Fortune(points);
-    fortune->sweep();
+//    const auto& fortune = new Fortune(points);
+//    fortune->sweep();
     return new WorldModel(cells);
 }
