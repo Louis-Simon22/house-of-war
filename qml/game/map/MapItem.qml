@@ -14,12 +14,13 @@ Item {
         contentHeight: gameManager.worldDimensions.height
         Repeater {
             model: gameManager.worldModel
-            delegate: Rectangle {
+            delegate: Text {
                 x: posX
                 y: posY
-                height: 5
-                width: 5
-                color: "red"
+//                height: 5
+//                width: 5
+                text: index
+//                color: "red"
             }
         }
     }

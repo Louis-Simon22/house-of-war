@@ -2,8 +2,11 @@
 
 #include "../../../utils/algo/poissondisksamplingpointsgenerator.h"
 #include "../cell.h"
-#include "../../../utils/algo/fortune/fortune.h"
 #include <QDebug>
+
+#include <boost/geometry/geometries/point_xy.hpp>
+
+using namespace boost::geometry::model::d2;
 
 WorldBuilder::WorldBuilder()
 {
@@ -31,7 +34,6 @@ WorldModel* WorldBuilder::build() const
     {
         cells->replace(i, new Cell(points[i]));
     }
-    const auto& fortune = new Fortune(points);
-    fortune->sweep();
+    const auto& point = point_xy<long>(0, 0);
     return new WorldModel(cells);
 }
