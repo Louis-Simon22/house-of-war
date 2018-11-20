@@ -10,8 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(HEADER_FILES
         src/model/gamemodel.h
-        src/utils/utils.h
-        src/utils/algo/poissondisksamplingpointsgenerator.h
+        src/utils/algo/poissondisksampling.h
         src/control/gamemanager.h
         src/model/world/cell.h
         src/model/world/worldmodel.h
@@ -21,8 +20,6 @@ set(HEADER_FILES
 
 set(CPP_FILES
         src/model/gamemodel.cpp
-        src/utils/utils.cpp
-        src/utils/algo/poissondisksamplingpointsgenerator.cpp
         src/control/gamemanager.cpp
         src/model/world/cell.cpp
         src/model/world/worldmodel.cpp

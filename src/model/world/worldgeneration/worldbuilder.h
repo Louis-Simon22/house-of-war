@@ -4,22 +4,26 @@
 #include <QRandomGenerator>
 #include <QVector2D>
 
-#include "../worldmodel.h"
 #include <QRect>
+#include "../worldmodel.h"
+#include <boost/geometry.hpp>
 
-class WorldBuilder{
-public:
-    WorldBuilder();
+namespace bg = boost::geometry;
+using Point = bg::model::point<long, 2, bg::cs::cartesian>;
 
-    WorldBuilder* setSourcesCount(int sourcesCount);
-    WorldBuilder* setWorldDimensions(int width, int height);
-    WorldModel* build() const;
+class WorldBuilder {
+ public:
+  WorldBuilder();
 
-    QRandomGenerator* random;
-    int sourcesCount;
-    QRect worldDimensions;
+  WorldBuilder* setSourcesCount(int sourcesCount);
+  WorldBuilder* setWorldDimensions(int width, int height);
+  WorldModel* build() const;
 
-private:
+  QRandomGenerator* random;
+  int sourcesCount;
+  QRect worldDimensions;
+
+ private:
 };
 
 #endif
