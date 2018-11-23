@@ -1,38 +1,28 @@
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
-#include <QObject>
+#include <vector>
 #include <memory>
-#include <QRect>
-#include "../model/gamemodel.h"
-#include "../model/world/worldmodel.h"
-#include "../model/world/worldgeneration/worldbuilder.h"
+#include "../model/modelfacade.h"
 
-using namespace std;
+namespace how {
+namespace control {
+namespace bg = ::boost::geometry;
+class GameManager {
+  using ModelFacade = ::how::model::ModelFacade;
+  using WorldGenerationConfig = ::how::model::types::WorldGenerationConfig;
 
-class GameManager : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(GameModel* gameModel READ getGameModel CONSTANT)
-    Q_PROPERTY(WorldModel* worldModel READ getWorldModel CONSTANT)
-    Q_PROPERTY(QRect worldDimensions READ getWorldDimensions CONSTANT)
+ public:
+  explicit GameManager();
 
-signals:
+  void generateNewWorld(WorldGenerationConfig config);
 
-public slots:
+  const std::vector<::how::model::types::point_t>& getPointsList() const;
+  const ::how::model::types::box_t getWorldBounds() const;
 
-public:
-    explicit GameManager(QObject *parent = nullptr);
-    Q_INVOKABLE void prepareNewGame(int width, int height, int sourcesCount);
-    Q_INVOKABLE void instantiateWorld();
-
-    GameModel* getGameModel() const;
-    WorldModel* getWorldModel() const;
-    QRect getWorldDimensions() const;
-
-private:
-    unique_ptr<GameModel> gameModelPtr;
-    unique_ptr<WorldBuilder> worldBuilder;
-    bool shouldCreateNewWorld = false;
+ private:
+  std::unique_ptr<ModelFacade> modelFacadePtr;
 };
-
+}  // namespace control
+}  // namespace how
 #endif

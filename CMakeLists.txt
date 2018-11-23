@@ -4,27 +4,30 @@ project(house-of-war LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC O N)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(HEADER_FILES
-        src/model/gamemodel.h
-        src/utils/algo/poissondisksampling.h
         src/control/gamemanager.h
-        src/model/world/cell.h
-        src/model/world/worldmodel.h
+        src/model/modelfacade.h
+        src/model/modeltypes.h
+        src/model/world/worldloader.h
+        src/model/world/worlddata.h
         src/model/world/worldgeneration/worldbuilder.h
-        src/model/world/worldgeneration/worldloader.h
+        src/utils/algo/poissondisksampling.h
+        src/bind/gamemanagerqmlbindings.h
+        src/bind/models/worldmodel.h
         )
 
 set(CPP_FILES
-        src/model/gamemodel.cpp
         src/control/gamemanager.cpp
-        src/model/world/cell.cpp
-        src/model/world/worldmodel.cpp
+        src/model/modelfacade.cpp
+        src/model/world/worldloader.cpp
+        src/model/world/worlddata.cpp
         src/model/world/worldgeneration/worldbuilder.cpp
-        src/model/world/worldgeneration/worldloader.cpp
+        src/bind/gamemanagerqmlbindings.cpp
+        src/bind/models/worldmodel.cpp
         )
 
 find_package(Qt5 REQUIRED COMPONENTS Core Quick)

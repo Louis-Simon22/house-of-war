@@ -1,7 +1,7 @@
 import QtQuick 2.11
-import gamemanager 1.0
-import worldmodel 1.0
 import QtQml.Models 2.11
+import com.louissimonmcnicoll.how.bind.gamemanager 1.0
+import com.louissimonmcnicoll.how.bind.models.worldmodel 1.0
 
 Item {
     id: mapView

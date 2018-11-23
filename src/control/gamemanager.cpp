@@ -1,45 +1,21 @@
 #include "gamemanager.h"
-#include <QDebug>
 
-GameManager::GameManager(QObject *parent) : QObject(parent)
-{
+namespace how {
+namespace control {
+GameManager::GameManager() {
+  this->modelFacadePtr = std::make_unique<ModelFacade>();
 }
 
-void GameManager::prepareNewGame(int width, int height, int sourcesCount)
-{
-    this->worldBuilder = unique_ptr<WorldBuilder>(new WorldBuilder());
-    this->worldBuilder
-            ->setWorldDimensions(width, height)
-            ->setSourcesCount(sourcesCount);
-    this->shouldCreateNewWorld = true;
+void GameManager::generateNewWorld(WorldGenerationConfig config) {
+  this->modelFacadePtr->generateNewWorld(config);
 }
 
-void GameManager::instantiateWorld()
-{
-    if (this->shouldCreateNewWorld)
-    {
-        WorldModel* worldModel = this->worldBuilder->build();
-        this->gameModelPtr = unique_ptr<GameModel>(new GameModel(worldModel, this->worldBuilder->worldDimensions));
-        this->shouldCreateNewWorld = false;
-    }
-    else
-    {
-        // TODO implement loading world
-        qDebug() << "Should not create new world";
-    }
+const std::vector<model::types::point_t> &GameManager::getPointsList() const {
+  return this->modelFacadePtr->getPointsList();
 }
 
-GameModel* GameManager::getGameModel() const
-{
-    return this->gameModelPtr.get();
+const ::how::model::types::box_t GameManager::getWorldBounds() const {
+  return this->modelFacadePtr->getWorldBounds();
 }
-
-WorldModel* GameManager::getWorldModel() const
-{
-    return this->gameModelPtr->getWorldModel();
-}
-
-QRect GameManager::getWorldDimensions() const
-{
-    return this->gameModelPtr->getWorldDimensions();
-}
+}  // namespace control
+}  // namespace how

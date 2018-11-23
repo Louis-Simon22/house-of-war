@@ -1,24 +1,25 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "control/gamemanager.h"
-#include "model/world/worldmodel.h"
 
-int main(int argc, char *argv[]) {
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#include "../src/bind/gamemanagerqmlbindings.h"
+#include "../src/bind/models/worldmodel.h"
 
-    QGuiApplication app(argc, argv);
-    QQmlApplicationEngine engine;
+int main(int argc, char* argv[]) {
+  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    // Register c++ bindings for QML
-    qmlRegisterType<WorldModel>("worldmodel", 1, 0, "WorldModel");
-    qmlRegisterType<GameManager>("gamemanager", 1, 0, "GameManager");
+  QGuiApplication app(argc, argv);
+  QQmlApplicationEngine engine;
 
-    engine.load(QUrl(QStringLiteral("qrc:/qml/Window.qml")));
-    if (engine.rootObjects().isEmpty())
-    {
-        return -1;
-    }
+  // Register c++ bindings for QML
+  qmlRegisterType<::how::bind::models::WorldModel>(
+      "com.louissimonmcnicoll.how.bind.models.worldmodel", 1, 0, "WorldModel");
+  qmlRegisterType<::how::bind::GameManagerQMLBindings>(
+      "com.louissimonmcnicoll.how.bind.gamemanager", 1, 0, "GameManager");
 
-    return app.exec();
+  engine.load(QUrl(QStringLiteral("qrc:/qml/Window.qml")));
+  if (engine.rootObjects().isEmpty()) {
+    return -1;
+  }
+
+  return app.exec();
 }
-

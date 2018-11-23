@@ -1,6 +1,6 @@
 import QtQuick 2.11
-import gamemanager 1.0
-import worldmodel 1.0
+import com.louissimonmcnicoll.how.bind.gamemanager 1.0
+import com.louissimonmcnicoll.how.bind.models.worldmodel 1.0
 import "map/"
 
 Item {
@@ -11,8 +11,8 @@ Item {
     signal instantiateGame
 
     onInstantiateGame: {
-        gameManager.instantiateWorld();
-        state = "map";
+        gameManager.instantiateWorld()
+        state = "map"
     }
 
     Loader {
@@ -23,8 +23,8 @@ Item {
             id: mapView
         }
         onLoaded: {
-            item.gameManager = gameManager;
-            item.instantiateMap();
+            item.gameManager = gameManager
+            item.instantiateMap()
         }
     }
 

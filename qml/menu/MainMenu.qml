@@ -1,5 +1,5 @@
 import QtQuick 2.11
-import gamemanager 1.0
+import com.louissimonmcnicoll.how.bind.gamemanager 1.0
 
 Item {
     id: mainMenu

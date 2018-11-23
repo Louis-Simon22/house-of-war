@@ -1,6 +1,7 @@
 import QtQuick 2.11
 import QtQuick.Layouts 1.1
-import gamemanager 1.0
+
+import com.louissimonmcnicoll.how.bind.gamemanager 1.0
 import "components/"
 
 BaseMenu {

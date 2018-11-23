@@ -1,6 +1,7 @@
-import gamemanager 1.0
-import worldmodel 1.0
 import QtQuick 2.0
+
+import com.louissimonmcnicoll.how.bind.gamemanager 1.0
+import com.louissimonmcnicoll.how.bind.models.worldmodel 1.0
 
 Item {
     id: mapItem
