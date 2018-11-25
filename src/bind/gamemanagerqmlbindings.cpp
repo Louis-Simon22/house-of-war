@@ -1,18 +1,27 @@
 #include "gamemanagerqmlbindings.h"
+#include <iostream>
 
 namespace how {
 namespace bind {
 GameManagerQMLBindings::GameManagerQMLBindings(QObject* parent) {
-  this->worldModelPtr = std::make_unique<models::WorldModel>();
+  this->gameManagerPtr = std::make_unique<GameManager>();
 }
 
-void GameManagerQMLBindings::generateNewWorld(
-    ::how::model::types::WorldGenerationConfig config) {
+void GameManagerQMLBindings::generateNewWorld(int width, int height) {
+  auto config = ::how::model::types::WorldGenerationConfig();
+  config.minCornerX = 0;
+  config.minCornerY = 0;
+  config.maxCornerX = width;
+  config.maxCornerY = height;
   this->gameManagerPtr->generateNewWorld(config);
 }
 
-const models::WorldModel* GameManagerQMLBindings::getWorldModel() const {
-  return this->worldModelPtr.get();
+::how::bind::models::WorldModel* GameManagerQMLBindings::getWorldModel() const {
+  auto* worldModel =
+      new models::WorldModel(this->gameManagerPtr->getPointsList());
+  QQmlEngine::setObjectOwnership(
+      worldModel, QQmlEngine::ObjectOwnership::JavaScriptOwnership);
+  return worldModel;
 }
 
 const QRect GameManagerQMLBindings::getWorldDimensions() const {

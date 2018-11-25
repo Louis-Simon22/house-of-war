@@ -14,8 +14,8 @@ class ModelFacade {
  public:
   ModelFacade();
   const types::box_t getWorldBounds() const;
-  const std::vector<types::point_t>& getPointsList() const;
-  void generateNewWorld(types::WorldGenerationConfig config);
+  const std::vector<types::point_t>* getPointsList() const;
+  void generateNewWorld(const types::WorldGenerationConfig& config);
 
  private:
   std::unique_ptr<WorldData> worldData;

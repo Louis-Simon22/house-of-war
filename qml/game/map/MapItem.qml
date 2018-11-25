@@ -18,10 +18,7 @@ Item {
             delegate: Text {
                 x: posX
                 y: posY
-//                height: 5
-//                width: 5
                 text: index
-//                color: "red"
             }
         }
     }

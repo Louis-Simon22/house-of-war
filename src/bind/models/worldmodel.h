@@ -1,9 +1,11 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef WORLDMODEL_H
+#define WORLDMODEL_H
+
+#include <memory>
 
 #include <QAbstractListModel>
 #include <QVariant>
-#include <memory>
+
 #include "../../model/modeltypes.h"
 
 namespace how {
@@ -15,7 +17,8 @@ class WorldModel : public QAbstractListModel {
   Q_OBJECT
  public:
   WorldModel();
-  WorldModel(const std::vector<point_t>& points);
+  explicit WorldModel(const std::vector<point_t>* points);
+
   enum CellRoles { PosX = Qt::UserRole + 1, PosY };
 
   QHash<int, QByteArray> roleNames() const override;
@@ -26,7 +29,7 @@ class WorldModel : public QAbstractListModel {
                 int role = Qt::DisplayRole) const override;
 
  private:
-  const std::vector<point_t>& points;
+  const std::vector<point_t>* points;
 };
 }  // namespace models
 }  // namespace bind

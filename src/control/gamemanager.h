@@ -15,9 +15,9 @@ class GameManager {
  public:
   explicit GameManager();
 
-  void generateNewWorld(WorldGenerationConfig config);
+  void generateNewWorld(const WorldGenerationConfig& config);
 
-  const std::vector<::how::model::types::point_t>& getPointsList() const;
+  const std::vector<::how::model::types::point_t>* getPointsList() const;
   const ::how::model::types::box_t getWorldBounds() const;
 
  private:

@@ -7,7 +7,7 @@
 namespace how {
 namespace model {
 namespace types {
-using coordinate_t = int;
+using coordinate_t = long long;
 using point_t =
     ::boost::geometry::model::point<coordinate_t, 2, ::boost::geometry::cs::cartesian>;
 using box_t = ::boost::geometry::model::box<point_t>;

@@ -6,17 +6,23 @@
 namespace how {
 namespace model {
 
-WorldBuilder::WorldBuilder(types::WorldGenerationConfig config)
+WorldBuilder::WorldBuilder(const types::WorldGenerationConfig& config)
     : min_corner(types::point_t(config.minCornerX, config.minCornerY)),
       max_corner(types::point_t(config.maxCornerY, config.maxCornerY)) {}
 
 WorldData* WorldBuilder::build() const {
-  //  auto generator =
-  //      ::how::algo::PoissonDiskSampling<Point>(min_corner, max_corner, 50,
-  //      100, 40);
-  //  auto const& points = generator.generateSequence();
-  return new WorldData(types::box_t(min_corner, max_corner),
-                       std::vector<types::point_t>());
+  std::cout << "Starting build";
+  //  auto generator = ::how::algo::PoissonDiskSampling<types::point_t>(
+  //      this->min_corner, this->max_corner, 50, 100, 40);
+  //  const auto& points = generator.generateSequence();
+  auto point1 = types::point_t(50, 50);
+  auto points = std::vector<types::point_t>();
+  points.push_back(point1);
+  points.push_back(types::point_t(150, 150));
+  points.push_back(types::point_t(250, 250));
+  auto count = points.size();
+  return new WorldData(types::box_t(this->min_corner, this->max_corner),
+                       points);
 }
 }  // namespace model
 }  // namespace how

@@ -3,12 +3,13 @@
 
 #include "../../modeltypes.h"
 #include "../worlddata.h"
+#include "../../modeltypes.h"
 
 namespace how {
 namespace model {
 class WorldBuilder {
  public:
-  WorldBuilder(types::WorldGenerationConfig config);
+  WorldBuilder(const types::WorldGenerationConfig& config);
 
   WorldData* build() const;
 

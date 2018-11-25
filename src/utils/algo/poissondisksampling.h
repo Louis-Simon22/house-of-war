@@ -14,53 +14,78 @@
 
 namespace how {
 namespace algo {
-
 namespace {
 
 namespace bg = ::boost::geometry;
 
 template <typename point_t, typename coordinate_t, std::size_t DimensionIndex>
-struct OneDimensional {
-  static void distance(point_t min, point_t max,
-                       std::vector<coordinate_t> distances) {
-    distances.push_back(bg::get<DimensionIndex>(max) -
-                        bg::get<DimensionIndex>(min));
-    OneDimensional<point_t, coordinate_t, DimensionIndex - 1>::distance(min, max, distances);
+struct Coordinates {
+  static void coordinatesToVector(const point_t& point,
+                                  std::vector<coordinate_t>& coordinates) {
+    coordinates[DimensionIndex - 1] = bg::get<DimensionIndex - 1>(point);
+    Coordinates<point_t, coordinate_t, DimensionIndex - 1>::coordinatesToVector(
+        point, coordinates);
+  }
+  static void vectorToCoordinates(const std::vector<coordinate_t>& coordinates,
+                                  point_t& point) {
+    bg::get<DimensionIndex - 1>(point, coordinates[DimensionIndex - 1]);
+    Coordinates<point_t, coordinate_t, DimensionIndex - 1>::vectorToCoordinates(
+        coordinates, point);
   }
 };
 
-template<typename point_t, typename coordinate_t>
-struct OneDimensional<point_t, coordinate_t, 0> {
-  static void distance(point_t, point_t, std::vector<coordinate_t>) {
+template <typename point_t, typename coordinate_t>
+struct Coordinates<point_t, coordinate_t, 0> {
+  static void coordinatesToVector(const point_t&, std::vector<coordinate_t>&) {
+    // Stops recursion
+  }
+  static void vectorToCoordinates(const std::vector<coordinate_t>&, point_t&) {
     // Stops recursion
   }
 };
 
-template <typename point_t, std::size_t DimensionCount>
+template <typename point_t, typename coordinate_t, std::size_t DimensionIndex>
+struct PointConverter {
+  static std::vector<coordinate_t> toVector(const point_t& point) {
+    auto coordinates = std::vector<coordinate_t>(DimensionIndex);
+    Coordinates<point_t, coordinate_t, DimensionIndex>::coordinatesToVector(
+        point, coordinates);
+    return coordinates;
+  }
+  static void fromVector(const std::vector<coordinate_t>& coordinates,
+                         point_t& point) {
+    Coordinates<point_t, coordinate_t, DimensionIndex>::vectorToCoordinates(
+        coordinates, point);
+  }
+};
+
+template <typename point_t, typename coordinate_t, std::size_t DimensionsCount>
 class BackgroundGrid {
   BOOST_CONCEPT_ASSERT((bg::concepts::Point<point_t>));
-//  using coordinate_t =
-//  typename bg::traits::coordinate_type<typename remove_cv<point_t>::type>;
-  using coordinate_t =
-  bg::traits::dimension<point_t>;
 
  private:
-  boost::multi_array<point_t, DimensionCount> grid;
-  BackgroundGrid(boost::multi_array<point_t, DimensionCount> grid)
+  boost::multi_array<point_t, DimensionsCount> grid;
+  BackgroundGrid(boost::multi_array<point_t, DimensionsCount> grid)
       : grid(grid) {}
 
  public:
-  static BackgroundGrid<point_t, DimensionCount> create(point_t min_corner,
-                                                        point_t max_corner) {
-    auto distances = std::vector<coordinate_t>();
-    OneDimensional<point_t, coordinate_t, DimensionCount - 1>::distance(
-        min_corner, max_corner, distances);
-    auto grid = boost::multi_array<point_t, DimensionCount>();
-    for (unsigned long i = 0; i < distances.size(); i++) {
-      //        std::cout << distances[i];
+  static BackgroundGrid<point_t, coordinate_t, DimensionsCount> create(
+      point_t min_corner, point_t max_corner) {
+    std::vector<coordinate_t> distances = std::vector<coordinate_t>();
+    const auto& minCornerAsVector =
+        PointConverter<point_t, coordinate_t, DimensionsCount>::toVector(
+            min_corner);
+    const auto& maxCornerAsVector =
+        PointConverter<point_t, coordinate_t, DimensionsCount>::toVector(
+            max_corner);
+    for (long i = 0; i < DimensionsCount; i++) {
+      distances[i] = maxCornerAsVector[i] - minCornerAsVector[i];
     }
-    auto bgrid = BackgroundGrid<point_t, DimensionCount>(grid);
-    return bgrid;
+    auto grid = boost::multi_array<point_t, DimensionsCount>();
+    for (unsigned long i = 0; i < distances.size(); i++) {
+      std::cout << distances[i];
+    }
+    return BackgroundGrid<point_t, coordinate_t, DimensionsCount>(grid);
   }
 };
 }  // namespace
@@ -69,12 +94,12 @@ template <typename point_t>
 class PoissonDiskSampling {
   BOOST_CONCEPT_ASSERT((bg::concepts::Point<point_t>));
   using Box = bg::model::box<point_t>;
-  using coordinate_t = typename bg::traits::coordinate_type<point_t>;
+  using coordinate_t = typename bg::traits::coordinate_type<point_t>::type;
 
  private:
-  constexpr static coordinate_t DIMENSION_COUNT =
+  constexpr static std::size_t DIMENSIONS_COUNT =
       bg::traits::dimension<point_t>::value;
-  BackgroundGrid<point_t, DIMENSION_COUNT> backgroundGrid;
+  BackgroundGrid<point_t, coordinate_t, DIMENSIONS_COUNT> backgroundGrid;
   Box boundingBox;
   float minimumPointDistance;
   float maximumPointDistance;
@@ -90,8 +115,9 @@ class PoissonDiskSampling {
         maximumPointDistance(maximumPointDistance),
         maximumGenerationAttempts(maximumGenerationAttempts),
         boundingBox(Box(min_corner, max_corner)),
-        backgroundGrid(BackgroundGrid<point_t, DIMENSION_COUNT>::create(
-            min_corner, max_corner)) {}
+        backgroundGrid(
+            BackgroundGrid<point_t, coordinate_t, DIMENSIONS_COUNT>::create(
+                min_corner, max_corner)) {}
 
   std::vector<point_t> generateSequence() {
     const auto& initialPoint = point_t(50, 50);
@@ -163,22 +189,24 @@ class PoissonDiskSampling {
   bool pointIsFarEnoughFromOthers(long pointBackgroundGridYIndex,
                                   long pointBackgroundGridXIndex,
                                   point_t point) {
-//    for (long i = -2; i <= 2; i++) {
-//      long modY = pointBackgroundGridYIndex + i;
-//      for (long j = -2; j <= 2; j++) {
-//        long modX = pointBackgroundGridXIndex + j;
+    //    for (long i = -2; i <= 2; i++) {
+    //      long modY = pointBackgroundGridYIndex + i;
+    //      for (long j = -2; j <= 2; j++) {
+    //        long modX = pointBackgroundGridXIndex + j;
 
-//        if (modY >= 0 && modX >= 0 && modY < this->backgroundGridDimensionY &&
-//            modX < this->backgroundGridDimensionX) {
-//          QVector2D otherPoint = this->backgroundGrid.at(modY).at(modX);
+    //        if (modY >= 0 && modX >= 0 && modY <
+    //        this->backgroundGridDimensionY &&
+    //            modX < this->backgroundGridDimensionX) {
+    //          QVector2D otherPoint = this->backgroundGrid.at(modY).at(modX);
 
-//          if (otherPoint != this->nullVector &&
-//              point.distanceToPoint(otherPoint) < this->minimumPointDistance) {
-//            return false;
-//          }
-//        }
-//      }
-//    }
+    //          if (otherPoint != this->nullVector &&
+    //              point.distanceToPoint(otherPoint) <
+    //              this->minimumPointDistance) {
+    //            return false;
+    //          }
+    //        }
+    //      }
+    //    }
 
     return true;
   }

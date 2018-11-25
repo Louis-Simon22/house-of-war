@@ -12,7 +12,7 @@ class WorldData {
  public:
   WorldData(types::box_t bounds, std::vector<types::point_t> points);
 
-  const std::vector<types::point_t>& getPointsList() const;
+  const std::vector<types::point_t>* getPointsList() const;
 
   const types::box_t& getBounds() const;
 

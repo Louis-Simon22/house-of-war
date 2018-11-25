@@ -30,16 +30,13 @@ BaseMenu {
             label: "World Height"
             input: "1000"
         }
-        MenuNumberInput {
-            id: originPointsCount
-            label: "Origin Points Count"
-            input: "25"
-        }
         MenuButton {
             text: "Generate"
             onClicked: {
-                newGameScene.gameManager.prepareNewGame(parseInt(worldWidth.input), parseInt(worldHeight.input), parseInt(originPointsCount.input))
-                newGameScene.newGameCreated()
+                newGameScene.gameManager.generateNewWorld(
+                            parseInt(worldWidth.input),
+                            parseInt(worldHeight.input));
+                newGameScene.newGameCreated();
             }
         }
     }
