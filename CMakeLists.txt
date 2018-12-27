@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
 
-SET(CMAKE_BUILD_TYPE Debug)
-
 project(house-of-war LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

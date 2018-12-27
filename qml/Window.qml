@@ -4,7 +4,7 @@ import QtQuick.Window 2.11
 Window {
     id: mainWindow
     visible: true
-    title: qsTr("Era")
+    title: qsTr("House of War")
     visibility: Window.Maximized
 
     Swapper {

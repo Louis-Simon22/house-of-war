@@ -78,13 +78,23 @@ class BackgroundGrid {
     const auto& maxCornerAsVector =
         PointConverter<point_t, coordinate_t, DimensionsCount>::toVector(
             max_corner);
-    for (long i = 0; i < DimensionsCount; i++) {
-      distances[i] = maxCornerAsVector[i] - minCornerAsVector[i];
+    std::cout << minCornerAsVector.size() << std::endl;
+    for (long i = 0; i < minCornerAsVector.size(); i++) {
+      std::cout << minCornerAsVector[i] << std::endl;
     }
+    std::cout << "==========" << std::endl;
+    std::cout << maxCornerAsVector.size() << std::endl;
+    for (long i = 0; i < maxCornerAsVector.size(); i++) {
+      std::cout << maxCornerAsVector[i] << std::endl;
+    }
+    std::cout << "==========" << std::endl;
+    //    for (long i = 0; i < DimensionsCount; i++) {
+    //      distances[i] = maxCornerAsVector[i] - minCornerAsVector[i];
+    //    }
     auto grid = boost::multi_array<point_t, DimensionsCount>();
-    for (unsigned long i = 0; i < distances.size(); i++) {
-      std::cout << distances[i];
-    }
+    //    for (unsigned long i = 0; i < distances.size(); i++) {
+    //      std::cout << distances[i];
+    //    }
     return BackgroundGrid<point_t, coordinate_t, DimensionsCount>(grid);
   }
 };
