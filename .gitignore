@@ -38,6 +38,13 @@ Thumbs.db
 # qtcreator generated files
 *.pro.user*
 
+# kDevelop generated files
+.kdev4/
+*.kdev4
+
+# Kate generated files
+*.kate-swp
+
 # xemacs temporary files
 *.flc
 
@@ -75,3 +82,5 @@ Thumbs.db
 *.dll
 *.exe
 /bin
+/build
+
