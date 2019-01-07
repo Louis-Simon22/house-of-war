@@ -13,7 +13,7 @@ WorldBuilder::WorldBuilder(const types::WorldGenerationConfig& config)
 WorldData* WorldBuilder::build() const {
   std::cout << "Starting build" << std::endl;
   auto generator = ::how::algo::PoissonDiskSampling<types::point_t>(
-      this->min_corner, this->max_corner, 25, 100);
+      this->min_corner, this->max_corner, 30, 100);
   const auto& points = generator.generateSequence();
   return new WorldData(types::box_t(this->min_corner, this->max_corner),
                        points);
