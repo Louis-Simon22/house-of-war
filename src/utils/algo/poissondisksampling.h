@@ -1,22 +1,34 @@
 #ifndef POISSONDISKSAMPLINGPOINTSGENERATOR_H
 #define POISSONDISKSAMPLINGPOINTSGENERATOR_H
 
+#include <functional>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
+
 #include <boost/geometry/algorithms/distance.hpp>
+#include <boost/geometry/algorithms/equals.hpp>
+#include <boost/geometry/algorithms/within.hpp>
+#include <boost/geometry/arithmetic/arithmetic.hpp>
 #include <boost/geometry/core/cs.hpp>
 #include <boost/geometry/geometries/box.hpp>
 #include <boost/geometry/geometries/concepts/point_concept.hpp>
+#include <boost/geometry/strategies/strategies.hpp>
 #include <boost/multi_array.hpp>
 #include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
-#include <functional>
 
 #include <iostream>
 
+#include "../random/generation.h"
+
+  
 namespace how {
 namespace algo {
-namespace {
 
+namespace rnd = ::how::random;
 namespace bg = ::boost::geometry;
+
+namespace {
 
 template <typename point_t, typename coordinate_t, std::size_t DimensionIndex>
 struct Coordinates {
@@ -28,7 +40,7 @@ struct Coordinates {
   }
   static void vectorToCoordinates(const std::vector<coordinate_t>& coordinates,
                                   point_t& point) {
-    bg::get<DimensionIndex - 1>(point, coordinates[DimensionIndex - 1]);
+    bg::set<DimensionIndex - 1>(point, coordinates[DimensionIndex - 1]);
     Coordinates<point_t, coordinate_t, DimensionIndex - 1>::vectorToCoordinates(
         coordinates, point);
   }
@@ -52,50 +64,104 @@ struct PointConverter {
         point, coordinates);
     return coordinates;
   }
-  static void fromVector(const std::vector<coordinate_t>& coordinates,
-                         point_t& point) {
+  static point_t fromVector(const std::vector<coordinate_t>& coordinates) {
+    auto point = point_t();
     Coordinates<point_t, coordinate_t, DimensionIndex>::vectorToCoordinates(
         coordinates, point);
+    return point;
   }
 };
 
-template <typename point_t, typename coordinate_t, std::size_t DimensionsCount>
+template <typename point_t, typename coordinate_t, std::size_t DimensionCount>
 class BackgroundGrid {
   BOOST_CONCEPT_ASSERT((bg::concepts::Point<point_t>));
+  using multi_array_t = boost::multi_array<point_t, DimensionCount>;
+  using point_converter_t = PointConverter<point_t, coordinate_t, DimensionCount>;
+  using range_t = boost::multi_array_types::index_range;
 
  private:
-  boost::multi_array<point_t, DimensionsCount> grid;
-  BackgroundGrid(boost::multi_array<point_t, DimensionsCount> grid)
-      : grid(grid) {}
+  multi_array_t grid;
+  point_t nullPoint;
+  std::vector<std::size_t> extents;
+  coordinate_t minimumPointDistance;
+
+  BackgroundGrid(std::vector<std::size_t> extents, coordinate_t minimumPointDistance, point_t nullPoint)
+    : grid(extents), nullPoint(nullPoint), extents(extents), minimumPointDistance(minimumPointDistance) {
+    std::fill_n(this->grid.data(), this->grid.num_elements(), nullPoint);
+  }
 
  public:
-  static BackgroundGrid<point_t, coordinate_t, DimensionsCount> create(
-      point_t min_corner, point_t max_corner) {
-    std::vector<coordinate_t> distances = std::vector<coordinate_t>();
-    const auto& minCornerAsVector =
-        PointConverter<point_t, coordinate_t, DimensionsCount>::toVector(
-            min_corner);
-    const auto& maxCornerAsVector =
-        PointConverter<point_t, coordinate_t, DimensionsCount>::toVector(
-            max_corner);
-    std::cout << minCornerAsVector.size() << std::endl;
-    for (long i = 0; i < minCornerAsVector.size(); i++) {
-      std::cout << minCornerAsVector[i] << std::endl;
+  static BackgroundGrid<point_t, coordinate_t, DimensionCount> create(
+      point_t min_corner, point_t max_corner, coordinate_t minimumPointDistance) {
+    auto minCornerAsVector = point_converter_t::toVector(min_corner);
+    const auto& maxCornerAsVector = point_converter_t::toVector(max_corner);
+
+    auto extents = std::vector<std::size_t>(DimensionCount);
+    for (long i = 0; i < DimensionCount; i++) {
+        const double distance = maxCornerAsVector[i] - minCornerAsVector[i];
+        extents[i] = ceil(distance / minimumPointDistance);
     }
-    std::cout << "==========" << std::endl;
-    std::cout << maxCornerAsVector.size() << std::endl;
-    for (long i = 0; i < maxCornerAsVector.size(); i++) {
-      std::cout << maxCornerAsVector[i] << std::endl;
+
+    auto nullPoint = min_corner;
+    bg::subtract_value<>(nullPoint, 1);
+    return BackgroundGrid<point_t, coordinate_t, DimensionCount>(extents, minimumPointDistance, nullPoint);
+  }
+  
+  void insertPointInBackgroundGrid(point_t point) {
+    const auto& indices = BackgroundGrid::getPointIndices(point);
+    this->grid(indices) = point;
+  }
+  
+  bool pointIsFarEnoughFromAdjacent(point_t point, coordinate_t minimumDistance) {
+    const auto& adjacentPoints = this->getAdjacentPoints(point);
+    for (int i = 0; i < adjacentPoints.size(); i++) {
+        auto notEquals = !bg::equals(point, adjacentPoints[i]);
+        auto distance = bg::distance(point, adjacentPoints[i]);
+        if (notEquals && distance < minimumDistance) {
+            return false;
+        }
     }
-    std::cout << "==========" << std::endl;
-    //    for (long i = 0; i < DimensionsCount; i++) {
-    //      distances[i] = maxCornerAsVector[i] - minCornerAsVector[i];
-    //    }
-    auto grid = boost::multi_array<point_t, DimensionsCount>();
-    //    for (unsigned long i = 0; i < distances.size(); i++) {
-    //      std::cout << distances[i];
-    //    }
-    return BackgroundGrid<point_t, coordinate_t, DimensionsCount>(grid);
+    return true;
+  }
+
+  std::vector<point_t> getAdjacentPoints(point_t point) {
+    auto indices = BackgroundGrid::getPointIndices(point);
+    auto adjacentPointsList = std::vector<point_t>();
+
+    getAdjacentPointsRec(adjacentPointsList, indices, 0);
+    
+    return adjacentPointsList;
+  }  
+
+ private:
+  void getAdjacentPointsRec(std::vector<point_t>& adjacentPointsList, std::vector<std::size_t> indices,
+                            std::size_t dimensionIndex) {
+    const auto indicesCopy = indices;
+
+    if (dimensionIndex < DimensionCount) {
+        for(std::size_t index = std::max(indicesCopy[dimensionIndex] - 1, static_cast<std::size_t>(0));
+            index <= std::min(this->extents[dimensionIndex] - 1, indicesCopy[dimensionIndex] + 1);
+            index++) {
+            indices[dimensionIndex] = index;
+            getAdjacentPointsRec(adjacentPointsList, indices, dimensionIndex + 1);
+        }
+    } else {
+        const auto& point = this->grid(indices);
+//        if (!bg::equals(point, this->nullPoint)) {
+            adjacentPointsList.push_back(point);
+//        }
+    }
+  }
+
+  std::vector<std::size_t> getPointIndices(point_t point) {        
+    const auto& pointAsVector = point_converter_t::toVector(point);
+    auto indices = std::vector<std::size_t>(DimensionCount);
+
+    for (long i = 0; i < DimensionCount; i++) {
+        indices[i] = floor(pointAsVector[i] / this->minimumPointDistance);
+    }
+    
+    return indices;
   }
 };
 }  // namespace
@@ -103,122 +169,100 @@ class BackgroundGrid {
 template <typename point_t>
 class PoissonDiskSampling {
   BOOST_CONCEPT_ASSERT((bg::concepts::Point<point_t>));
-  using Box = bg::model::box<point_t>;
+  constexpr static std::size_t DIMENSION_COUNT =
+      bg::traits::dimension<point_t>::value;
+  using box_t = bg::model::box<point_t>;
   using coordinate_t = typename bg::traits::coordinate_type<point_t>::type;
+  using background_grid_t = BackgroundGrid<point_t, coordinate_t, DIMENSION_COUNT>;
+  using point_converter_t = PointConverter<point_t, coordinate_t, DIMENSION_COUNT>;
+  using random_generator_t = ::boost::random::mt19937;
 
  private:
-  constexpr static std::size_t DIMENSIONS_COUNT =
-      bg::traits::dimension<point_t>::value;
-  BackgroundGrid<point_t, coordinate_t, DIMENSIONS_COUNT> backgroundGrid;
-  Box boundingBox;
-  float minimumPointDistance;
-  float maximumPointDistance;
-  long maximumGenerationAttempts;
-  ::boost::random::mt19937 gen;
-  std::function<long(::boost::random::mt19937)> greg;
+  background_grid_t backgroundGrid;
+  box_t boundingBox;
+  coordinate_t minimumPointDistance;
+  coordinate_t maximumGenerationAttempts;
+  random_generator_t generator;
 
  public:
-  PoissonDiskSampling(point_t min_corner, point_t max_corner,
-                      long minimumPointDistance, long maximumPointDistance,
-                      long maximumGenerationAttempts)
-      : minimumPointDistance(minimumPointDistance),
-        maximumPointDistance(maximumPointDistance),
-        maximumGenerationAttempts(maximumGenerationAttempts),
-        boundingBox(Box(min_corner, max_corner)),
-        backgroundGrid(
-            BackgroundGrid<point_t, coordinate_t, DIMENSIONS_COUNT>::create(
-                min_corner, max_corner)) {}
+  PoissonDiskSampling(point_t min_corner, 
+                      point_t max_corner,
+                      coordinate_t maximumGenerationAttempts,
+                      coordinate_t minimumPointDistance)
+      : backgroundGrid(background_grid_t::create(
+                           min_corner, max_corner, minimumPointDistance)),
+        boundingBox(box_t(min_corner, max_corner)),
+        minimumPointDistance(minimumPointDistance),
+        maximumGenerationAttempts(maximumGenerationAttempts) {}
 
   std::vector<point_t> generateSequence() {
-    const auto& initialPoint = point_t(50, 50);
+    const auto& initialPoint = this->getRandomPointInBox(this->generator,
+                                                      this->boundingBox.min_corner(), 
+                                                      this->boundingBox.max_corner());
     // TODO initialize the lists with an approximate size
     auto generatedPoints = std::vector<point_t>();
     auto activePoints = std::vector<point_t>();
     generatedPoints.push_back(initialPoint);
     activePoints.push_back(initialPoint);
 
-    //    long backgroundYIndex =
-    //    this->pointToBackgroundGridYIndex(initialPoint); long backgroundXIndex
-    //    = this->pointToBackgroundGridXIndex(initialPoint);
-    //    this->backgroundGrid[backgroundYIndex][backgroundXIndex] =
-    //    initialPoint; int limit = 0; while (!activePoints.isEmpty() && ++limit
-    //    < 3000) {
-    //      long randomActiveListIndex = this->random.bounded(0,
-    //      activePoints.size()); bool isPointValid = false; for (long i = 0; i
-    //      < this->maximumGenerationAttempts && !isPointValid;
-    //           i++) {
-    //        QVector2D randomPointInAnnulus = this->randomPointInAnnulus(
-    //            activePoints.at(randomActiveListIndex),
-    //            this->minimumPointDistance, this->minimumPointDistance
-    //            * 2.0f);
-    //        long pointBackgroundGridYIndex =
-    //            this->pointToBackgroundGridYIndex(randomPointInAnnulus);
-    //        long pointBackgroundGridXIndex =
-    //            this->pointToBackgroundGridXIndex(randomPointInAnnulus);
+    this->backgroundGrid.insertPointInBackgroundGrid(initialPoint);
+    int limit = 0;
+    while (!activePoints.empty() && ++limit < 500) {
+        const auto& randomActiveListIndex = rnd::intInRange<random_generator_t, std::size_t>(
+            this->generator, 0, activePoints.size());
+        bool isPointValid = false;
+        for (std::size_t i = 0; i < this->maximumGenerationAttempts && !isPointValid; i++) {
+            auto randomPointInAnnulus = PoissonDiskSampling::getRandomPointInAnnulus(
+                this->generator, activePoints[randomActiveListIndex],
+                this->minimumPointDistance, this->minimumPointDistance * 2);
 
-    //        bool isPointValid =
-    //            this->areaDimensions.contains(randomPointInAnnulus.x(),
-    //                                          randomPointInAnnulus.y(), true)
-    //                                          &&
-    //            this->pointIsFarEnoughFromOthers(pointBackgroundGridYIndex,
-    //                                             pointBackgroundGridXIndex,
-    //                                             randomPointInAnnulus);
-    //        if (isPointValid) {
-    //          generatedPoints.append(randomPointInAnnulus);
-    //          activePoints.append(randomPointInAnnulus);
-    //          this->backgroundGrid[pointBackgroundGridYIndex]
-    //                              [pointBackgroundGridXIndex] =
-    //              randomPointInAnnulus;
-    //        }
-    //      }
+            isPointValid = bg::within<point_t, box_t>(randomPointInAnnulus, this->boundingBox);
+//                    && this->backgroundGrid.pointIsFarEnoughFromAdjacent(randomPointInAnnulus, this->minimumPointDistance);
 
-    //      if (!isPointValid) {
-    //        activePoints.remove(randomActiveListIndex);
-    //      }
-    //    }
+            for (std::size_t i = 0; i < generatedPoints.size() && isPointValid; i++) {
+                isPointValid = bg::distance<point_t>(generatedPoints[i], randomPointInAnnulus) > this->minimumPointDistance;
+            }
+
+            if (isPointValid) {
+                generatedPoints.push_back(randomPointInAnnulus);
+                activePoints.push_back(randomPointInAnnulus);
+                this->backgroundGrid.insertPointInBackgroundGrid(randomPointInAnnulus);
+            }
+        }
+
+        if (!isPointValid) {
+            activePoints.erase(activePoints.begin() + randomActiveListIndex);
+        }
+    }
 
     return generatedPoints;
   }
 
  private:
-  long pointToBackgroundGridYIndex(point_t point) {
-    return ceil((point.y() - this->areaDimensions.y()) /
-                this->minimumPointDistance);
+  static point_t getRandomPointInAnnulus(random_generator_t& generator, point_t center, coordinate_t innerR, coordinate_t outerR) {
+    coordinate_t distance;
+    point_t randomPoint;
+    do {
+        auto minCorner = center;
+        bg::subtract_value<>(minCorner, outerR);
+        auto maxCorner = center;
+        bg::add_value<>(maxCorner, outerR);
+        randomPoint = PoissonDiskSampling::getRandomPointInBox(generator, minCorner, maxCorner);
+        distance = bg::distance(randomPoint, center);
+    } while (distance < innerR && distance > outerR);
+    return randomPoint;
   }
 
-  point_t randomPointInAnnulus(point_t point, float innerR, float outerR) {
-    float randomAngle = 2 * M_PI * this->random.generateDouble();
-    float randomRadius =
-        ((outerR - innerR) * this->random.generateDouble()) + innerR;
-    float xTranslationFromCenter = randomRadius * cos(randomAngle);
-    float yTranslationFromCenter = randomRadius * sin(randomAngle);
-    return QVector2D(point.x() + xTranslationFromCenter,
-                     point.y() + yTranslationFromCenter);
-  }
+  static point_t getRandomPointInBox(random_generator_t& generator, point_t min_corner, point_t max_corner) {
+    const auto& minCornerAsVector = point_converter_t::toVector(min_corner);
+    const auto& maxCornerAsVector = point_converter_t::toVector(max_corner);
+    auto randomPointAsVector = std::vector<coordinate_t>(DIMENSION_COUNT);
 
-  bool pointIsFarEnoughFromOthers(long pointBackgroundGridYIndex,
-                                  long pointBackgroundGridXIndex,
-                                  point_t point) {
-    //    for (long i = -2; i <= 2; i++) {
-    //      long modY = pointBackgroundGridYIndex + i;
-    //      for (long j = -2; j <= 2; j++) {
-    //        long modX = pointBackgroundGridXIndex + j;
+    for (long i = 0; i < DIMENSION_COUNT; i++) {
+        randomPointAsVector[i] = rnd::intInRange<random_generator_t, coordinate_t>(generator, minCornerAsVector[i], maxCornerAsVector[i]);
+    }
 
-    //        if (modY >= 0 && modX >= 0 && modY <
-    //        this->backgroundGridDimensionY &&
-    //            modX < this->backgroundGridDimensionX) {
-    //          QVector2D otherPoint = this->backgroundGrid.at(modY).at(modX);
-
-    //          if (otherPoint != this->nullVector &&
-    //              point.distanceToPoint(otherPoint) <
-    //              this->minimumPointDistance) {
-    //            return false;
-    //          }
-    //        }
-    //      }
-    //    }
-
-    return true;
+    return point_converter_t::fromVector(randomPointAsVector);
   }
 };
 }  // namespace algo

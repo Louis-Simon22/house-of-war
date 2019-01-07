@@ -18,7 +18,7 @@ Item {
             delegate: Text {
                 x: posX
                 y: posY
-                text: index
+                text: index + "(" + posX + ","  + posY + ")"
             }
         }
     }

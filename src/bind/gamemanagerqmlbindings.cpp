@@ -9,6 +9,8 @@ GameManagerQMLBindings::GameManagerQMLBindings(QObject* parent) {
 
 void GameManagerQMLBindings::generateNewWorld(int width, int height) {
   auto config = ::how::model::types::WorldGenerationConfig();
+  std::cout << width << std::endl;
+  std::cout << height << std::endl;
   config.minCornerX = 0;
   config.minCornerY = 0;
   config.maxCornerX = width;

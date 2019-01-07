@@ -34,8 +34,8 @@ BaseMenu {
             text: "Generate"
             onClicked: {
                 newGameScene.gameManager.generateNewWorld(
-                            parseInt(worldWidth.input),
-                            parseInt(worldHeight.input));
+                            parseInt(worldWidth.input, 10),
+                            parseInt(worldHeight.input, 10));
                 newGameScene.newGameCreated();
             }
         }

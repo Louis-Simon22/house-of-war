@@ -7,11 +7,7 @@ namespace models {
 
 WorldModel::WorldModel() : points(nullptr) {}
 WorldModel::WorldModel(const std::vector<point_t>* points)
-    : QAbstractListModel(), points(points) {
-    for (int i = 0; i < this->points->size(); i++) {
-        std::cout << std::to_string(this->points->at(i).get<0>()) << std::endl;
-    }
-}
+    : QAbstractListModel(), points(points) {}
 
 QHash<int, QByteArray> WorldModel::roleNames() const {
   QHash<int, QByteArray> roles;
