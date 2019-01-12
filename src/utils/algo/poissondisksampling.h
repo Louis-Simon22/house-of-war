@@ -3,7 +3,6 @@
 
 #include <algorithm>
 #include <functional>
-#include <iostream>
 #include <math.h>
 
 #include <boost/geometry/algorithms/distance.hpp>
@@ -16,8 +15,6 @@
 #include <boost/geometry/strategies/strategies.hpp>
 #include <boost/multi_array.hpp>
 #include <boost/random/mersenne_twister.hpp>
-
-#include <iostream>
 
 #include "../random/generation.h"
 

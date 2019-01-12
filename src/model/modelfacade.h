@@ -15,6 +15,7 @@ class ModelFacade {
   ModelFacade();
   const types::box_t getWorldBounds() const;
   const std::vector<types::point_t>* getPointsList() const;
+  const types::vd_t* getVoronoiDiagram() const;
   void generateNewWorld(const types::WorldGenerationConfig& config);
 
  private:

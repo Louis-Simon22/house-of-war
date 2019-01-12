@@ -20,16 +20,6 @@ BaseMenu {
         anchors.centerIn: parent
         spacing: 10
 
-        MenuNumberInput {
-            id: worldWidth
-            label: "World Width"
-            input: "1500"
-        }
-        MenuNumberInput {
-            id: worldHeight
-            label: "World Height"
-            input: "1000"
-        }
         MenuButton {
             text: "Generate"
             onClicked: {
@@ -38,6 +28,16 @@ BaseMenu {
                             parseInt(worldHeight.input, 10));
                 newGameScene.newGameCreated();
             }
+        }
+        MenuNumberInput {
+            id: worldWidth
+            label: "World Width"
+            input: "200"
+        }
+        MenuNumberInput {
+            id: worldHeight
+            label: "World Height"
+            input: "200"
         }
     }
 

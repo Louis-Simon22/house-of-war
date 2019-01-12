@@ -18,6 +18,7 @@ class GameManager {
   void generateNewWorld(const WorldGenerationConfig& config);
 
   const std::vector<::how::model::types::point_t>* getPointsList() const;
+  const ::how::model::types::vd_t* getVoronoiDiagram() const;
   const ::how::model::types::box_t getWorldBounds() const;
 
  private:

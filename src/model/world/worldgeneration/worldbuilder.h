@@ -3,20 +3,22 @@
 
 #include "../../modeltypes.h"
 #include "../worlddata.h"
-#include "../../modeltypes.h"
 
 namespace how {
 namespace model {
+namespace {
+namespace bg = ::boost::geometry;
+}
 class WorldBuilder {
- public:
-  WorldBuilder(const types::WorldGenerationConfig& config);
+public:
+  WorldBuilder(const types::WorldGenerationConfig &config);
 
-  WorldData* build() const;
+  WorldData *build() const;
 
- private:
+private:
   types::point_t min_corner;
   types::point_t max_corner;
 };
-}  // namespace model
-}  // namespace how
+} // namespace model
+} // namespace how
 #endif

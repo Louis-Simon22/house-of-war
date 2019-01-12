@@ -3,7 +3,7 @@
 
 namespace how {
 namespace bind {
-GameManagerQMLBindings::GameManagerQMLBindings(QObject* parent) {
+GameManagerQMLBindings::GameManagerQMLBindings(QObject *) {
   this->gameManagerPtr = std::make_unique<GameManager>();
 }
 
@@ -18,19 +18,28 @@ void GameManagerQMLBindings::generateNewWorld(int width, int height) {
   this->gameManagerPtr->generateNewWorld(config);
 }
 
-::how::bind::models::WorldModel* GameManagerQMLBindings::getWorldModel() const {
-  auto* worldModel =
-      new models::WorldModel(this->gameManagerPtr->getPointsList());
+models::WorldModel *GameManagerQMLBindings::getWorldModel() const {
+  auto *worldModel =
+      new models::WorldModel(this->gameManagerPtr->getPointsList(),
+                             this->gameManagerPtr->getVoronoiDiagram());
   QQmlEngine::setObjectOwnership(
       worldModel, QQmlEngine::ObjectOwnership::JavaScriptOwnership);
   return worldModel;
 }
 
+models::EdgesModel *GameManagerQMLBindings::getEdgesModel() const {
+  auto *edgesModel =
+      new models::EdgesModel(this->gameManagerPtr->getVoronoiDiagram());
+  QQmlEngine::setObjectOwnership(
+      edgesModel, QQmlEngine::ObjectOwnership::JavaScriptOwnership);
+  return edgesModel;
+}
+
 const QRect GameManagerQMLBindings::getWorldDimensions() const {
-  const auto& bounds = this->gameManagerPtr->getWorldBounds();
+  const auto &bounds = this->gameManagerPtr->getWorldBounds();
   return QRect(
       bg::get<bg::min_corner, 0>(bounds), bg::get<bg::min_corner, 1>(bounds),
       bg::get<bg::max_corner, 0>(bounds), bg::get<bg::max_corner, 1>(bounds));
 }
-}  // namespace bind
-}  // namespace how
+} // namespace bind
+} // namespace how

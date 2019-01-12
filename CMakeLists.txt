@@ -19,6 +19,7 @@ set(HEADER_FILES
         src/model/world/worldgeneration/worldbuilder.h
         src/utils/algo/poissondisksampling.h
         src/bind/gamemanagerqmlbindings.h
+        src/bind/models/edgesmodel.h
         src/bind/models/worldmodel.h
         )
 
@@ -29,6 +30,7 @@ set(CPP_FILES
         src/model/world/worlddata.cpp
         src/model/world/worldgeneration/worldbuilder.cpp
         src/bind/gamemanagerqmlbindings.cpp
+        src/bind/models/edgesmodel.cpp
         src/bind/models/worldmodel.cpp
         )
 
