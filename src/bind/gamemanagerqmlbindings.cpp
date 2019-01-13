@@ -29,7 +29,8 @@ models::WorldModel *GameManagerQMLBindings::getWorldModel() const {
 
 models::EdgesModel *GameManagerQMLBindings::getEdgesModel() const {
   auto *edgesModel =
-      new models::EdgesModel(this->gameManagerPtr->getVoronoiDiagram());
+      new models::EdgesModel(this->gameManagerPtr->getPointsList(),
+                             this->gameManagerPtr->getVoronoiDiagram());
   QQmlEngine::setObjectOwnership(
       edgesModel, QQmlEngine::ObjectOwnership::JavaScriptOwnership);
   return edgesModel;

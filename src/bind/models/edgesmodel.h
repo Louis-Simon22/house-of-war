@@ -20,9 +20,9 @@ class EdgesModel : public QAbstractListModel {
   Q_OBJECT
 public:
   EdgesModel();
-  explicit EdgesModel(const vd_t *vd);
+  explicit EdgesModel(const std::vector<point_t> *points, const vd_t *vd);
 
-  enum CellRoles { PosX1 = Qt::UserRole + 1, PosY1, PosX2, PosY2 };
+  enum CellRoles { PosX = Qt::UserRole + 1, PosY, Edges};
 
   QHash<int, QByteArray> roleNames() const override;
   Qt::ItemFlags flags(const QModelIndex &) const override;
@@ -32,6 +32,7 @@ public:
                 int role = Qt::DisplayRole) const override;
 
 private:
+  const std::vector<point_t> *points;
   const vd_t *vd;
 };
 } // namespace models

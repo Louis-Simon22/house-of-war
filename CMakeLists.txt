@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 
 set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_CXX_FLAGS "-O0")
 
 project(house-of-war LANGUAGES CXX)
 
@@ -17,6 +18,8 @@ set(HEADER_FILES
         src/model/world/worldloader.h
         src/model/world/worlddata.h
         src/model/world/worldgeneration/worldbuilder.h
+        src/model/world/worldgeneration/voronoi_util.h
+        src/model/world/worldgeneration/voronoi_tutorial.h
         src/utils/algo/poissondisksampling.h
         src/bind/gamemanagerqmlbindings.h
         src/bind/models/edgesmodel.h

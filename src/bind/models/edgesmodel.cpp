@@ -6,14 +6,14 @@ namespace bind {
 namespace models {
 
 EdgesModel::EdgesModel() : vd(nullptr) {}
-EdgesModel::EdgesModel(const vd_t *vd) : QAbstractListModel(), vd(vd) {}
+EdgesModel::EdgesModel(const std::vector<point_t> *points, const vd_t *vd)
+    : QAbstractListModel(), points(points), vd(vd) {}
 
 QHash<int, QByteArray> EdgesModel::roleNames() const {
   QHash<int, QByteArray> roles;
-  roles[PosX1] = "posX1";
-  roles[PosY1] = "posY1";
-  roles[PosX2] = "posX2";
-  roles[PosY2] = "posY2";
+  roles[PosX] = "posX";
+  roles[PosY] = "posY";
+  roles[Edges] = "edges";
   return roles;
 }
 
@@ -26,53 +26,56 @@ QVariant EdgesModel::headerData(int, Qt::Orientation, int) const {
 }
 
 int EdgesModel::rowCount(const QModelIndex &) const {
-  return this->vd->num_vertices();
+  return this->vd->num_cells();
 }
 
 QVariant EdgesModel::data(const QModelIndex &index, int role) const {
-  //  const auto &edge = this->vd->edges()[index.row()];
-  //  if (edge.is_finite() && edge.vertex0() && edge.vertex1()) {
-  //    switch (role) {
-  //    case PosX1:
-  //      if (edge.vertex0()) {
-  //        return edge.vertex0()->x();
-  //      } else {
-  //        return -10;
-  //      }
-  //    case PosY1:
-  //      if (edge.vertex0()) {
-  //        return edge.vertex0()->y();
-  //      } else {
-  //        return -10;
-  //      }
-  //    case PosX2:
-  //      if (edge.vertex1()) {
-  //        return edge.vertex1()->x();
-  //      } else {
-  //        return -10;
-  //      }
-  //    case PosY2:
-  //      if (edge.vertex1()) {
-  //        return edge.vertex1()->y();
-  //      } else {
-  //        return -10;
-  //      }
-  //    default:
-  //      return 0;
-  //    }
-  //  } else {
-  //    return -10;
-  //  }
-  const auto &vertex = this->vd->vertices()[index.row()];
-  switch (role) {
-  case PosX1:
-  case PosX2:
-    return vertex.x();
-  case PosY1:
-  case PosY2:
-    return vertex.y();
-  default:
-    return -50;
+  const auto &cell = this->vd->cells()[index.row()];
+  if (cell.contains_point()) {
+    switch (role) {
+    default:
+      return -50;
+    case PosX:
+      return bg::get<0>(this->points->at(index.row()));
+    case PosY:
+      return bg::get<1>(this->points->at(index.row()));
+    case Edges:
+      if (cell.incident_edge()->is_primary() &&
+          cell.incident_edge()->is_finite() &&
+          cell.incident_edge()->vertex0() && cell.incident_edge()->twin() &&
+          cell.incident_edge()->twin()->vertex0()) {
+        auto edges = std::vector<::boost::polygon::voronoi_cell<
+            ::how::model::types::coordinate_fpt_t>::voronoi_edge_type>();
+        edges.push_back(*cell.incident_edge());
+        auto segments = QList<QVariant>();
+        for (auto edge : edges) {
+          auto coordinates = QList<QVariant>();
+          coordinates.append(edge.vertex0()->x());
+          coordinates.append(edge.vertex0()->y());
+          coordinates.append(edge.vertex1()->x());
+          coordinates.append(edge.vertex1()->y());
+          segments.append(coordinates);
+        }
+        return segments;
+      } else {
+        auto segments = QVariantList();
+        auto coordinates = QVariantList();
+        coordinates.append(-5);
+        coordinates.append(-5);
+        coordinates.append(-10);
+        coordinates.append(-10);
+        segments.append(coordinates);
+        coordinates = QVariantList();
+        coordinates.append(5);
+        coordinates.append(5);
+        coordinates.append(10);
+        coordinates.append(10);
+        segments.append(coordinates);
+        return segments;
+      }
+    }
+  } else {
+    return -10;
   }
 }
 } // namespace models

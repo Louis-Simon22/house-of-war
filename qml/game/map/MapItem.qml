@@ -25,28 +25,39 @@ Item {
         Repeater {
             model: gameManager.worldModel
             delegate: Text {
-                x: posX
-                y: posY
+                x: posX + 200
+                y: posY + 150
                 text: index
             }
         }
         Repeater {
             model: gameManager.edgesModel
-            delegate: Text {
-                x: posX1
-                y: posY1
-                color: "red"
-                text: index
+            delegate: Item {
+                id: edgeItem
+                x: posX + 600
+                y: posY + 450
+
+                Text {
+                    color: "red"
+                    text: index
+                }
+                Canvas {
+                    x: 0
+                    y: 0
+                    width: 200
+                    height: 200
+                    onPaint: {
+                        var ctx = getContext("2d");
+                        ctx.strokeStyle = Qt.rgba(1, 0, 0, 1);
+                        console.log(edges);
+                        ctx.moveTo(edges[0], edges[1]);
+                        ctx.lineTo(edges[2], edges[3]);
+                        ctx.lineTo(edges[4], edges[5]);
+                        ctx.lineTo(edges[6], edges[7]);
+                        ctx.stroke();
+                    }
+                }
             }
         }
-    //        Repeater {
-    //            model: gameManager.edgesModel
-    //            delegate: Item {
-    //                Path {
-    //                    startX: posX1; startY: posY1
-    //                    PathLine { x: posX2; y: posY2 }
-    //                }
-    //            }
-    //        }
     }
 }
