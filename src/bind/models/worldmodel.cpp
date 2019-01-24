@@ -3,11 +3,14 @@
 
 namespace how {
 namespace bind {
-namespace models {
 
-WorldModel::WorldModel() : points(nullptr), vd(nullptr) {}
-WorldModel::WorldModel(const std::vector<point_t> *points, const vd_t *vd)
-    : QAbstractListModel(), points(points), vd(vd) {}
+WorldModel::WorldModel() : points(nullptr) {}
+WorldModel::WorldModel(const std::vector<point_t> *points)
+    : QAbstractListModel(), points(points) {
+  for (auto point : *points) {
+    std::cout << bg::get<0>(point) << "|" << bg::get<1>(point) << std::endl;
+  }
+}
 
 QHash<int, QByteArray> WorldModel::roleNames() const {
   QHash<int, QByteArray> roles;
@@ -25,11 +28,11 @@ QVariant WorldModel::headerData(int, Qt::Orientation, int) const {
 }
 
 int WorldModel::rowCount(const QModelIndex &) const {
-  return this->points->size();
+  return static_cast<int>(this->points->size());
 }
 
 QVariant WorldModel::data(const QModelIndex &index, int role) const {
-  const auto &point = this->points->at(index.row());
+  const auto &point = this->points->at(static_cast<std::size_t>(index.row()));
   switch (role) {
   case PosX:
     return bg::get<0>(point);
@@ -39,6 +42,5 @@ QVariant WorldModel::data(const QModelIndex &index, int role) const {
     return 0;
   }
 }
-} // namespace models
 } // namespace bind
 } // namespace how

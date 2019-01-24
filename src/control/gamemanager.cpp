@@ -15,8 +15,9 @@ const std::vector<model::types::point_t> *GameManager::getPointsList() const {
   return this->modelFacadePtr->getPointsList();
 }
 
-const model::types::vd_t *GameManager::getVoronoiDiagram() const {
-  return this->modelFacadePtr->getVoronoiDiagram();
+const std::vector<model::types::segment_t> *
+GameManager::getOutlineSegments() const {
+  return this->modelFacadePtr->getOutlineSegments();
 }
 
 const ::how::model::types::box_t GameManager::getWorldBounds() const {

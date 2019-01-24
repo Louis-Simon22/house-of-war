@@ -13,9 +13,13 @@ namespace bg = ::boost::geometry;
 class ModelFacade {
  public:
   ModelFacade();
+
   const types::box_t getWorldBounds() const;
   const std::vector<types::point_t>* getPointsList() const;
-  const types::vd_t* getVoronoiDiagram() const;
+  const types::box_t &getBounds() const;
+  const std::vector<types::segment_t> *getOutlineSegments() const;
+  const std::vector<VoronoiCell> *getVoronoiCells() const;
+
   void generateNewWorld(const types::WorldGenerationConfig& config);
 
  private:

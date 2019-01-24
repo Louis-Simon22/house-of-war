@@ -15,26 +15,36 @@ set(HEADER_FILES
         src/control/gamemanager.h
         src/model/modelfacade.h
         src/model/modeltypes.h
+        src/model/pointcomparator.h
+        src/model/segmentcomparator.h
+        src/model/world/delaunayedge.h
+        src/model/world/voronoicell.h
         src/model/world/worldloader.h
         src/model/world/worlddata.h
+        src/model/world/worldgeneration/jcv_voronoi_adapter.h
+        src/model/world/worldgeneration/delaunayextrapolator.h
         src/model/world/worldgeneration/worldbuilder.h
-        src/model/world/worldgeneration/voronoi_util.h
-        src/model/world/worldgeneration/voronoi_tutorial.h
         src/utils/algo/poissondisksampling.h
         src/bind/gamemanagerqmlbindings.h
-        src/bind/models/edgesmodel.h
         src/bind/models/worldmodel.h
+        src/bind/painters/celloutlinepainter.h
         )
 
 set(CPP_FILES
         src/control/gamemanager.cpp
         src/model/modelfacade.cpp
+        src/model/pointcomparator.cpp
+        src/model/segmentcomparator.cpp
+        src/model/world/delaunayedge.cpp
+        src/model/world/voronoicell.cpp
         src/model/world/worldloader.cpp
         src/model/world/worlddata.cpp
+        src/model/world/worldgeneration/jcv_voronoi_adapter.cpp
+        src/model/world/worldgeneration/delaunayextrapolator.cpp
         src/model/world/worldgeneration/worldbuilder.cpp
         src/bind/gamemanagerqmlbindings.cpp
-        src/bind/models/edgesmodel.cpp
         src/bind/models/worldmodel.cpp
+        src/bind/painters/celloutlinepainter.cpp
         )
 
 find_package(Qt5 REQUIRED COMPONENTS Core Quick)

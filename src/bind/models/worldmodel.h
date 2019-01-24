@@ -10,17 +10,15 @@
 
 namespace how {
 namespace bind {
-namespace models {
 namespace {
 using point_t = ::how::model::types::point_t;
-using vd_t = ::how::model::types::vd_t;
 namespace bg = ::boost::geometry;
 } // namespace
 class WorldModel : public QAbstractListModel {
   Q_OBJECT
 public:
   WorldModel();
-  explicit WorldModel(const std::vector<point_t> *points, const vd_t *vd);
+  explicit WorldModel(const std::vector<point_t> *points);
 
   enum CellRoles { PosX = Qt::UserRole + 1, PosY };
 
@@ -33,9 +31,7 @@ public:
 
 private:
   const std::vector<point_t> *points;
-  const vd_t *vd;
 };
-} // namespace models
 } // namespace bind
 } // namespace how
 

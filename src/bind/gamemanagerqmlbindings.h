@@ -3,13 +3,15 @@
 
 #include <memory>
 
+#include <QList>
 #include <QObject>
+#include <QPoint>
 #include <QQmlEngine>
 #include <QRect>
+#include <QVariant>
 
 #include "../control/gamemanager.h"
 #include "../model/modeltypes.h"
-#include "./models/edgesmodel.h"
 #include "./models/worldmodel.h"
 
 namespace how {
@@ -17,16 +19,16 @@ namespace bind {
 namespace bg = ::boost::geometry;
 namespace {
 using GameManager = ::how::control::GameManager;
-using WorldModel = ::how::bind::models::WorldModel;
-using EdgesModel = ::how::bind::models::EdgesModel;
+using WorldModel = ::how::bind::WorldModel;
 using coordinate_t = ::how::model::types::coordinate_t;
 } // namespace
 class GameManagerQMLBindings : public QObject {
 
   Q_OBJECT
   Q_PROPERTY(WorldModel *worldModel READ getWorldModel CONSTANT)
-  Q_PROPERTY(EdgesModel *edgesModel READ getEdgesModel CONSTANT)
-  Q_PROPERTY(const QRect worldDimensions READ getWorldDimensions CONSTANT)
+  Q_PROPERTY(
+      const QList<QVariant> outlineSegments READ getOutlineSegments CONSTANT)
+  Q_PROPERTY(const QRect worldBounds READ getWorldBounds CONSTANT)
 
 public:
   explicit GameManagerQMLBindings(QObject *parent = nullptr);
@@ -34,8 +36,8 @@ public:
   Q_INVOKABLE void generateNewWorld(int width, int height);
 
   WorldModel *getWorldModel() const;
-  EdgesModel *getEdgesModel() const;
-  const QRect getWorldDimensions() const;
+  const QList<QVariant> getOutlineSegments() const;
+  const QRect getWorldBounds() const;
 
 private:
   std::unique_ptr<GameManager> gameManagerPtr;

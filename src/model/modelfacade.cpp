@@ -14,13 +14,16 @@ const std::vector<types::point_t> *ModelFacade::getPointsList() const {
   return this->worldData->getPointsList();
 }
 
-const types::vd_t *ModelFacade::getVoronoiDiagram() const {
-  return this->worldData->getVoronoiDiagram();
+const std::vector<types::segment_t> *ModelFacade::getOutlineSegments() const {
+  return this->worldData->getOutlineSegments();
+}
+
+const std::vector<VoronoiCell> *ModelFacade::getVoronoiCells() const {
+  return this->worldData->getVoronoiCells();
 }
 
 void ModelFacade::generateNewWorld(const types::WorldGenerationConfig &config) {
-  const auto &worldBuilder = ::how::model::WorldBuilder(config);
-  auto worldData = worldBuilder.build();
+  auto* worldData = buildWorld(config);
   this->worldData.reset(worldData);
 }
 } // namespace model
