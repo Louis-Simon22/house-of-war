@@ -4,6 +4,7 @@
 #include "jcv_voronoi_adapter.h"
 
 #include "../../modeltypes.h"
+#include "../../graphtypes.h"
 #include "../worlddata.h"
 #include "../../../utils/algo/poissondisksampling.h"
 
@@ -15,7 +16,7 @@ namespace bg = ::boost::geometry;
 
 WorldData* buildWorld(const types::WorldGenerationConfig &config);
 
-types::delaunayGraph *extrapolateDelaunayTriangulation(std::vector<types::segment_t> edges);
+types::delaunay_graph_t *extrapolateDelaunayTriangulation(std::vector<types::segment_t> edges);
 
 } // namespace model
 } // namespace how

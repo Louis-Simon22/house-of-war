@@ -81,8 +81,8 @@ std::vector<VoronoiCell> extractVoronoiCells(jcv_diagram *voronoiDiagram) {
     for (const auto &point : cellPolygonPointsSet) {
       ::boost::geometry::append(polygon.outer(), point);
     }
-    // The last point must be equal to the first point to close the polygon
-    ::boost::geometry::append(polygon.outer(), *--cellPolygonPointsSet.end());
+    // Add the first point again to close the polygon
+    ::boost::geometry::append(polygon.outer(), *cellPolygonPointsSet.begin());
     // TODO ::boost::geometry::correct(polygon);
     voronoiCells.push_back(
         VoronoiCell(convert(site->p), polygon,
@@ -102,8 +102,8 @@ buildVoronoi(types::box_t boundingBox, std::vector<types::point_t> points) {
   jcv_diagram_generate(static_cast<int>(points.size()), jcvPoints,
                        jcvBoundingBox, &diagram);
 
-  auto voronoiEdges = extractVoronoiEdges(&diagram);
   auto voronoiCells = extractVoronoiCells(&diagram);
+  auto voronoiEdges = extractVoronoiEdges(voronoiCells);
 
   jcv_diagram_free(&diagram);
   delete jcvBoundingBox;

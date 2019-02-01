@@ -4,24 +4,25 @@
 namespace how {
 namespace control {
 GameManager::GameManager() {
-  this->modelFacadePtr = std::make_unique<ModelFacade>();
+  this->worldDataPtr = std::make_unique<WorldData>();
 }
 
 void GameManager::generateNewWorld(const WorldGenerationConfig &config) {
-  this->modelFacadePtr->generateNewWorld(config);
+  auto *worldData = model::buildWorld(config);
+  this->worldDataPtr.reset(worldData);
 }
 
 const std::vector<model::types::point_t> *GameManager::getPointsList() const {
-  return this->modelFacadePtr->getPointsList();
+  return this->worldDataPtr->getPointsList();
 }
 
 const std::vector<model::types::segment_t> *
 GameManager::getOutlineSegments() const {
-  return this->modelFacadePtr->getOutlineSegments();
+  return this->worldDataPtr->getOutlineSegments();
 }
 
 const ::how::model::types::box_t GameManager::getWorldBounds() const {
-  return this->modelFacadePtr->getWorldBounds();
+  return this->worldDataPtr->getBounds();
 }
 } // namespace control
 } // namespace how

@@ -1,7 +1,13 @@
 #include "delaunayedge.h"
 
+#include <boost/geometry/strategies/strategies.hpp>
+#include <boost/geometry/algorithms/length.hpp>
+
 namespace how {
 namespace model {
-DelaunayEdge::DelaunayEdge(types::coordinate_t distance) : distance(distance) {}
+DelaunayEdge::DelaunayEdge() {}
+
+DelaunayEdge::DelaunayEdge(types::segment_t segment)
+    : segment(segment), distance(bg::length(segment)) {}
 } // namespace model
 } // namespace how

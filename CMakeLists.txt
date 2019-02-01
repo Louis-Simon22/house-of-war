@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(HEADER_FILES
         src/control/gamemanager.h
-        src/model/modelfacade.h
+        src/model/graphtypes.h
         src/model/modeltypes.h
         src/model/pointcomparator.h
         src/model/segmentcomparator.h
@@ -32,7 +32,6 @@ set(HEADER_FILES
 
 set(CPP_FILES
         src/control/gamemanager.cpp
-        src/model/modelfacade.cpp
         src/model/pointcomparator.cpp
         src/model/segmentcomparator.cpp
         src/model/world/delaunayedge.cpp

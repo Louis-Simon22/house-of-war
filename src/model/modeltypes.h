@@ -31,26 +31,4 @@ struct WorldGenerationConfig {
 } // namespace model
 } // namespace how
 
-// Forward declaration so they can be used in the graph type declaration
-namespace how {
-namespace model {
-struct VoronoiCell;
-struct DelaunayEdge;
-} // namespace model
-} // namespace how
-
-#include "./world/delaunayedge.h"
-#include "./world/voronoicell.h"
-
-namespace how {
-namespace model {
-namespace types {
-using delaunayGraph =
-    ::boost::adjacency_list<::boost::vecS, ::boost::vecS, ::boost::directedS,
-                            ::how::model::VoronoiCell, ::how::model::DelaunayEdge,
-                            ::boost::no_property, ::boost::vecS>;
-} // namespace types
-} // namespace model
-} // namespace how
-
 #endif // MODELTYPES_H
