@@ -4,7 +4,7 @@
 namespace how {
 namespace control {
 GameManager::GameManager() {
-  this->worldDataPtr = std::make_unique<WorldData>();
+  this->worldDataPtr = std::unique_ptr<WorldData>();
 }
 
 void GameManager::generateNewWorld(const WorldGenerationConfig &config) {
@@ -12,16 +12,22 @@ void GameManager::generateNewWorld(const WorldGenerationConfig &config) {
   this->worldDataPtr.reset(worldData);
 }
 
-const std::vector<model::types::point_t> *GameManager::getPointsList() const {
-  return this->worldDataPtr->getPointsList();
+const std::vector<model::types::point_t> *
+GameManager::getCellCentroids() const {
+  return this->worldDataPtr->getCellCentroids();
 }
 
 const std::vector<model::types::segment_t> *
-GameManager::getOutlineSegments() const {
-  return this->worldDataPtr->getOutlineSegments();
+GameManager::getUniqueVoronoiSegments() const {
+  return this->worldDataPtr->getUniqueVoronoiSegments();
 }
 
-const ::how::model::types::box_t GameManager::getWorldBounds() const {
+const std::vector<model::types::segment_t> *
+GameManager::getUniqueDelaunaySegments() const {
+  return this->worldDataPtr->getUniqueDelaunaySegments();
+}
+
+const ::how::model::types::box_t *GameManager::getWorldBounds() const {
   return this->worldDataPtr->getBounds();
 }
 } // namespace control

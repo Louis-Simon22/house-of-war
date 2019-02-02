@@ -1,5 +1,5 @@
-#ifndef CELLOUTLINEPAINTER_H
-#define CELLOUTLINEPAINTER_H
+#ifndef PATHSPAINTER_H
+#define PATHSPAINTER_H
 
 #include <QList>
 #include <QPainter>
@@ -10,13 +10,13 @@
 namespace how {
 namespace bind {
 
-class CellOutlinePainter : public QQuickPaintedItem {
+class PathsPainter : public QQuickPaintedItem {
   Q_OBJECT
 
   Q_PROPERTY(const QList<QVariant> segments WRITE setSegments)
 
 public:
-  CellOutlinePainter(QQuickItem *parent = nullptr);
+  PathsPainter(QQuickItem *parent = nullptr);
 
   void paint(QPainter *painter) override;
 

@@ -27,7 +27,8 @@ set(HEADER_FILES
         src/utils/algo/poissondisksampling.h
         src/bind/gamemanagerqmlbindings.h
         src/bind/models/worldmodel.h
-        src/bind/painters/celloutlinepainter.h
+        src/bind/painters/celloutlinespainter.h
+        src/bind/painters/pathspainter.h
         )
 
 set(CPP_FILES
@@ -43,7 +44,8 @@ set(CPP_FILES
         src/model/world/worldgeneration/worldbuilder.cpp
         src/bind/gamemanagerqmlbindings.cpp
         src/bind/models/worldmodel.cpp
-        src/bind/painters/celloutlinepainter.cpp
+        src/bind/painters/celloutlinespainter.cpp
+        src/bind/painters/pathspainter.cpp
         )
 
 find_package(Qt5 REQUIRED COMPONENTS Core Quick)

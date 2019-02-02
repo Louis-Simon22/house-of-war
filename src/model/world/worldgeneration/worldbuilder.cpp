@@ -1,9 +1,10 @@
 #include "worldbuilder.h"
+#include "delaunayextrapolator.h"
 
 namespace how {
 namespace model {
 
-WorldData* buildWorld(const types::WorldGenerationConfig &config) {
+WorldData *buildWorld(const types::WorldGenerationConfig &config) {
   std::cout << "Starting build" << std::endl;
   const auto &minCorner = types::point_t(config.minCornerX, config.minCornerY);
   const auto &maxCorner = types::point_t(config.maxCornerX, config.maxCornerY);
@@ -13,10 +14,18 @@ WorldData* buildWorld(const types::WorldGenerationConfig &config) {
   const auto &points = generator.generateSequence();
 
   const auto &voronoiPair = buildVoronoi(boundingBox, points);
-  const auto &voronoiEdges = voronoiPair.first;
+  const auto &uniqueVoronoiSegments = voronoiPair.first;
   const auto &voronoiCells = voronoiPair.second;
 
-  return new WorldData(boundingBox, points, voronoiEdges, voronoiCells);
+  const auto &delaunayTuple =
+      DelaunayExtrapolator::extrapolateDelaunayTriangulation(voronoiCells);
+  const auto &combinedGraph = std::get<0>(delaunayTuple);
+  const auto &delaunayEdges = std::get<1>(delaunayTuple);
+  const auto &uniqueDelaunaySegments = std::get<2>(delaunayTuple);
+
+  return new WorldData(boundingBox, points, uniqueVoronoiSegments,
+                       uniqueDelaunaySegments, voronoiCells, delaunayEdges,
+                       combinedGraph);
 }
 
 } // namespace model

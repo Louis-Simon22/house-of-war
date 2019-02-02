@@ -32,12 +32,12 @@ BaseMenu {
         MenuNumberInput {
             id: worldWidth
             label: "World Width"
-            input: "350"
+            input: "1900"
         }
         MenuNumberInput {
             id: worldHeight
             label: "World Height"
-            input: "250"
+            input: "1100"
         }
     }
 

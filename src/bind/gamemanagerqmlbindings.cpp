@@ -1,5 +1,4 @@
 #include "gamemanagerqmlbindings.h"
-#include <iostream>
 
 namespace how {
 namespace bind {
@@ -9,8 +8,6 @@ GameManagerQMLBindings::GameManagerQMLBindings(QObject *) {
 
 void GameManagerQMLBindings::generateNewWorld(int width, int height) {
   auto config = ::how::model::types::WorldGenerationConfig();
-  std::cout << width << std::endl;
-  std::cout << height << std::endl;
   config.minCornerX = 0;
   config.minCornerY = 0;
   config.maxCornerX = width;
@@ -19,37 +16,41 @@ void GameManagerQMLBindings::generateNewWorld(int width, int height) {
 }
 
 WorldModel *GameManagerQMLBindings::getWorldModel() const {
-  auto *worldModel = new WorldModel(this->gameManagerPtr->getPointsList());
+  auto *worldModel = new WorldModel(this->gameManagerPtr->getCellCentroids());
   QQmlEngine::setObjectOwnership(
       worldModel, QQmlEngine::ObjectOwnership::JavaScriptOwnership);
   return worldModel;
 }
 
 const QList<QVariant> GameManagerQMLBindings::getOutlineSegments() const {
-  auto convertedSegments = QList<QVariant>();
-  const auto *outlineSegments = this->gameManagerPtr->getOutlineSegments();
+    return convert(this->gameManagerPtr->getUniqueVoronoiSegments());
+}
 
-  std::cout << "Get outline segments" << std::endl;
-  std::cout << "===================" << std::endl;
-  for (auto outlineSegment : *outlineSegments) {
-    const auto &p1 =
-        QPoint(bg::get<0, 0>(outlineSegment), bg::get<0, 1>(outlineSegment));
-    const auto &p2 =
-        QPoint(bg::get<1, 0>(outlineSegment), bg::get<1, 1>(outlineSegment));
-    convertedSegments.insert(convertedSegments.size(),
-                             QList<QVariant>({p1, p2}));
-    std::cout << p1.x() << "," << p1.y() << "|" << p1.x() << "," << p2.y()
-              << std::endl;
-  }
-
-  return convertedSegments;
+const QList<QVariant> GameManagerQMLBindings::getPathSegments() const {
+    return convert(this->gameManagerPtr->getUniqueDelaunaySegments());
 }
 
 const QRect GameManagerQMLBindings::getWorldBounds() const {
-  const auto &bounds = this->gameManagerPtr->getWorldBounds();
+  const auto* bounds = this->gameManagerPtr->getWorldBounds();
   return QRect(
       bg::get<bg::min_corner, 0>(bounds), bg::get<bg::min_corner, 1>(bounds),
-      bg::get<bg::max_corner, 0>(bounds), bg::get<bg::max_corner, 1>(bounds));
+              bg::get<bg::max_corner, 0>(bounds), bg::get<bg::max_corner, 1>(bounds));
+}
+
+const QList<QVariant> GameManagerQMLBindings::convert(const std::vector<model::types::segment_t>* segments) const
+{
+    auto convertedSegments = QList<QVariant>();
+
+    for (auto outlineSegment : *segments) {
+        const auto &p1 =
+                QPoint(bg::get<0, 0>(outlineSegment), bg::get<0, 1>(outlineSegment));
+        const auto &p2 =
+                QPoint(bg::get<1, 0>(outlineSegment), bg::get<1, 1>(outlineSegment));
+        convertedSegments.insert(convertedSegments.size(),
+                                 QList<QVariant>({p1, p2}));
+    }
+
+    return convertedSegments;
 }
 } // namespace bind
 } // namespace how

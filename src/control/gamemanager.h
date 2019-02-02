@@ -20,9 +20,10 @@ public:
 
   void generateNewWorld(const WorldGenerationConfig &config);
 
-  const std::vector<::how::model::types::point_t> *getPointsList() const;
-  const std::vector<::how::model::types::segment_t> *getOutlineSegments() const;
-  const ::how::model::types::box_t getWorldBounds() const;
+  const std::vector<::how::model::types::point_t> *getCellCentroids() const;
+  const std::vector<::how::model::types::segment_t> *getUniqueVoronoiSegments() const;
+  const std::vector<::how::model::types::segment_t> *getUniqueDelaunaySegments() const;
+  const ::how::model::types::box_t* getWorldBounds() const;
 
 private:
   std::unique_ptr<WorldData> worldDataPtr;

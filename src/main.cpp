@@ -3,7 +3,8 @@
 
 #include "../src/bind/gamemanagerqmlbindings.h"
 #include "../src/bind/models/worldmodel.h"
-#include "../src/bind/painters/celloutlinepainter.h"
+#include "../src/bind/painters/celloutlinespainter.h"
+#include "../src/bind/painters/pathspainter.h"
 
 int main(int argc, char* argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -12,10 +13,12 @@ int main(int argc, char* argv[]) {
   QQmlApplicationEngine engine;
 
   // Register c++ bindings for QML
+  qmlRegisterType<::how::bind::CellOutlinesPainter>(
+              "com.louissimonmcnicoll.how.bind.celloutlinespainter", 1, 0, "CellOutlinesPainter");
+  qmlRegisterType<::how::bind::PathsPainter>(
+              "com.louissimonmcnicoll.how.bind.pathspainter", 1, 0, "PathsPainter");
   qmlRegisterType<::how::bind::WorldModel>(
       "com.louissimonmcnicoll.how.bind.worldmodel", 1, 0, "WorldModel");
-  qmlRegisterType<::how::bind::CellOutlinePainter>(
-              "com.louissimonmcnicoll.how.bind.celloutlinepainter", 1, 0, "CellOutlinePainter");
   qmlRegisterType<::how::bind::GameManagerQMLBindings>(
       "com.louissimonmcnicoll.how.bind.gamemanager", 1, 0, "GameManager");
 

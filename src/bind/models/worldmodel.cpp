@@ -6,11 +6,7 @@ namespace bind {
 
 WorldModel::WorldModel() : points(nullptr) {}
 WorldModel::WorldModel(const std::vector<point_t> *points)
-    : QAbstractListModel(), points(points) {
-  for (auto point : *points) {
-    std::cout << bg::get<0>(point) << "|" << bg::get<1>(point) << std::endl;
-  }
-}
+    : QAbstractListModel(), points(points) {}
 
 QHash<int, QByteArray> WorldModel::roleNames() const {
   QHash<int, QByteArray> roles;

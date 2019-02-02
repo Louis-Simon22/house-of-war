@@ -1,13 +1,13 @@
-#include "celloutlinepainter.h"
+#include "celloutlinespainter.h"
 
 namespace how {
 namespace bind {
-CellOutlinePainter::CellOutlinePainter(QQuickItem *parent)
+CellOutlinesPainter::CellOutlinesPainter(QQuickItem *parent)
     : QQuickPaintedItem(parent), segments(QList<QVariant>()) {
   this->setAntialiasing(true);
 }
 
-void CellOutlinePainter::paint(QPainter *painter) {
+void CellOutlinesPainter::paint(QPainter *painter) {
   painter->setRenderHints(QPainter::Antialiasing, true);
   for (const QVariant &segment : this->segments) {
     const QList<QVariant> points = segment.toList();
@@ -17,7 +17,7 @@ void CellOutlinePainter::paint(QPainter *painter) {
   }
 }
 
-void CellOutlinePainter::setSegments(const QList<QVariant> segments) {
+void CellOutlinesPainter::setSegments(const QList<QVariant> segments) {
   this->segments = segments;
 }
 } // namespace bind

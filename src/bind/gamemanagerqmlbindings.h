@@ -28,6 +28,7 @@ class GameManagerQMLBindings : public QObject {
   Q_PROPERTY(WorldModel *worldModel READ getWorldModel CONSTANT)
   Q_PROPERTY(
       const QList<QVariant> outlineSegments READ getOutlineSegments CONSTANT)
+  Q_PROPERTY(const QList<QVariant> pathSegments READ getPathSegments CONSTANT)
   Q_PROPERTY(const QRect worldBounds READ getWorldBounds CONSTANT)
 
 public:
@@ -37,10 +38,14 @@ public:
 
   WorldModel *getWorldModel() const;
   const QList<QVariant> getOutlineSegments() const;
+  const QList<QVariant> getPathSegments() const;
   const QRect getWorldBounds() const;
 
 private:
   std::unique_ptr<GameManager> gameManagerPtr;
+
+  const QList<QVariant>
+  convert(const std::vector<model::types::segment_t> *segments) const;
 };
 } // namespace bind
 } // namespace how
