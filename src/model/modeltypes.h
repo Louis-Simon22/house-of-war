@@ -5,8 +5,7 @@
 #include <boost/geometry/geometries/point.hpp>
 #include <boost/geometry/geometries/polygon.hpp>
 #include <boost/geometry/geometries/segment.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/optional.hpp>
+#include <boost/math/quaternion.hpp>
 
 namespace how {
 namespace model {
@@ -20,6 +19,8 @@ using point_t =
 using segment_t = ::boost::geometry::model::segment<point_t>;
 using box_t = ::boost::geometry::model::box<point_t>;
 using polygon_t = ::boost::geometry::model::polygon<point_t>;
+
+using quaternion_t = ::boost::math::quaternion<coordinate_fpt_t>;
 
 struct WorldGenerationConfig {
   coordinate_t minCornerX;

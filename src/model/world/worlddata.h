@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "../graphtypes.h"
+#include "../delaunaygraphtypes.h"
 #include "../modeltypes.h"
 #include "./voronoicell.h"
 

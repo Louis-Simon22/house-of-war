@@ -2,6 +2,7 @@
 #define VORONOICELL_H
 
 #include "../modeltypes.h"
+#include <vector>
 
 namespace how {
 namespace model {

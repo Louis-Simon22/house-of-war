@@ -11,7 +11,7 @@ DelaunayExtrapolator::extrapolateDelaunayTriangulation(
     std::vector<VoronoiCell> voronoiCells) {
   auto delaunayGraph = types::delaunay_graph_t();
   auto cellsBySegment =
-      std::map<types::segment_t, types::delaunay_graph_vertex_t,
+      std::map<types::segment_t, types::delaunay_graph_vertex_index_t,
                SegmentComparator>();
   auto delaunayEdges = std::vector<DelaunayEdge>();
   auto pathSegmentsSet = std::set<types::segment_t, SegmentComparator>();
@@ -46,9 +46,9 @@ DelaunayExtrapolator::extrapolateDelaunayTriangulation(
 }
 
 DelaunayEdge DelaunayExtrapolator::delaunayEdgeFromVertices(
-    types::delaunay_graph_vertex_t v1, types::delaunay_graph_vertex_t v2,
-    types::delaunay_graph_t g) {
-  return DelaunayEdge(types::segment_t(g[v1].centroid, g[v2].centroid));
+    types::delaunay_graph_vertex_index_t v1, types::delaunay_graph_vertex_index_t v2,
+    types::delaunay_graph_t graph) {
+  return DelaunayEdge(types::segment_t(graph[v1].centroid, graph[v2].centroid));
 }
 } // namespace model
 } // namespace how

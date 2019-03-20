@@ -1,7 +1,8 @@
 import QtQuick.Window 2.2
 import QtQuick 2.11
 
-import com.louissimonmcnicoll.how.bind.gamemanager 1.0
+import com.louissimonmcnicoll.how.ui.gamedatamanager 1.0
+import com.louissimonmcnicoll.how.ui.modelthreadmanager 1.0
 
 import "game/"
 import "menu/"
@@ -13,8 +14,12 @@ Item {
     width: 920
     height: 680
 
-    GameManager {
-        id: gameManager
+    GameDataManager {
+        id: gameDataManager
+    }
+
+    ModelThreadManager {
+        id: modelThreadManager
     }
 
     Loader {
@@ -25,7 +30,7 @@ Item {
             id: mainMenu
         }
         onLoaded: {
-            item.gameManager = gameManager
+            item.gameDataManager = gameDataManager
         }
     }
 
@@ -42,7 +47,7 @@ Item {
             id: gameView
         }
         onLoaded: {
-            item.gameManager = gameManager;
+            item.gameDataManager = gameDataManager
             item.instantiateGame();
         }
     }

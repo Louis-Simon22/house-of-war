@@ -1,50 +1,65 @@
 import QtQuick 2.12
 
-import com.louissimonmcnicoll.how.bind.gamemanager 1.0
-import com.louissimonmcnicoll.how.bind.worldmodel 1.0
-import com.louissimonmcnicoll.how.bind.celloutlinespainter 1.0
-import com.louissimonmcnicoll.how.bind.pathspainter 1.0
+import com.louissimonmcnicoll.how.ui.worlddata 1.0
+import com.louissimonmcnicoll.how.ui.characterdata 1.0
+import com.louissimonmcnicoll.how.ui.cellsmodel 1.0
+import com.louissimonmcnicoll.how.ui.segmentspainter 1.0
 
 Item {
     id: mapItem
 
-    property GameManager gameManager
+    property WorldData worldData
+    property CharacterData characterData
 
     Flickable {
         anchors.fill: mapItem
 
-        contentWidth: gameManager.worldBounds.width
-        contentHeight: gameManager.worldBounds.height
+        contentWidth: worldData.worldBounds.width
+        contentHeight: worldData.worldBounds.height
 
         Rectangle {
-            x: gameManager.worldBounds.x
-            y: gameManager.worldBounds.y
-            width: gameManager.worldBounds.width
-            height: gameManager.worldBounds.height
+            x: worldData.worldBounds.x
+            y: worldData.worldBounds.y
+            width: worldData.worldBounds.width
+            height: worldData.worldBounds.height
             border.color: "black";
             color: "transparent"
         }
 
-        CellOutlinesPainter {
-            x: gameManager.worldBounds.x
-            y: gameManager.worldBounds.y
-            width: gameManager.worldBounds.width
-            height: gameManager.worldBounds.height
+        SegmentsPainter {
+            x: worldData.worldBounds.x
+            y: worldData.worldBounds.y
+            width: worldData.worldBounds.width
+            height: worldData.worldBounds.height
 
-            segments: gameManager.outlineSegments
-        }    
+            segments: worldData.outlineSegments
+        }
 
-        PathsPainter {
-            x: gameManager.worldBounds.x
-            y: gameManager.worldBounds.y
-            width: gameManager.worldBounds.width
-            height: gameManager.worldBounds.height
+        SegmentsPainter {
+            x: worldData.worldBounds.x
+            y: worldData.worldBounds.y
+            width: worldData.worldBounds.width
+            height: worldData.worldBounds.height
 
-            segments: gameManager.pathSegments
+            segments: worldData.pathSegments
         }
 
         Repeater {
-            model: gameManager.worldModel
+            id: characters
+            model: characterData.charactersModel
+            delegate: Item{
+                Text {
+                    id: characterLabel
+                    x: posX - paintedWidth  / 2
+                    y: posY - paintedHeight / 2
+                    text: index
+                }
+            }
+        }
+
+        Repeater {
+            id: cells
+            model: worldData.cellsModel
             delegate: Item{
                 Text {
                     id: cellLabel

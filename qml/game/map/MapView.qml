@@ -1,11 +1,11 @@
 import QtQuick 2.11
 import QtQml.Models 2.11
-import com.louissimonmcnicoll.how.bind.gamemanager 1.0
+import com.louissimonmcnicoll.how.ui.gamedatamanager 1.0
 
 Item {
     id: mapView
 
-    property GameManager gameManager
+    property GameDataManager gameDataManager
 
     signal instantiateMap
 
@@ -21,7 +21,8 @@ Item {
             id: mapItem
         }
         onLoaded: {
-            item.gameManager = gameManager;
+            item.worldData = gameDataManager.worldData;
+            item.characterData = gameDataManager.characterData;
         }
     }
 }

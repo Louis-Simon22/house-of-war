@@ -1,7 +1,7 @@
 #define JC_VORONOI_IMPLEMENTATION
-
 #include "./jcv_voronoi_adapter.h"
 
+#include <set>
 #include <boost/geometry/algorithms/append.hpp>
 #include <boost/geometry/algorithms/correct.hpp>
 

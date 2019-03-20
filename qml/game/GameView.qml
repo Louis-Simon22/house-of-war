@@ -1,11 +1,11 @@
 import QtQuick 2.11
-import com.louissimonmcnicoll.how.bind.gamemanager 1.0
+import com.louissimonmcnicoll.how.ui.gamedatamanager 1.0
 import "map/"
 
 Item {
     id: gameView
 
-    property GameManager gameManager
+    property GameDataManager gameDataManager
 
     signal instantiateGame
 
@@ -21,8 +21,8 @@ Item {
             id: mapView
         }
         onLoaded: {
-            item.gameManager = gameManager
-            item.instantiateMap()
+            item.gameDataManager = gameDataManager;
+            item.instantiateMap();
         }
     }
 

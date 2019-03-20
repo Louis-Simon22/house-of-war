@@ -1,12 +1,13 @@
 import QtQuick 2.11
-import com.louissimonmcnicoll.how.bind.gamemanager 1.0
+
+import com.louissimonmcnicoll.how.ui.gamedatamanager 1.0
 
 Item {
     id: mainMenu
 
-    property GameManager gameManager
-
     signal startGame
+
+    property GameDataManager gameDataManager
 
     IntroMenu {
         id: introMenu
@@ -19,20 +20,19 @@ Item {
         }
     }
 
-    NewGameMenu {
-        id: newGameMenu
+    GenerateMenu {
+        id: generateMenu
         anchors.fill: parent
-        gameManager: mainMenu.gameManager
-        onNewGameCreated: {
-            mainMenu.startGame()
+        gameDataManager: mainMenu.gameDataManager
+        onNewGameGenerated: {
+            mainMenu.startGame();
         }
         onBack: mainMenu.state = "intro"
     }
 
-    LoadGameMenu {
+    LoadMenu {
         id: loadGameMenu
         anchors.fill: parent
-        gameManager: gameManager
         onBack: mainMenu.state = "intro"
     }
 
@@ -55,7 +55,7 @@ Item {
         State {
             name: "new"
             PropertyChanges {
-                target: newGameMenu
+                target: generateMenu
                 opacity: 1
             }
         },

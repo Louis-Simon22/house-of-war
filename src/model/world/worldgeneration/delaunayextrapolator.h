@@ -1,7 +1,7 @@
 #ifndef DELAUNAYEXTRAPOLATOR_H
 #define DELAUNAYEXTRAPOLATOR_H
 
-#include "../../graphtypes.h"
+#include "../../delaunaygraphtypes.h"
 #include "../../modeltypes.h"
 #include "../voronoicell.h"
 
@@ -16,8 +16,8 @@ public:
 
 private:
   static DelaunayEdge
-  delaunayEdgeFromVertices(types::delaunay_graph_vertex_t v1,
-                           types::delaunay_graph_vertex_t v2,
+  delaunayEdgeFromVertices(types::delaunay_graph_vertex_index_t v1,
+                           types::delaunay_graph_vertex_index_t v2,
                            types::delaunay_graph_t g);
 };
 } // namespace model
