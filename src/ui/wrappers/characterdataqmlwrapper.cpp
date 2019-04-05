@@ -6,10 +6,11 @@ CharacterDataQMLWrapper::CharacterDataQMLWrapper() : QObject(nullptr) {}
 
 CharacterDataQMLWrapper::CharacterDataQMLWrapper(
     model::CharacterData *characterDataPtr)
-    : characterDataPtr(characterDataPtr) {}
+    : characterDataPtr(characterDataPtr),
+      charactersModelPtr(std::make_unique<CharactersModel>(characterDataPtr)) {}
 
 CharactersModel *CharacterDataQMLWrapper::getCharactersModel() const {
-  return new CharactersModel(this->characterDataPtr);
+  return charactersModelPtr.get();
 }
 } // namespace ui
 } // namespace how

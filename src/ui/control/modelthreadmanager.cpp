@@ -4,8 +4,7 @@
 
 namespace how {
 namespace ui {
-ModelThreadManager::ModelThreadManager()
-    : movementManagerPtr(std::make_unique<model::MovementManager>()) {
+ModelThreadManager::ModelThreadManager() {
   this->modelWorkerThread.start(QThread::HighPriority);
   connect(&this->modelIterationTimer, &QTimer::timeout, this,
           &ModelThreadManager::workerThreadIteration);
@@ -18,6 +17,10 @@ ModelThreadManager::~ModelThreadManager() {
   this->modelWorkerThread.wait();
 }
 
+void ModelThreadManager::registerQObjectOnThread(QObject *qObject) {
+  qObject->moveToThread(&this->modelWorkerThread);
+}
+
 void ModelThreadManager::pauseIterations() { this->modelIterationTimer.stop(); }
 
 void ModelThreadManager::resumeIterations() {
@@ -26,10 +29,6 @@ void ModelThreadManager::resumeIterations() {
 
 void ModelThreadManager::setIterationInterval(int msec) {
   this->modelIterationTimer.setInterval(msec);
-}
-
-void ModelThreadManager::workerThreadIteration() {
-  this->movementManagerPtr->progressAll(this->modelIterationTimer.interval());
 }
 } // namespace ui
 } // namespace how

@@ -2,13 +2,14 @@
 #define CHARACTERGENERATOR_H
 
 #include "../../world/worlddata.h"
+#include "../../delaunaygraphtypes.h"
 #include "../characterdata.h"
 
 #include <vector>
 
 namespace how {
 namespace model {
-CharacterData *generateCharacters();
+CharacterData *generateCharacters(const types::delaunay_graph_t *delaunayGraphPtr);
 } // namespace model
 } // namespace how
 

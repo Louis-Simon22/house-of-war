@@ -9,15 +9,15 @@ namespace model {
 class GraphEntity : public Entity {
 public:
   GraphEntity(types::point_t position,
-              const types::delaunay_graph_vertex_index_t *currentVertexIndex);
+              const types::delaunay_graph_vertex_index_t currentVertexIndex);
 
 private:
-  const types::delaunay_graph_vertex_index_t *currentVertexIndex;
+  types::delaunay_graph_vertex_index_t currentVertexIndex;
 
 public:
-  const types::delaunay_graph_vertex_index_t *getCurrentVertexIndex() const;
+  types::delaunay_graph_vertex_index_t getCurrentVertexIndex() const;
   void setCurrentVertex(
-      const types::delaunay_graph_vertex_index_t *currentVertexIndex);
+      const types::delaunay_graph_vertex_index_t currentVertexIndex);
 };
 } // namespace model
 } // namespace how

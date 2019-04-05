@@ -19,7 +19,6 @@ class CharacterDataQMLWrapper : public QObject {
 
 public:
   CharacterDataQMLWrapper();
-
   CharacterDataQMLWrapper(model::CharacterData *characterDataPtr);
 
 private:
@@ -27,6 +26,7 @@ private:
 
 private:
   model::CharacterData *characterDataPtr;
+  std::unique_ptr<CharactersModel> charactersModelPtr;
 };
 } // namespace ui
 } // namespace how

@@ -18,7 +18,7 @@ using point_t =
                                     ::boost::geometry::cs::cartesian>;
 using segment_t = ::boost::geometry::model::segment<point_t>;
 using box_t = ::boost::geometry::model::box<point_t>;
-using polygon_t = ::boost::geometry::model::polygon<point_t>;
+using polygon_t = ::boost::geometry::model::polygon<point_t, false, true>;
 
 using quaternion_t = ::boost::math::quaternion<coordinate_fpt_t>;
 

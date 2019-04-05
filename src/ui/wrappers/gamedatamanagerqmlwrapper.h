@@ -5,6 +5,8 @@
 #include <memory>
 
 #include "../../model/gamedatamanager.h"
+#include "../control/characterscontroller.h"
+#include "../control/modelthreadmanager.h"
 #include "./characterdataqmlwrapper.h"
 #include "./worlddataqmlwrapper.h"
 
@@ -17,6 +19,8 @@ class GameDataManagerQMLWrapper : public QObject {
                  newGameGenerated)
   Q_PROPERTY(CharacterDataQMLWrapper *characterData READ
                  getCharacterDataQMLWrapper NOTIFY newGameGenerated)
+  Q_PROPERTY(CharactersController *charactersController READ
+                 getCharactersController NOTIFY newGameGenerated)
 
 public:
   GameDataManagerQMLWrapper(QObject *parent = nullptr);
@@ -31,9 +35,11 @@ public slots:
 public:
   WorldDataQMLWrapper *getWorldDataQMLWrapper() const;
   CharacterDataQMLWrapper *getCharacterDataQMLWrapper() const;
+  CharactersController *getCharactersController();
 
 private:
-  std::unique_ptr<model::GameDataManager> gameDataManagerPtr;
+  ModelThreadManager modelThreadManager;
+  model::GameDataManager gameDataManager;
 };
 } // namespace ui
 } // namespace how

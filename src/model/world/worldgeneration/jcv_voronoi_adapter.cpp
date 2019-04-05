@@ -1,11 +1,12 @@
 #define JC_VORONOI_IMPLEMENTATION
 #include "./jcv_voronoi_adapter.h"
 
-#include <set>
 #include <boost/geometry/algorithms/append.hpp>
-#include <boost/geometry/algorithms/correct.hpp>
+#include <boost/geometry/algorithms/envelope.hpp>
+#include <set>
 
-#include "../../pointcomparator.h"
+#include "../../clockwisepointcomparator.h"
+//#include "../../pointcomparator.h"
 #include "../../segmentcomparator.h"
 
 namespace how {
@@ -52,8 +53,8 @@ std::vector<types::segment_t>
 extractVoronoiEdges(std::vector<VoronoiCell> voronoiCells) {
   auto voronoiEdgesSet = std::set<types::segment_t, SegmentComparator>();
   for (const auto &voronoiCell : voronoiCells) {
-    voronoiEdgesSet.insert(voronoiCell.segments.begin(),
-                           voronoiCell.segments.end());
+    voronoiEdgesSet.insert(voronoiCell.outlineSegments.begin(),
+                           voronoiCell.outlineSegments.end());
   }
   return std::vector<types::segment_t>(voronoiEdgesSet.begin(),
                                        voronoiEdgesSet.end());
@@ -64,13 +65,14 @@ std::vector<VoronoiCell> extractVoronoiCells(jcv_diagram *voronoiDiagram) {
   const jcv_site *sites = jcv_diagram_get_sites(voronoiDiagram);
   for (int i = 0; i < voronoiDiagram->numsites; ++i) {
     const jcv_site *site = &sites[i];
+    const auto& center = convert(site->p);
     const jcv_graphedge *edge = site->edges;
-    auto cellPolygonPointsSet = std::set<types::point_t, PointComparator>();
+    auto cellOutlinePointsSet = std::set<types::point_t, ClockwisePointComparator>(center);
     auto cellEdgesSet = std::set<types::segment_t, SegmentComparator>();
     while (edge) {
       if (!jcv_point_eq(&edge->pos[0], &edge->pos[1])) {
-        cellPolygonPointsSet.insert(convert(edge->pos[0]));
-        cellPolygonPointsSet.insert(convert(edge->pos[1]));
+        cellOutlinePointsSet.insert(convert(edge->pos[0]));
+        cellOutlinePointsSet.insert(convert(edge->pos[1]));
         const auto &segment =
             types::segment_t(convert(edge->pos[0]), convert(edge->pos[1]));
         cellEdgesSet.insert(segment);
@@ -78,14 +80,17 @@ std::vector<VoronoiCell> extractVoronoiCells(jcv_diagram *voronoiDiagram) {
       edge = edge->next;
     }
     auto polygon = types::polygon_t();
-    for (const auto &point : cellPolygonPointsSet) {
-      ::boost::geometry::append(polygon.outer(), point);
+    for (const auto &point : cellOutlinePointsSet) {
+      bg::append(polygon.outer(), point);
     }
     // Add the first point again to close the polygon
-    ::boost::geometry::append(polygon.outer(), *cellPolygonPointsSet.begin());
-    // TODO ::boost::geometry::correct(polygon);
+    bg::append(polygon.outer(), *cellOutlinePointsSet.begin());
+    auto envelopeBox = types::box_t();
+    bg::envelope(polygon, envelopeBox);
     voronoiCells.push_back(
-        VoronoiCell(convert(site->p), polygon,
+        VoronoiCell(center, envelopeBox, polygon,
+                    std::vector<types::point_t>(cellOutlinePointsSet.begin(),
+                                                cellOutlinePointsSet.end()),
                     std::vector<types::segment_t>(cellEdgesSet.begin(),
                                                   cellEdgesSet.end())));
   }

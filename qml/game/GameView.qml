@@ -10,28 +10,30 @@ Item {
     signal instantiateGame
 
     onInstantiateGame: {
-        state = "map"
+        mapViewLoader.active = true;
     }
 
     Loader {
-        id: mapSceneLoader
+        id: mapViewLoader
         anchors.fill: parent
         active: false
+        visible: false
         sourceComponent: MapView {
             id: mapView
         }
         onLoaded: {
             item.gameDataManager = gameDataManager;
             item.instantiateMap();
+            gameView.state = "map";
         }
     }
 
     Text {
         id: loadingView
         anchors.centerIn: parent
+        visible: false
         color: "black"
         text: "Loading..."
-        opacity: 0
     }
 
     state: "loading"
@@ -41,14 +43,14 @@ Item {
             name: "loading"
             PropertyChanges {
                 target: loadingView
-                opacity: 1
+                visible: true
             }
         },
         State {
             name: "map"
             PropertyChanges {
-                target: mapSceneLoader
-                active: true
+                target: mapViewLoader
+                visible: true
             }
         }
     ]

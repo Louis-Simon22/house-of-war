@@ -3,24 +3,26 @@
 namespace how {
 namespace model {
 GameDataManager::GameDataManager()
-    : worldDataPtr(std::unique_ptr<WorldData>()),
+    : movementManagerPtr(std::make_unique<MovementManager>()),
+      worldDataPtr(std::unique_ptr<WorldData>()),
       characterDataPtr(std::unique_ptr<CharacterData>()) {}
 
 void GameDataManager::newGame(types::WorldGenerationConfig config) {
   this->worldDataPtr.reset(generateWorld(config));
-  this->characterDataPtr.reset(generateCharacters());
+  this->characterDataPtr.reset(
+      generateCharacters(this->worldDataPtr->getGraph()));
 }
 
-void GameDataManager::loadGame() {
-  // TODO
-}
-
-WorldData *GameDataManager::getWorldDataPtr() {
+WorldData *GameDataManager::getWorldDataPtr() const {
   return this->worldDataPtr.get();
 }
 
-CharacterData *GameDataManager::getCharacterDataPtr() {
+CharacterData *GameDataManager::getCharacterDataPtr() const {
   return this->characterDataPtr.get();
+}
+
+MovementManager *GameDataManager::getMovementManagerPtr() const {
+  return this->movementManagerPtr.get();
 }
 
 } // namespace model

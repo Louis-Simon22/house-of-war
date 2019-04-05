@@ -4,20 +4,20 @@
 #include <list>
 #include <memory>
 
-#include "../../delaunaygraphtypes.h"
-#include "entitymovement.h"
+#include "../delaunaygraphtypes.h"
+#include "entitychange.h"
 
 namespace how {
 namespace model {
-class MovementManager {
+class EntityChangeManager {
 public:
-  MovementManager();
+  EntityChangeManager();
 
-  void addMovement(EntityMovement* movement);
+  void addMovement(EntityChange* movement);
   void progressAll(float deltaTime);
 
 private:
-  std::list<std::unique_ptr<EntityMovement>> movements;
+  std::list<std::unique_ptr<EntityChange>> movements;
 };
 } // namespace model
 } // namespace how

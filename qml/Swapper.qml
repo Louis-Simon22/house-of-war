@@ -18,10 +18,6 @@ Item {
         id: gameDataManager
     }
 
-    ModelThreadManager {
-        id: modelThreadManager
-    }
-
     Loader {
         id: menuLoader
         anchors.fill: parent

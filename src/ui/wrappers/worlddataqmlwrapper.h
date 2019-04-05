@@ -12,13 +12,12 @@
 
 #include "../../model/modeltypes.h"
 #include "../../model/world/worlddata.h"
-#include "../models/cellsmodel.h"
+#include "../models/voronoicellsmodel.h"
 
 namespace how {
 namespace ui {
-namespace bg = ::boost::geometry;
 namespace {
-using WorldData = ::how::model::WorldData;
+namespace bg = ::boost::geometry;
 } // namespace
 class WorldDataQMLWrapper : public QObject {
   Q_OBJECT
@@ -27,23 +26,24 @@ class WorldDataQMLWrapper : public QObject {
       const QList<QVariant> outlineSegments READ getOutlineSegments CONSTANT)
   Q_PROPERTY(const QList<QVariant> pathSegments READ getPathSegments CONSTANT)
   Q_PROPERTY(const QRect worldBounds READ getWorldBounds CONSTANT)
-  Q_PROPERTY(CellsModel *cellsModel READ getCellsModel CONSTANT)
+  Q_PROPERTY(
+      VoronoiCellsModel *voronoiCellsModel READ getVoronoiCellsModel CONSTANT)
 
 public:
   WorldDataQMLWrapper();
-  explicit WorldDataQMLWrapper(WorldData *worldDataPtr);
+  explicit WorldDataQMLWrapper(model::WorldData *worldDataPtr);
+
+  Q_INVOKABLE bool isPointWithinVoronoiCell(int voronoiCellIndex, int pointX,
+                                            int pointY);
 
 private:
+  const QRect getWorldBounds() const;
   const QList<QVariant> getOutlineSegments() const;
   const QList<QVariant> getPathSegments() const;
-  const QRect getWorldBounds() const;
-  CellsModel *getCellsModel() const;
+  VoronoiCellsModel *getVoronoiCellsModel() const;
 
 private:
-  WorldData *worldDataPtr;
-
-  const QList<QVariant> static convert(
-      const std::vector<model::types::segment_t> *segments);
+  model::WorldData *worldDataPtr;
 };
 } // namespace ui
 } // namespace how

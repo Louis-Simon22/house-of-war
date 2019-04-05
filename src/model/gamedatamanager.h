@@ -5,6 +5,7 @@
 
 #include "./characters/characterdata.h"
 #include "./characters/charactergeneration/charactergenerator.h"
+#include "./entities/movement/movementmanager.h"
 #include "./modeltypes.h"
 #include "./world/worlddata.h"
 #include "./world/worldgeneration/worldgenerator.h"
@@ -17,11 +18,12 @@ public:
 
 public:
   void newGame(types::WorldGenerationConfig config);
-  void loadGame();
-  WorldData *getWorldDataPtr();
-  CharacterData *getCharacterDataPtr();
+  WorldData *getWorldDataPtr() const;
+  CharacterData *getCharacterDataPtr() const;
+  MovementManager *getMovementManagerPtr() const;
 
 private:
+  std::unique_ptr<MovementManager> movementManagerPtr;
   std::unique_ptr<WorldData> worldDataPtr;
   std::unique_ptr<CharacterData> characterDataPtr;
 };

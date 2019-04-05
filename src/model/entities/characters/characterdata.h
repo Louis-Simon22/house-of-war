@@ -1,6 +1,8 @@
 #ifndef CHARACTERDATA_H
 #define CHARACTERDATA_H
 
+#include <memory>
+
 #include "./character.h"
 
 namespace how {
@@ -10,6 +12,7 @@ public:
   CharacterData(std::vector<Character> characters);
 
   const std::vector<Character> *getCharacters() const;
+  Character *getCharacter(std::size_t index);
 
 private:
   std::vector<Character> characters;

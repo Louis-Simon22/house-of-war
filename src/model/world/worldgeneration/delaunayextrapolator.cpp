@@ -18,7 +18,7 @@ DelaunayExtrapolator::extrapolateDelaunayTriangulation(
 
   for (const auto &voronoiCell : voronoiCells) {
     auto vertex = ::boost::add_vertex(voronoiCell, delaunayGraph);
-    for (const auto &segment : voronoiCell.segments) {
+    for (const auto &segment : voronoiCell.outlineSegments) {
       const auto &foundIt = cellsBySegment.find(segment);
       if (foundIt == cellsBySegment.end()) {
         cellsBySegment[segment] = vertex;

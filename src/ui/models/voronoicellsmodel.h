@@ -6,22 +6,21 @@
 #include <QAbstractListModel>
 #include <QVariant>
 
-#include "../../model/modeltypes.h"
+#include "../../model/world/voronoicell.h"
 
 namespace how {
 namespace ui {
 namespace {
-using point_t = ::how::model::types::point_t;
 namespace bg = ::boost::geometry;
 } // namespace
-class CellsModel : public QAbstractListModel {
+class VoronoiCellsModel : public QAbstractListModel {
   Q_OBJECT
 
 public:
-  CellsModel();
-  explicit CellsModel(const std::vector<point_t> *const points);
+  VoronoiCellsModel();
+  explicit VoronoiCellsModel(const std::vector<model::VoronoiCell> *const voronoiCells);
 
-  enum CellRoles { PosX = Qt::UserRole + 1, PosY };
+  enum CellRoles { Centroid = Qt::UserRole + 1, Points, Envelope };
 
   QHash<int, QByteArray> roleNames() const override;
   Qt::ItemFlags flags(const QModelIndex &) const override;
@@ -31,7 +30,7 @@ public:
                 int role = Qt::DisplayRole) const override;
 
 private:
-  const std::vector<point_t> *const points;
+  const std::vector<model::VoronoiCell> *const voronoiCells;
 };
 } // namespace ui
 } // namespace how

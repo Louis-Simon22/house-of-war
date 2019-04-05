@@ -1,5 +1,6 @@
 import QtQuick 2.11
 import QtQml.Models 2.11
+
 import com.louissimonmcnicoll.how.ui.gamedatamanager 1.0
 
 Item {
@@ -10,19 +11,34 @@ Item {
     signal instantiateMap
 
     onInstantiateMap: {
-        mapLoader.active = true
+        mapItemLoader.active = true
+        mapOverlayLoader.active = true
     }
 
     Loader {
-        id: mapLoader
+        id: mapItemLoader
         anchors.fill: parent
         active: false
         sourceComponent: MapItem {
             id: mapItem
         }
         onLoaded: {
-            item.worldData = gameDataManager.worldData;
-            item.characterData = gameDataManager.characterData;
+            item.worldData = gameDataManager.worldData
+            item.characterData = gameDataManager.characterData
+            item.charactersController = gameDataManager.charactersController
+        }
+    }
+
+    Loader {
+        id: mapOverlayLoader
+        anchors.fill: parent
+        active: false
+        sourceComponent: MapOverlay {
+            id: mapOverlay
+        }
+        onLoaded: {
+            item.worldData = gameDataManager.worldData
+            item.characterData = gameDataManager.characterData
         }
     }
 }

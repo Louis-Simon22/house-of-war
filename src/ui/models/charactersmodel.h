@@ -15,6 +15,7 @@ namespace bg = ::boost::geometry;
 } // namespace
 class CharactersModel : public QAbstractListModel {
   Q_OBJECT
+
 public:
   CharactersModel();
   explicit CharactersModel(const model::CharacterData *characterDataPtr);

@@ -2,15 +2,15 @@
 #define MOVEMENTCALCULATOR_H
 
 #include "../../delaunaygraphtypes.h"
-#include "../entity.h"
 #include "../graphentity.h"
-#include "./progressivemovement.h"
+#include "./graphmovement.h"
 
 namespace how {
 namespace model {
 
-static ProgressiveMovement moveEntityTo(const types::delaunay_graph_t *graph,
-                         GraphEntity moved, GraphEntity destination);
+GraphMovement *
+calculateMovement(const types::delaunay_graph_t *graphPtr, GraphEntity *movingEntity,
+             types::delaunay_graph_vertex_index_t destionationVertexIndex);
 
 } // namespace model
 } // namespace how

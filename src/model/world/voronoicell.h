@@ -10,13 +10,17 @@ namespace model {
 struct VoronoiCell {
 public:
   VoronoiCell();
-  VoronoiCell(types::point_t centroid, types::polygon_t polygon,
-              std::vector<types::segment_t> segments);
+  VoronoiCell(types::point_t centroid, types::box_t envelope,
+              types::polygon_t polygon,
+              std::vector<types::point_t> outlinePoints,
+              std::vector<types::segment_t> outlineSegments);
 
 public:
   types::point_t centroid;
+  types::box_t envelope;
   types::polygon_t polygon;
-  std::vector<types::segment_t> segments;
+  std::vector<types::point_t> outlinePoints;
+  std::vector<types::segment_t> outlineSegments;
 };
 
 } // namespace model

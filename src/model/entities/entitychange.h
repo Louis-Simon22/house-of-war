@@ -3,10 +3,10 @@
 
 namespace how {
 namespace model {
-class EntityMovement {
+class EntityChange {
 public:
-  EntityMovement();
-  virtual ~EntityMovement() = 0;
+  EntityChange();
+  virtual ~EntityChange() = 0;
 
 public:
   virtual bool progress(float deltaTime) = 0;
