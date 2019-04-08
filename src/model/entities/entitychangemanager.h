@@ -13,11 +13,11 @@ class EntityChangeManager {
 public:
   EntityChangeManager();
 
-  void addMovement(EntityChange* movement);
+  void addEntityChange(EntityChange *entityChange);
   void progressAll(float deltaTime);
 
 private:
-  std::list<std::unique_ptr<EntityChange>> movements;
+  std::list<std::unique_ptr<EntityChange>> entityChanges;
 };
 } // namespace model
 } // namespace how

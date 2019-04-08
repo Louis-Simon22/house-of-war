@@ -3,9 +3,8 @@
 namespace how {
 namespace model {
 GameDataManager::GameDataManager()
-    : movementManagerPtr(std::make_unique<MovementManager>()),
-      worldDataPtr(std::unique_ptr<WorldData>()),
-      characterDataPtr(std::unique_ptr<CharacterData>()) {}
+    : entityChangeManangerPtr(std::make_unique<EntityChangeManager>()),
+      worldDataPtr(), characterDataPtr() {}
 
 void GameDataManager::newGame(types::WorldGenerationConfig config) {
   this->worldDataPtr.reset(generateWorld(config));
@@ -21,8 +20,8 @@ CharacterData *GameDataManager::getCharacterDataPtr() const {
   return this->characterDataPtr.get();
 }
 
-MovementManager *GameDataManager::getMovementManagerPtr() const {
-  return this->movementManagerPtr.get();
+EntityChangeManager *GameDataManager::getEntityChangeManangerPtr() const {
+  return this->entityChangeManangerPtr.get();
 }
 
 } // namespace model

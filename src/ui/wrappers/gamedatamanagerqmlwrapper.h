@@ -38,8 +38,11 @@ public:
   CharactersController *getCharactersController();
 
 private:
-  ModelThreadManager modelThreadManager;
   model::GameDataManager gameDataManager;
+  ModelThreadManager modelThreadManager;
+  std::unique_ptr<WorldDataQMLWrapper> worldDataQMLWrapperPtr;
+  std::unique_ptr<CharacterDataQMLWrapper> characterDataQMLWrapperPtr;
+  std::unique_ptr<CharactersController> charactersControllerPtr;
 };
 } // namespace ui
 } // namespace how

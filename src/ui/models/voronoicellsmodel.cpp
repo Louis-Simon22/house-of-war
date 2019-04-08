@@ -7,10 +7,15 @@
 namespace how {
 namespace ui {
 
-VoronoiCellsModel::VoronoiCellsModel() : voronoiCells(nullptr) {}
+VoronoiCellsModel::VoronoiCellsModel() : EntityModel(), voronoiCellsPtr(nullptr) {}
 VoronoiCellsModel::VoronoiCellsModel(
-    const std::vector<model::VoronoiCell> *const voronoiCells)
-    : QAbstractListModel(), voronoiCells(voronoiCells) {}
+    const std::vector<model::VoronoiCell> *const voronoiCellsPtr)
+    : EntityModel(), voronoiCellsPtr(voronoiCellsPtr) {
+    for (std::size_t i = 0; i < voronoiCellsPtr->size(); i++) {
+      this->uuidToIndexMap[voronoiCellsPtr->operator[](i).uuid] =
+          this->index(static_cast<int>(i));
+    }
+}
 
 QHash<int, QByteArray> VoronoiCellsModel::roleNames() const {
   QHash<int, QByteArray> roles;
@@ -29,12 +34,12 @@ QVariant VoronoiCellsModel::headerData(int, Qt::Orientation, int) const {
 }
 
 int VoronoiCellsModel::rowCount(const QModelIndex &) const {
-  return static_cast<int>(this->voronoiCells->size());
+  return static_cast<int>(this->voronoiCellsPtr->size());
 }
 
 QVariant VoronoiCellsModel::data(const QModelIndex &index, int role) const {
   const auto &voronoiCell =
-      this->voronoiCells->operator[](static_cast<std::size_t>(index.row()));
+      this->voronoiCellsPtr->operator[](static_cast<std::size_t>(index.row()));
   switch (role) {
   case Centroid:
     return convert(voronoiCell.centroid);

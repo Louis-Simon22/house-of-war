@@ -5,7 +5,7 @@
 #include <QTimer>
 #include <memory>
 
-#include "../../model/entities/movement/movementmanager.h"
+#include "../../model/entities/entitychangemanager.h"
 #include "../wrappers/worlddataqmlwrapper.h"
 
 namespace how {

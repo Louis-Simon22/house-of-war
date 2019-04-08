@@ -6,6 +6,7 @@
 #include <QAbstractListModel>
 #include <QVariant>
 
+#include "./entitymodel.h"
 #include "../../model/world/voronoicell.h"
 
 namespace how {
@@ -13,12 +14,12 @@ namespace ui {
 namespace {
 namespace bg = ::boost::geometry;
 } // namespace
-class VoronoiCellsModel : public QAbstractListModel {
+class VoronoiCellsModel : public EntityModel {
   Q_OBJECT
 
 public:
   VoronoiCellsModel();
-  explicit VoronoiCellsModel(const std::vector<model::VoronoiCell> *const voronoiCells);
+  explicit VoronoiCellsModel(const std::vector<model::VoronoiCell> *const voronoiCellsPtr);
 
   enum CellRoles { Centroid = Qt::UserRole + 1, Points, Envelope };
 
@@ -30,7 +31,7 @@ public:
                 int role = Qt::DisplayRole) const override;
 
 private:
-  const std::vector<model::VoronoiCell> *const voronoiCells;
+  const std::vector<model::VoronoiCell> *const voronoiCellsPtr;
 };
 } // namespace ui
 } // namespace how

@@ -12,7 +12,8 @@ WorldData::WorldData(types::box_t bounds, std::vector<types::point_t> points,
     : bounds(bounds), cellCentroids(points),
       uniqueVoronoiSegments(uniqueVoronoiSegments),
       uniqueDelaunaySegments(uniqueDelaunaySegments),
-      voronoiCells(voronoiCells), delaunayEdges(delaunayEdges), graph(graph) {}
+      voronoiCells(std::move(voronoiCells)), delaunayEdges(delaunayEdges),
+      graph(graph) {}
 
 const std::vector<types::point_t> *WorldData::getCellCentroids() const {
   return &this->cellCentroids;

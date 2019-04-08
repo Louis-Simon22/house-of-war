@@ -2,18 +2,17 @@
 
 namespace how {
 namespace model {
-EntityChangeManager::EntityChangeManager()
-    : movements(std::list<std::unique_ptr<EntityChange>>()) {}
+EntityChangeManager::EntityChangeManager() : entityChanges() {}
 
-void EntityChangeManager::addMovement(EntityChange *movement) {
-  this->movements.emplace_back(movement);
+void EntityChangeManager::addEntityChange(EntityChange *entityChange) {
+  this->entityChanges.emplace_back(entityChange);
 }
 
 void EntityChangeManager::progressAll(float deltaTime) {
-  for (auto it = this->movements.begin(); it != this->movements.end();) {
-    const auto &movement = *it;
-    if (movement->progress(deltaTime)) {
-      it = this->movements.erase(it);
+  for (auto it = this->entityChanges.begin();
+       it != this->entityChanges.end();) {
+    if ((*it)->progress(deltaTime)) {
+      it = this->entityChanges.erase(it);
     } else {
       it++;
     }

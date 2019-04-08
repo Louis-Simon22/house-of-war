@@ -18,22 +18,22 @@ class CharactersController : public QObject {
 
 public:
   CharactersController();
-  CharactersController(model::EntityChangeManager *movementManagerPtr,
+  CharactersController(model::EntityChangeManager *entityChangeManagerPtr,
                        model::WorldData *worldDataPtr,
                        model::CharacterData *characterDataPtr,
-                       CharactersModel* charactersModelPtr);
+                       CharactersModel *charactersModelPtr);
 
 public:
   Q_INVOKABLE void addMoveOrder(int characterIndex, int voronoiCellIndex);
 
 public slots:
-  void movementIteration();
+  void iterateAllChanges();
 
 private:
-  model::EntityChangeManager *movementManagerPtr;
+  model::EntityChangeManager *entityChangeManagerPtr;
   model::WorldData *worldDataPtr;
   model::CharacterData *characterDataPtr;
-  CharactersModel* charactersModelPtr;
+  CharactersModel *charactersModelPtr;
 };
 } // namespace ui
 } // namespace how

@@ -4,10 +4,7 @@
 #include <QObject>
 #include <memory>
 
-#include "../../model/characters/character.h"
-#include "../../model/characters/characterdata.h"
-#include "../../model/characters/charactergeneration/charactergenerator.h"
-#include "../../model/entities/movement/movementmanager.h"
+#include "../../model/entities/characters/characterdata.h"
 #include "../models/charactersmodel.h"
 
 namespace how {
@@ -21,7 +18,7 @@ public:
   CharacterDataQMLWrapper();
   CharacterDataQMLWrapper(model::CharacterData *characterDataPtr);
 
-private:
+public:
   CharactersModel *getCharactersModel() const;
 
 private:

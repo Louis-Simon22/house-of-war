@@ -3,9 +3,9 @@
 
 #include <memory>
 
-#include "./characters/characterdata.h"
-#include "./characters/charactergeneration/charactergenerator.h"
-#include "./entities/movement/movementmanager.h"
+#include "./entities/characters/characterdata.h"
+#include "./entities/characters/charactergeneration/charactergenerator.h"
+#include "./entities/entitychangemanager.h"
 #include "./modeltypes.h"
 #include "./world/worlddata.h"
 #include "./world/worldgeneration/worldgenerator.h"
@@ -20,10 +20,10 @@ public:
   void newGame(types::WorldGenerationConfig config);
   WorldData *getWorldDataPtr() const;
   CharacterData *getCharacterDataPtr() const;
-  MovementManager *getMovementManagerPtr() const;
+  EntityChangeManager *getEntityChangeManangerPtr() const;
 
 private:
-  std::unique_ptr<MovementManager> movementManagerPtr;
+  std::unique_ptr<EntityChangeManager> entityChangeManangerPtr;
   std::unique_ptr<WorldData> worldDataPtr;
   std::unique_ptr<CharacterData> characterDataPtr;
 };

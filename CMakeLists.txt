@@ -40,6 +40,7 @@ set(HEADER_FILES
     src/ui/control/modelthreadmanager.h
     src/ui/conversion/converter.h
     src/ui/models/charactersmodel.h
+    src/ui/models/entitymodel.h
     src/ui/models/voronoicellsmodel.h
     src/ui/painters/segmentspainter.h
     src/ui/wrappers/characterdataqmlwrapper.h
@@ -72,6 +73,7 @@ set(CPP_FILES
     src/ui/control/modelthreadmanager.cpp
     src/ui/conversion/converter.cpp
     src/ui/models/charactersmodel.cpp
+    src/ui/models/entitymodel.cpp
     src/ui/models/voronoicellsmodel.cpp
     src/ui/painters/segmentspainter.cpp
     src/ui/wrappers/characterdataqmlwrapper.cpp

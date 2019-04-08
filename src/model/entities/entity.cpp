@@ -2,8 +2,7 @@
 
 namespace how {
 namespace model {
-Entity::Entity() {}
-Entity::Entity(types::point_t position) : position(position) {}
+Entity::Entity() : uuid(uuids::random_generator()())  {}
 
 Entity::~Entity() {}
 } // namespace model

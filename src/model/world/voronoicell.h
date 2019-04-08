@@ -1,13 +1,13 @@
 #ifndef VORONOICELL_H
 #define VORONOICELL_H
 
+#include "../entities/entity.h"
 #include "../modeltypes.h"
-#include <vector>
 
 namespace how {
 namespace model {
 
-struct VoronoiCell {
+struct VoronoiCell : public Entity {
 public:
   VoronoiCell();
   VoronoiCell(types::point_t centroid, types::box_t envelope,

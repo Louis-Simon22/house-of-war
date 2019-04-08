@@ -5,7 +5,9 @@
 namespace how {
 namespace ui {
 GameDataManagerQMLWrapper::GameDataManagerQMLWrapper(QObject *parent)
-    : QObject(parent), gameDataManager(model::GameDataManager()) {}
+    : QObject(parent), gameDataManager(model::GameDataManager()),
+      modelThreadManager(), worldDataQMLWrapperPtr(),
+      characterDataQMLWrapperPtr(), charactersControllerPtr() {}
 
 void GameDataManagerQMLWrapper::newGame(int width, int height) {
   this->modelThreadManager.pauseIterations();
@@ -16,31 +18,37 @@ void GameDataManagerQMLWrapper::newGame(int width, int height) {
   config.maxCornerX = width;
   config.maxCornerY = height;
   this->gameDataManager.newGame(config);
+  this->worldDataQMLWrapperPtr.reset(
+      new WorldDataQMLWrapper(this->gameDataManager.getWorldDataPtr()));
+  this->characterDataQMLWrapperPtr.reset(
+      new CharacterDataQMLWrapper(this->gameDataManager.getCharacterDataPtr()));
+  this->charactersControllerPtr.reset(new CharactersController(
+      this->gameDataManager.getEntityChangeManangerPtr(),
+      this->gameDataManager.getWorldDataPtr(),
+      this->gameDataManager.getCharacterDataPtr(),
+      this->characterDataQMLWrapperPtr->getCharactersModel()));
+  this->modelThreadManager.registerQObjectOnThread(
+      this->charactersControllerPtr.get());
+  connect(&this->modelThreadManager, &ModelThreadManager::workerThreadIteration,
+          this->charactersControllerPtr.get(),
+          &CharactersController::iterateAllChanges);
+  this->modelThreadManager.resumeIterations();
   this->newGameGenerated();
 }
 
 void GameDataManagerQMLWrapper::loadGame() {}
 
 WorldDataQMLWrapper *GameDataManagerQMLWrapper::getWorldDataQMLWrapper() const {
-  return new WorldDataQMLWrapper(this->gameDataManager.getWorldDataPtr());
+  return this->worldDataQMLWrapperPtr.get();
 }
 
 CharacterDataQMLWrapper *
 GameDataManagerQMLWrapper::getCharacterDataQMLWrapper() const {
-  return new CharacterDataQMLWrapper(
-      this->gameDataManager.getCharacterDataPtr());
+  return this->characterDataQMLWrapperPtr.get();
 }
 
 CharactersController *GameDataManagerQMLWrapper::getCharactersController() {
-  auto *charactersController =
-      new CharactersController(this->gameDataManager.getMovementManagerPtr(),
-                               this->gameDataManager.getWorldDataPtr(),
-                               this->gameDataManager.getCharacterDataPtr());
-  this->modelThreadManager.registerQObjectOnThread(charactersController);
-  connect(&this->modelThreadManager, &ModelThreadManager::workerThreadIteration,
-          charactersController, &CharactersController::movementIteration);
-  this->modelThreadManager.resumeIterations();
-  return charactersController;
+  return this->charactersControllerPtr.get();
 }
 } // namespace ui
 } // namespace how

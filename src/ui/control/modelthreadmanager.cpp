@@ -4,8 +4,9 @@
 
 namespace how {
 namespace ui {
-ModelThreadManager::ModelThreadManager() {
+ModelThreadManager::ModelThreadManager() : QObject(nullptr) {
   this->modelWorkerThread.start(QThread::HighPriority);
+  this->modelIterationTimer.setInterval(1000);
   connect(&this->modelIterationTimer, &QTimer::timeout, this,
           &ModelThreadManager::workerThreadIteration);
   std::cout << "Model operations thread " << this->modelWorkerThread.thread()

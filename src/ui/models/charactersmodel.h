@@ -6,14 +6,15 @@
 #include <QAbstractListModel>
 #include <QVariant>
 
-#include "../../model/characters/characterdata.h"
+#include "./entitymodel.h"
+#include "../../model/entities/characters/characterdata.h"
 
 namespace how {
 namespace ui {
 namespace {
 namespace bg = ::boost::geometry;
 } // namespace
-class CharactersModel : public QAbstractListModel {
+class CharactersModel : public EntityModel {
   Q_OBJECT
 
 public:
@@ -30,7 +31,7 @@ public:
                 int role = Qt::DisplayRole) const override;
 
 private:
-  const model::CharacterData *characterDataPtr;
+  const model::CharacterData *const characterDataPtr;
 };
 } // namespace ui
 } // namespace how

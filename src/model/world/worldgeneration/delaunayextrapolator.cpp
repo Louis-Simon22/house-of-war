@@ -26,9 +26,11 @@ DelaunayExtrapolator::extrapolateDelaunayTriangulation(
         const auto &found = *foundIt;
         const auto &foundVertix = found.second;
         auto delaunayEdge1 =
-            delaunayEdgeFromVertices(vertex, foundVertix, delaunayGraph);
+            DelaunayEdge(types::segment_t(delaunayGraph[vertex].centroid,
+                                          delaunayGraph[foundVertix].centroid));
         auto delaunayEdge2 =
-            delaunayEdgeFromVertices(foundVertix, vertex, delaunayGraph);
+            DelaunayEdge(types::segment_t(delaunayGraph[foundVertix].centroid,
+                                          delaunayGraph[vertex].centroid));
         ::boost::add_edge(vertex, foundVertix, delaunayEdge1, delaunayGraph);
         ::boost::add_edge(foundVertix, vertex, delaunayEdge2, delaunayGraph);
         delaunayEdges.push_back(delaunayEdge1);
@@ -39,16 +41,10 @@ DelaunayExtrapolator::extrapolateDelaunayTriangulation(
   }
 
   return std::tuple<types::delaunay_graph_t, std::vector<DelaunayEdge>,
-               std::vector<types::segment_t>>(
+                    std::vector<types::segment_t>>(
       delaunayGraph, delaunayEdges,
       std::vector<types::segment_t>(pathSegmentsSet.begin(),
                                     pathSegmentsSet.end()));
-}
-
-DelaunayEdge DelaunayExtrapolator::delaunayEdgeFromVertices(
-    types::delaunay_graph_vertex_index_t v1, types::delaunay_graph_vertex_index_t v2,
-    types::delaunay_graph_t graph) {
-  return DelaunayEdge(types::segment_t(graph[v1].centroid, graph[v2].centroid));
 }
 } // namespace model
 } // namespace how

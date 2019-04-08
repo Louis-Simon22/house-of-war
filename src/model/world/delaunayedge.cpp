@@ -8,6 +8,6 @@ namespace model {
 DelaunayEdge::DelaunayEdge() {}
 
 DelaunayEdge::DelaunayEdge(types::segment_t segment)
-    : segment(segment), distance(bg::length(segment)) {}
+    : segment(segment), distance(static_cast<float>(bg::length(segment))) {}
 } // namespace model
 } // namespace how

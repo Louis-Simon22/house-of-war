@@ -16,28 +16,35 @@ WorldData *generateWorld(const types::WorldGenerationConfig &config) {
   const auto &maxCorner = types::point_t(config.maxCornerX, config.maxCornerY);
   const auto &boundingBox = types::box_t(minCorner, maxCorner);
 
-  std::cout << "Generating points" << std::endl;
   auto generator =
       PoissonDiskSampling<types::point_t>(minCorner, maxCorner, 30, 40);
   const auto &points = generator.generateSequence();
+  std::cout << "Generated points "
+            << std::chrono::duration_cast<std::chrono::milliseconds>(
+                   std::chrono::system_clock::now() - start)
+                   .count()
+            << std::endl;
 
-  std::cout << "Generating voronoi" << std::endl;
   const auto &voronoiPair = buildVoronoi(boundingBox, points);
   const auto &uniqueVoronoiSegments = voronoiPair.first;
   const auto &voronoiCells = voronoiPair.second;
+  std::cout << "Generated voronoi "
+            << std::chrono::duration_cast<std::chrono::milliseconds>(
+                   std::chrono::system_clock::now() - start)
+                   .count()
+            << std::endl;
 
-  std::cout << "Generating delaunay" << std::endl;
   const auto &delaunayTuple =
       DelaunayExtrapolator::extrapolateDelaunayTriangulation(voronoiCells);
   const auto &combinedGraph = std::get<0>(delaunayTuple);
   const auto &delaunayEdges = std::get<1>(delaunayTuple);
   const auto &uniqueDelaunaySegments = std::get<2>(delaunayTuple);
-
-  std::cout << "World generated in "
+  std::cout << "Generated delaunay "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - start)
                    .count()
             << std::endl;
+
   return new WorldData(boundingBox, points, uniqueVoronoiSegments,
                        uniqueDelaunaySegments, voronoiCells, delaunayEdges,
                        combinedGraph);

@@ -3,7 +3,7 @@
 namespace how {
 namespace model {
 
-EntityChange::EntityChange() {}
+EntityChange::EntityChange() : changeSignal() {}
 
 EntityChange::~EntityChange() {}
 

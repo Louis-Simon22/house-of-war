@@ -1,18 +1,21 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "../delaunaygraphtypes.h"
-#include "../modeltypes.h"
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 
 namespace how {
 namespace model {
+namespace {
+namespace uuids = ::boost::uuids;
+}
 class Entity {
 public:
   Entity();
-  Entity(types::point_t position);
   ~Entity();
 
-  types::point_t position;
+public:
+  uuids::uuid uuid;
 };
 } // namespace model
 } // namespace how

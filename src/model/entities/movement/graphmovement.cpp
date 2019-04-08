@@ -7,20 +7,24 @@ GraphMovement::GraphMovement(
     GraphEntity *const entity,
     std::vector<types::delaunay_graph_vertex_index_t> destinations)
     : delaunayGraph(delaunayGraph), entity(entity), destinations(destinations),
-      currentDestination(0) {}
+      currentDestinationIndex(0) {}
 
 GraphMovement::~GraphMovement() {}
 
 bool GraphMovement::progress(float deltaTime) {
-  const auto &destinationVoronoiCell = this->delaunayGraph->operator[](
-      this->destinations[this->currentDestination]);
+  const auto &currentDestionation =
+      this->destinations[this->currentDestinationIndex];
+  const auto &destinationVoronoiCell =
+      this->delaunayGraph->operator[](currentDestionation);
   this->entity->position = destinationVoronoiCell.centroid;
-  this->currentDestination++;
-  // TODO how to uniquely identify characters through deletion
-//  changeSignal(this->);
-  return this->currentDestination >= this->destinations.size();
+  this->entity->setCurrentVertex(currentDestionation);
+  this->currentDestinationIndex++;
+  changeSignal(this->entity->uuid);
+  return this->currentDestinationIndex >= this->destinations.size();
 }
 
-void GraphMovement::destinationReached() {}
+void GraphMovement::destinationReached() {
+  // TODO change current cell when destination reached
+}
 } // namespace model
 } // namespace how

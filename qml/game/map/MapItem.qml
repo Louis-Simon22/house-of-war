@@ -85,7 +85,7 @@ Flickable {
             id: voronoiCells
             model: worldData.voronoiCellsModel
 
-            // Global position of the voronoi cell click event so it can be propagated to children
+            // Position of the voronoi cell click event so it can be propagated to children
             property var propagatedMouseX: null
             property var propagatedMouseY: null
             // Selected voronoi cell
@@ -99,7 +99,7 @@ Flickable {
                 width: rollEnvelope.width
                 height: rollEnvelope.height
 
-                border.color: voronoiCells.selectedVoronoiCellIndex === index ? "red" : "black"
+                border.color: "transparent" //voronoiCells.selectedVoronoiCellIndex === index ? "red" : "black"
                 color: "transparent"
 
                 MouseArea {
@@ -120,7 +120,9 @@ Flickable {
                             voronoiCells.selectedVoronoiCellIndex = index
                             voronoiCells.propagatedMouseX = null
                             voronoiCells.propagatedMouseY = null
-                            charactersController.addMoveOrder(characters.selectedCharacterIndex, voronoiCells.selectedVoronoiCellIndex)
+                            charactersController.addMoveOrder(
+                                        characters.selectedCharacterIndex,
+                                        voronoiCells.selectedVoronoiCellIndex)
                         } else {
                             mouse.accepted = false
                         }

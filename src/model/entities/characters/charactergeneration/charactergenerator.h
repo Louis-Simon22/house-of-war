@@ -1,8 +1,8 @@
 #ifndef CHARACTERGENERATOR_H
 #define CHARACTERGENERATOR_H
 
-#include "../../world/worlddata.h"
-#include "../../delaunaygraphtypes.h"
+#include "../../../world/worlddata.h"
+#include "../../../delaunaygraphtypes.h"
 #include "../characterdata.h"
 
 #include <vector>

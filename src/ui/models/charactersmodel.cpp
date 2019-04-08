@@ -3,10 +3,16 @@
 namespace how {
 namespace ui {
 
-CharactersModel::CharactersModel() {}
+CharactersModel::CharactersModel() : EntityModel(), characterDataPtr(nullptr) {}
 
 CharactersModel::CharactersModel(const model::CharacterData *characterDataPtr)
-    : QAbstractListModel(), characterDataPtr(characterDataPtr) {}
+    : EntityModel(), characterDataPtr(characterDataPtr) {
+  const auto *characters = characterDataPtr->getCharacters();
+  for (std::size_t i = 0; i < characters->size(); i++) {
+    this->uuidToIndexMap[characters->operator[](i).uuid] =
+        this->index(static_cast<int>(i));
+  }
+}
 
 QHash<int, QByteArray> CharactersModel::roleNames() const {
   QHash<int, QByteArray> roles;
@@ -39,5 +45,6 @@ QVariant CharactersModel::data(const QModelIndex &index, int role) const {
     return 0;
   }
 }
+
 } // namespace ui
 } // namespace how

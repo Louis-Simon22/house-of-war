@@ -6,6 +6,11 @@
 
 #include <iostream>
 
+#define BOOST_UUID_NO_SIMD
+#define BOOST_UUID_NO_TYPE_TRAITS
+// Remove this define when boost is updated to 1.70
+#define BOOST_ALLOW_DEPRECATED_HEADERS
+
 #include "../src/ui/control/modelthreadmanager.h"
 #include "../src/ui/models/charactersmodel.h"
 #include "../src/ui/models/voronoicellsmodel.h"

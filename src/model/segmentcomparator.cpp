@@ -13,8 +13,6 @@ bool SegmentComparator::operator()(const types::segment_t &s1,
   types::point_t centroid2;
   bg::centroid(s1, centroid1);
   bg::centroid(s2, centroid2);
-  // TODO this method does not work if both segments have the same center
-  // Fix : If the centroids are equal compare each of the segments' points
   return pointComparator(centroid1, centroid2);
 }
 } // namespace model
