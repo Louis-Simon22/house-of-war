@@ -7,6 +7,7 @@ import com.louissimonmcnicoll.how.ui.characterdata 1.0
 import com.louissimonmcnicoll.how.ui.characterscontroller 1.0
 import com.louissimonmcnicoll.how.ui.voronoicellsmodel 1.0
 import com.louissimonmcnicoll.how.ui.segmentspainter 1.0
+import com.louissimonmcnicoll.how.ui.cellspainter 1.0
 
 Flickable {
     id: mapItemFlickable
@@ -17,6 +18,11 @@ Flickable {
     property WorldData worldData
     property CharacterData characterData
     property CharactersController charactersController
+
+    Item {
+        id: voronoiSegmentsPainter
+        visible: true
+    }
 
     Item {
         id: mapItem
@@ -33,18 +39,13 @@ Flickable {
         }
 
         SegmentsPainter {
-            id: outlineSegmentsPainter
             anchors.fill: mapItem
+            showVoronoiSegments: true
+            showDelaunaySegments: false
 
-            segments: worldData.outlineSegments
+            worldData: mapItemFlickable.worldData
         }
 
-        //        SegmentsPainter {
-        //            id: pathSegmentsPainter
-        //            anchors.fill: mapItem
-
-        //            segments: worldData.pathSegments
-        //        }
         Repeater {
             id: characters
             model: characterData.charactersModel
@@ -127,6 +128,13 @@ Flickable {
                             mouse.accepted = false
                         }
                     }
+                }
+
+                CellsPainter {
+                    anchors.fill: cellEnvelope
+
+                    worldData: mapItemFlickable.worldData
+                    cellIndex: index
                 }
 
                 Text {

@@ -16,9 +16,9 @@ WorldData *generateWorld(const types::WorldGenerationConfig &config) {
   const auto &maxCorner = types::point_t(config.maxCornerX, config.maxCornerY);
   const auto &boundingBox = types::box_t(minCorner, maxCorner);
 
-  auto generator =
-      PoissonDiskSampling<types::point_t>(minCorner, maxCorner, 30, 40);
-  const auto &points = generator.generateSequence();
+  const auto &points =
+      PoissonDiskSampling<types::point_t>(minCorner, maxCorner, 30, 40)
+          .generateSequence();
   std::cout << "Generated points "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - start)
@@ -34,9 +34,8 @@ WorldData *generateWorld(const types::WorldGenerationConfig &config) {
                    .count()
             << std::endl;
 
-  const auto &delaunayTuple =
-      DelaunayExtrapolator::extrapolateDelaunayTriangulation(voronoiCells);
-  const auto &combinedGraph = std::get<0>(delaunayTuple);
+  const auto &delaunayTuple = extrapolateDelaunayTriangulation(voronoiCells);
+  const auto &delaunayGraph = std::get<0>(delaunayTuple);
   const auto &delaunayEdges = std::get<1>(delaunayTuple);
   const auto &uniqueDelaunaySegments = std::get<2>(delaunayTuple);
   std::cout << "Generated delaunay "
@@ -45,9 +44,20 @@ WorldData *generateWorld(const types::WorldGenerationConfig &config) {
                    .count()
             << std::endl;
 
+  auto generator = ::boost::random::mt19937();
+  for (auto voronoiCell : voronoiCells) {
+    voronoiCell.cellData.elevation =
+        floating01<::boost::random::mt19937, float>(generator);
+  }
+  std::cout << "Generated cell data "
+            << std::chrono::duration_cast<std::chrono::milliseconds>(
+                   std::chrono::system_clock::now() - start)
+                   .count()
+            << std::endl;
+
   return new WorldData(boundingBox, points, uniqueVoronoiSegments,
                        uniqueDelaunaySegments, voronoiCells, delaunayEdges,
-                       combinedGraph);
+                       delaunayGraph);
 }
 } // namespace model
 } // namespace how

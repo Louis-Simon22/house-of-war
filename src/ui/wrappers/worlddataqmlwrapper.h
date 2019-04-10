@@ -3,12 +3,8 @@
 
 #include <memory>
 
-#include <QList>
 #include <QObject>
-#include <QPoint>
-#include <QQmlEngine>
 #include <QRect>
-#include <QVariant>
 
 #include "../../model/modeltypes.h"
 #include "../../model/world/worlddata.h"
@@ -22,9 +18,6 @@ namespace bg = ::boost::geometry;
 class WorldDataQMLWrapper : public QObject {
   Q_OBJECT
 
-  Q_PROPERTY(
-      const QList<QVariant> outlineSegments READ getOutlineSegments CONSTANT)
-  Q_PROPERTY(const QList<QVariant> pathSegments READ getPathSegments CONSTANT)
   Q_PROPERTY(const QRect worldBounds READ getWorldBounds CONSTANT)
   Q_PROPERTY(
       VoronoiCellsModel *voronoiCellsModel READ getVoronoiCellsModel CONSTANT)
@@ -38,9 +31,11 @@ public:
 
 private:
   const QRect getWorldBounds() const;
-  const QList<QVariant> getOutlineSegments() const;
-  const QList<QVariant> getPathSegments() const;
   VoronoiCellsModel *getVoronoiCellsModel() const;
+
+public:
+  const model::WorldData *getWorldDataPtr() const;
+  const model::VoronoiCell *getVoronoiCellAt(int index) const;
 
 private:
   model::WorldData *worldDataPtr;

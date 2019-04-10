@@ -16,11 +16,11 @@ class GameDataManagerQMLWrapper : public QObject {
   Q_OBJECT
 
   Q_PROPERTY(WorldDataQMLWrapper *worldData READ getWorldDataQMLWrapper NOTIFY
-                 newGameGenerated)
+                 newGameGenerated FINAL)
   Q_PROPERTY(CharacterDataQMLWrapper *characterData READ
-                 getCharacterDataQMLWrapper NOTIFY newGameGenerated)
+                 getCharacterDataQMLWrapper NOTIFY newGameGenerated FINAL)
   Q_PROPERTY(CharactersController *charactersController READ
-                 getCharactersController NOTIFY newGameGenerated)
+                 getCharactersController NOTIFY newGameGenerated FINAL)
 
 public:
   GameDataManagerQMLWrapper(QObject *parent = nullptr);

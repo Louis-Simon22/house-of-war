@@ -9,7 +9,7 @@ namespace model {
 namespace {
 namespace uuids = ::boost::uuids;
 }
-class Entity {
+struct Entity {
 public:
   Entity();
   ~Entity();

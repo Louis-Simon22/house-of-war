@@ -3,6 +3,7 @@
 
 #include "../entities/entity.h"
 #include "../modeltypes.h"
+#include "./celldata.h"
 
 namespace how {
 namespace model {
@@ -21,6 +22,7 @@ public:
   types::polygon_t polygon;
   std::vector<types::point_t> outlinePoints;
   std::vector<types::segment_t> outlineSegments;
+  CellData cellData;
 };
 
 } // namespace model

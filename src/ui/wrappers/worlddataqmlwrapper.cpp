@@ -29,12 +29,14 @@ const QRect WorldDataQMLWrapper::getWorldBounds() const {
   return convert(bounds);
 }
 
-const QList<QVariant> WorldDataQMLWrapper::getOutlineSegments() const {
-  return convert(this->worldDataPtr->getUniqueVoronoiSegments());
+const model::WorldData *WorldDataQMLWrapper::getWorldDataPtr() const {
+  return this->worldDataPtr;
 }
 
-const QList<QVariant> WorldDataQMLWrapper::getPathSegments() const {
-  return convert(this->worldDataPtr->getUniqueDelaunaySegments());
+const model::VoronoiCell *
+WorldDataQMLWrapper::getVoronoiCellAt(int index) const {
+  return &this->worldDataPtr->getVoronoiCells()->operator[](
+      static_cast<std::size_t>(index));
 }
 
 VoronoiCellsModel *WorldDataQMLWrapper::getVoronoiCellsModel() const {

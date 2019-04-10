@@ -15,6 +15,7 @@
 #include "../src/ui/models/charactersmodel.h"
 #include "../src/ui/models/voronoicellsmodel.h"
 #include "../src/ui/painters/segmentspainter.h"
+#include "../src/ui/painters/cellspainter.h"
 #include "../src/ui/wrappers/characterdataqmlwrapper.h"
 #include "../src/ui/wrappers/gamedatamanagerqmlwrapper.h"
 #include "../src/ui/wrappers/worlddataqmlwrapper.h"
@@ -32,6 +33,8 @@ int main(int argc, char *argv[]) {
   // Painters
   qmlRegisterType<::how::ui::SegmentsPainter>(
       "com.louissimonmcnicoll.how.ui.segmentspainter", 1, 0, "SegmentsPainter");
+  qmlRegisterType<::how::ui::CellsPainter>(
+              "com.louissimonmcnicoll.how.ui.cellspainter", 1, 0, "CellsPainter");
   // Models
   qmlRegisterUncreatableType<::how::ui::VoronoiCellsModel>(
       "com.louissimonmcnicoll.how.ui.voronoicellsmodel", 1, 0,

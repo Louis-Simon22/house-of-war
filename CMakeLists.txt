@@ -30,11 +30,13 @@ set(HEADER_FILES
     src/model/random/utilsrandom.h
     src/model/random/poissondisksampling.h
     src/model/segmentcomparator.h
+    src/model/world/celldata.h
     src/model/world/delaunayedge.h
     src/model/world/voronoicell.h
     src/model/world/worlddata.h
-    src/model/world/worldgeneration/jcv_voronoi_adapter.h
     src/model/world/worldgeneration/delaunayextrapolator.h
+    src/model/world/worldgeneration/heightgenerator.h
+    src/model/world/worldgeneration/jcv_voronoi_adapter.h
     src/model/world/worldgeneration/worldgenerator.h
     src/ui/control/characterscontroller.h
     src/ui/control/modelthreadmanager.h
@@ -42,6 +44,8 @@ set(HEADER_FILES
     src/ui/models/charactersmodel.h
     src/ui/models/entitymodel.h
     src/ui/models/voronoicellsmodel.h
+    src/ui/painters/cellspainter.h
+    src/ui/painters/paintingsutils.h
     src/ui/painters/segmentspainter.h
     src/ui/wrappers/characterdataqmlwrapper.h
     src/ui/wrappers/gamedatamanagerqmlwrapper.h
@@ -63,11 +67,13 @@ set(CPP_FILES
     src/model/gamedatamanager.cpp
     src/model/pointcomparator.cpp
     src/model/segmentcomparator.cpp
+    src/model/world/celldata.cpp
     src/model/world/delaunayedge.cpp
     src/model/world/voronoicell.cpp
     src/model/world/worlddata.cpp
-    src/model/world/worldgeneration/jcv_voronoi_adapter.cpp
     src/model/world/worldgeneration/delaunayextrapolator.cpp
+    src/model/world/worldgeneration/heightgenerator.cpp
+    src/model/world/worldgeneration/jcv_voronoi_adapter.cpp
     src/model/world/worldgeneration/worldgenerator.cpp
     src/ui/control/characterscontroller.cpp
     src/ui/control/modelthreadmanager.cpp
@@ -75,6 +81,8 @@ set(CPP_FILES
     src/ui/models/charactersmodel.cpp
     src/ui/models/entitymodel.cpp
     src/ui/models/voronoicellsmodel.cpp
+    src/ui/painters/cellspainter.cpp
+    src/ui/painters/paintingsutils.cpp
     src/ui/painters/segmentspainter.cpp
     src/ui/wrappers/characterdataqmlwrapper.cpp
     src/ui/wrappers/gamedatamanagerqmlwrapper.cpp

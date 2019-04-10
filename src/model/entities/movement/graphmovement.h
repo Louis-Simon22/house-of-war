@@ -11,13 +11,13 @@ class GraphMovement : public EntityChange {
 public:
   GraphMovement(const types::delaunay_graph_t *const delaunayGraph,
                 GraphEntity *const entity,
-                std::vector<types::delaunay_graph_vertex_index_t> destinations);
+                std::vector<types::delaunay_graph_vertex_desc_t> destinations);
   ~GraphMovement() override;
 
 private:
   const types::delaunay_graph_t *const delaunayGraph;
   GraphEntity *const entity;
-  std::vector<types::delaunay_graph_vertex_index_t> destinations;
+  std::vector<types::delaunay_graph_vertex_desc_t> destinations;
   std::size_t currentDestinationIndex;
 
 public:

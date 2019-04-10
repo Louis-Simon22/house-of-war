@@ -5,13 +5,13 @@
 namespace how {
 namespace model {
 
+// Potential replacement https://github.com/delfrrr/delaunator-cpp
 std::tuple<types::delaunay_graph_t, std::vector<DelaunayEdge>,
            std::vector<types::segment_t>>
-DelaunayExtrapolator::extrapolateDelaunayTriangulation(
-    std::vector<VoronoiCell> voronoiCells) {
+extrapolateDelaunayTriangulation(std::vector<VoronoiCell> voronoiCells) {
   auto delaunayGraph = types::delaunay_graph_t();
   auto cellsBySegment =
-      std::map<types::segment_t, types::delaunay_graph_vertex_index_t,
+      std::map<types::segment_t, types::delaunay_graph_vertex_desc_t,
                SegmentComparator>();
   auto delaunayEdges = std::vector<DelaunayEdge>();
   auto pathSegmentsSet = std::set<types::segment_t, SegmentComparator>();

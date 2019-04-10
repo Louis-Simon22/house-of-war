@@ -13,11 +13,11 @@ namespace model {
 
 GraphMovement *calculateMovement(
     const types::delaunay_graph_t *graphPtr, GraphEntity *movingEntity,
-    types::delaunay_graph_vertex_index_t destionationVertexIndex) {
+    types::delaunay_graph_vertex_desc_t destionationVertexIndex) {
   const auto &graph = *graphPtr;
   const auto &entityVertexIndex = movingEntity->getCurrentVertexIndex();
   // Map of the of the shortest path by predecessors
-  auto predecessors = std::vector<types::delaunay_graph_vertex_index_t>(
+  auto predecessors = std::vector<types::delaunay_graph_vertex_desc_t>(
       ::boost::num_vertices(graph));
   // Weight map needed for the algorithm
   auto weightMap = ::boost::make_transform_value_property_map(
@@ -30,7 +30,7 @@ GraphMovement *calculateMovement(
 
   // Find the current vertex in the predecessors map starting from the
   // destionation vertex
-  auto destinations = std::vector<types::delaunay_graph_vertex_index_t>();
+  auto destinations = std::vector<types::delaunay_graph_vertex_desc_t>();
   auto currentVertexIndex = destionationVertexIndex;
   while (currentVertexIndex != entityVertexIndex) {
     destinations.push_back(currentVertexIndex);

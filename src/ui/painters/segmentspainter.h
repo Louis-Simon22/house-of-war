@@ -1,32 +1,47 @@
 #ifndef CELLOUTLINESPAINTER_H
 #define CELLOUTLINESPAINTER_H
 
-#include <QList>
 #include <QPainter>
-#include <QPoint>
 #include <QQuickPaintedItem>
-#include <QVariant>
+
+#include "../wrappers/worlddataqmlwrapper.h"
 
 namespace how {
 namespace ui {
+namespace {
+namespace bg = ::boost::geometry;
+}
 
 class SegmentsPainter : public QQuickPaintedItem {
   Q_OBJECT
 
-  Q_PROPERTY(const QList<QVariant> segments WRITE setSegments)
+  Q_PROPERTY(bool showVoronoiSegments MEMBER showVoronoiSegments WRITE
+                 setShowVoronoiSegments FINAL)
+  Q_PROPERTY(bool showDelaunaySegments MEMBER showDelaunaySegments WRITE
+                 setShowDelaunaySegments FINAL)
+  Q_PROPERTY(WorldDataQMLWrapper *worldData MEMBER worldDataQMLWrapperPtr
+                 WRITE setWorldDataQMLWrapper FINAL)
 
 public:
   SegmentsPainter(QQuickItem *parent = nullptr);
 
+public:
   void paint(QPainter *painter) override;
 
 private:
-  QList<QVariant> segments;
+  void setShowVoronoiSegments(bool show);
+  void setShowDelaunaySegments(bool show);
+  void setWorldDataQMLWrapper(WorldDataQMLWrapper *worldDataPtr);
+  static void paintSegmentsList(QPainter *painter,
+                         const std::vector<model::types::segment_t> *segments);
 
-  void setSegments(const QList<QVariant>);
+private:
+  WorldDataQMLWrapper *worldDataQMLWrapperPtr;
+  bool showVoronoiSegments;
+  bool showDelaunaySegments;
 };
 
-} // namespace bind
+} // namespace ui
 } // namespace how
 
 #endif

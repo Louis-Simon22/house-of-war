@@ -10,20 +10,6 @@
 namespace how {
 namespace ui {
 
-QVariantList convert(const std::vector<model::types::segment_t> *segments) {
-  auto pointsSet = std::set<model::types::point_t, model::PointComparator>();
-  auto segmentList = QVariantList();
-
-  for (auto segment : *segments) {
-    auto convertedSegment = QVariantList();
-    convertedSegment.insert(convertedSegment.size(), convert(segment.first));
-    convertedSegment.insert(convertedSegment.size(), convert(segment.second));
-    segmentList.insert(segmentList.size(), convertedSegment);
-  }
-
-  return segmentList;
-}
-
 QVariantList convert(const std::vector<model::types::point_t> *points) {
   auto pointList = QVariantList();
 
