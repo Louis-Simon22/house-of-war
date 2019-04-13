@@ -1,7 +1,7 @@
-#include "celldata.h"
+#include "easingfunctions.h"
 
 namespace how {
 namespace model {
-CellData::CellData() : elevation() {}
+
 } // namespace model
 } // namespace how

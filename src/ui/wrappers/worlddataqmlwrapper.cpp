@@ -17,15 +17,14 @@ WorldDataQMLWrapper::WorldDataQMLWrapper(model::WorldData *worldDataPtr)
 bool WorldDataQMLWrapper::isPointWithinVoronoiCell(int voronoiCellIndex,
                                                    int pointX, int pointY) {
   const auto &polygon =
-      this->worldDataPtr->getVoronoiCells()
-          ->
-          operator[](static_cast<std::size_t>(voronoiCellIndex))
-          .polygon;
+      this->worldDataPtr
+          ->getVoronoiCellByDesc(static_cast<std::size_t>(voronoiCellIndex))
+          ->polygon;
   return bg::covered_by(model::types::point_t(pointX, pointY), polygon);
 }
 
 const QRect WorldDataQMLWrapper::getWorldBounds() const {
-  const auto *bounds = this->worldDataPtr->getBounds();
+  const auto &bounds = this->worldDataPtr->getBounds();
   return convert(bounds);
 }
 
@@ -34,13 +33,13 @@ const model::WorldData *WorldDataQMLWrapper::getWorldDataPtr() const {
 }
 
 const model::VoronoiCell *
-WorldDataQMLWrapper::getVoronoiCellAt(int index) const {
-  return &this->worldDataPtr->getVoronoiCells()->operator[](
-      static_cast<std::size_t>(index));
+WorldDataQMLWrapper::getVoronoiCellAt(int voronoiCellIndex) const {
+  return this->worldDataPtr->getVoronoiCellByDesc(
+      static_cast<std::size_t>(voronoiCellIndex));
 }
 
 VoronoiCellsModel *WorldDataQMLWrapper::getVoronoiCellsModel() const {
-  return new VoronoiCellsModel(this->worldDataPtr->getVoronoiCells());
+  return new VoronoiCellsModel(this->worldDataPtr);
 }
 } // namespace ui
 } // namespace how

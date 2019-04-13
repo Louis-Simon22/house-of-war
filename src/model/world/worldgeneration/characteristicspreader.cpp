@@ -1,7 +1,7 @@
-#include "celldata.h"
+#include "characteristicspreader.h"
 
 namespace how {
 namespace model {
-CellData::CellData() : elevation() {}
+
 } // namespace model
 } // namespace how

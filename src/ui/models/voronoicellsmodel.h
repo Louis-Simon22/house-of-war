@@ -6,8 +6,8 @@
 #include <QAbstractListModel>
 #include <QVariant>
 
+#include "../../model/world/worlddata.h"
 #include "./entitymodel.h"
-#include "../../model/world/voronoicell.h"
 
 namespace how {
 namespace ui {
@@ -19,9 +19,9 @@ class VoronoiCellsModel : public EntityModel {
 
 public:
   VoronoiCellsModel();
-  explicit VoronoiCellsModel(const std::vector<model::VoronoiCell> *const voronoiCellsPtr);
+  explicit VoronoiCellsModel(const model::WorldData *worldDataPtr);
 
-  enum CellRoles { Centroid = Qt::UserRole + 1, Points, Envelope };
+  enum CellRoles { Envelope = Qt::UserRole + 1 };
 
   QHash<int, QByteArray> roleNames() const override;
   Qt::ItemFlags flags(const QModelIndex &) const override;
@@ -31,7 +31,7 @@ public:
                 int role = Qt::DisplayRole) const override;
 
 private:
-  const std::vector<model::VoronoiCell> *const voronoiCellsPtr;
+  const model::WorldData *worldDataPtr;
 };
 } // namespace ui
 } // namespace how

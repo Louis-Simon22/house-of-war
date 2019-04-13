@@ -4,12 +4,12 @@ namespace how {
 namespace model {
 VoronoiCell::VoronoiCell() : Entity() {}
 
-VoronoiCell::VoronoiCell(types::point_t centroid, types::box_t envelope,
+VoronoiCell::VoronoiCell(types::box_t envelope, types::point_t centroid,
                          types::polygon_t polygon,
                          std::vector<types::point_t> outlinePoints,
                          std::vector<types::segment_t> segments)
-    : Entity(), centroid(centroid), envelope(envelope), polygon(polygon),
-      outlinePoints(outlinePoints), outlineSegments(segments) {}
+    : Entity(), envelope(envelope), centroid(centroid), polygon(polygon),
+      outlinePoints(outlinePoints), outlineSegments(segments), cellData() {}
 
 } // namespace model
 } // namespace how

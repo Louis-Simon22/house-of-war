@@ -11,6 +11,7 @@ namespace how {
 namespace model {
 namespace types {
 
+using characteristics_t = float;
 using coordinate_t = int;
 using coordinate_fpt_t = float;
 using point_t =

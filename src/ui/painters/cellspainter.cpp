@@ -24,7 +24,7 @@ QSGNode *CellsPainter::updatePaintNode(QSGNode *oldNode,
     const auto *voronoiCell =
         this->worldDataQMLWrapperPtr->getVoronoiCellAt(this->cellIndex);
     const auto &polygonOuterPoints = voronoiCell->outlinePoints;
-    const int pointsCount = static_cast<int>(polygonOuterPoints.size() + 1);
+    const int pointsCount = static_cast<int>(polygonOuterPoints.size());
 
     if (!node) {
       node = new QSGGeometryNode();
@@ -39,26 +39,17 @@ QSGNode *CellsPainter::updatePaintNode(QSGNode *oldNode,
       geometry->allocate(pointsCount);
     }
 
-    const auto &itemPos = this->position();
     auto *vertices = geometry->vertexDataAsPoint2D();
-    // First vertex is the center of the triangle fan
-    const auto &center = scopePoint(itemPos, voronoiCell->centroid);
-    vertices[0].set(static_cast<float>(center.x()),
-                    static_cast<float>(center.y()));
-
-    std::cout << itemPos.x() << "|" << itemPos.y() << std::endl;
-    std::cout << vertices[0].x << "|" << vertices[0].y << std::endl;
-    for (std::size_t i = 1; i < static_cast<std::size_t>(pointsCount); i++) {
-      const auto &vertex = this->mapFromGlobal(convertF(polygonOuterPoints[i]));
+    for (std::size_t i = 0; i < polygonOuterPoints.size(); i++) {
+      const auto &vertex = this->mapFromItem(this->parentItem(),
+                                             convertF(polygonOuterPoints[i]));
       vertices[i].set(static_cast<float>(vertex.x()),
                       static_cast<float>(vertex.y()));
-      std::cout << vertices[i].x << "|" << vertices[i].y << std::endl;
     }
-    std::cout << "=======" << std::endl;
 
     QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
-    material->setColor(
-        QColor(static_cast<int>(voronoiCell->cellData.elevation * 255), 0, 0));
+    material->setColor(QColor(
+        0, 0, static_cast<int>(voronoiCell->cellData.elevation * 255)));
     node->setMaterial(material);
     node->setFlag(QSGNode::OwnsMaterial);
 

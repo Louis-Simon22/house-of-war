@@ -1,5 +1,7 @@
 #include "entitychangemanager.h"
 
+#include <iostream>
+
 namespace how {
 namespace model {
 EntityChangeManager::EntityChangeManager() : entityChanges() {}

@@ -1,7 +1,7 @@
 #ifndef CELLDATA_H
 #define CELLDATA_H
 
-//#include "../modeltypes.h"
+#include "../modeltypes.h"
 
 namespace how {
 namespace model {
@@ -11,7 +11,7 @@ public:
   CellData();
 
 public:
-  float elevation;
+  types::characteristics_t elevation;
 };
 } // namespace model
 } // namespace how

@@ -13,6 +13,8 @@ namespace types {
 using delaunay_graph_t = ::boost::adjacency_list<
     ::boost::vecS, ::boost::vecS, ::boost::directedS, ::how::model::VoronoiCell,
     ::how::model::DelaunayEdge, ::boost::no_property, ::boost::vecS>;
+using adjacency_iterator_t = ::boost::graph_traits<
+::how::model::types::delaunay_graph_t>::adjacency_iterator;
 using delaunay_graph_vertex_desc_t = ::boost::graph_traits<
     ::how::model::types::delaunay_graph_t>::vertex_descriptor;
 using delaunay_graph_edge_desc_t = ::boost::graph_traits<

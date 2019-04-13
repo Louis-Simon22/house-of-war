@@ -65,9 +65,10 @@ std::vector<VoronoiCell> extractVoronoiCells(jcv_diagram *voronoiDiagram) {
   const jcv_site *sites = jcv_diagram_get_sites(voronoiDiagram);
   for (int i = 0; i < voronoiDiagram->numsites; ++i) {
     const jcv_site *site = &sites[i];
-    const auto& center = convert(site->p);
+    const auto &center = convert(site->p);
     const jcv_graphedge *edge = site->edges;
-    auto cellOutlinePointsSet = std::set<types::point_t, ClockwisePointComparator>(center);
+    auto cellOutlinePointsSet =
+        std::set<types::point_t, ClockwisePointComparator>(center);
     auto cellEdgesSet = std::set<types::segment_t, SegmentComparator>();
     while (edge) {
       if (!jcv_point_eq(&edge->pos[0], &edge->pos[1])) {
@@ -88,7 +89,7 @@ std::vector<VoronoiCell> extractVoronoiCells(jcv_diagram *voronoiDiagram) {
     auto envelopeBox = types::box_t();
     bg::envelope(polygon, envelopeBox);
     voronoiCells.push_back(
-        VoronoiCell(center, envelopeBox, polygon,
+        VoronoiCell(envelopeBox, center, polygon,
                     std::vector<types::point_t>(cellOutlinePointsSet.begin(),
                                                 cellOutlinePointsSet.end()),
                     std::vector<types::segment_t>(cellEdgesSet.begin(),

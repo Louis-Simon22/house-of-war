@@ -11,14 +11,14 @@ namespace model {
 struct VoronoiCell : public Entity {
 public:
   VoronoiCell();
-  VoronoiCell(types::point_t centroid, types::box_t envelope,
+  VoronoiCell(types::box_t envelope, types::point_t centroid,
               types::polygon_t polygon,
               std::vector<types::point_t> outlinePoints,
               std::vector<types::segment_t> outlineSegments);
 
 public:
-  types::point_t centroid;
   types::box_t envelope;
+  types::point_t centroid;
   types::polygon_t polygon;
   std::vector<types::point_t> outlinePoints;
   std::vector<types::segment_t> outlineSegments;
