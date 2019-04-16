@@ -12,9 +12,9 @@ namespace model {
 template <typename WeightCalculator>
 std::pair<std::vector<types::delaunay_graph_vertex_desc_t>,
           std::vector<types::coordinate_t>>
-computeDijkstra(const types::delaunay_graph_t &graph,
-                types::delaunay_graph_vertex_desc_t source,
-                const WeightCalculator &weightCalculator) {
+computeDijkstra(types::delaunay_graph_vertex_desc_t source,
+                WeightCalculator weightCalculator,
+                const types::delaunay_graph_t &graph) {
   // Map of the of the shortest path by predecessors (so in reverse order)
   auto predecessors = std::vector<types::delaunay_graph_vertex_desc_t>(
       ::boost::num_vertices(graph));
@@ -33,6 +33,9 @@ computeDijkstra(const types::delaunay_graph_t &graph,
   return std::pair<std::vector<types::delaunay_graph_vertex_desc_t>,
                    std::vector<types::coordinate_t>>(predecessors, distanceMap);
 }
+
+types::delaunay_graph_vertex_desc_t
+nearestVoronoiCell(types::point_t point, types::delaunay_graph_t &graph);
 } // namespace model
 } // namespace how
 #endif // GRAPHOPERATIONS_H

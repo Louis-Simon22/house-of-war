@@ -9,7 +9,7 @@ namespace model {
 
 std::tuple<types::delaunay_graph_t, std::vector<DelaunayEdge>,
            std::vector<types::segment_t>>
-extrapolateDelaunayTriangulation(std::vector<VoronoiCell> voronoiCells);
+extractDelaunayTriangulation(std::vector<VoronoiCell> voronoiCells);
 
 } // namespace model
 } // namespace how

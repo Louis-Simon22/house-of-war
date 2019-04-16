@@ -48,8 +48,14 @@ QSGNode *CellsPainter::updatePaintNode(QSGNode *oldNode,
     }
 
     QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
-    material->setColor(QColor(
-        0, 0, static_cast<int>(voronoiCell->cellData.elevation * 255)));
+    if (voronoiCell->cellData.elevation > 0.0F) {
+      material->setColor(QColor(
+          0, 0, static_cast<int>(voronoiCell->cellData.elevation * 255)));
+    } else {
+      material->setColor(QColor(
+          0, static_cast<int>(voronoiCell->cellData.elevation * -255),
+          0));
+    }
     node->setMaterial(material);
     node->setFlag(QSGNode::OwnsMaterial);
 

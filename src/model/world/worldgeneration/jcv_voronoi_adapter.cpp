@@ -6,7 +6,6 @@
 #include <set>
 
 #include "../../clockwisepointcomparator.h"
-//#include "../../pointcomparator.h"
 #include "../../segmentcomparator.h"
 
 namespace how {
@@ -99,7 +98,7 @@ std::vector<VoronoiCell> extractVoronoiCells(jcv_diagram *voronoiDiagram) {
 }
 
 std::pair<std::vector<types::segment_t>, std::vector<VoronoiCell>>
-buildVoronoi(types::box_t boundingBox, std::vector<types::point_t> points) {
+generateVoronoi(types::box_t boundingBox, std::vector<types::point_t> points) {
   auto diagram = jcv_diagram();
   memset(&diagram, 0, sizeof(jcv_diagram));
   const jcv_point *jcvPoints = convert(points);

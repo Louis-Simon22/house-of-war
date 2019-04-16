@@ -53,14 +53,6 @@ Flickable {
             color: "transparent"
         }
 
-        SegmentsPainter {
-            anchors.fill: mapItem
-            showVoronoiSegments: true
-            showDelaunaySegments: false
-
-            worldData: mapItemFlickable.worldData
-        }
-
         Repeater {
             id: voronoiCells
             model: worldData.voronoiCellsModel
@@ -114,15 +106,23 @@ Flickable {
                         }
                     }
 
-                    Text {
-                        id: voronoiCellLabel
-                        x: cellEnvelope.width / 2 - paintedWidth / 2
-                        y: cellEnvelope.height / 2 - paintedHeight / 2
-                        font.pixelSize: 7
-                        text: index
-                    }
+//                    Text {
+//                        id: voronoiCellLabel
+//                        x: cellEnvelope.width / 2 - paintedWidth / 2
+//                        y: cellEnvelope.height / 2 - paintedHeight / 2
+//                        font.pixelSize: 7
+//                        text: index
+//                    }
                 }
             }
+        }
+
+        SegmentsPainter {
+            anchors.fill: mapItem
+            showVoronoiSegments: true
+            showDelaunaySegments: false
+
+            worldData: mapItemFlickable.worldData
         }
 
         Repeater {

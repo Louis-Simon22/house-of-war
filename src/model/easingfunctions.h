@@ -12,15 +12,17 @@ using fpt_t = types::characteristics_t;
 namespace bm = ::boost::math;
 } // namespace
 
-inline fpt_t normalize(fpt_t value, fpt_t min, fpt_t max) {
-  return (value - min) * (1 / (max - min));
-}
+fpt_t normalize(fpt_t value, fpt_t min, fpt_t max);
 
-inline fpt_t flip(fpt_t value) { return 1 - value; }
+fpt_t flip(fpt_t value);
+
+fpt_t smoothStart(fpt_t value, fpt_t power);
 
 template <unsigned long power> inline fpt_t smoothStart(fpt_t value) {
   return bm::pow<power, fpt_t>(value);
 }
+
+fpt_t smoothEnd(fpt_t value, fpt_t power);
 
 template <unsigned long power> inline fpt_t smoothEnd(fpt_t value) {
   return flip(bm::pow<power, fpt_t>(flip(value)));

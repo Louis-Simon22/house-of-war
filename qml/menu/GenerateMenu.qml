@@ -16,29 +16,48 @@ BaseMenu {
         color: "#49a349"
     }
 
-    Column {
+    ColumnLayout {
         anchors.centerIn: parent
         spacing: 10
 
         MenuButton {
+            Layout.alignment: Qt.AlignCenter
             text: "Generate"
             onClicked: {
-                generateMenu.gameDataManager.newGameGenerated.connect(generateMenu.newGameGenerated);
+                generateMenu.gameDataManager.newGameGenerated.connect(
+                            generateMenu.newGameGenerated)
                 generateMenu.gameDataManager.newGame(
-                    parseInt(worldWidth.input, 10),
-                    parseInt(worldHeight.input, 10));
-                generateMenu.gameDataManager.newGameGenerated.disconnect(generateMenu.newGameGenerated);
+                            parseInt(worldWidth.input, 10),
+                            parseInt(worldHeight.input, 10),
+                            parseFloat(minimumVoronoiCellDistance.input),
+                            parseInt(randomSeed.input, 10))
+                generateMenu.gameDataManager.newGameGenerated.disconnect(
+                            generateMenu.newGameGenerated)
             }
         }
         MenuNumberInput {
+            Layout.alignment: Qt.AlignCenter
             id: worldWidth
             label: "World Width"
             input: "500"
         }
         MenuNumberInput {
+            Layout.alignment: Qt.AlignCenter
             id: worldHeight
             label: "World Height"
             input: "300"
+        }
+        MenuNumberInput {
+            Layout.alignment: Qt.AlignCenter
+            id: minimumVoronoiCellDistance
+            label: "Minimum Voronoi Cell Distance"
+            input: "3"
+        }
+        MenuNumberInput {
+            Layout.alignment: Qt.AlignCenter
+            id: randomSeed
+            label: "Random Seed"
+            input: "100"
         }
     }
 

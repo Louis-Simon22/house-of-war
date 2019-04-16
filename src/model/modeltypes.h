@@ -12,7 +12,7 @@ namespace model {
 namespace types {
 
 using characteristics_t = float;
-using coordinate_t = int;
+using coordinate_t = float;
 using coordinate_fpt_t = float;
 using point_t =
     ::boost::geometry::model::point<coordinate_t, 2,
@@ -28,6 +28,8 @@ struct WorldGenerationConfig {
   coordinate_t minCornerY;
   coordinate_t maxCornerX;
   coordinate_t maxCornerY;
+  coordinate_t minimumVoronoiCellDistance;
+  std::uint32_t randomSeed;
 };
 } // namespace types
 } // namespace model

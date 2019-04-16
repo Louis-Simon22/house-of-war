@@ -29,7 +29,8 @@ signals:
   void newGameGenerated();
 
 public slots:
-  void newGame(int width, int height);
+  void newGame(int width, int height, float minimumVoronoiCellDistance,
+               int randomSeed);
   void loadGame();
 
 public:

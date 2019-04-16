@@ -9,7 +9,9 @@ GameDataManagerQMLWrapper::GameDataManagerQMLWrapper(QObject *parent)
       modelThreadManager(), worldDataQMLWrapperPtr(),
       characterDataQMLWrapperPtr(), charactersControllerPtr() {}
 
-void GameDataManagerQMLWrapper::newGame(int width, int height) {
+void GameDataManagerQMLWrapper::newGame(int width, int height,
+                                        float minimumVoronoiCellDistance,
+                                        int randomSeed) {
   this->modelThreadManager.pauseIterations();
   std::cout << "New World Generation thread" << this->thread() << std::endl;
   auto config = model::types::WorldGenerationConfig();
@@ -17,6 +19,8 @@ void GameDataManagerQMLWrapper::newGame(int width, int height) {
   config.minCornerY = 0;
   config.maxCornerX = width;
   config.maxCornerY = height;
+  config.minimumVoronoiCellDistance = minimumVoronoiCellDistance;
+  config.randomSeed = static_cast<std::uint32_t>(randomSeed);
   this->gameDataManager.newGame(config);
   this->worldDataQMLWrapperPtr.reset(
       new WorldDataQMLWrapper(this->gameDataManager.getWorldDataPtr()));

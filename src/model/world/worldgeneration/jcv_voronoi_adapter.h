@@ -23,7 +23,7 @@ std::vector<types::segment_t> extractVoronoiEdges(jcv_diagram *voronoiDiagram);
 std::vector<VoronoiCell> extractVoronoiCells(jcv_diagram *voronoiDiagram);
 
 std::pair<std::vector<types::segment_t>, std::vector<VoronoiCell>>
-buildVoronoi(types::box_t boundingBox, std::vector<types::point_t> points);
+generateVoronoi(types::box_t boundingBox, std::vector<types::point_t> points);
 } // namespace model
 } // namespace how
 

@@ -24,7 +24,6 @@ set(HEADER_FILES
     src/model/entities/graphentity.h
     src/model/entities/movement/graphmovement.h
     src/model/entities/movement/movementcalculator.h
-    src/model/entities/movement/movementweightcalculator.h
     src/model/gamedatamanager.h
     src/model/modeltypes.h
     src/model/pointcomparator.h
@@ -35,12 +34,14 @@ set(HEADER_FILES
     src/model/world/delaunayedge.h
     src/model/world/graphoperations.h
     src/model/world/voronoicell.h
-    src/model/world/worlddata.h
+    src/model/world/worlddata.h    
     src/model/world/worldgeneration/celldatagenerator.h
-    src/model/world/worldgeneration/characteristicspreader.h
+    src/model/world/worldgeneration/celldataoperations.h
     src/model/world/worldgeneration/delaunayextrapolator.h
-    src/model/world/worldgeneration/heightgenerator.h
+    src/model/world/worldgeneration/elevationgenerator.h
+    src/model/world/worldgeneration/heightmap.h
     src/model/world/worldgeneration/jcv_voronoi_adapter.h
+    src/model/world/worldgeneration/poissondisksamplingadapter.h
     src/model/world/worldgeneration/worldgenerator.h
     src/ui/control/characterscontroller.h
     src/ui/control/modelthreadmanager.h
@@ -68,7 +69,6 @@ set(CPP_FILES
     src/model/entities/graphentity.cpp
     src/model/entities/movement/graphmovement.cpp
     src/model/entities/movement/movementcalculator.cpp
-    src/model/entities/movement/movementweightcalculator.cpp
     src/model/gamedatamanager.cpp
     src/model/pointcomparator.cpp
     src/model/segmentcomparator.cpp
@@ -78,10 +78,12 @@ set(CPP_FILES
     src/model/world/voronoicell.cpp
     src/model/world/worlddata.cpp
     src/model/world/worldgeneration/celldatagenerator.cpp
-    src/model/world/worldgeneration/characteristicspreader.cpp
+    src/model/world/worldgeneration/celldataoperations.h
     src/model/world/worldgeneration/delaunayextrapolator.cpp
-    src/model/world/worldgeneration/heightgenerator.cpp
+    src/model/world/worldgeneration/elevationgenerator.cpp
+    src/model/world/worldgeneration/heightmap.cpp
     src/model/world/worldgeneration/jcv_voronoi_adapter.cpp
+    src/model/world/worldgeneration/poissondisksamplingadapter.cpp
     src/model/world/worldgeneration/worldgenerator.cpp
     src/ui/control/characterscontroller.cpp
     src/ui/control/modelthreadmanager.cpp
@@ -98,10 +100,13 @@ set(CPP_FILES
     )
 
 find_package(Qt5 REQUIRED COMPONENTS Core Quick)
+find_package(Boost REQUIRED COMPONENTS graph)
+
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+find_package(LibNoise REQUIRED)
+
 # Puts the files in the qml.qrc in the QML_FILES variable
 qt5_add_resources(QML_FILES qml.qrc)
-
-find_package(Boost REQUIRED COMPONENTS graph)
 
 add_executable(${PROJECT_NAME} src/main.cpp ${HEADER_FILES} ${CPP_FILES} ${QML_FILES})
 
@@ -109,6 +114,8 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONF
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Quick)
 
-# Boost_INCLUDE_DIRS was set by find_package(Boost ...) command. This directory contains the header files
 target_include_directories(${PROJECT_NAME} INTERFACE ${Boost_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::graph)
+
+target_include_directories(${PROJECT_NAME} INTERFACE ${LIBNOISE_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBNOISE_LIBRARIES})

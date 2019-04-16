@@ -2,14 +2,12 @@
 
 #include <algorithm>
 
+#include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/property_map/transform_value_property_map.hpp>
 
 #include "../../world/delaunayedge.h"
 #include "../../world/graphoperations.h"
-#include "./movementweightcalculator.h"
-
-#include <iostream>
 
 namespace how {
 namespace model {
@@ -23,8 +21,13 @@ calculateMovement(const types::delaunay_graph_t *graphPtr,
 
   // Map of the of the shortest path by predecessors
   std::vector<types::delaunay_graph_vertex_desc_t> predecessors;
-  std::tie(predecessors, std::ignore) = computeDijkstra(
-      graph, entityVertexIndex, &MovementWeightCalculator::calculateEdgeWeight);
+  std::tie(predecessors, std::ignore) = computeDijkstra<>(
+      entityVertexIndex,
+      [&graph](const DelaunayEdge &edge) -> types::coordinate_fpt_t {
+//        ::boost::target(edge, graph);
+        return edge.distance;
+      },
+      graph);
 
   // Find the current vertex in the predecessors map starting from the
   // destionation vertex

@@ -9,8 +9,9 @@ namespace how {
 namespace model {
 
 GraphMovement *
-calculateMovement(const types::delaunay_graph_t *graphPtr, GraphEntity *movingEntity,
-             types::delaunay_graph_vertex_desc_t destionationVertexIndex);
+calculateMovement(const types::delaunay_graph_t *graphPtr,
+                  GraphEntity *movingEntity,
+                  types::delaunay_graph_vertex_desc_t destionationVertexIndex);
 
 } // namespace model
 } // namespace how

@@ -8,7 +8,7 @@ namespace model {
 // Potential replacement https://github.com/delfrrr/delaunator-cpp
 std::tuple<types::delaunay_graph_t, std::vector<DelaunayEdge>,
            std::vector<types::segment_t>>
-extrapolateDelaunayTriangulation(std::vector<VoronoiCell> voronoiCells) {
+extractDelaunayTriangulation(std::vector<VoronoiCell> voronoiCells) {
   auto delaunayGraph = types::delaunay_graph_t();
   auto cellsBySegment =
       std::map<types::segment_t, types::delaunay_graph_vertex_desc_t,
