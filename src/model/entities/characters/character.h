@@ -7,7 +7,7 @@ namespace how {
 namespace model {
 class Character : public GraphEntity {
 public:
-  Character(types::point_t initialPosition, types::delaunay_graph_vertex_desc_t currentVertexIndex);
+  Character(types::point_t initialPosition, types::graph_vertex_desc_t currentVertexIndex);
 };
 } // namespace model
 } // namespace how

@@ -14,9 +14,9 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-QPointF convertF(const model::types::point_t &point);
+QPointF convertF(const types::point_t &point);
 
-QRect convert(const model::types::box_t &box);
+QRect convert(const types::box_t &box);
 
 } // namespace ui
 } // namespace how

@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QRect>
 
+#include "../../model/graphtypes.h"
 #include "../../model/modeltypes.h"
 #include "../../model/world/worlddata.h"
 #include "../models/voronoicellsmodel.h"
@@ -26,8 +27,7 @@ public:
   WorldDataQMLWrapper();
   explicit WorldDataQMLWrapper(model::WorldData *worldDataPtr);
 
-  Q_INVOKABLE bool isPointWithinVoronoiCell(int voronoiCellIndex, int pointX,
-                                            int pointY);
+  Q_INVOKABLE int cellDescAtPosition(int pointX, int pointY);
 
 private:
   const QRect getWorldBounds() const;

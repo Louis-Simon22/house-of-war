@@ -33,7 +33,7 @@ private:
   void setShowDelaunaySegments(bool show);
   void setWorldDataQMLWrapper(WorldDataQMLWrapper *worldDataPtr);
   static void paintSegmentsList(QPainter *painter,
-                         const std::vector<model::types::segment_t> *segments);
+                         const std::vector<types::segment_t> *segments);
 
 private:
   WorldDataQMLWrapper *worldDataQMLWrapperPtr;

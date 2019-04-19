@@ -4,7 +4,7 @@
 #include "jcv_voronoi_adapter.h"
 
 #include "../../modeltypes.h"
-#include "../../delaunaygraphtypes.h"
+#include "../../graphtypes.h"
 #include "../worlddata.h"
 
 namespace how {

@@ -40,7 +40,7 @@ void SegmentsPainter::setWorldDataQMLWrapper(
 }
 
 void SegmentsPainter::paintSegmentsList(
-    QPainter *painter, const std::vector<model::types::segment_t> *segments) {
+    QPainter *painter, const std::vector<types::segment_t> *segments) {
   for (const auto &segment : *segments) {
     painter->drawLine(bg::get<0, 0>(segment), bg::get<0, 1>(segment),
                       bg::get<1, 0>(segment), bg::get<1, 1>(segment));

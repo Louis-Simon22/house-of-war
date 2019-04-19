@@ -54,8 +54,8 @@ WorldData *generateWorld(const types::WorldGenerationConfig &config) {
             << std::endl;
   std::cout << "=============================" << std::endl;
 
-  // Voronoi cell data generation
-  generateCellData(boundingBox, randomSeed, delaunayGraph);
+  // Cell data generation
+  generateHeightData(boundingBox, randomSeed, delaunayGraph);
   std::cout << "Generated cell data "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)

@@ -4,7 +4,7 @@
 #include <list>
 #include <memory>
 
-#include "../delaunaygraphtypes.h"
+#include "../graphtypes.h"
 #include "entitychange.h"
 
 namespace how {

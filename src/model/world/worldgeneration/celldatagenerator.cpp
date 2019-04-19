@@ -2,36 +2,43 @@
 
 #include <math.h>
 
+#include <boost/geometry/arithmetic/arithmetic.hpp>
+
+#include "./celldataoperations.h"
 #include "./elevationgenerator.h"
+
+#include <iostream>
 
 namespace how {
 namespace model {
 namespace {
 namespace bg = ::boost::geometry;
-
-
 }
 
 void generateHeightData(types::box_t boundingBox, std::uint32_t randomSeed,
-                        types::delaunay_graph_t &graph) {
-  const auto &heightMap = generateHeightMap(randomSeed, graph);
+                        types::graph_t &graph) {
+  const auto *noiseModule = generateHeightMap(randomSeed);
   for (std::size_t i = 0; i < ::boost::num_vertices(graph); i++) {
     auto &voronoiCell = graph[i];
-    const auto& minCorner = boundingBox.min_corner();
-    const auto& maxCorner = boundingBox.max_corner();
-    const auto positionRatioY =
-        static_cast<double>(bg::get<1>(voronoiCell.centroid)) /
-        static_cast<double>(heightMap.size());
-    const auto heightMapIndexY =
-        static_cast<std::size_t>(floor(positionRatioY * heightMap.size()));
-    const auto positionRatioX =
-        static_cast<double>(bg::get<0>(voronoiCell.centroid)) /
-        static_cast<double>(heightMap[heightMapIndexY].size());
-    const auto heightMapIndexX = static_cast<std::size_t>(
-        floor(positionRatioX * heightMap[heightMapIndexY].size()));
-    const auto &heightValue = heightMap[heightMapIndexY][heightMapIndexX];
-    voronoiCell.cellData.elevation = heightValue;
+    const auto minCorner = boundingBox.min_corner();
+    const auto maxCorner = boundingBox.max_corner();
+    auto dimensions = maxCorner;
+    bg::subtract_point(dimensions, minCorner);
+    auto positionRatios = voronoiCell.centroid;
+    bg::subtract_point(positionRatios, minCorner);
+    bg::divide_point(positionRatios, dimensions);
+    auto nx = static_cast<double>(bg::get<0>(positionRatios));
+    auto ny = static_cast<double>(bg::get<1>(positionRatios));
+    const auto heightValue = noiseModule->GetValue(nx, ny, 0);
+    voronoiCell.cellData.height = static_cast<float>(heightValue);
   }
+
+  auto heightReferenceAccessor =
+      [](types::graph_vertex_desc_t desc,
+         types::graph_t &graph) -> types::characteristics_t & {
+    return graph[desc].cellData.height;
+  };
+  normalizeCellCharacteristic01(heightReferenceAccessor, graph);
 }
 
 } // namespace model

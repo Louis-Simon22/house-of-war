@@ -13,14 +13,14 @@ namespace how {
 namespace model {
 
 GraphMovement *
-calculateMovement(const types::delaunay_graph_t *graphPtr,
+calculateMovement(const types::graph_t *graphPtr,
                   GraphEntity *movingEntity,
-                  types::delaunay_graph_vertex_desc_t destinationVertexDesc) {
+                  types::graph_vertex_desc_t destinationVertexDesc) {
   const auto &graph = *graphPtr;
   const auto &entityVertexIndex = movingEntity->getCurrentVertexIndex();
 
   // Map of the of the shortest path by predecessors
-  std::vector<types::delaunay_graph_vertex_desc_t> predecessors;
+  std::vector<types::graph_vertex_desc_t> predecessors;
   std::tie(predecessors, std::ignore) = computeDijkstra<>(
       entityVertexIndex,
       [&graph](const DelaunayEdge &edge) -> types::coordinate_fpt_t {
@@ -31,7 +31,7 @@ calculateMovement(const types::delaunay_graph_t *graphPtr,
 
   // Find the current vertex in the predecessors map starting from the
   // destionation vertex
-  auto destinations = std::vector<types::delaunay_graph_vertex_desc_t>();
+  auto destinations = std::vector<types::graph_vertex_desc_t>();
   auto currentVertexIndex = destinationVertexDesc;
   while (currentVertexIndex != entityVertexIndex) {
     destinations.push_back(currentVertexIndex);

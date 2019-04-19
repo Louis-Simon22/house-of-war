@@ -26,6 +26,9 @@ public slots:
   void setIterationInterval(int msec);
 
 signals:
+  void iteration(float deltaTime);
+
+private:
   void workerThreadIteration();
 
 private:

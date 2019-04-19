@@ -1,63 +1,56 @@
 #include "elevationgenerator.h"
 
-#include <iostream>
-#include <noise/noise.h>
-
 #include "../../easingfunctions.h"
 #include "../graphoperations.h"
 #include "./celldataoperations.h"
 #include "./poissondisksamplingadapter.h"
 
+#include <iostream>
+
 namespace how {
 namespace model {
-namespace {
-namespace nm = ::noise::module;
-}
 
-std::vector<std::vector<types::coordinate_t>>
-generateHeightMap(std::uint32_t randomSeed) {
-  constexpr std::size_t width = 255;
-  constexpr std::size_t height = 255;
-  auto heightMap = std::vector<std::vector<types::coordinate_t>>();
+// TODO all these initializations in an adaptor object
+nm::Module *generateHeightMap(std::uint32_t randomSeed) {
+  // Base terrain
+  auto *baseTerrainModule = new nm::Billow();
+  baseTerrainModule->SetOctaveCount(12);
+  baseTerrainModule->SetFrequency(24.0);
+  baseTerrainModule->SetPersistence(0.5);
+  baseTerrainModule->SetSeed(static_cast<int>(randomSeed++));
+  auto *flatTerrainModule = new nm::ScaleBias();
+  flatTerrainModule->SetSourceModule(0, *baseTerrainModule);
+  flatTerrainModule->SetBias(0);
+  flatTerrainModule->SetScale(0.20);
 
-  auto baseTerrainModule = nm::Perlin();
-  baseTerrainModule.SetOctaveCount(3);
-  baseTerrainModule.SetFrequency(0.1);
-  baseTerrainModule.SetSeed(static_cast<int>(randomSeed));
-  auto flatTerrainModule = nm::ScaleBias();
-  flatTerrainModule.SetSourceModule(0, baseTerrainModule);
-  flatTerrainModule.SetBias(-0.75);
-  flatTerrainModule.SetScale(0.125);
-  auto baseMountainsModule = nm::Perlin();
-  baseMountainsModule.SetOctaveCount(2);
-  baseMountainsModule.SetFrequency(0.1);
-  baseMountainsModule.SetPersistence(0.1);
-  baseMountainsModule.SetSeed(static_cast<int>(randomSeed));
-  auto mountainsTerraceModule = nm::Terrace();
-  mountainsTerraceModule.SetSourceModule(0, baseMountainsModule);
-  mountainsTerraceModule.AddControlPoint(0.25);
-  mountainsTerraceModule.AddControlPoint(0.5);
-  mountainsTerraceModule.AddControlPoint(0.75);
-  auto controlModule = nm::Perlin();
-  controlModule.SetOctaveCount(2);
-  controlModule.SetFrequency(0.007);
-  controlModule.SetPersistence(0.01);
-  controlModule.SetSeed(static_cast<int>(randomSeed));
-  auto selectModule = ::noise::module::Select();
-  selectModule.SetSourceModule(0, flatTerrainModule);
-  selectModule.SetSourceModule(1, mountainsTerraceModule);
-  selectModule.SetControlModule(controlModule);
-  selectModule.SetBounds(0, 1000.0);
+  // Moutains
+  auto *baseMountainsModule = new nm::Perlin();
+  baseMountainsModule->SetOctaveCount(12);
+  baseMountainsModule->SetFrequency(4);
+  baseMountainsModule->SetPersistence(0.5);
+  baseMountainsModule->SetSeed(static_cast<int>(randomSeed++));
+  auto *mountainsTerraceModule = new nm::Terrace();
+  mountainsTerraceModule->SetSourceModule(0, *baseMountainsModule);
+  mountainsTerraceModule->AddControlPoint(0.40);
+  mountainsTerraceModule->AddControlPoint(0.75);
+  auto *mountainousTerrain = new nm::Add();
+  mountainousTerrain->SetSourceModule(0, *mountainsTerraceModule);
+  mountainousTerrain->SetSourceModule(1, *flatTerrainModule);
 
-  for (std::size_t i = 0; i < height; i++) {
-    heightMap.push_back(std::vector<types::coordinate_t>());
-    for (std::size_t j = 0; j < width; j++) {
-      heightMap[i].push_back(static_cast<float>(controlModule.GetValue(
-          static_cast<double>(i), static_cast<double>(j), 0)));
-    }
-  }
+  // Fusion
+  auto *controlModule = new nm::Perlin();
+  controlModule->SetOctaveCount(6);
+  controlModule->SetFrequency(1);
+  controlModule->SetPersistence(0.5);
+  controlModule->SetSeed(static_cast<int>(randomSeed++));
+  auto *selectModule = new nm::Select();
+  selectModule->SetSourceModule(0, *flatTerrainModule);
+  selectModule->SetSourceModule(1, *mountainousTerrain);
+  selectModule->SetControlModule(*controlModule);
+  selectModule->SetBounds(0, 1000.0);
+  selectModule->SetEdgeFalloff(0.01);
 
-  return heightMap;
+  return selectModule;
 }
 
 } // namespace model

@@ -8,7 +8,6 @@
 #include <boost/math/quaternion.hpp>
 
 namespace how {
-namespace model {
 namespace types {
 
 using characteristics_t = float;
@@ -32,7 +31,6 @@ struct WorldGenerationConfig {
   std::uint32_t randomSeed;
 };
 } // namespace types
-} // namespace model
 } // namespace how
 
 #endif // MODELTYPES_H

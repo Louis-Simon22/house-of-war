@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(HEADER_FILES
     src/model/clockwisepointcomparator.h
-    src/model/delaunaygraphtypes.h
+    src/model/graphtypes.h
     src/model/easingfunctions.h
     src/model/entities/characters/charactergeneration/charactergenerator.h
     src/model/entities/characters/characterdata.h
@@ -33,6 +33,7 @@ set(HEADER_FILES
     src/model/world/celldata.h
     src/model/world/delaunayedge.h
     src/model/world/graphoperations.h
+    src/model/world/polygonindexoperations.h
     src/model/world/voronoicell.h
     src/model/world/worlddata.h    
     src/model/world/worldgeneration/celldatagenerator.h
@@ -75,6 +76,7 @@ set(CPP_FILES
     src/model/world/celldata.cpp
     src/model/world/delaunayedge.cpp
     src/model/world/graphoperations.cpp
+    src/model/world/polygonindexoperations.cpp
     src/model/world/voronoicell.cpp
     src/model/world/worlddata.cpp
     src/model/world/worldgeneration/celldatagenerator.cpp

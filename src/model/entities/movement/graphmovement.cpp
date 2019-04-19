@@ -3,9 +3,9 @@
 namespace how {
 namespace model {
 GraphMovement::GraphMovement(
-    const types::delaunay_graph_t *const delaunayGraph,
+    const types::graph_t *const delaunayGraph,
     GraphEntity *const entity,
-    std::vector<types::delaunay_graph_vertex_desc_t> destinations)
+    std::vector<types::graph_vertex_desc_t> destinations)
     : delaunayGraph(delaunayGraph), entity(entity), destinations(destinations),
       currentDestinationIndex(0) {}
 
@@ -24,7 +24,6 @@ bool GraphMovement::progress(float deltaTime) {
 }
 
 void GraphMovement::destinationReached() {
-  // TODO change current cell when destination reached
 }
 } // namespace model
 } // namespace how

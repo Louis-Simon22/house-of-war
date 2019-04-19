@@ -12,7 +12,9 @@ using fpt_t = types::characteristics_t;
 namespace bm = ::boost::math;
 } // namespace
 
-fpt_t normalize(fpt_t value, fpt_t min, fpt_t max);
+fpt_t normalize01(fpt_t value, fpt_t min, fpt_t max);
+
+fpt_t normalize11(fpt_t value, fpt_t min, fpt_t max);
 
 fpt_t flip(fpt_t value);
 

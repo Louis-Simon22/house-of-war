@@ -4,12 +4,12 @@ namespace how {
 namespace model {
 
 CharacterData *
-generateCharacters(const types::delaunay_graph_t *delaunayGraphPtr) {
+generateCharacters(const types::graph_t *delaunayGraphPtr) {
   const auto &delaunayGraph = *delaunayGraphPtr;
   auto characters = std::vector<Character>();
-  types::delaunay_graph_vertex_desc_t currentVertex = 5000;
+  types::graph_vertex_desc_t currentVertex = 35;
   characters.emplace_back(delaunayGraph[currentVertex].centroid, currentVertex);
-  currentVertex = 6000;
+  currentVertex = 15;
   characters.emplace_back(delaunayGraph[currentVertex].centroid, currentVertex);
   return new CharacterData(characters);
 }

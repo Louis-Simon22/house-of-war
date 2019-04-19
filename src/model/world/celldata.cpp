@@ -2,6 +2,6 @@
 
 namespace how {
 namespace model {
-CellData::CellData() : elevation() {}
+CellData::CellData() : height() {}
 } // namespace model
 } // namespace how

@@ -11,7 +11,7 @@ public:
   CellData();
 
 public:
-  types::characteristics_t elevation;
+  types::characteristics_t height;
 };
 } // namespace model
 } // namespace how

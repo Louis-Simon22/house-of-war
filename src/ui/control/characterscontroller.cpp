@@ -27,8 +27,8 @@ void CharactersController::addMoveOrder(int characterIndex,
   this->entityChangeManagerPtr->addEntityChange(graphMovement);
 }
 
-void CharactersController::iterateAllChanges() {
-  this->entityChangeManagerPtr->progressAll(1.0f);
+void CharactersController::iterateAllChanges(float deltaTime) {
+  this->entityChangeManagerPtr->progressAll(deltaTime);
 }
 } // namespace ui
 } // namespace how

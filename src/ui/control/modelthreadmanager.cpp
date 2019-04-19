@@ -6,7 +6,7 @@ namespace how {
 namespace ui {
 ModelThreadManager::ModelThreadManager() : QObject(nullptr) {
   this->modelWorkerThread.start(QThread::HighPriority);
-  this->modelIterationTimer.setInterval(1000);
+  this->modelIterationTimer.setInterval(400);
   connect(&this->modelIterationTimer, &QTimer::timeout, this,
           &ModelThreadManager::workerThreadIteration);
   std::cout << "Model operations thread " << this->modelWorkerThread.thread()
@@ -30,6 +30,10 @@ void ModelThreadManager::resumeIterations() {
 
 void ModelThreadManager::setIterationInterval(int msec) {
   this->modelIterationTimer.setInterval(msec);
+}
+
+void ModelThreadManager::workerThreadIteration() {
+  this->iteration(this->modelIterationTimer.interval());
 }
 } // namespace ui
 } // namespace how

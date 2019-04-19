@@ -27,7 +27,7 @@ public:
   Q_INVOKABLE void addMoveOrder(int characterIndex, int voronoiCellIndex);
 
 public slots:
-  void iterateAllChanges();
+  void iterateAllChanges(float deltaTime);
 
 private:
   model::EntityChangeManager *entityChangeManagerPtr;

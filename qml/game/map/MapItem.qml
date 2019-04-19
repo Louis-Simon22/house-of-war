@@ -47,72 +47,41 @@ Flickable {
         }
 
         Rectangle {
-            anchors.fill: mapItem
-
-            border.color: "black"
-            color: "transparent"
-        }
-
-        Repeater {
             id: voronoiCells
-            model: worldData.voronoiCellsModel
+            anchors.fill: parent
 
-            // Position of the voronoi cell click event so it can be propagated to children
-            property var propagatedMouseX: null
-            property var propagatedMouseY: null
-            // Selected voronoi cell
+            border.color: "transparent" //voronoiCells.selectedVoronoiCellIndex === index ? "red" : "black"
+            color: "transparent"
+
             property int selectedVoronoiCellIndex: -1
 
-            delegate: CellsPainter {
-                x: rollEnvelope.x
-                y: rollEnvelope.y
-                width: rollEnvelope.width
-                height: rollEnvelope.height
+            MouseArea {
+                anchors.fill: parent
 
-                worldData: mapItemFlickable.worldData
-                cellIndex: index
-
-                Rectangle {
-                    id: cellEnvelope
-                    anchors.fill: parent
-
-                    border.color: "transparent" //voronoiCells.selectedVoronoiCellIndex === index ? "red" : "black"
-                    color: "transparent"
-
-                    MouseArea {
-                        anchors.fill: parent
-
-                        acceptedButtons: Qt.RightButton
-                        propagateComposedEvents: true
-                        onClicked: {
-                            if (!voronoiCells.propagatedMouseX
-                                    && !voronoiCells.propagatedMouseY) {
-                                voronoiCells.propagatedMouseX = mouseX + rollEnvelope.x
-                                voronoiCells.propagatedMouseY = mouseY + rollEnvelope.y
-                            }
-                            if (worldData.isPointWithinVoronoiCell(
-                                        index, voronoiCells.propagatedMouseX,
-                                        voronoiCells.propagatedMouseY)) {
-                                mouse.accepted = true
-                                voronoiCells.selectedVoronoiCellIndex = index
-                                voronoiCells.propagatedMouseX = null
-                                voronoiCells.propagatedMouseY = null
-                                charactersController.addMoveOrder(
-                                            characters.selectedCharacterIndex,
-                                            voronoiCells.selectedVoronoiCellIndex)
-                            } else {
-                                mouse.accepted = false
-                            }
-                        }
+                acceptedButtons: Qt.RightButton
+                propagateComposedEvents: false
+                onClicked: {
+                    if (characters.selectedCharacterIndex >= 0) {
+                        voronoiCells.selectedVoronoiCellIndex = worldData.cellDescAtPosition(
+                                    mouseX, mouseY)
+                        charactersController.addMoveOrder(
+                                    characters.selectedCharacterIndex,
+                                    voronoiCells.selectedVoronoiCellIndex)
                     }
+                }
+            }
 
-//                    Text {
-//                        id: voronoiCellLabel
-//                        x: cellEnvelope.width / 2 - paintedWidth / 2
-//                        y: cellEnvelope.height / 2 - paintedHeight / 2
-//                        font.pixelSize: 7
-//                        text: index
-//                    }
+            Repeater {
+                model: worldData.voronoiCellsModel
+
+                delegate: CellsPainter {
+                    x: rollEnvelope.x
+                    y: rollEnvelope.y
+                    width: rollEnvelope.width
+                    height: rollEnvelope.height
+
+                    worldData: mapItemFlickable.worldData
+                    cellIndex: index
                 }
             }
         }
@@ -135,8 +104,8 @@ Flickable {
                 id: characterEnvelope
                 x: posX - width / 2
                 y: posY - height / 2
-                width: 20
-                height: 20
+                width: 7
+                height: 7
 
                 color: characters.selectedCharacterIndex === index ? "red" : "black"
 

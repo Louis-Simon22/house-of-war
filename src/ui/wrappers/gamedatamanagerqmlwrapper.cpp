@@ -14,7 +14,7 @@ void GameDataManagerQMLWrapper::newGame(int width, int height,
                                         int randomSeed) {
   this->modelThreadManager.pauseIterations();
   std::cout << "New World Generation thread" << this->thread() << std::endl;
-  auto config = model::types::WorldGenerationConfig();
+  auto config = types::WorldGenerationConfig();
   config.minCornerX = 0;
   config.minCornerY = 0;
   config.maxCornerX = width;
@@ -33,7 +33,7 @@ void GameDataManagerQMLWrapper::newGame(int width, int height,
       this->characterDataQMLWrapperPtr->getCharactersModel()));
   this->modelThreadManager.registerQObjectOnThread(
       this->charactersControllerPtr.get());
-  connect(&this->modelThreadManager, &ModelThreadManager::workerThreadIteration,
+  connect(&this->modelThreadManager, &ModelThreadManager::iteration,
           this->charactersControllerPtr.get(),
           &CharactersController::iterateAllChanges);
   this->modelThreadManager.resumeIterations();

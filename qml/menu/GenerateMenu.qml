@@ -35,6 +35,7 @@ BaseMenu {
                             generateMenu.newGameGenerated)
             }
         }
+
         MenuNumberInput {
             Layout.alignment: Qt.AlignCenter
             id: worldWidth
@@ -51,7 +52,7 @@ BaseMenu {
             Layout.alignment: Qt.AlignCenter
             id: minimumVoronoiCellDistance
             label: "Minimum Voronoi Cell Distance"
-            input: "3"
+            input: "30"
         }
         MenuNumberInput {
             Layout.alignment: Qt.AlignCenter
@@ -59,6 +60,7 @@ BaseMenu {
             label: "Random Seed"
             input: "100"
         }
+
     }
 
     MenuButton {

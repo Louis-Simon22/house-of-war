@@ -1,13 +1,17 @@
 #ifndef HEIGHTGENERATOR_H
 #define HEIGHTGENERATOR_H
 
-#include "../../delaunaygraphtypes.h"
+#include <noise/noise.h>
+
+#include "../../graphtypes.h"
 
 namespace how {
 namespace model {
+namespace {
+namespace nm = ::noise::module;
+}
 
-std::vector<std::vector<types::coordinate_t>>
-generateHeightMap(std::uint32_t randomSeed, types::delaunay_graph_t &graph);
+nm::Module *generateHeightMap(std::uint32_t randomSeed);
 
 } // namespace model
 } // namespace how

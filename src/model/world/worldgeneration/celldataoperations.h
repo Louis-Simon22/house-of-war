@@ -3,22 +3,24 @@
 
 #include <math.h>
 
-#include "../../delaunaygraphtypes.h"
+#include "../../graphtypes.h"
 #include "../../easingfunctions.h"
+
+#include <iostream>
 
 namespace how {
 namespace model {
 
 template <typename CharacteristicReferenceAccessor>
-void normalizeCellCharacteristic(
+void normalizeCellCharacteristic01(
     CharacteristicReferenceAccessor characteristicReferenceAccessor,
-    types::delaunay_graph_t &graph) {
+    types::graph_t &graph) {
   const auto &vertexSet = graph.vertex_set();
   const auto &minMaxPair = std::minmax_element(
       vertexSet.begin(), vertexSet.end(),
       [characteristicReferenceAccessor,
-       &graph](types::delaunay_graph_vertex_desc_t desc1,
-               types::delaunay_graph_vertex_desc_t desc2) -> bool {
+       &graph](types::graph_vertex_desc_t desc1,
+               types::graph_vertex_desc_t desc2) -> bool {
         return characteristicReferenceAccessor(desc1, graph) <
                characteristicReferenceAccessor(desc2, graph);
       });
@@ -29,13 +31,44 @@ void normalizeCellCharacteristic(
       characteristicReferenceAccessor(minVertexDesc, graph);
   const auto maxCharacteristicValue =
       characteristicReferenceAccessor(maxVertexDesc, graph);
+  std::cout << minCharacteristicValue << std::endl;
+  std::cout << maxCharacteristicValue << std::endl;
   for (std::size_t i = 0; i < vertexSet.size(); i++) {
     auto &characteristicReference =
         characteristicReferenceAccessor(vertexSet[i], graph);
     characteristicReference =
-        normalize(characteristicReference, minCharacteristicValue,
+        normalize01(characteristicReference, minCharacteristicValue,
                   maxCharacteristicValue);
   }
+}
+
+template <typename CharacteristicReferenceAccessor>
+void normalizeCellCharacteristic11(
+        CharacteristicReferenceAccessor characteristicReferenceAccessor,
+        types::graph_t &graph) {
+    const auto &vertexSet = graph.vertex_set();
+    const auto &minMaxPair = std::minmax_element(
+                vertexSet.begin(), vertexSet.end(),
+                [characteristicReferenceAccessor,
+                &graph](types::graph_vertex_desc_t desc1,
+                types::graph_vertex_desc_t desc2) -> bool {
+        return characteristicReferenceAccessor(desc1, graph) <
+                characteristicReferenceAccessor(desc2, graph);
+    });
+    const auto minVertexDesc = *std::get<0>(minMaxPair);
+    const auto maxVertexDesc = *std::get<1>(minMaxPair);
+    // Make sure these characteristics are a copy because they will get changed
+    const auto minCharacteristicValue =
+            characteristicReferenceAccessor(minVertexDesc, graph);
+    const auto maxCharacteristicValue =
+            characteristicReferenceAccessor(maxVertexDesc, graph);
+    for (std::size_t i = 0; i < vertexSet.size(); i++) {
+        auto &characteristicReference =
+                characteristicReferenceAccessor(vertexSet[i], graph);
+        characteristicReference =
+                normalize11(characteristicReference, minCharacteristicValue,
+                          maxCharacteristicValue);
+    }
 }
 
 // Sets the characteristic to the reverse of the fractional value for numbers
@@ -44,7 +77,7 @@ void normalizeCellCharacteristic(
 template <typename CharacteristicReferenceAccessor>
 void reverseOverflowedCellCharacteristic(
     CharacteristicReferenceAccessor characteristicReferenceAccessor,
-    types::delaunay_graph_t &graph) {
+    types::graph_t &graph) {
   const auto &vertexSet = graph.vertex_set();
   for (std::size_t i = 0; i < vertexSet.size(); i++) {
     auto &characteristicReference =
@@ -60,7 +93,7 @@ void reverseOverflowedCellCharacteristic(
 template <typename CharacteristicReferenceAccessor>
 void reverseCellCharacteristic(
     CharacteristicReferenceAccessor characteristicReferenceAccessor,
-    types::delaunay_graph_t &graph) {
+    types::graph_t &graph) {
   const auto &vertexSet = graph.vertex_set();
   for (std::size_t i = 0; i < vertexSet.size(); i++) {
     auto &characteristicReference =
@@ -71,9 +104,9 @@ void reverseCellCharacteristic(
 
 template <typename CharacteristicAssignmentFunction>
 void distanceBasedCharacteristicSpread(
-    types::delaunay_graph_vertex_desc_t sourceVertexDesc,
+    types::graph_vertex_desc_t sourceVertexDesc,
     CharacteristicAssignmentFunction characteristicAssignmentFunction,
-    types::delaunay_graph_t &graph) {
+    types::graph_t &graph) {
   std::vector<types::coordinate_t> distances;
   std::tie(std::ignore, distances) = computeDijkstra(
       sourceVertexDesc,
@@ -83,7 +116,7 @@ void distanceBasedCharacteristicSpread(
   for (std::size_t vertexDesc = 0; vertexDesc < distances.size();
        vertexDesc++) {
     const auto &distance = distances[vertexDesc];
-    const auto value = normalize(distance, 0, greatestDistance);
+    const auto value = normalize01(distance, 0, greatestDistance);
     characteristicAssignmentFunction(value, vertexDesc, graph);
   }
 }

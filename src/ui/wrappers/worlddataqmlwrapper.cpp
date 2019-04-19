@@ -1,9 +1,7 @@
 #include "worlddataqmlwrapper.h"
 
-#include <boost/geometry/algorithms/covered_by.hpp>
-
 #include "../../model/entities/movement/movementcalculator.h"
-#include "../../model/modeltypes.h"
+#include "../../model/world/polygonindexoperations.h"
 #include "../../model/world/worldgeneration/worldgenerator.h"
 #include "../conversion/converter.h"
 
@@ -14,13 +12,10 @@ WorldDataQMLWrapper::WorldDataQMLWrapper() : QObject(nullptr) {}
 WorldDataQMLWrapper::WorldDataQMLWrapper(model::WorldData *worldDataPtr)
     : worldDataPtr(worldDataPtr) {}
 
-bool WorldDataQMLWrapper::isPointWithinVoronoiCell(int voronoiCellIndex,
-                                                   int pointX, int pointY) {
-  const auto &polygon =
-      this->worldDataPtr
-          ->getVoronoiCellByDesc(static_cast<std::size_t>(voronoiCellIndex))
-          ->polygon;
-  return bg::covered_by(model::types::point_t(pointX, pointY), polygon);
+int WorldDataQMLWrapper::cellDescAtPosition(int pointX, int pointY) {
+  return static_cast<int>(
+      model::cellDescAtPosition(this->worldDataPtr->getPolygonIndexTree(),
+                                types::point_t(pointX, pointY)));
 }
 
 const QRect WorldDataQMLWrapper::getWorldBounds() const {
