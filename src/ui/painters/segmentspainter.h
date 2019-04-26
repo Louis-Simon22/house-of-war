@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <QQuickPaintedItem>
 
-#include "../wrappers/worlddataqmlwrapper.h"
+#include "../wrappers/worldmanagerqmlwrapper.h"
 
 namespace how {
 namespace ui {
@@ -19,8 +19,9 @@ class SegmentsPainter : public QQuickPaintedItem {
                  setShowVoronoiSegments FINAL)
   Q_PROPERTY(bool showDelaunaySegments MEMBER showDelaunaySegments WRITE
                  setShowDelaunaySegments FINAL)
-  Q_PROPERTY(WorldDataQMLWrapper *worldData MEMBER worldDataQMLWrapperPtr
-                 WRITE setWorldDataQMLWrapper FINAL)
+  Q_PROPERTY(
+      WorldManagerQMLWrapper *worldManager MEMBER worldManagerQMLWrapperPtr
+          WRITE setWorldManagerQMLWrapper FINAL)
 
 public:
   SegmentsPainter(QQuickItem *parent = nullptr);
@@ -31,12 +32,13 @@ public:
 private:
   void setShowVoronoiSegments(bool show);
   void setShowDelaunaySegments(bool show);
-  void setWorldDataQMLWrapper(WorldDataQMLWrapper *worldDataPtr);
+  void
+  setWorldManagerQMLWrapper(WorldManagerQMLWrapper *worldManagerQMLWrapperPtr);
   static void paintSegmentsList(QPainter *painter,
-                         const std::vector<types::segment_t> *segments);
+                                const std::vector<types::segment_t> *segments);
 
 private:
-  WorldDataQMLWrapper *worldDataQMLWrapperPtr;
+  WorldManagerQMLWrapper *worldManagerQMLWrapperPtr;
   bool showVoronoiSegments;
   bool showDelaunaySegments;
 };

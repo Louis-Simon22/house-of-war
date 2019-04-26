@@ -4,11 +4,6 @@ import "components/"
 BaseMenu {
     id: creditsScene
 
-    Rectangle {
-        anchors.fill: parent
-        color: "#49a349"
-    }
-
     MenuButton {
         text: "Back"
         anchors.right: creditsScene.right

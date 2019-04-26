@@ -1,25 +1,17 @@
 #ifndef CELLSMODEL_H
 #define CELLSMODEL_H
 
-#include <memory>
-
-#include <QAbstractListModel>
-#include <QVariant>
-
-#include "../../model/world/worlddata.h"
+#include "../../model/managers/worldmanager.h"
 #include "./entitymodel.h"
 
 namespace how {
 namespace ui {
-namespace {
-namespace bg = ::boost::geometry;
-} // namespace
 class VoronoiCellsModel : public EntityModel {
   Q_OBJECT
 
 public:
   VoronoiCellsModel();
-  explicit VoronoiCellsModel(const model::WorldData *worldDataPtr);
+  explicit VoronoiCellsModel(const model::WorldManager *WorldManagerPtr);
 
   enum CellRoles { Envelope = Qt::UserRole + 1 };
 
@@ -31,7 +23,7 @@ public:
                 int role = Qt::DisplayRole) const override;
 
 private:
-  const model::WorldData *worldDataPtr;
+  const model::WorldManager *WorldManagerPtr;
 };
 } // namespace ui
 } // namespace how

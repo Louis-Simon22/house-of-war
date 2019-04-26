@@ -3,8 +3,6 @@
 
 #include <QPointF>
 #include <QRect>
-#include <QVariantList>
-#include <vector>
 
 #include "../../model/modeltypes.h"
 

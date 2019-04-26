@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQmlEngine>
+#include <QSurfaceFormat>
 #include <QThread>
 
 #include <iostream>
@@ -11,19 +12,26 @@
 // Remove this define when boost is updated to 1.70
 #define BOOST_ALLOW_DEPRECATED_HEADERS
 
+// Debug output of qml renderer
+#define QSG_RENDERER_DEBUG = render
+
 #include "../src/ui/control/modelthreadmanager.h"
 #include "../src/ui/models/charactersmodel.h"
 #include "../src/ui/models/voronoicellsmodel.h"
 #include "../src/ui/painters/segmentspainter.h"
-#include "../src/ui/painters/cellspainter.h"
-#include "../src/ui/wrappers/characterdataqmlwrapper.h"
-#include "../src/ui/wrappers/gamedatamanagerqmlwrapper.h"
-#include "../src/ui/wrappers/worlddataqmlwrapper.h"
+#include "../src/ui/painters/tilepainter.h"
+#include "../src/ui/wrappers/graphentitymanagerqmlwrapper.h"
+#include "../src/ui/wrappers/modelmanagerqmlwrapper.h"
+#include "../src/ui/wrappers/worldmanagerqmlwrapper.h"
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   QGuiApplication app(argc, argv);
+
+//  QSurfaceFormat format;
+//  format.setSamples(16);
+//  QSurfaceFormat::setDefaultFormat(format);
   QQmlApplicationEngine engine;
 
   const QString uncreatableTypeErrorMessage =
@@ -33,8 +41,8 @@ int main(int argc, char *argv[]) {
   // Painters
   qmlRegisterType<::how::ui::SegmentsPainter>(
       "com.louissimonmcnicoll.how.ui.segmentspainter", 1, 0, "SegmentsPainter");
-  qmlRegisterType<::how::ui::CellsPainter>(
-              "com.louissimonmcnicoll.how.ui.cellspainter", 1, 0, "CellsPainter");
+  qmlRegisterType<::how::ui::TilePainter>(
+      "com.louissimonmcnicoll.how.ui.TilePainter", 1, 0, "TilePainter");
   // Models
   qmlRegisterUncreatableType<::how::ui::VoronoiCellsModel>(
       "com.louissimonmcnicoll.how.ui.voronoicellsmodel", 1, 0,
@@ -43,13 +51,13 @@ int main(int argc, char *argv[]) {
       "com.louissimonmcnicoll.how.ui.charactersmodel", 1, 0, "CharactersModel",
       uncreatableTypeErrorMessage);
   // QML wrappers
-  qmlRegisterType<::how::ui::GameDataManagerQMLWrapper>(
-      "com.louissimonmcnicoll.how.ui.gamedatamanager", 1, 0, "GameDataManager");
-  qmlRegisterUncreatableType<::how::ui::WorldDataQMLWrapper>(
-      "com.louissimonmcnicoll.how.ui.worlddata", 1, 0, "WorldData",
+  qmlRegisterType<::how::ui::ModelManagerQMLWrapper>(
+      "com.louissimonmcnicoll.how.ui.modelmanager", 1, 0, "ModelManager");
+  qmlRegisterUncreatableType<::how::ui::WorldManagerQMLWrapper>(
+      "com.louissimonmcnicoll.how.ui.worldmanager", 1, 0, "WorldManager",
       uncreatableTypeErrorMessage);
-  qmlRegisterUncreatableType<::how::ui::CharacterDataQMLWrapper>(
-      "com.louissimonmcnicoll.how.ui.characterdata", 1, 0, "CharacterData",
+  qmlRegisterUncreatableType<::how::ui::GraphEntityManagerQMLWrapper>(
+      "com.louissimonmcnicoll.how.ui.graphentitymanager", 1, 0, "GraphEntityManager",
       uncreatableTypeErrorMessage);
   // Controllers
   qmlRegisterUncreatableType<::how::ui::CharactersController>(

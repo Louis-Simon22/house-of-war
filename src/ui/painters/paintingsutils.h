@@ -7,10 +7,10 @@
 
 namespace how {
 namespace ui {
-namespace  {
+namespace {
 namespace bg = ::boost::geometry;
 }
 
-}
-}
+} // namespace ui
+} // namespace how
 #endif // PAINTERSUTILS_H

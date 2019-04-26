@@ -9,12 +9,15 @@ namespace model {
 namespace {
 namespace uuids = ::boost::uuids;
 }
-struct Entity {
+class Entity {
 public:
   Entity();
-  ~Entity();
+  virtual ~Entity();
 
 public:
+  const uuids::uuid& getUuid() const;
+
+private:
   uuids::uuid uuid;
 };
 } // namespace model

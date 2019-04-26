@@ -2,7 +2,7 @@
 #define GRAPHENTITY_H
 
 #include "../graphtypes.h"
-#include "../world/voronoicell.h"
+#include "./voronoicell.h"
 #include "./entity.h"
 
 namespace how {
@@ -10,18 +10,18 @@ namespace model {
 class GraphEntity : public Entity {
 public:
   GraphEntity(types::point_t position,
-              const types::graph_vertex_desc_t currentVertexIndex);
+              types::graph_vertex_desc_t currentVertexDesc);
+  virtual ~GraphEntity();
 
 public:
-  types::point_t position;
+  const types::point_t &getPosition() const;
+  void setPosition(types::point_t position);
+  types::graph_vertex_desc_t getCurrentVertexDesc() const;
+  void setCurrentVertexDesc(const types::graph_vertex_desc_t currentVertexDesc);
 
 private:
-  types::graph_vertex_desc_t currentVertexIndex;
-
-public:
-  types::graph_vertex_desc_t getCurrentVertexIndex() const;
-  void setCurrentVertex(
-      const types::graph_vertex_desc_t currentVertexIndex);
+  types::point_t position;
+  types::graph_vertex_desc_t currentVertexDesc;
 };
 } // namespace model
 } // namespace how

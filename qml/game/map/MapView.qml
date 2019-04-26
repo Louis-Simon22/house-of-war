@@ -1,44 +1,31 @@
 import QtQuick 2.11
 import QtQml.Models 2.11
 
-import com.louissimonmcnicoll.how.ui.gamedatamanager 1.0
+import com.louissimonmcnicoll.how.ui.graphentitymanager 1.0
+import com.louissimonmcnicoll.how.ui.characterscontroller 1.0
+import com.louissimonmcnicoll.how.ui.worldmanager 1.0
 
 Item {
     id: mapView
 
-    property GameDataManager gameDataManager
+    property WorldManager worldManager
+    property GraphEntityManager graphEntityManager
+    property CharactersController charactersController
 
-    signal instantiateMap
+    MapItem {
+        id: mapItem
+        anchors.fill: parent
 
-    onInstantiateMap: {
-        mapItemLoader.active = true
-        mapOverlayLoader.active = true
+        worldManager: modelManager.worldManager
+        graphEntityManager: modelManager.graphEntityManager
+        charactersController: modelManager.charactersController
     }
 
-    Loader {
-        id: mapItemLoader
+    MapOverlay {
+        id: mapOverlay
         anchors.fill: parent
-        active: false
-        sourceComponent: MapItem {
-            id: mapItem
-        }
-        onLoaded: {
-            item.worldData = gameDataManager.worldData
-            item.characterData = gameDataManager.characterData
-            item.charactersController = gameDataManager.charactersController
-        }
-    }
 
-    Loader {
-        id: mapOverlayLoader
-        anchors.fill: parent
-        active: false
-        sourceComponent: MapOverlay {
-            id: mapOverlay
-        }
-        onLoaded: {
-            item.worldData = gameDataManager.worldData
-            item.characterData = gameDataManager.characterData
-        }
+        worldManager: modelManager.worldManager
+        graphEntityManager: modelManager.graphEntityManager
     }
 }

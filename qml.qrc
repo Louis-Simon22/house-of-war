@@ -3,10 +3,10 @@
         <file>qml/game/map/MapView.qml</file>
         <file>qml/game/GameView.qml</file>
         <file>qml/menu/CreditsMenu.qml</file>
-        <file>qml/menu/IntroMenu.qml</file>
+        <file>qml/menu/MainMenu.qml</file>
         <file>qml/menu/LoadMenu.qml</file>
         <file>qml/menu/GenerateMenu.qml</file>
-        <file>qml/menu/MainMenu.qml</file>
+        <file>qml/menu/ParentMenu.qml</file>
         <file>qml/menu/components/MenuButton.qml</file>
         <file>qml/menu/components/MenuNumberInput.qml</file>
         <file>qml/menu/components/BaseMenu.qml</file>

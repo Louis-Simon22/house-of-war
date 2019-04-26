@@ -3,22 +3,23 @@
 namespace how {
 namespace ui {
 SegmentsPainter::SegmentsPainter(QQuickItem *parent)
-    : QQuickPaintedItem(parent), showVoronoiSegments(false),
-      showDelaunaySegments(false) {
+    : QQuickPaintedItem(parent), worldManagerQMLWrapperPtr(nullptr),
+      showVoronoiSegments(false), showDelaunaySegments(false) {
   this->setAntialiasing(true);
 }
 
 void SegmentsPainter::paint(QPainter *painter) {
   painter->setRenderHints(QPainter::Antialiasing, true);
-  if (this->worldDataQMLWrapperPtr) {
-    const auto *worldDataPtr = this->worldDataQMLWrapperPtr->getWorldDataPtr();
+  if (this->worldManagerQMLWrapperPtr) {
+    const auto *worldManagerPtr =
+        this->worldManagerQMLWrapperPtr->getWorldManagerPtr();
     if (this->showVoronoiSegments) {
       this->paintSegmentsList(painter,
-                              worldDataPtr->getUniqueVoronoiSegments());
+                              worldManagerPtr->getUniqueVoronoiSegments());
     }
     if (this->showDelaunaySegments) {
       this->paintSegmentsList(painter,
-                              worldDataPtr->getUniqueDelaunaySegments());
+                              worldManagerPtr->getUniqueDelaunaySegments());
     }
   }
 }
@@ -33,9 +34,9 @@ void SegmentsPainter::setShowDelaunaySegments(bool show) {
   this->update();
 }
 
-void SegmentsPainter::setWorldDataQMLWrapper(
-    WorldDataQMLWrapper *worldDataQMLWrapperPtr) {
-  this->worldDataQMLWrapperPtr = worldDataQMLWrapperPtr;
+void SegmentsPainter::setWorldManagerQMLWrapper(
+    WorldManagerQMLWrapper *worldManagerQMLWrapperPtr) {
+  this->worldManagerQMLWrapperPtr = worldManagerQMLWrapperPtr;
   this->update();
 }
 

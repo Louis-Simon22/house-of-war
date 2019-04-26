@@ -5,8 +5,8 @@
 #include <QTimer>
 #include <memory>
 
-#include "../../model/entities/entitychangemanager.h"
-#include "../wrappers/worlddataqmlwrapper.h"
+#include "../../model/managers/entitychangemanager.h"
+#include "../wrappers/worldmanagerqmlwrapper.h"
 
 namespace how {
 namespace ui {

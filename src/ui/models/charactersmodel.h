@@ -1,13 +1,8 @@
 #ifndef CHARACTERSMODEL_H
 #define CHARACTERSMODEL_H
 
-#include <memory>
-
-#include <QAbstractListModel>
-#include <QVariant>
-
+#include "../../model/managers/graphentitymanager.h"
 #include "./entitymodel.h"
-#include "../../model/entities/characters/characterdata.h"
 
 namespace how {
 namespace ui {
@@ -19,7 +14,8 @@ class CharactersModel : public EntityModel {
 
 public:
   CharactersModel();
-  explicit CharactersModel(const model::CharacterData *characterDataPtr);
+  explicit CharactersModel(
+      const model::GraphEntityManager *graphEntityManagerPtr);
 
   enum CellRoles { PosX = Qt::UserRole + 1, PosY };
 
@@ -31,7 +27,7 @@ public:
                 int role = Qt::DisplayRole) const override;
 
 private:
-  const model::CharacterData *const characterDataPtr;
+  const model::GraphEntityManager *graphEntityManagerPtr;
 };
 } // namespace ui
 } // namespace how

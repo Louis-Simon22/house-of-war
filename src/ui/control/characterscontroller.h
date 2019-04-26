@@ -6,9 +6,9 @@
 
 #include <boost/signals2.hpp>
 
-#include "../../model/entities/characters/characterdata.h"
-#include "../../model/entities/entitychangemanager.h"
-#include "../../model/world/worlddata.h"
+#include "../../model/managers/entitychangemanager.h"
+#include "../../model/managers/graphentitymanager.h"
+#include "../../model/managers/worldmanager.h"
 #include "../models/charactersmodel.h"
 
 namespace how {
@@ -19,8 +19,8 @@ class CharactersController : public QObject {
 public:
   CharactersController();
   CharactersController(model::EntityChangeManager *entityChangeManagerPtr,
-                       model::WorldData *worldDataPtr,
-                       model::CharacterData *characterDataPtr,
+                       model::WorldManager *WorldManagerPtr,
+                       model::GraphEntityManager *graphEntityManagerPtr,
                        CharactersModel *charactersModelPtr);
 
 public:
@@ -31,8 +31,8 @@ public slots:
 
 private:
   model::EntityChangeManager *entityChangeManagerPtr;
-  model::WorldData *worldDataPtr;
-  model::CharacterData *characterDataPtr;
+  model::WorldManager *worldManagerPtr;
+  model::GraphEntityManager *graphEntityManagerPtr;
   CharactersModel *charactersModelPtr;
 };
 } // namespace ui

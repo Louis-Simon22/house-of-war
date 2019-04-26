@@ -1,32 +1,28 @@
 import QtQuick.Window 2.2
 import QtQuick 2.11
 
-import com.louissimonmcnicoll.how.ui.gamedatamanager 1.0
-import com.louissimonmcnicoll.how.ui.modelthreadmanager 1.0
+import com.louissimonmcnicoll.how.ui.modelmanager 1.0
 
 import "game/"
 import "menu/"
 
 Item {
     id: swapper
-    x: 0
-    y: 0
-    width: 920
-    height: 680
+    focus: true
 
-    GameDataManager {
-        id: gameDataManager
+    ModelManager {
+        id: modelManager
     }
 
     Loader {
         id: menuLoader
         anchors.fill: parent
         active: false
-        sourceComponent: MainMenu {
-            id: mainMenu
+        sourceComponent: ParentMenu {
+            id: parentMenu
         }
         onLoaded: {
-            item.gameDataManager = gameDataManager
+            item.modelManager = modelManager
         }
     }
 
@@ -43,13 +39,16 @@ Item {
             id: gameView
         }
         onLoaded: {
-            item.gameDataManager = gameDataManager
-            item.instantiateGame();
+            item.modelManager = modelManager
+            item.instantiateGame()
         }
     }
 
-    Connections {
-        target: gameLoader.item
+    Keys.onPressed: {
+        if (event.key === Qt.Key_Escape) {
+            swapper.state = "menu"
+            event.accepted = true
+        }
     }
 
     state: "menu"
@@ -71,6 +70,17 @@ Item {
             PropertyChanges {
                 target: menuLoader
                 active: false
+            }
+            PropertyChanges {
+                target: gameLoader
+                active: true
+            }
+        },
+        State {
+            name: "inGameMenu"
+            PropertyChanges {
+                target: menuLoader
+                active: true
             }
             PropertyChanges {
                 target: gameLoader

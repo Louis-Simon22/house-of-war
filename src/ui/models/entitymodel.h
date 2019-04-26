@@ -7,16 +7,19 @@
 
 namespace how {
 namespace ui {
+namespace {
+namespace uuids = ::boost::uuids;
+}
 class EntityModel : public QAbstractListModel {
 public:
   EntityModel();
-  ~EntityModel();
+  virtual ~EntityModel();
 
 public:
-  void entityChanged(::boost::uuids::uuid uuid);
+  void entityChanged(const uuids::uuid& uuid);
 
 protected:
-  std::map<const ::boost::uuids::uuid, QModelIndex> uuidToIndexMap;
+  std::map<const uuids::uuid, QModelIndex> uuidToIndexMap;
 };
 } // namespace ui
 } // namespace how

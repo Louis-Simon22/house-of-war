@@ -1,13 +1,13 @@
 import QtQuick 2.11
 import QtQuick.Layouts 1.1
 
-import com.louissimonmcnicoll.how.ui.gamedatamanager 1.0
+import com.louissimonmcnicoll.how.ui.modelmanager 1.0
 import "components/"
 
 BaseMenu {
     id: generateMenu
 
-    property GameDataManager gameDataManager
+    property ModelManager modelManager
 
     signal newGameGenerated
 
@@ -24,14 +24,14 @@ BaseMenu {
             Layout.alignment: Qt.AlignCenter
             text: "Generate"
             onClicked: {
-                generateMenu.gameDataManager.newGameGenerated.connect(
+                generateMenu.modelManager.newGameGenerated.connect(
                             generateMenu.newGameGenerated)
-                generateMenu.gameDataManager.newGame(
+                generateMenu.modelManager.newGame(
                             parseInt(worldWidth.input, 10),
                             parseInt(worldHeight.input, 10),
                             parseFloat(minimumVoronoiCellDistance.input),
                             parseInt(randomSeed.input, 10))
-                generateMenu.gameDataManager.newGameGenerated.disconnect(
+                generateMenu.modelManager.newGameGenerated.disconnect(
                             generateMenu.newGameGenerated)
             }
         }

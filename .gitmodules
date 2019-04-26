@@ -1,3 +1,7 @@
 [submodule "lib/voronoi"]
 	path = lib/voronoi
 	url = https://github.com/JCash/voronoi.git
+	
+[submodule "lib/poisson-disk-sampling"]
+    path = lib/poisson-disk-sampling
+    url = https://github.com/thinks/poisson-disk-sampling.git
