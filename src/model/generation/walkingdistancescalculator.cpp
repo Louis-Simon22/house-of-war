@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <iostream>
-
 namespace how {
 namespace model {
 
@@ -21,9 +20,7 @@ void calculateWalkingDistances(types::graph_t &graph) {
     const auto heightDifference =
         targetVertex.getTile().getHeight() - sourceVertex.getTile().getHeight();
     const auto walkingDistance =
-        edge.getDistanceAsCrowFlies() * (1 + heightDifference * 2);
-    std::cout << edge.getDistanceAsCrowFlies() << "|" << walkingDistance
-              << std::endl;
+        edge.getDistanceAsCrowFlies() * (1 + heightDifference);
     edge.setDistanceWalking(std::max(walkingDistance, 0.0F));
   }
 }

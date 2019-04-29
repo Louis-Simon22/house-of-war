@@ -9,7 +9,5 @@ Character::Character(types::point_t initialPosition,
 
 Character::~Character() {}
 
-void Character::onIteration(float deltaTime) {}
-
 } // namespace model
 } // namespace how

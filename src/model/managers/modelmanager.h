@@ -24,7 +24,7 @@ public:
   EntityChangeManager *getEntityChangeManagerPtr() const;
 
 private:
-  // TODO try not having the unique_ptr
+  // TODO try not having unique_ptr
   std::unique_ptr<WorldManager> worldManagerPtr;
   std::unique_ptr<GraphEntityManager> graphEntityManagerPtr;
   std::unique_ptr<EntityChangeManager> entityChangeManagerPtr;

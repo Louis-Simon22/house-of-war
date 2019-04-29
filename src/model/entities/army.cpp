@@ -18,6 +18,7 @@ void Army::onIteration(float deltaTime) {
   bg::subtract_value(minPoint, this->influenceAreaWidth / 2);
   bg::add_value(maxPoint, this->influenceAreaWidth / 2);
   const auto area = types::box_t(minPoint, maxPoint);
+  // TODO maybe a one point polygon works for character?
 }
 
 } // namespace model

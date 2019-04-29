@@ -2,8 +2,8 @@
 #define GRAPHENTITY_H
 
 #include "../graphtypes.h"
-#include "./voronoicell.h"
 #include "./entity.h"
+#include "./voronoicell.h"
 
 namespace how {
 namespace model {

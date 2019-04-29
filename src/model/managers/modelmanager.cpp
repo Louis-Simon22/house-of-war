@@ -11,6 +11,7 @@ void ModelManager::newModel(WorldGenerationConfig config) {
   this->graphEntityManagerPtr = std::make_unique<GraphEntityManager>(
       generateCharacters(this->worldManagerPtr->getGraph()),
       std::vector<Army>());
+  // todo generate armies
 }
 
 WorldManager *ModelManager::getWorldManagerPtr() const {
