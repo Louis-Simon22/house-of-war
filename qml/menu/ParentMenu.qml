@@ -26,7 +26,7 @@ Item {
         anchors.fill: parent
 
         modelManager: parentMenu.modelManager
-        onNewGameGenerated: {
+        onNewModelGenerated: {
             parentMenu.startGame()
         }
         onBack: parentMenu.state = "main"

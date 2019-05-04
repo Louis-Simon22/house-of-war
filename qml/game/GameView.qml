@@ -28,13 +28,11 @@ Item {
         anchors.fill: parent
 
         active: false
-        sourceComponent: MapView {
+        sourceComponent: MapItem {
             id: mapView
         }
         onLoaded: {
-            item.worldManager = modelManager.worldManager
-            item.graphEntityManager = modelManager.graphEntityManager
-            item.charactersController = modelManager.charactersController
+            item.modelManager = modelManager
         }
     }
 

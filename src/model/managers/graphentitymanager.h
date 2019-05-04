@@ -8,16 +8,15 @@
 
 namespace how {
 namespace model {
+// TODO no need for this anymore? Group everything in a "model" object
 class GraphEntityManager {
 public:
   GraphEntityManager(std::vector<Character> characters,
                      std::vector<Army> armies);
 
-  const std::vector<Character> &getCharacters() const;
-  Character &getCharacter(std::size_t index);
-
-  const std::vector<Army> &getArmies() const;
-  Army &getArmy(std::size_t index);
+public:
+  std::vector<Character> &getCharacters();
+  std::vector<Army> &getArmies();
 
 private:
   std::vector<Character> characters;

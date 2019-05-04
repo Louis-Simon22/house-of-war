@@ -1,4 +1,3 @@
-import QtQuick.Window 2.2
 import QtQuick 2.11
 
 import com.louissimonmcnicoll.how.ui.modelmanager 1.0

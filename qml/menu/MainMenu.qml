@@ -1,4 +1,5 @@
 import QtQuick 2.11
+
 import "components/"
 
 BaseMenu {

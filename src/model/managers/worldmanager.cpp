@@ -18,29 +18,25 @@ WorldManager::WorldManager(types::box_t bounds,
 
 const types::box_t &WorldManager::getBounds() const { return this->bounds; }
 
-const std::vector<types::segment_t> *
+const std::vector<types::segment_t> &
 WorldManager::getUniqueVoronoiSegments() const {
-  return &this->uniqueVoronoiSegments;
+  return this->uniqueVoronoiSegments;
 }
 
-const std::vector<types::segment_t> *
+const std::vector<types::segment_t> &
 WorldManager::getUniqueDelaunaySegments() const {
-  return &this->uniqueDelaunaySegments;
+  return this->uniqueDelaunaySegments;
 }
 
-const types::graph_t *WorldManager::getGraph() const { return &this->graph; }
+const types::graph_t &WorldManager::getGraph() const { return this->graph; }
 
-std::size_t WorldManager::getVoronoiCellCount() const {
-  return ::boost::num_vertices(this->graph);
-}
-
-const VoronoiCell &WorldManager::getVoronoiCellByDesc(
-    types::graph_vertex_desc_t vertexDesc) const {
+VoronoiCell &
+WorldManager::getVoronoiCellByDesc(types::graph_vertex_desc_t vertexDesc) {
   return graph[vertexDesc];
 }
 
-const types::polygon_index_tree_t *WorldManager::getPolygonIndexTree() const {
-  return &this->polygonIndexTree;
+const types::polygon_index_tree_t &WorldManager::getPolygonIndexTree() const {
+  return this->polygonIndexTree;
 }
 
 } // namespace model

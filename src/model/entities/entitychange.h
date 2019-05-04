@@ -13,7 +13,7 @@ using change_signal_t =
 class EntityChange {
 public:
   EntityChange();
-  virtual ~EntityChange() = 0;
+  virtual ~EntityChange();
 
 public:
   virtual bool progress(float deltaTime) = 0;

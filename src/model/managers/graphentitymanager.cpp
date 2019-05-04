@@ -2,24 +2,16 @@
 
 namespace how {
 namespace model {
+
 GraphEntityManager::GraphEntityManager(std::vector<Character> characters,
                                        std::vector<Army> armies)
     : characters(characters), armies(armies) {}
 
-const std::vector<Character> &GraphEntityManager::getCharacters() const {
+std::vector<Character> &GraphEntityManager::getCharacters() {
   return this->characters;
 }
 
-Character &GraphEntityManager::getCharacter(std::size_t index) {
-  return this->characters[index];
-}
+std::vector<Army> &GraphEntityManager::getArmies() { return this->armies; }
 
-const std::vector<Army> &GraphEntityManager::getArmies() const {
-  return this->armies;
-}
-
-Army &GraphEntityManager::getArmy(std::size_t index) {
-  return this->armies[index];
-}
 } // namespace model
 } // namespace how

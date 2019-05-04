@@ -15,14 +15,14 @@
 // Debug output of qml renderer
 #define QSG_RENDERER_DEBUG = render
 
+#include "../src/ui/control/graphentitycontroller.h"
 #include "../src/ui/control/modelthreadmanager.h"
-#include "../src/ui/models/charactersmodel.h"
-#include "../src/ui/models/voronoicellsmodel.h"
+#include "../src/ui/models/entitiesmodel.h"
+#include "../src/ui/painters/armypainter.h"
+#include "../src/ui/painters/characterpainter.h"
 #include "../src/ui/painters/segmentspainter.h"
-#include "../src/ui/painters/tilepainter.h"
-#include "../src/ui/wrappers/graphentitymanagerqmlwrapper.h"
-#include "../src/ui/wrappers/modelmanagerqmlwrapper.h"
-#include "../src/ui/wrappers/worldmanagerqmlwrapper.h"
+#include "../src/ui/painters/voronoicellpainter.h"
+#include "../src/ui/wrappers/modelmanagerwrapper.h"
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -39,30 +39,23 @@ int main(int argc, char *argv[]) {
 
   // Registering c++ bindings for QML
   // Painters
-  qmlRegisterType<::how::ui::SegmentsPainter>(
-      "com.louissimonmcnicoll.how.ui.segmentspainter", 1, 0, "SegmentsPainter");
-  qmlRegisterType<::how::ui::TilePainter>(
-      "com.louissimonmcnicoll.how.ui.TilePainter", 1, 0, "TilePainter");
+  qmlRegisterUncreatableType<::how::ui::SegmentsPainter>(
+      "com.louissimonmcnicoll.how.ui.segmentspainter", 1, 0, "SegmentsPainter",
+      uncreatableTypeErrorMessage);
+//  qmlRegisterUncreatableType<::how::ui::VoronoiCellPainter>(
+//      "com.louissimonmcnicoll.how.ui.voronoicellpainter", 1, 0,
+//      "VoronoiCellPainter", uncreatableTypeErrorMessage);
   // Models
-  qmlRegisterUncreatableType<::how::ui::VoronoiCellsModel>(
-      "com.louissimonmcnicoll.how.ui.voronoicellsmodel", 1, 0,
-      "VoronoiCellsModel", uncreatableTypeErrorMessage);
-  qmlRegisterUncreatableType<::how::ui::CharactersModel>(
-      "com.louissimonmcnicoll.how.ui.charactersmodel", 1, 0, "CharactersModel",
+  qmlRegisterUncreatableType<::how::ui::EntitiesModel>(
+      "com.louissimonmcnicoll.how.ui.entitiesmodel", 1, 0, "EntitiesModel",
       uncreatableTypeErrorMessage);
   // QML wrappers
-  qmlRegisterType<::how::ui::ModelManagerQMLWrapper>(
+  qmlRegisterType<::how::ui::ModelManagerWrapper>(
       "com.louissimonmcnicoll.how.ui.modelmanager", 1, 0, "ModelManager");
-  qmlRegisterUncreatableType<::how::ui::WorldManagerQMLWrapper>(
-      "com.louissimonmcnicoll.how.ui.worldmanager", 1, 0, "WorldManager",
-      uncreatableTypeErrorMessage);
-  qmlRegisterUncreatableType<::how::ui::GraphEntityManagerQMLWrapper>(
-      "com.louissimonmcnicoll.how.ui.graphentitymanager", 1, 0, "GraphEntityManager",
-      uncreatableTypeErrorMessage);
   // Controllers
-  qmlRegisterUncreatableType<::how::ui::CharactersController>(
-      "com.louissimonmcnicoll.how.ui.characterscontroller", 1, 0,
-      "CharactersController", uncreatableTypeErrorMessage);
+  qmlRegisterUncreatableType<::how::ui::GraphEntityController>(
+      "com.louissimonmcnicoll.how.ui.graphentitycontroller", 1, 0,
+      "GraphEntityController", uncreatableTypeErrorMessage);
   // Others
   qmlRegisterUncreatableType<::how::ui::ModelThreadManager>(
       "com.louissimonmcnicoll.how.ui.modelthreadmanager", 1, 0,

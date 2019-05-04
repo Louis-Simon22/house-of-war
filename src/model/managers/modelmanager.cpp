@@ -1,5 +1,7 @@
 #include "modelmanager.h"
 
+#include "../generation/entitygenerator.h"
+
 namespace how {
 namespace model {
 ModelManager::ModelManager()
@@ -8,10 +10,12 @@ ModelManager::ModelManager()
 
 void ModelManager::newModel(WorldGenerationConfig config) {
   this->worldManagerPtr.reset(generateWorld(config));
-  this->graphEntityManagerPtr = std::make_unique<GraphEntityManager>(
-      generateCharacters(this->worldManagerPtr->getGraph()),
-      std::vector<Army>());
-  // todo generate armies}
+  const auto &characters =
+      generateCharacters(this->worldManagerPtr->getGraph());
+  const auto &armies = generateArmies(this->worldManagerPtr->getGraph());
+  this->graphEntityManagerPtr =
+      std::make_unique<GraphEntityManager>(characters, armies);
+}
 
 WorldManager *ModelManager::getWorldManagerPtr() const {
   return this->worldManagerPtr.get();

@@ -4,25 +4,23 @@ namespace how {
 namespace model {
 
 std::vector<Character>
-generateCharacters(const types::graph_t *delaunayGraphPtr) {
-  const auto &delaunayGraph = *delaunayGraphPtr;
+generateCharacters(const types::graph_t &delaunayGraph) {
   auto characters = std::vector<Character>();
-  types::graph_vertex_desc_t currentVertex = 35;
+  types::graph_vertex_desc_t currentVertex = 3;
   characters.emplace_back(delaunayGraph[currentVertex].getCentroid(),
                           currentVertex);
-  currentVertex = 15;
+  currentVertex = 6;
   characters.emplace_back(delaunayGraph[currentVertex].getCentroid(),
                           currentVertex);
   return characters;
 }
 
-std::vector<Army> generateArmies(const types::graph_t *delaunayGraphPtr) {
-  const auto &delaunayGraph = *delaunayGraphPtr;
+std::vector<Army> generateArmies(const types::graph_t &delaunayGraph) {
   auto armies = std::vector<Army>();
-  types::graph_vertex_desc_t currentVertex = 30;
+  types::graph_vertex_desc_t currentVertex = 9;
   armies.emplace_back(delaunayGraph[currentVertex].getCentroid(),
                       currentVertex);
-  currentVertex = 10;
+  currentVertex = 12;
   armies.emplace_back(delaunayGraph[currentVertex].getCentroid(),
                       currentVertex);
   return armies;

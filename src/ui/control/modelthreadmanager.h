@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "../../model/managers/entitychangemanager.h"
-#include "../wrappers/worldmanagerqmlwrapper.h"
 
 namespace how {
 namespace ui {
