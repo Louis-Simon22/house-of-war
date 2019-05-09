@@ -22,6 +22,7 @@ QHash<int, QByteArray> EntitiesModel::roleNames() const {
   roles[RolePosY] = "rolePosY";
   roles[RoleWidth] = "roleWidth";
   roles[RoleHeight] = "roleHeight";
+  roles[RoleLayer] = "roleLayer";
   roles[RoleAcceptedButtons] = "roleAcceptedButtons";
   return roles;
 }
@@ -63,6 +64,8 @@ QVariant EntitiesModel::data(const QModelIndex &index, int role) const {
     return static_cast<int>(entityWrapper->getWidth());
   case RoleHeight:
     return static_cast<int>(entityWrapper->getHeight());
+  case RoleLayer:
+    return entityWrapper->getLayer();
   case RoleAcceptedButtons: {
     unsigned int acceptedButtons = Qt::NoButton;
     if (entityWrapper->isSelectable()) {

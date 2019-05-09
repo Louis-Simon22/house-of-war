@@ -21,9 +21,12 @@ GraphEntityController::GraphEntityController(
 
 QQuickItem *
 GraphEntityController::createEntityWrapperPainterAtIndex(int index) {
-  auto &entityWrapperPtr =
+  const auto &entityWrapperPtr =
       this->entityWrappersPtr->operator[](static_cast<std::size_t>(index));
   auto *entityPainter = entityWrapperPtr->createEntityPainter();
+  entityPainter->setZ(entityWrapperPtr->getLayer());
+  connect(entityWrapperPtr.get(), &EntityWrapper::updateEntityPainter,
+          entityPainter, &EntityPainter::update);
   QQmlEngine::setObjectOwnership(entityPainter,
                                  QQmlEngine::JavaScriptOwnership);
   return entityPainter;

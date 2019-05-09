@@ -35,6 +35,8 @@ types::coordinate_t VoronoiCellWrapper::getHeight() const {
          bg::get<bg::min_corner, 1>(this->voronoiCell.getEnvelope());
 }
 
+int VoronoiCellWrapper::getLayer() const { return 0; }
+
 bool VoronoiCellWrapper::isTargetable() const { return true; }
 
 bool VoronoiCellWrapper::isSelectable() const { return false; }

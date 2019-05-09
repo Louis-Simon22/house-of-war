@@ -47,13 +47,11 @@ set(HEADER_FILES
     src/model/utils/pointcomparator.h
     src/model/utils/segmentcomparator.h
     src/ui/control/graphentitycontroller.h
+    src/ui/control/maincontroller.h
     src/ui/control/modelthreadmanager.h
+    src/ui/control/selectionmanager.h
     src/ui/conversion/converter.h
-    src/ui/wrappers/armywrapper.h
-    src/ui/wrappers/characterwrapper.h
-    src/ui/wrappers/entitywrapper.h
-    src/ui/wrappers/modelmanagerwrapper.h
-    src/ui/wrappers/voronoicellwrapper.h
+    src/ui/generation/entitywrappersgenerator.h
     src/ui/models/entitiesmodel.h
     src/ui/painters/armypainter.h
     src/ui/painters/characterpainter.h
@@ -61,6 +59,12 @@ set(HEADER_FILES
     src/ui/painters/paintingsutils.h
     src/ui/painters/voronoicellpainter.h
     src/ui/painters/segmentspainter.h    
+    src/ui/wrappers/armywrapper.h
+    src/ui/wrappers/characterwrapper.h
+    src/ui/wrappers/entitywrapper.h
+    src/ui/wrappers/modelmanagerwrapper.h
+    src/ui/wrappers/selectableentitywrapper.h
+    src/ui/wrappers/voronoicellwrapper.h
     )
 
 set(CPP_FILES
@@ -94,20 +98,24 @@ set(CPP_FILES
     src/model/utils/pointcomparator.cpp
     src/model/utils/segmentcomparator.cpp
     src/ui/control/graphentitycontroller.cpp
+    src/ui/control/maincontroller.cpp
     src/ui/control/modelthreadmanager.cpp
+    src/ui/control/selectionmanager.cpp
     src/ui/conversion/converter.cpp
-    src/ui/wrappers/armywrapper.cpp
-    src/ui/wrappers/characterwrapper.cpp
-    src/ui/wrappers/entitywrapper.cpp
-    src/ui/wrappers/modelmanagerwrapper.cpp
-    src/ui/wrappers/voronoicellwrapper.cpp
+    src/ui/generation/entitywrappersgenerator.cpp
     src/ui/models/entitiesmodel.cpp
     src/ui/painters/armypainter.cpp
     src/ui/painters/characterpainter.cpp
     src/ui/painters/entitypainter.cpp
     src/ui/painters/paintingsutils.cpp
+    src/ui/wrappers/selectableentitywrapper.cpp
     src/ui/painters/voronoicellpainter.cpp
     src/ui/painters/segmentspainter.cpp
+    src/ui/wrappers/armywrapper.cpp
+    src/ui/wrappers/characterwrapper.cpp
+    src/ui/wrappers/entitywrapper.cpp
+    src/ui/wrappers/modelmanagerwrapper.cpp
+    src/ui/wrappers/voronoicellwrapper.cpp
     )
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")

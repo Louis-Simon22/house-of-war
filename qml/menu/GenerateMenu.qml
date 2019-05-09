@@ -3,12 +3,12 @@ import QtQuick.Layouts 1.1
 
 import "components/"
 
-import com.louissimonmcnicoll.how.ui.modelmanager 1.0
+import com.louissimonmcnicoll.how.ui.maincontroller 1.0
 
 BaseMenu {
     id: generateMenu
 
-    property ModelManager modelManager
+    property MainController mainController
 
     signal newModelGenerated
 
@@ -25,14 +25,14 @@ BaseMenu {
             Layout.alignment: Qt.AlignCenter
             text: "Generate"
             onClicked: {
-                generateMenu.modelManager.newModelGenerated.connect(
+                mainController.modelManagerWrapper.newModelGenerated.connect(
                             generateMenu.newModelGenerated)
-                generateMenu.modelManager.newModel(
+                mainController.modelManagerWrapper.newModel(
                             parseInt(worldWidth.input, 10),
                             parseInt(worldHeight.input, 10),
                             parseFloat(minimumVoronoiCellDistance.input),
                             parseInt(randomSeed.input, 10))
-                generateMenu.modelManager.newModelGenerated.disconnect(
+                mainController.modelManagerWrapper.newModelGenerated.disconnect(
                             generateMenu.newModelGenerated)
             }
         }

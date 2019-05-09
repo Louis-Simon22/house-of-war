@@ -16,6 +16,7 @@
 #define QSG_RENDERER_DEBUG = render
 
 #include "../src/ui/control/graphentitycontroller.h"
+#include "../src/ui/control/maincontroller.h"
 #include "../src/ui/control/modelthreadmanager.h"
 #include "../src/ui/models/entitiesmodel.h"
 #include "../src/ui/painters/armypainter.h"
@@ -29,9 +30,9 @@ int main(int argc, char *argv[]) {
 
   QGuiApplication app(argc, argv);
 
-//  QSurfaceFormat format;
-//  format.setSamples(16);
-//  QSurfaceFormat::setDefaultFormat(format);
+  //  QSurfaceFormat format;
+  //  format.setSamples(16);
+  //  QSurfaceFormat::setDefaultFormat(format);
   QQmlApplicationEngine engine;
 
   const QString uncreatableTypeErrorMessage =
@@ -42,20 +43,20 @@ int main(int argc, char *argv[]) {
   qmlRegisterUncreatableType<::how::ui::SegmentsPainter>(
       "com.louissimonmcnicoll.how.ui.segmentspainter", 1, 0, "SegmentsPainter",
       uncreatableTypeErrorMessage);
-//  qmlRegisterUncreatableType<::how::ui::VoronoiCellPainter>(
-//      "com.louissimonmcnicoll.how.ui.voronoicellpainter", 1, 0,
-//      "VoronoiCellPainter", uncreatableTypeErrorMessage);
   // Models
   qmlRegisterUncreatableType<::how::ui::EntitiesModel>(
       "com.louissimonmcnicoll.how.ui.entitiesmodel", 1, 0, "EntitiesModel",
       uncreatableTypeErrorMessage);
   // QML wrappers
-  qmlRegisterType<::how::ui::ModelManagerWrapper>(
-      "com.louissimonmcnicoll.how.ui.modelmanager", 1, 0, "ModelManager");
+  qmlRegisterUncreatableType<::how::ui::ModelManagerWrapper>(
+      "com.louissimonmcnicoll.how.ui.modelmanager", 1, 0, "ModelManager",
+      uncreatableTypeErrorMessage);
   // Controllers
   qmlRegisterUncreatableType<::how::ui::GraphEntityController>(
       "com.louissimonmcnicoll.how.ui.graphentitycontroller", 1, 0,
       "GraphEntityController", uncreatableTypeErrorMessage);
+  qmlRegisterType<::how::ui::MainController>(
+      "com.louissimonmcnicoll.how.ui.maincontroller", 1, 0, "MainController");
   // Others
   qmlRegisterUncreatableType<::how::ui::ModelThreadManager>(
       "com.louissimonmcnicoll.how.ui.modelthreadmanager", 1, 0,

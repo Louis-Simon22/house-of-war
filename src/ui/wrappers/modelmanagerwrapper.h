@@ -6,25 +6,19 @@
 #include <QRect>
 
 #include "../../model/managers/modelmanager.h"
-#include "../control/graphentitycontroller.h"
-#include "../control/modelthreadmanager.h"
-#include "../models/entitiesmodel.h"
-#include "./entitywrapper.h"
 
 namespace how {
 namespace ui {
+// TODO change to WorldManagerWrapper
 class ModelManagerWrapper : public QObject {
   Q_OBJECT
 
+  // TODO maybe move this to the main controller?
   Q_PROPERTY(
       QRect worldBounds READ getWorldBounds NOTIFY newModelGenerated FINAL)
-  Q_PROPERTY(GraphEntityController *graphEntityController READ
-                 getGraphEntityController NOTIFY newModelGenerated FINAL)
-  Q_PROPERTY(EntitiesModel *entitiesModel READ getEntitiesModel NOTIFY
-                 newModelGenerated FINAL)
 
 public:
-  ModelManagerWrapper(QObject *parent = nullptr);
+  ModelManagerWrapper(model::ModelManager *modelManagerPtr);
 
 signals:
   void newModelGenerated();
@@ -32,17 +26,12 @@ signals:
 public slots:
   void newModel(int width, int height, float minimumVoronoiCellDistance,
                 int randomSeed);
-  void instantiateEntityWrappers();
 
 private:
-  GraphEntityController *getGraphEntityController();
-  EntitiesModel *getEntitiesModel();
   QRect getWorldBounds() const;
 
 private:
-  model::ModelManager modelManager;
-  ModelThreadManager modelThreadManager;
-  std::vector<std::unique_ptr<EntityWrapper>> entityWrappers;
+  model::ModelManager *modelManagerPtr;
 };
 } // namespace ui
 } // namespace how

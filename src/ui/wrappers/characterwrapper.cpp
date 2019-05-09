@@ -9,7 +9,7 @@ namespace bg = ::boost::geometry;
 }
 
 CharacterWrapper::CharacterWrapper(model::Character &character)
-    : character(character) {}
+    : SelectableEntityWrapper(), character(character) {}
 
 EntityPainter *CharacterWrapper::createEntityPainter() const {
   return new CharacterPainter(this->character);
@@ -27,9 +27,9 @@ types::coordinate_t CharacterWrapper::getWidth() const { return 10; }
 
 types::coordinate_t CharacterWrapper::getHeight() const { return 10; }
 
-bool CharacterWrapper::isTargetable() const { return false; }
+int CharacterWrapper::getLayer() const { return 2; }
 
-bool CharacterWrapper::isSelectable() const { return true; }
+bool CharacterWrapper::isTargetable() const { return false; }
 
 } // namespace ui
 } // namespace how

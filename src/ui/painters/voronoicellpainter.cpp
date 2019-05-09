@@ -10,8 +10,6 @@ namespace ui {
 
 VoronoiCellPainter::VoronoiCellPainter(const model::VoronoiCell &voronoiCell)
     : EntityPainter(), voronoiCell(voronoiCell) {
-  this->setAntialiasing(true);
-  this->setFlag(QQuickItem::ItemHasContents, true);
 }
 
 VoronoiCellPainter::~VoronoiCellPainter() {}
@@ -22,7 +20,7 @@ QSGNode *VoronoiCellPainter::updatePaintNode(QSGNode *oldNode,
   QSGGeometryNode *node = nullptr;
   QSGGeometry *geometry = nullptr;
 
-  const auto &polygonOuterPoints = voronoiCell.getOutlinePoints();
+  const auto &polygonOuterPoints = this->voronoiCell.getOutlinePoints();
   const int pointsCount = static_cast<int>(polygonOuterPoints.size());
 
   if (!node) {

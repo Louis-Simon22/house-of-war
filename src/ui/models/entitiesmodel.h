@@ -23,6 +23,7 @@ public:
     RolePosY,
     RoleWidth,
     RoleHeight,
+    RoleLayer,
     RoleAcceptedButtons
   };
 

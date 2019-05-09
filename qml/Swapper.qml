@@ -1,6 +1,6 @@
 import QtQuick 2.11
 
-import com.louissimonmcnicoll.how.ui.modelmanager 1.0
+import com.louissimonmcnicoll.how.ui.maincontroller 1.0
 
 import "game/"
 import "menu/"
@@ -9,8 +9,8 @@ Item {
     id: swapper
     focus: true
 
-    ModelManager {
-        id: modelManager
+    MainController {
+        id: mainController
     }
 
     Loader {
@@ -21,7 +21,7 @@ Item {
             id: parentMenu
         }
         onLoaded: {
-            item.modelManager = modelManager
+            item.mainController = mainController
         }
     }
 
@@ -38,7 +38,7 @@ Item {
             id: gameView
         }
         onLoaded: {
-            item.modelManager = modelManager
+            item.mainController = mainController
             item.instantiateGame()
         }
     }

@@ -2,13 +2,13 @@
 #define CHARACTERWRAPPER_H
 
 #include "../../model/entities/character.h"
-#include "./entitywrapper.h"
+#include "./selectableentitywrapper.h"
 
 namespace how {
 namespace ui {
-class CharacterWrapper : public EntityWrapper {
+class CharacterWrapper : public SelectableEntityWrapper {
 public:
-  CharacterWrapper(model::Character& character);
+  CharacterWrapper(model::Character &character);
 
 public:
   EntityPainter *createEntityPainter() const override;
@@ -16,8 +16,9 @@ public:
   types::coordinate_t getPosY() const override;
   types::coordinate_t getWidth() const override;
   types::coordinate_t getHeight() const override;
+  int getLayer() const override;
   bool isTargetable() const override;
-  bool isSelectable() const override;
+  bool isSelected() const override;
 
 private:
   model::Character &character;

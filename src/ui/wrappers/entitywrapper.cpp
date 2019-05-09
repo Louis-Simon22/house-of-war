@@ -2,8 +2,10 @@
 
 namespace how {
 namespace ui {
-EntityWrapper::EntityWrapper() {}
+
+EntityWrapper::EntityWrapper() : QObject() {}
 
 EntityWrapper::~EntityWrapper() {}
+
 } // namespace ui
 } // namespace how

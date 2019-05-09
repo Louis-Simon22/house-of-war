@@ -4,6 +4,7 @@
 
 namespace how {
 namespace ui {
+
 ModelThreadManager::ModelThreadManager() : QObject(nullptr) {
   this->modelWorkerThread.start(QThread::HighPriority);
   this->modelIterationTimer.setInterval(400);
@@ -35,5 +36,6 @@ void ModelThreadManager::setIterationInterval(int msec) {
 void ModelThreadManager::workerThreadIteration() {
   this->iteration(this->modelIterationTimer.interval());
 }
+
 } // namespace ui
 } // namespace how

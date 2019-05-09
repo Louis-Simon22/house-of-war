@@ -1,13 +1,13 @@
 import QtQuick 2.11
 
-import com.louissimonmcnicoll.how.ui.modelmanager 1.0
+import com.louissimonmcnicoll.how.ui.maincontroller 1.0
 
 import "map/"
 
 Item {
     id: gameView
 
-    property ModelManager modelManager
+    property MainController mainController
 
     signal instantiateGame
 
@@ -32,7 +32,7 @@ Item {
             id: mapView
         }
         onLoaded: {
-            item.modelManager = modelManager
+            item.mainController = mainController
         }
     }
 

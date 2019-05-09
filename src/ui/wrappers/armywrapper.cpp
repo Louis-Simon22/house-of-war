@@ -10,7 +10,8 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-ArmyWrapper::ArmyWrapper(model::Army &army) : EntityWrapper(), army(army) {}
+ArmyWrapper::ArmyWrapper(model::Army &army)
+    : SelectableEntityWrapper(), army(army) {}
 
 ArmyWrapper::~ArmyWrapper() {}
 
@@ -19,9 +20,7 @@ EntityPainter *ArmyWrapper::createEntityPainter() const {
 }
 
 types::coordinate_t ArmyWrapper::getPosX() const {
-  auto greg = bg::get<0>(this->army.getPosition());
-  auto greg2 = bg::get<1>(this->army.getPosition());
-  return greg;
+  return bg::get<0>(this->army.getPosition());
 }
 
 types::coordinate_t ArmyWrapper::getPosY() const {
@@ -32,9 +31,9 @@ types::coordinate_t ArmyWrapper::getWidth() const { return 10; }
 
 types::coordinate_t ArmyWrapper::getHeight() const { return 10; }
 
-bool ArmyWrapper::isTargetable() const { return false; }
+int ArmyWrapper::getLayer() const { return 1; }
 
-bool ArmyWrapper::isSelectable() const { return true; }
+bool ArmyWrapper::isTargetable() const { return false; }
 
 } // namespace ui
 } // namespace how

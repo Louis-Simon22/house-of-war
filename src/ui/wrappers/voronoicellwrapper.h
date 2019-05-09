@@ -17,6 +17,7 @@ public:
   types::coordinate_t getPosY() const override;
   types::coordinate_t getWidth() const override;
   types::coordinate_t getHeight() const override;
+  int getLayer() const override;
   bool isTargetable() const override;
   bool isSelectable() const override;
 
