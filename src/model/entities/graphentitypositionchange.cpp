@@ -14,7 +14,6 @@ GraphEntityPositionChange::~GraphEntityPositionChange() {}
 bool GraphEntityPositionChange::progress(float deltaTime) {
   const auto &currentDestination =
       this->destinations[this->currentDestinationIndex];
-
   const auto &destinationVoronoiCell = this->delaunayGraph[currentDestination];
   this->graphEntity.setPosition(destinationVoronoiCell.getCentroid());
   this->currentDestinationIndex++;

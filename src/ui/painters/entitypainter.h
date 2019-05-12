@@ -3,15 +3,23 @@
 
 #include <QQuickItem>
 
+#include "../../model/entities/graphentity.h"
+
 namespace how {
 namespace ui {
 class EntityPainter : public QQuickItem {
   Q_OBJECT
 
 public:
-  EntityPainter(QQuickItem *parent = nullptr);
+  EntityPainter(const model::GraphEntity &graphEntity,
+                QQuickItem *parent = nullptr);
   virtual ~EntityPainter() = 0;
 
+public:
+  void updateDimensions();
+
+private:
+  const model::GraphEntity &graphEntity;
 };
 } // namespace ui
 } // namespace how
