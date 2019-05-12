@@ -10,10 +10,9 @@ namespace how {
 namespace model {
 namespace {
 namespace uuids = ::boost::uuids;
-using physical_change_signal_t =
-    ::boost::signals2::signal<void(const uuids::uuid& uuid)>;
-using visual_change_signal_t =
-    ::boost::signals2::signal<void()>;
+using dimensions_changed_signal_t = ::boost::signals2::signal<void()>;
+using visual_changed_signal_t = ::boost::signals2::signal<void()>;
+using destruction_signal_t = ::boost::signals2::signal<void()>;
 } // namespace
 class GraphEntity {
 public:
@@ -36,14 +35,18 @@ public:
   const uuids::uuid &getUuid() const;
   types::point_t getPosition() const;
   types::layer_t getLayer() const;
+  bool isSelected() const;
+  void setSelected(bool selected);
 
 private:
   uuids::uuid uuid;
   types::layer_t layer;
+  bool selected;
 
 public:
-  physical_change_signal_t physicalChangSignal;
-  visual_change_signal_t visualChangeSignal;
+  dimensions_changed_signal_t dimensionsChangedSignal;
+  visual_changed_signal_t visualChangedSignal;
+  destruction_signal_t destructionSignal;
 };
 } // namespace model
 } // namespace how

@@ -8,9 +8,11 @@
 namespace how {
 namespace ui {
 
-VoronoiCellPainter::VoronoiCellPainter(
-    const VoronoiCellWrapper &voronoiCellWrapper)
-    : EntityPainter(), voronoiCellWrapper(voronoiCellWrapper) {}
+VoronoiCellPainter::VoronoiCellPainter(const model::VoronoiCell &voronoiCell)
+    : EntityPainter(voronoiCell), voronoiCell(voronoiCell) {
+      this->voronoiCell.visualChangedSignal.connect(
+          ::boost::bind(&EntityPainter::update, this, _1));
+}
 
 VoronoiCellPainter::~VoronoiCellPainter() {}
 
@@ -20,8 +22,7 @@ QSGNode *VoronoiCellPainter::updatePaintNode(QSGNode *oldNode,
   QSGGeometryNode *node = nullptr;
   QSGGeometry *geometry = nullptr;
 
-  const auto &voronoiCell = this->voronoiCellWrapper.getVoronoiCell();
-  const auto &polygonOuterPoints = voronoiCell.getOutlinePoints();
+  const auto &polygonOuterPoints = this->voronoiCell.getOutlinePoints();
   const int pointsCount = static_cast<int>(polygonOuterPoints.size());
 
   if (!node) {
@@ -47,8 +48,8 @@ QSGNode *VoronoiCellPainter::updatePaintNode(QSGNode *oldNode,
 
   QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
   material->setColor(
-      QColor(0, static_cast<int>(voronoiCell.getTile().getHeight() * 255),
-             static_cast<int>((1 - voronoiCell.getTile().getHeight()) * 255)));
+      QColor(0, static_cast<int>(this->voronoiCell.getTile().getHeight() * 255),
+             static_cast<int>((1 - this->voronoiCell.getTile().getHeight()) * 255)));
 
   node->setMaterial(material);
   node->setFlag(QSGNode::OwnsMaterial);

@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "../wrappers/entitywrapper.h"
+#include "../../model/entities/graphentity.h"
 
 namespace how {
 namespace ui {
@@ -14,13 +14,13 @@ public:
   SelectionManager();
 
 public:
-  void selectEntity(EntityWrapper *newSelection);
-  EntityWrapper *getSelection() const;
+  void selectEntity(model::GraphEntity *newSelection);
+  model::GraphEntity *getSelection() const;
   bool hasSelection() const;
   void clearSelection();
 
 private:
-  EntityWrapper *selection;
+  model::GraphEntity *selection;
 };
 } // namespace ui
 } // namespace how

@@ -3,11 +3,7 @@
 
 #include <memory>
 
-#include "../generation/entitygenerator.h"
 #include "../generation/worldgenerationconfig.h"
-#include "../generation/worldgenerator.h"
-#include "../modeltypes.h"
-#include "./entitychangemanager.h"
 #include "./graphentitymanager.h"
 #include "./worldmanager.h"
 
@@ -19,15 +15,18 @@ public:
 
 public:
   void newModel(WorldGenerationConfig config);
+
+public:
+  GraphEntityManager &getGraphEntityManager();
+  const std::vector<Army> getArmies() const;
+  const std::vector<Character> getCharacters() const;
   WorldManager *getWorldManagerPtr() const;
-  GraphEntityManager *getGraphEntityManagerPtr() const;
-  EntityChangeManager *getEntityChangeManagerPtr() const;
 
 private:
-  // TODO try not having unique_ptr
+  GraphEntityManager graphEntityManager;
+  std::vector<Army> armies;
+  std::vector<Character> characters;
   std::unique_ptr<WorldManager> worldManagerPtr;
-  std::unique_ptr<GraphEntityManager> graphEntityManagerPtr;
-  std::unique_ptr<EntityChangeManager> entityChangeManagerPtr;
 };
 } // namespace model
 } // namespace how

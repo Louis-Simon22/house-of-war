@@ -15,8 +15,11 @@ public:
                 QQuickItem *parent = nullptr);
   virtual ~EntityPainter() = 0;
 
-public:
+public slots:
   void updateDimensions();
+
+public:
+  const model::GraphEntity &getGraphEntity() const;
 
 private:
   const model::GraphEntity &graphEntity;

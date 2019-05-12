@@ -9,13 +9,13 @@
 
 namespace how {
 namespace ui {
-class WorldManagerWrapper : public QObject {
+class WorldController : public QObject {
   Q_OBJECT
 
   Q_PROPERTY(QRect worldBounds READ getWorldBounds CONSTANT FINAL)
 
 public:
-  WorldManagerWrapper(model::WorldManager *worldManagerPtr);
+  WorldController(model::WorldManager *worldManagerPtr);
 
 public:
   const model::WorldManager *getWorldManager() const;

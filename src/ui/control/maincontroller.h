@@ -5,15 +5,13 @@
 #include <vector>
 
 #include <QObject>
+#include <QQuickItem>
 
 #include "../../model/managers/modelmanager.h"
-#include "../models/entitiesmodel.h"
-#include "../wrappers/entitywrapper.h"
-#include "../wrappers/worldmanagerwrapper.h"
-#include "./armycontroller.h"
-#include "./charactercontroller.h"
+#include "../painters/entitypainter.h"
 #include "./entitycontroller.h"
 #include "./modelthreadmanager.h"
+#include "./worldcontroller.h"
 
 namespace how {
 namespace ui {
@@ -24,8 +22,8 @@ class MainController : public QObject {
                  newModelGenerated FINAL)
   Q_PROPERTY(EntitiesModel *entitiesModel READ getEntitiesModel NOTIFY
                  newModelGenerated FINAL)
-  Q_PROPERTY(WorldManagerWrapper *worldManagerWrapper READ
-                 getWorldManagerWrapper NOTIFY newModelGenerated FINAL)
+  Q_PROPERTY(WorldController *worldManagerWrapper READ getWorldManagerWrapper
+                 NOTIFY newModelGenerated FINAL)
 
 public:
   MainController();
@@ -36,24 +34,22 @@ signals:
 public slots:
   void newModel(int width, int height, float minimumVoronoiCellDistance,
                 int randomSeed);
+  void instantiateUiElements(QQuickItem *parent);
 
 private:
-  void instantiateUiElements();
+  static void bindEntityPainter(QQuickItem *parent,
+                                EntityPainter *entityPainter);
+  static QQuickItem *instantiateMouseAreaItem(QQuickItem *parent);
 
 public:
   EntityController *getEntityController();
-  EntitiesModel *getEntitiesModel();
-  WorldManagerWrapper *getWorldManagerWrapper();
+  WorldController *getWorldManagerWrapper();
 
 private:
   model::ModelManager modelManager;
   ModelThreadManager modelThreadManager;
-  std::vector<std::unique_ptr<EntityWrapper>> entityWrappers;
   std::unique_ptr<EntityController> entityControllerPtr;
-  std::unique_ptr<ArmyController> armyControllerPtr;
-  std::unique_ptr<CharacterController> characterControllerPtr;
-  std::unique_ptr<EntitiesModel> entitiesModelPtr;
-  std::unique_ptr<WorldManagerWrapper> worldManagerWrapperPtr;
+  std::unique_ptr<WorldController> worldManagerWrapperPtr;
 };
 } // namespace ui
 } // namespace how

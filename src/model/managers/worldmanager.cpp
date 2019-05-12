@@ -30,13 +30,15 @@ WorldManager::getUniqueDelaunaySegments() const {
 
 const types::graph_t &WorldManager::getGraph() const { return this->graph; }
 
+const std::pair<const types::graph_vertex_iterator_t,
+                const types::graph_vertex_iterator_t>
+ModelManager::getVertexIterators() const {
+  return ::boost::vertices(this->getWorldManagerPtr()->getGraph());
+}
+
 VoronoiCell &
 WorldManager::getVoronoiCellByDesc(types::graph_vertex_desc_t vertexDesc) {
   return graph[vertexDesc];
-}
-
-const types::polygon_index_tree_t &WorldManager::getPolygonIndexTree() const {
-  return this->polygonIndexTree;
 }
 
 } // namespace model

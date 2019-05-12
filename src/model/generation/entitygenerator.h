@@ -4,9 +4,9 @@
 #include <vector>
 
 #include "../graphtypes.h"
-#include "../managers/worldmanager.h"
 #include "../entities/character.h"
 #include "../entities/army.h"
+#include "../managers/graphentitymanager.h"
 
 namespace how {
 namespace model {

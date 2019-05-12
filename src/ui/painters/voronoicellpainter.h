@@ -1,7 +1,7 @@
 #ifndef TilePainter_H
 #define TilePainter_H
 
-#include "../wrappers/voronoicellwrapper.h"
+#include "../../model/entities/voronoicell.h"
 #include "./entitypainter.h"
 
 namespace how {
@@ -9,14 +9,14 @@ namespace ui {
 class VoronoiCellPainter : public EntityPainter {
 
 public:
-  VoronoiCellPainter(const VoronoiCellWrapper& voronoiCellWrapper);
+  VoronoiCellPainter(const model::VoronoiCell &voronoiCell);
   ~VoronoiCellPainter() override;
 
 public:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 private:
-  const VoronoiCellWrapper& voronoiCellWrapper;
+  const model::VoronoiCell &voronoiCell;
 };
 } // namespace ui
 } // namespace how

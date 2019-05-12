@@ -11,8 +11,8 @@
 namespace how {
 namespace ui {
 
-CharacterPainter::CharacterPainter(const CharacterWrapper &characterWrapper)
-    : EntityPainter(), characterWrapper(characterWrapper) {}
+CharacterPainter::CharacterPainter(const model::Character &character)
+    : EntityPainter(character), character(character) {}
 
 CharacterPainter::~CharacterPainter() {}
 
@@ -43,12 +43,12 @@ QSGNode *CharacterPainter::updatePaintNode(QSGNode *oldNode,
 
   const auto &position = this->mapFromItem(
       this->parentItem(),
-      QPointF(static_cast<double>(this->characterWrapper.getPosX()),
-              static_cast<double>(this->characterWrapper.getPosY())));
+      QPointF(static_cast<double>(this->character.getPosX()),
+              static_cast<double>(this->character.getPosY())));
   const float posX = static_cast<float>(position.x());
   const float posY = static_cast<float>(position.y());
-  const float width = this->characterWrapper.getWidth();
-  const float height = this->characterWrapper.getHeight();
+  const float width = this->character.getWidth();
+  const float height = this->character.getHeight();
   auto *vertices = geometry->vertexDataAsPoint2D();
   vertices[0].set(posX, posY);
   vertices[1].set(posX + width, posY);
@@ -59,7 +59,7 @@ QSGNode *CharacterPainter::updatePaintNode(QSGNode *oldNode,
   QSGFlatColorMaterial *material =
       static_cast<QSGFlatColorMaterial *>(node->material());
   const QColor color =
-      this->characterWrapper.isSelected() ? Qt::yellow : Qt::red;
+      this->character.isSelected() ? Qt::yellow : Qt::red;
   material->setColor(color);
   node->markDirty(QSGNode::DirtyMaterial);
 

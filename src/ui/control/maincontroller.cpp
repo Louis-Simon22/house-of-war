@@ -1,16 +1,19 @@
 #include "maincontroller.h"
 
-#include "../wrappers/armywrapper.h"
-#include "../wrappers/characterwrapper.h"
-#include "../wrappers/voronoicellwrapper.h"
+#include <QQmlComponent>
+#include <QQmlContext>
+#include <QQmlEngine>
+
+#include "../painters/armypainter.h"
+#include "../painters/characterpainter.h"
+#include "../painters/voronoicellpainter.h"
 
 namespace how {
 namespace ui {
 
 MainController::MainController()
-    : modelManager(), modelThreadManager(), entityWrappers(),
-      entityControllerPtr(), armyControllerPtr(), characterControllerPtr(),
-      entitiesModelPtr(), worldManagerWrapperPtr() {}
+    : modelManager(), modelThreadManager(), entityControllerPtr(),
+      worldManagerWrapperPtr() {}
 
 void MainController::newModel(int width, int height,
                               float minimumVoronoiCellDistance,
@@ -19,53 +22,71 @@ void MainController::newModel(int width, int height,
       0, 0, width, height, minimumVoronoiCellDistance,
       static_cast<std::uint32_t>(randomSeed));
   this->modelManager.newModel(config);
-  this->instantiateUiElements();
+  this->worldManagerWrapperPtr.reset(
+      new WorldController(this->modelManager.getWorldManagerPtr()));
+  this->entityControllerPtr.reset(
+      new EntityController(this->modelManager.getGraphEntityManager()));
   this->newModelGenerated();
 }
 
-void MainController::instantiateUiElements() {
-  this->worldManagerWrapperPtr.reset(
-      new WorldManagerWrapper(this->modelManager.getWorldManagerPtr()));
-  this->armyControllerPtr.reset(new ArmyController());
-  this->characterControllerPtr.reset(new CharacterController());
-  auto &armies = modelManager.getGraphEntityManagerPtr()->getArmies();
+void MainController::instantiateUiElements(QQuickItem *parent) {
+  auto &armies = modelManager.getArmies();
 
   for (auto &army : armies) {
-    this->entityWrappers.push_back(
-        std::unique_ptr<EntityWrapper>(new ArmyWrapper(army)));
+    this->bindEntityPainter(parent, new ArmyPainter(army));
   }
-  auto &characters =
-      this->modelManager.getGraphEntityManagerPtr()->getCharacters();
+  auto &characters = this->modelManager.getCharacters();
   for (auto &character : characters) {
-    this->entityWrappers.push_back(
-        std::unique_ptr<EntityWrapper>(new CharacterWrapper(character)));
+    this->bindEntityPainter(parent, new CharacterPainter(character));
   }
   auto *worldManagerPtr = this->modelManager.getWorldManagerPtr();
   types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
-  ::boost::tie(vertexItBegin, vertexItEnd) =
-      ::boost::vertices(worldManagerPtr->getGraph());
+  std::tie(vertexItBegin, vertexItEnd) = worldManagerPtr->getVertexIterators();
   for (auto vertexIt = vertexItBegin; vertexIt != vertexItEnd; vertexIt++) {
     const auto vertexDesc = *vertexIt;
     model::VoronoiCell &voronoiCell =
         worldManagerPtr->getVoronoiCellByDesc(vertexDesc);
-    this->entityWrappers.push_back(std::unique_ptr<EntityWrapper>(
-        new VoronoiCellWrapper(vertexDesc, voronoiCell)));
+    this->bindEntityPainter(parent, new VoronoiCellPainter(voronoiCell));
   }
+}
 
-  this->entityControllerPtr.reset(new EntityController(
-      this->modelManager.getEntityChangeManagerPtr(), &this->entityWrappers));
-  this->entitiesModelPtr.reset(new EntitiesModel(&this->entityWrappers));
+void MainController::bindEntityPainter(QQuickItem *parent,
+                                       EntityPainter *entityPainter) {
+  entityPainter->setParentItem(parent);
+  entityPainter->setParent(parent);
+  QQmlEngine::setObjectOwnership(entityPainter,
+                                 QQmlEngine::JavaScriptOwnership);
+  auto *mouseAreaItem = instantiateMouseAreaItem(entityPainter);
+
+  const auto &graphEntity = entityPainter->getGraphEntity();
+//  graphEntity.visualChangedSignal.connect(
+//      ::boost::bind(&EntityPainter::update, entityPainter, _1));
+//  graphEntity.dimensionsChangedSignal.connect(
+//      ::boost::bind(&EntityPainter::updateDimensions, entityPainter, _1));
+//    graphEntity.dimensionsChangedSignal.connect(&entityPainter->update);
+//  graphEntity.destructionSignal.connect(
+//      ::boost::bind(&QQuickItem::deleteLater, entityPainter, _1));
+}
+
+QQuickItem *MainController::instantiateMouseAreaItem(QQuickItem *parent) {
+  auto *qmlEngine = QQmlEngine::contextForObject(parent)->engine();
+  QQmlComponent component(
+      qmlEngine,
+      QUrl::fromLocalFile("../../../qml/game/components/GenericMouseArea.qml"));
+  auto *mouseAreaObject = component.create();
+  QQuickItem *mouseAreaItem = qobject_cast<QQuickItem *>(mouseAreaObject);
+  mouseAreaItem->setParentItem(parent);
+  mouseAreaItem->setParent(parent);
+  QQmlEngine::setObjectOwnership(mouseAreaObject,
+                                 QQmlEngine::JavaScriptOwnership);
+  return mouseAreaItem;
 }
 
 EntityController *MainController::getEntityController() {
   return this->entityControllerPtr.get();
 }
 
-EntitiesModel *MainController::getEntitiesModel() {
-  return this->entitiesModelPtr.get();
-}
-
-WorldManagerWrapper *MainController::getWorldManagerWrapper() {
+WorldController *MainController::getWorldManagerWrapper() {
   return this->worldManagerWrapperPtr.get();
 }
 

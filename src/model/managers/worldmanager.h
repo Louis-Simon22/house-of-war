@@ -22,8 +22,10 @@ public:
   const std::vector<types::segment_t> &getUniqueVoronoiSegments() const;
   const std::vector<types::segment_t> &getUniqueDelaunaySegments() const;
   const types::graph_t &getGraph() const;
+  const std::pair<const types::graph_vertex_iterator_t,
+                  const types::graph_vertex_iterator_t>
+  getVertexIterators() const;
   VoronoiCell &getVoronoiCellByDesc(types::graph_vertex_desc_t vertexDesc);
-  const types::polygon_index_tree_t &getPolygonIndexTree() const;
 
 private:
   types::graph_t graph;

@@ -5,8 +5,6 @@
 #include <QTimer>
 #include <memory>
 
-#include "../../model/managers/entitychangemanager.h"
-
 namespace how {
 namespace ui {
 class ModelThreadManager : public QObject {

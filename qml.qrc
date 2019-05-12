@@ -12,5 +12,6 @@
         <file>qml/Window.qml</file>
         <file>qml/Swapper.qml</file>
         <file>qml/game/map/MapItem.qml</file>
+        <file>qml/game/components/GenericMouseArea.qml</file>
     </qresource>
 </RCC>

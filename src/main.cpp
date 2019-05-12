@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
       "com.louissimonmcnicoll.how.ui.entitiesmodel", 1, 0, "EntitiesModel",
       uncreatableTypeErrorMessage);
   // QML wrappers
-  qmlRegisterUncreatableType<::how::ui::WorldManagerWrapper>(
+  qmlRegisterUncreatableType<::how::ui::WorldController>(
       "com.louissimonmcnicoll.how.ui.worldmanager", 1, 0, "WorldManager",
       uncreatableTypeErrorMessage);
   // Controllers

@@ -5,14 +5,14 @@
 namespace how {
 namespace ui {
 
-WorldManagerWrapper::WorldManagerWrapper(model::WorldManager *worldManagerPtr)
+WorldController::WorldController(model::WorldManager *worldManagerPtr)
     : QObject(), worldManagerPtr(worldManagerPtr) {}
 
-const model::WorldManager *WorldManagerWrapper::getWorldManager() const {
+const model::WorldManager *WorldController::getWorldManager() const {
   return this->worldManagerPtr;
 }
 
-QRect WorldManagerWrapper::getWorldBounds() const {
+QRect WorldController::getWorldBounds() const {
   return convert(this->worldManagerPtr->getBounds());
 }
 
