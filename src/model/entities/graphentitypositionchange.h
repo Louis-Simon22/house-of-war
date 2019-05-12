@@ -20,7 +20,7 @@ public:
 
 private:
   const types::graph_t &delaunayGraph;
-  GraphEntity &entity;
+  GraphEntity &graphEntity;
   std::vector<types::graph_vertex_desc_t> destinations;
   std::size_t currentDestinationIndex;
 };

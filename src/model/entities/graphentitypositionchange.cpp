@@ -14,11 +14,11 @@ GraphEntityPositionChange::~GraphEntityPositionChange() {}
 bool GraphEntityPositionChange::progress(float deltaTime) {
   const auto &currentDestination =
       this->destinations[this->currentDestinationIndex];
+
   const auto &destinationVoronoiCell = this->delaunayGraph[currentDestination];
-  this->entity.setPosition(destinationVoronoiCell.getCentroid());
-  this->entity.setCurrentVertexDesc(currentDestination);
+  this->graphEntity.setPosition(destinationVoronoiCell.getCentroid());
   this->currentDestinationIndex++;
-  changeSignal(this->entity.getUuid());
+  changeSignal(this->graphEntity.getUuid());
   return this->currentDestinationIndex >= this->destinations.size();
 }
 
