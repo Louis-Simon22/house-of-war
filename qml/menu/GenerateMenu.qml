@@ -25,14 +25,14 @@ BaseMenu {
             Layout.alignment: Qt.AlignCenter
             text: "Generate"
             onClicked: {
-                mainController.modelManagerWrapper.newModelGenerated.connect(
+                mainController.newModelGenerated.connect(
                             generateMenu.newModelGenerated)
-                mainController.modelManagerWrapper.newModel(
-                            parseInt(worldWidth.input, 10),
-                            parseInt(worldHeight.input, 10),
-                            parseFloat(minimumVoronoiCellDistance.input),
-                            parseInt(randomSeed.input, 10))
-                mainController.modelManagerWrapper.newModelGenerated.disconnect(
+                mainController.newModel(parseInt(worldWidth.input, 10),
+                                        parseInt(worldHeight.input, 10),
+                                        parseFloat(
+                                            minimumVoronoiCellDistance.input),
+                                        parseInt(randomSeed.input, 10))
+                mainController.newModelGenerated.disconnect(
                             generateMenu.newModelGenerated)
             }
         }
@@ -61,7 +61,6 @@ BaseMenu {
             label: "Random Seed"
             input: "100"
         }
-
     }
 
     MenuButton {

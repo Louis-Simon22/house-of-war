@@ -15,7 +15,7 @@
 // Debug output of qml renderer
 #define QSG_RENDERER_DEBUG = render
 
-#include "../src/ui/control/graphentitycontroller.h"
+#include "../src/ui/control/entitycontroller.h"
 #include "../src/ui/control/maincontroller.h"
 #include "../src/ui/control/modelthreadmanager.h"
 #include "../src/ui/models/entitiesmodel.h"
@@ -23,16 +23,16 @@
 #include "../src/ui/painters/characterpainter.h"
 #include "../src/ui/painters/segmentspainter.h"
 #include "../src/ui/painters/voronoicellpainter.h"
-#include "../src/ui/wrappers/modelmanagerwrapper.h"
+#include "../src/ui/wrappers/worldmanagerwrapper.h"
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   QGuiApplication app(argc, argv);
 
-  //  QSurfaceFormat format;
-  //  format.setSamples(16);
-  //  QSurfaceFormat::setDefaultFormat(format);
+  QSurfaceFormat format;
+  format.setSamples(8);
+  QSurfaceFormat::setDefaultFormat(format);
   QQmlApplicationEngine engine;
 
   const QString uncreatableTypeErrorMessage =
@@ -48,13 +48,13 @@ int main(int argc, char *argv[]) {
       "com.louissimonmcnicoll.how.ui.entitiesmodel", 1, 0, "EntitiesModel",
       uncreatableTypeErrorMessage);
   // QML wrappers
-  qmlRegisterUncreatableType<::how::ui::ModelManagerWrapper>(
-      "com.louissimonmcnicoll.how.ui.modelmanager", 1, 0, "ModelManager",
+  qmlRegisterUncreatableType<::how::ui::WorldManagerWrapper>(
+      "com.louissimonmcnicoll.how.ui.worldmanager", 1, 0, "WorldManager",
       uncreatableTypeErrorMessage);
   // Controllers
-  qmlRegisterUncreatableType<::how::ui::GraphEntityController>(
-      "com.louissimonmcnicoll.how.ui.graphentitycontroller", 1, 0,
-      "GraphEntityController", uncreatableTypeErrorMessage);
+  qmlRegisterUncreatableType<::how::ui::EntityController>(
+      "com.louissimonmcnicoll.how.ui.entitycontroller", 1, 0,
+      "EntityController", uncreatableTypeErrorMessage);
   qmlRegisterType<::how::ui::MainController>(
       "com.louissimonmcnicoll.how.ui.maincontroller", 1, 0, "MainController");
   // Others

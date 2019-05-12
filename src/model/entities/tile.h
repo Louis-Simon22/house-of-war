@@ -2,7 +2,6 @@
 #define TILE_H
 
 #include "../modeltypes.h"
-#include "./entity.h"
 
 namespace how {
 namespace model {

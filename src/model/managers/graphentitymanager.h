@@ -8,7 +8,6 @@
 
 namespace how {
 namespace model {
-// TODO no need for this anymore? Group everything in a "model" object
 class GraphEntityManager {
 public:
   GraphEntityManager(std::vector<Character> characters,

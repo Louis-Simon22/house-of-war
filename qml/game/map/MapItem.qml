@@ -3,7 +3,8 @@ import QtQuick.Shapes 1.12
 import QtQml 2.12
 
 import com.louissimonmcnicoll.how.ui.maincontroller 1.0
-import com.louissimonmcnicoll.how.ui.graphentitycontroller 1.0
+import com.louissimonmcnicoll.how.ui.entitycontroller 1.0
+import com.louissimonmcnicoll.how.ui.worldmanager 1.0
 import com.louissimonmcnicoll.how.ui.entitiesmodel 1.0
 
 Flickable {
@@ -17,10 +18,10 @@ Flickable {
 
     Item {
         id: mapItem
-        x: mainController.modelManagerWrapper.worldBounds.x
-        y: mainController.modelManagerWrapper.worldBounds.y
-        width: mainController.modelManagerWrapper.worldBounds.width
-        height: mainController.modelManagerWrapper.worldBounds.height
+        x: mainController.worldManagerWrapper.worldBounds.x
+        y: mainController.worldManagerWrapper.worldBounds.y
+        width: mainController.worldManagerWrapper.worldBounds.width
+        height: mainController.worldManagerWrapper.worldBounds.height
         property real minScale: Math.max(
                                     mapItemFlickable.width / mapItem.width,
                                     mapItemFlickable.height / mapItem.height)
@@ -50,31 +51,27 @@ Flickable {
 
             property int selectedCharacterIndex: -1
 
-            delegate: Rectangle {
+            delegate: MouseArea {
                 id: envelope
                 x: rolePosX
                 y: rolePosY
                 z: roleLayer
                 width: roleWidth
                 height: roleHeight
-                color: "transparent"
 
-                MouseArea {
-                    anchors.fill: parent
-
-                    // ignore "Enum value must be a string" warning
-                    acceptedButtons: roleAcceptedButtons
-                    propagateComposedEvents: false
-                    onClicked: {
-                        mouse.accepted = true
-                        console.log("woohoo")
-                        // TODO handle click
-                    }
+                // ignore "Enum value must be a string" warning
+                acceptedButtons: roleAcceptedButtons
+                propagateComposedEvents: false
+                onClicked: {
+                    mainController.entityController.onEntityWrapperClicked(
+                                index, mouse.button)
+                    mouse.accepted = true
                 }
 
                 Component.onCompleted: {
-                    var entityWrapperPainter = mainController.graphEntityController.createEntityWrapperPainterAtIndex(
+                    var entityWrapperPainter = mainController.entityController.createEntityWrapperPainterAtIndex(
                                 index)
+                    entityWrapperPainter.z = roleLayer
                     entityWrapperPainter.parent = mapItem
                     entityWrapperPainter.anchors.fill = envelope
                 }

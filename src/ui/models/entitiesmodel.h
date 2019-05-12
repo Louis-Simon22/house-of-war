@@ -2,6 +2,7 @@
 #define CELLSMODEL_H
 
 #include <memory>
+#include <vector>
 
 #include <QAbstractItemModel>
 
@@ -9,6 +10,9 @@
 
 namespace how {
 namespace ui {
+namespace {
+namespace uuids = ::boost::uuids;
+}
 class EntitiesModel : public QAbstractItemModel {
   Q_OBJECT
 
@@ -18,6 +22,7 @@ public:
       const std::vector<std::unique_ptr<EntityWrapper>> *entityWrappersPtr);
   ~EntitiesModel() override;
 
+private:
   enum EntityRoles {
     RolePosX = Qt::UserRole + 1,
     RolePosY,
@@ -27,6 +32,7 @@ public:
     RoleAcceptedButtons
   };
 
+public:
   QHash<int, QByteArray> roleNames() const override;
   Qt::ItemFlags flags(const QModelIndex &) const override;
   QVariant headerData(int, Qt::Orientation, int) const override;
@@ -37,8 +43,12 @@ public:
   QVariant data(const QModelIndex &index,
                 int role = Qt::DisplayRole) const override;
 
+public:
+  void entityChanged(const uuids::uuid &uuid);
+
 private:
   const std::vector<std::unique_ptr<EntityWrapper>> *entityWrappersPtr;
+  std::map<const uuids::uuid, QModelIndex> uuidToIndexMap;
 };
 } // namespace ui
 } // namespace how

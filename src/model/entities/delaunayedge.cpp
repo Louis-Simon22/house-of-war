@@ -5,10 +5,11 @@
 
 namespace how {
 namespace model {
-DelaunayEdge::DelaunayEdge() : Entity() {}
+
+DelaunayEdge::DelaunayEdge() {}
 
 DelaunayEdge::DelaunayEdge(types::segment_t segment)
-    : Entity(), segment(segment),
+    : segment(segment),
       distanceAsCrowFlies(static_cast<float>(bg::length(segment))),
       distanceWalking(distanceAsCrowFlies) {}
 
@@ -29,5 +30,6 @@ const types::coordinate_fpt_t &DelaunayEdge::getDistanceWalking() const {
 void DelaunayEdge::setDistanceWalking(types::coordinate_fpt_t distanceWalking) {
   this->distanceWalking = distanceWalking;
 }
+
 } // namespace model
 } // namespace how

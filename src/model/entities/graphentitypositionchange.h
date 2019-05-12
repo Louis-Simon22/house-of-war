@@ -10,7 +10,7 @@ namespace model {
 class GraphEntityPositionChange : public EntityChange {
 public:
   GraphEntityPositionChange(
-      const types::graph_t *const delaunayGraph, GraphEntity &entity,
+      const types::graph_t &delaunayGraph, GraphEntity &entity,
       std::vector<types::graph_vertex_desc_t> destinations);
   ~GraphEntityPositionChange() override;
 
@@ -19,7 +19,7 @@ public:
   void destinationReached() override;
 
 private:
-  const types::graph_t *delaunayGraph;
+  const types::graph_t &delaunayGraph;
   GraphEntity &entity;
   std::vector<types::graph_vertex_desc_t> destinations;
   std::size_t currentDestinationIndex;

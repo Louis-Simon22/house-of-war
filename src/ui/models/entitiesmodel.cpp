@@ -8,11 +8,16 @@ namespace how {
 namespace ui {
 
 EntitiesModel::EntitiesModel()
-    : QAbstractItemModel(), entityWrappersPtr(nullptr) {}
+    : QAbstractItemModel(), entityWrappersPtr(nullptr), uuidToIndexMap() {}
 
 EntitiesModel::EntitiesModel(
     const std::vector<std::unique_ptr<EntityWrapper>> *entityWrappersPtr)
-    : entityWrappersPtr(entityWrappersPtr) {}
+    : entityWrappersPtr(entityWrappersPtr), uuidToIndexMap() {
+  for (std::size_t i = 0; i < entityWrappersPtr->size(); i++) {
+    this->uuidToIndexMap[entityWrappersPtr->operator[](i)->getEntityUuid()] =
+        this->index(static_cast<int>(i), 0, QModelIndex());
+  }
+}
 
 EntitiesModel::~EntitiesModel() {}
 
@@ -79,6 +84,11 @@ QVariant EntitiesModel::data(const QModelIndex &index, int role) const {
   default:
     return QVariant();
   }
+}
+
+void EntitiesModel::entityChanged(const uuids::uuid &uuid) {
+  const auto &index = this->uuidToIndexMap[uuid];
+  this->dataChanged(index, index);
 }
 } // namespace ui
 } // namespace how

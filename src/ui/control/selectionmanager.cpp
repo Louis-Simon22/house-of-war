@@ -2,18 +2,24 @@
 
 namespace how {
 namespace ui {
+
 SelectionManager::SelectionManager() : QObject(), selection(nullptr) {}
 
-bool SelectionManager::hasSelection() const { return this->selection; }
-
-void SelectionManager::clearSelection() { this->selection = nullptr; }
-
-void SelectionManager::selectEntity(SelectableEntityWrapper *newSelection) {
-  if (this->selection) {
+void SelectionManager::selectEntity(EntityWrapper *newSelection) {
+  if (this->hasSelection()) {
     this->selection->setSelected(false);
   }
   newSelection->setSelected(true);
   this->selection = newSelection;
 }
+
+EntityWrapper *SelectionManager::getSelection() const {
+  return this->selection;
+}
+
+bool SelectionManager::hasSelection() const { return this->selection; }
+
+void SelectionManager::clearSelection() { this->selection = nullptr; }
+
 } // namespace ui
 } // namespace how

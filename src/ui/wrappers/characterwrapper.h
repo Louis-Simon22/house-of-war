@@ -2,13 +2,18 @@
 #define CHARACTERWRAPPER_H
 
 #include "../../model/entities/character.h"
-#include "./selectableentitywrapper.h"
+#include "./entitywrapper.h"
 
 namespace how {
 namespace ui {
-class CharacterWrapper : public SelectableEntityWrapper {
+
+class CharacterController;
+
+class CharacterWrapper : public EntityWrapper {
 public:
-  CharacterWrapper(model::Character &character);
+  CharacterWrapper(CharacterController &characterController,
+                   model::Character &character);
+  ~CharacterWrapper() override;
 
 public:
   EntityPainter *createEntityPainter() const override;
@@ -17,13 +22,24 @@ public:
   types::coordinate_t getWidth() const override;
   types::coordinate_t getHeight() const override;
   int getLayer() const override;
+  types::graph_vertex_desc_t getVertexDesc() const override;
   bool isTargetable() const override;
-  bool isSelected() const override;
+  bool isSelectable() const override;
+
+public:
+  void onEntityWrapperTargeted(EntityWrapper *target) override;
+
+public:
+  model::Character &getCharacter();
+  const model::Character &getCharacter() const;
 
 private:
+  CharacterController &characterController;
   model::Character &character;
 };
 } // namespace ui
 } // namespace how
+
+#include "../control/charactercontroller.h"
 
 #endif // CHARACTERWRAPPER_H

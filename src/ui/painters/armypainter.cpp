@@ -3,7 +3,8 @@
 namespace how {
 namespace ui {
 
-ArmyPainter::ArmyPainter(const model::Army &army) : army(army) {}
+ArmyPainter::ArmyPainter(const ArmyWrapper &armyWrapper)
+    : EntityPainter(), armyWrapper(armyWrapper) {}
 
 ArmyPainter::~ArmyPainter() {}
 

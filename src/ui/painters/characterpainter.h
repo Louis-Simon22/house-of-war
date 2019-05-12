@@ -1,21 +1,21 @@
 #ifndef CHARACTERPAINTER_H
 #define CHARACTERPAINTER_H
 
-#include "../../model/entities/character.h"
+#include "../wrappers/characterwrapper.h"
 #include "./entitypainter.h"
 
 namespace how {
 namespace ui {
 class CharacterPainter : public EntityPainter {
 public:
-  CharacterPainter(const model::Character &character);
+  CharacterPainter(const CharacterWrapper &characterWrapper);
   ~CharacterPainter() override;
 
 public:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 private:
-  const model::Character &character;
+  const CharacterWrapper &characterWrapper;
 };
 } // namespace ui
 } // namespace how

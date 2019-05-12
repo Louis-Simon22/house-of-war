@@ -1,29 +1,26 @@
 #include "graphentity.h"
 
+#include <boost/uuid/uuid_generators.hpp>
+
 namespace how {
 namespace model {
 
-GraphEntity::GraphEntity(types::point_t position,
-                         types::graph_vertex_desc_t currentVertexDesc)
-    : Entity(), position(position), currentVertexDesc(currentVertexDesc) {}
+GraphEntity::GraphEntity()
+    : uuid(uuids::random_generator()()), layer(DEFAULT_LAYER),
+      physicalChangSignal(), visualChangeSignal() {}
+
+GraphEntity::GraphEntity(types::layer_t layer)
+    : uuid(uuids::random_generator()()), layer(layer), physicalChangSignal(),
+      visualChangeSignal() {}
 
 GraphEntity::~GraphEntity() {}
 
-const types::point_t &GraphEntity::getPosition() const {
-  return this->position;
-}
+const uuids::uuid &GraphEntity::getUuid() const { return this->uuid; }
 
-void GraphEntity::setPosition(types::point_t position) {
-  this->position = position;
-}
+types::layer_t GraphEntity::getLayer() const { return this->layer; }
 
-types::graph_vertex_desc_t GraphEntity::getCurrentVertexDesc() const {
-  return this->currentVertexDesc;
-}
-
-void GraphEntity::setCurrentVertexDesc(
-    types::graph_vertex_desc_t currentVertexDesc) {
-  this->currentVertexDesc = currentVertexDesc;
+types::point_t GraphEntity::getPosition() const {
+  return types::point_t(this->getPosX(), this->getPosY());
 }
 
 } // namespace model

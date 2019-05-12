@@ -8,9 +8,9 @@
 namespace how {
 namespace ui {
 
-VoronoiCellPainter::VoronoiCellPainter(const model::VoronoiCell &voronoiCell)
-    : EntityPainter(), voronoiCell(voronoiCell) {
-}
+VoronoiCellPainter::VoronoiCellPainter(
+    const VoronoiCellWrapper &voronoiCellWrapper)
+    : EntityPainter(), voronoiCellWrapper(voronoiCellWrapper) {}
 
 VoronoiCellPainter::~VoronoiCellPainter() {}
 
@@ -20,7 +20,8 @@ QSGNode *VoronoiCellPainter::updatePaintNode(QSGNode *oldNode,
   QSGGeometryNode *node = nullptr;
   QSGGeometry *geometry = nullptr;
 
-  const auto &polygonOuterPoints = this->voronoiCell.getOutlinePoints();
+  const auto &voronoiCell = this->voronoiCellWrapper.getVoronoiCell();
+  const auto &polygonOuterPoints = voronoiCell.getOutlinePoints();
   const int pointsCount = static_cast<int>(polygonOuterPoints.size());
 
   if (!node) {

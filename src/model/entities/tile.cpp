@@ -2,6 +2,7 @@
 
 namespace how {
 namespace model {
+
 Tile::Tile() : height() {}
 
 Tile::~Tile() {}

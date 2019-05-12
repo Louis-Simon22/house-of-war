@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "../wrappers/selectableentitywrapper.h"
+#include "../wrappers/entitywrapper.h"
 
 namespace how {
 namespace ui {
@@ -14,14 +14,13 @@ public:
   SelectionManager();
 
 public:
+  void selectEntity(EntityWrapper *newSelection);
+  EntityWrapper *getSelection() const;
   bool hasSelection() const;
   void clearSelection();
 
 private:
-  void selectEntity(SelectableEntityWrapper *selectableEntityWrapper);
-
-private:
-  SelectableEntityWrapper *selection;
+  EntityWrapper *selection;
 };
 } // namespace ui
 } // namespace how

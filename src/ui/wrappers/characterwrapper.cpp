@@ -8,11 +8,15 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-CharacterWrapper::CharacterWrapper(model::Character &character)
-    : SelectableEntityWrapper(), character(character) {}
+CharacterWrapper::CharacterWrapper(CharacterController &characterController,
+                                   model::Character &character)
+    : EntityWrapper(), characterController(characterController),
+      character(character) {}
+
+CharacterWrapper::~CharacterWrapper() {}
 
 EntityPainter *CharacterWrapper::createEntityPainter() const {
-  return new CharacterPainter(this->character);
+  return new CharacterPainter(*this);
 }
 
 types::coordinate_t CharacterWrapper::getPosX() const {
@@ -29,7 +33,23 @@ types::coordinate_t CharacterWrapper::getHeight() const { return 10; }
 
 int CharacterWrapper::getLayer() const { return 2; }
 
+types::graph_vertex_desc_t CharacterWrapper::getVertexDesc() const {
+  return this->character.getCurrentVertexDesc();
+}
+
 bool CharacterWrapper::isTargetable() const { return false; }
+
+bool CharacterWrapper::isSelectable() const { return true; }
+
+void CharacterWrapper::onEntityWrapperTargeted(EntityWrapper *target) {
+  this->characterController.moveCharacterTo(*this, target);
+}
+
+model::Character &CharacterWrapper::getCharacter() { return this->character; }
+
+const model::Character &CharacterWrapper::getCharacter() const {
+  return this->character;
+}
 
 } // namespace ui
 } // namespace how

@@ -9,8 +9,9 @@ namespace how {
 namespace model {
 
 GraphEntityPositionChange *
-graphEntityPathfinding(const types::graph_t *graphPtr, GraphEntity &movingEntity,
-                  types::graph_vertex_desc_t destinationVertexIndex);
+graphEntityPathfinding(GraphEntity &sourceEntity,
+                       types::graph_vertex_desc_t destinationVertexDesc,
+                       const types::graph_t &graph);
 
 } // namespace model
 } // namespace how

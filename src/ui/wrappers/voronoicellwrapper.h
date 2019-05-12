@@ -2,14 +2,16 @@
 #define VORONOICELLWRAPPER_H
 
 #include "../../model/entities/voronoicell.h"
+#include "../../model/graphtypes.h"
 #include "./entitywrapper.h"
 
 namespace how {
 namespace ui {
 class VoronoiCellWrapper : public EntityWrapper {
 public:
-    VoronoiCellWrapper(model::VoronoiCell &voronoiCell);
-    ~VoronoiCellWrapper() override;
+  VoronoiCellWrapper(types::graph_vertex_desc_t vertexDesc,
+                     model::VoronoiCell &voronoiCell);
+  ~VoronoiCellWrapper() override;
 
 public:
   EntityPainter *createEntityPainter() const override;
@@ -18,11 +20,20 @@ public:
   types::coordinate_t getWidth() const override;
   types::coordinate_t getHeight() const override;
   int getLayer() const override;
+  types::graph_vertex_desc_t getVertexDesc() const override;
   bool isTargetable() const override;
   bool isSelectable() const override;
 
+public:
+  void onEntityWrapperTargeted(EntityWrapper *target) override;
+
+public:
+  model::VoronoiCell &getVoronoiCell();
+  const model::VoronoiCell &getVoronoiCell() const;
+
 private:
-  model::VoronoiCell &voronoiCell;
+  types::graph_vertex_desc_t vertexDesc;
+  model::VoronoiCell &voronoiCell;  
 };
 } // namespace ui
 } // namespace how

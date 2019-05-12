@@ -1,21 +1,21 @@
 #ifndef ARMYPAINTER_H
 #define ARMYPAINTER_H
 
-#include "../../model/entities/army.h"
+#include "../wrappers/armywrapper.h"
 #include "./entitypainter.h"
 
 namespace how {
 namespace ui {
 class ArmyPainter : public EntityPainter {
 public:
-  ArmyPainter(const model::Army &army);
+  ArmyPainter(const ArmyWrapper &armyWrapper);
   ~ArmyPainter() override;
 
 public:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 private:
-  const model::Army &army;
+  const ArmyWrapper &armyWrapper;
 };
 } // namespace ui
 } // namespace how

@@ -1,15 +1,18 @@
 #include "characterpainter.h"
 
+#include <QColor>
 #include <QSGFlatColorMaterial>
 #include <QSGGeometryNode>
 
 #include "../conversion/converter.h"
 
+#include <iostream>
+
 namespace how {
 namespace ui {
 
-CharacterPainter::CharacterPainter(const model::Character &character)
-    : character(character) {}
+CharacterPainter::CharacterPainter(const CharacterWrapper &characterWrapper)
+    : EntityPainter(), characterWrapper(characterWrapper) {}
 
 CharacterPainter::~CharacterPainter() {}
 
@@ -18,40 +21,46 @@ QSGNode *CharacterPainter::updatePaintNode(QSGNode *oldNode,
   QSGGeometryNode *node = nullptr;
   QSGGeometry *geometry = nullptr;
 
-  const auto &position = this->character.getPosition();
-  const float halfwidth = 5;
   const int pointsCount = 4;
 
-  if (!node) {
+  if (!oldNode) {
     node = new QSGGeometryNode();
+
     geometry =
         new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), pointsCount);
     geometry->setDrawingMode(QSGGeometry::DrawTriangleFan);
     node->setGeometry(geometry);
     node->setFlag(QSGNode::OwnsGeometry);
+
+    QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
+    node->setMaterial(material);
+    node->setFlag(QSGNode::OwnsMaterial);
   } else {
     node = static_cast<QSGGeometryNode *>(oldNode);
     geometry = node->geometry();
     geometry->allocate(pointsCount);
   }
 
+  const auto &position = this->mapFromItem(
+      this->parentItem(),
+      QPointF(static_cast<double>(this->characterWrapper.getPosX()),
+              static_cast<double>(this->characterWrapper.getPosY())));
+  const float posX = static_cast<float>(position.x());
+  const float posY = static_cast<float>(position.y());
+  const float width = this->characterWrapper.getWidth();
+  const float height = this->characterWrapper.getHeight();
   auto *vertices = geometry->vertexDataAsPoint2D();
-  const auto &center =
-      this->mapFromItem(this->parentItem(), convertF(position));
-  const auto centerX = static_cast<float>(center.x());
-  const auto centerY = static_cast<float>(center.y());
-  vertices[0].set(centerX - halfwidth, centerY - halfwidth);
-  vertices[1].set(centerX + halfwidth, centerY - halfwidth);
-  vertices[2].set(centerX + halfwidth, centerY + halfwidth);
-  vertices[3].set(centerX - halfwidth, centerY + halfwidth);
-
-  QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
-  material->setColor(Qt::yellow);
-
-  node->setMaterial(material);
-  node->setFlag(QSGNode::OwnsMaterial);
-
+  vertices[0].set(posX, posY);
+  vertices[1].set(posX + width, posY);
+  vertices[2].set(posX + width, posY + height);
+  vertices[3].set(posX, posY + height);
   node->markDirty(QSGNode::DirtyGeometry);
+
+  QSGFlatColorMaterial *material =
+      static_cast<QSGFlatColorMaterial *>(node->material());
+  const QColor color =
+      this->characterWrapper.isSelected() ? Qt::yellow : Qt::red;
+  material->setColor(color);
   node->markDirty(QSGNode::DirtyMaterial);
 
   return node;

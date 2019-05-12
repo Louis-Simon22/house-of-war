@@ -2,7 +2,6 @@
 #define DELAUNAYEDGE_H
 
 #include "../modeltypes.h"
-#include "./entity.h"
 
 namespace how {
 namespace model {
@@ -10,11 +9,11 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-class DelaunayEdge : public Entity {
+class DelaunayEdge {
 public:
   DelaunayEdge();
   DelaunayEdge(types::segment_t segment);
-  ~DelaunayEdge() override;
+  ~DelaunayEdge();
 
 public:
   const types::segment_t &getSegment() const;
