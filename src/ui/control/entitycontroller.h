@@ -21,7 +21,8 @@ public slots:
   void iterateAllChanges(float deltaTime);
 
 private:
-  void moveEntityTo(model::GraphEntity &selection, model::GraphEntity &target);
+  void onGraphEntitySelected(model::GraphEntity *selection);
+  void onGraphEntityTargeted(model::GraphEntity *target);
 
 private:
   SelectionManager selectionManager;

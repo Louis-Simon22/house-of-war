@@ -11,18 +11,17 @@ class EntityPainter : public QQuickItem {
   Q_OBJECT
 
 public:
-  EntityPainter(const model::GraphEntity &graphEntity,
-                QQuickItem *parent = nullptr);
+  EntityPainter(model::GraphEntity &graphEntity, QQuickItem *parent = nullptr);
   virtual ~EntityPainter() = 0;
 
 public slots:
   void updateDimensions();
 
 public:
-  const model::GraphEntity &getGraphEntity() const;
+  model::GraphEntity &getGraphEntity();
 
 private:
-  const model::GraphEntity &graphEntity;
+  model::GraphEntity &graphEntity;
 };
 } // namespace ui
 } // namespace how

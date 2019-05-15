@@ -8,6 +8,8 @@
 #include "../../model/entities/graphentitypositionchange.h"
 #include "../../model/operations/pathfindingoperations.h"
 
+#include <iostream>
+
 namespace how {
 namespace ui {
 
@@ -15,8 +17,9 @@ EntityController::EntityController(
     model::GraphEntityManager &graphEntityManager)
     : graphEntityManager(graphEntityManager) {}
 
-void EntityController::moveEntityTo(model::GraphEntity &selection,
-                                    model::GraphEntity &target) {}
+void onGraphEntityClicked(model::GraphEntity *graphEntity, int mouseButton) {
+  std::cout << "Greg" << std::endl;
+}
 
 void EntityController::iterateAllChanges(float deltaTime) {
   this->graphEntityManager.progressAll(deltaTime);

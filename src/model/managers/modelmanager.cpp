@@ -15,8 +15,7 @@ void ModelManager::newModel(WorldGenerationConfig config) {
       ::boost::vertices(this->worldManagerPtr->getGraph());
   for (auto vertexIt = vertexItBegin; vertexIt != vertexItEnd; vertexIt++) {
     const auto vertexDesc = *vertexIt;
-    model::VoronoiCell &voronoiCell =
-        this->worldManagerPtr->getVoronoiCellByDesc(vertexDesc);
+    auto &voronoiCell = this->worldManagerPtr->getVoronoiCellByDesc(vertexDesc);
     this->graphEntityManager.addGraphEntity(&voronoiCell);
   }
   this->armies = generateArmies(this->worldManagerPtr->getGraph());
@@ -37,9 +36,9 @@ GraphEntityManager &ModelManager::getGraphEntityManager() {
   return this->graphEntityManager;
 }
 
-const std::vector<Army> ModelManager::getArmies() const { return this->armies; }
+std::vector<Army> &ModelManager::getArmies() { return this->armies; }
 
-const std::vector<Character> ModelManager::getCharacters() const {
+std::vector<Character> &ModelManager::getCharacters() {
   return this->characters;
 }
 

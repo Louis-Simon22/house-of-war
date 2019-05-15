@@ -8,12 +8,14 @@
 #include "../painters/characterpainter.h"
 #include "../painters/voronoicellpainter.h"
 
+#include <boost/signals2.hpp>
+
 namespace how {
 namespace ui {
 
 MainController::MainController()
     : modelManager(), modelThreadManager(), entityControllerPtr(),
-      worldManagerWrapperPtr() {}
+      worldControllerPtr() {}
 
 void MainController::newModel(int width, int height,
                               float minimumVoronoiCellDistance,
@@ -22,7 +24,7 @@ void MainController::newModel(int width, int height,
       0, 0, width, height, minimumVoronoiCellDistance,
       static_cast<std::uint32_t>(randomSeed));
   this->modelManager.newModel(config);
-  this->worldManagerWrapperPtr.reset(
+  this->worldControllerPtr.reset(
       new WorldController(this->modelManager.getWorldManagerPtr()));
   this->entityControllerPtr.reset(
       new EntityController(this->modelManager.getGraphEntityManager()));
@@ -31,14 +33,32 @@ void MainController::newModel(int width, int height,
 
 void MainController::instantiateUiElements(QQuickItem *parent) {
   auto &armies = modelManager.getArmies();
-
   for (auto &army : armies) {
-    this->bindEntityPainter(parent, new ArmyPainter(army));
+    auto *armyPainter = new ArmyPainter(army);
+    this->bindEntityPainter(parent, armyPainter);
+    auto &graphEntity = armyPainter->getGraphEntity();
+    graphEntity.changeSignals.visualChangedSignal.connect(
+        ::boost::bind(&QQuickItem::update, armyPainter));
+    graphEntity.changeSignals.dimensionsChangedSignal.connect(
+        ::boost::bind(&EntityPainter::updateDimensions, armyPainter));
+    graphEntity.changeSignals.destructionSignal.connect(
+        ::boost::bind(&QQuickItem::deleteLater, armyPainter));
   }
+
   auto &characters = this->modelManager.getCharacters();
   for (auto &character : characters) {
-    this->bindEntityPainter(parent, new CharacterPainter(character));
+    auto characterPainter =
+        boost::shared_ptr<CharacterPainter>(new CharacterPainter(character));
+    this->bindEntityPainter(parent, characterPainter.get());
+    auto &graphEntity = characterPainter->getGraphEntity();
+    graphEntity.changeSignals.visualChangedSignal.connect(
+        ::boost::bind(&QQuickItem::update, characterPainter));
+    graphEntity.changeSignals.dimensionsChangedSignal.connect(
+        ::boost::bind(&EntityPainter::updateDimensions, characterPainter));
+    graphEntity.changeSignals.destructionSignal.connect(
+        ::boost::bind(&QQuickItem::deleteLater, characterPainter));
   }
+
   auto *worldManagerPtr = this->modelManager.getWorldManagerPtr();
   types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
   std::tie(vertexItBegin, vertexItEnd) = worldManagerPtr->getVertexIterators();
@@ -46,7 +66,15 @@ void MainController::instantiateUiElements(QQuickItem *parent) {
     const auto vertexDesc = *vertexIt;
     model::VoronoiCell &voronoiCell =
         worldManagerPtr->getVoronoiCellByDesc(vertexDesc);
-    this->bindEntityPainter(parent, new VoronoiCellPainter(voronoiCell));
+    auto *voronoiPainter = new VoronoiCellPainter(voronoiCell);
+    this->bindEntityPainter(parent, voronoiPainter);
+    auto &graphEntity = voronoiPainter->getGraphEntity();
+    graphEntity.changeSignals.visualChangedSignal.connect(
+        ::boost::bind(&QQuickItem::update, voronoiPainter));
+    graphEntity.changeSignals.dimensionsChangedSignal.connect(
+        ::boost::bind(&EntityPainter::updateDimensions, voronoiPainter));
+    graphEntity.changeSignals.destructionSignal.connect(
+        ::boost::bind(&QQuickItem::deleteLater, voronoiPainter));
   }
 }
 
@@ -56,38 +84,14 @@ void MainController::bindEntityPainter(QQuickItem *parent,
   entityPainter->setParent(parent);
   QQmlEngine::setObjectOwnership(entityPainter,
                                  QQmlEngine::JavaScriptOwnership);
-  auto *mouseAreaItem = instantiateMouseAreaItem(entityPainter);
-
-  const auto &graphEntity = entityPainter->getGraphEntity();
-//  graphEntity.visualChangedSignal.connect(
-//      ::boost::bind(&EntityPainter::update, entityPainter, _1));
-//  graphEntity.dimensionsChangedSignal.connect(
-//      ::boost::bind(&EntityPainter::updateDimensions, entityPainter, _1));
-//    graphEntity.dimensionsChangedSignal.connect(&entityPainter->update);
-//  graphEntity.destructionSignal.connect(
-//      ::boost::bind(&QQuickItem::deleteLater, entityPainter, _1));
-}
-
-QQuickItem *MainController::instantiateMouseAreaItem(QQuickItem *parent) {
-  auto *qmlEngine = QQmlEngine::contextForObject(parent)->engine();
-  QQmlComponent component(
-      qmlEngine,
-      QUrl::fromLocalFile("../../../qml/game/components/GenericMouseArea.qml"));
-  auto *mouseAreaObject = component.create();
-  QQuickItem *mouseAreaItem = qobject_cast<QQuickItem *>(mouseAreaObject);
-  mouseAreaItem->setParentItem(parent);
-  mouseAreaItem->setParent(parent);
-  QQmlEngine::setObjectOwnership(mouseAreaObject,
-                                 QQmlEngine::JavaScriptOwnership);
-  return mouseAreaItem;
 }
 
 EntityController *MainController::getEntityController() {
   return this->entityControllerPtr.get();
 }
 
-WorldController *MainController::getWorldManagerWrapper() {
-  return this->worldManagerWrapperPtr.get();
+WorldController *MainController::getWorldController() {
+  return this->worldControllerPtr.get();
 }
 
 } // namespace ui

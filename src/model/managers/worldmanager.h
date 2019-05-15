@@ -25,7 +25,6 @@ public:
   const std::pair<const types::graph_vertex_iterator_t,
                   const types::graph_vertex_iterator_t>
   getVertexIterators() const;
-  VoronoiCell &getVoronoiCellByDesc(types::graph_vertex_desc_t vertexDesc);
 
 private:
   types::graph_t graph;

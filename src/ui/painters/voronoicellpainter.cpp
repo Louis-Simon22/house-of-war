@@ -8,10 +8,10 @@
 namespace how {
 namespace ui {
 
-VoronoiCellPainter::VoronoiCellPainter(const model::VoronoiCell &voronoiCell)
+VoronoiCellPainter::VoronoiCellPainter(model::VoronoiCell &voronoiCell)
     : EntityPainter(voronoiCell), voronoiCell(voronoiCell) {
-      this->voronoiCell.visualChangedSignal.connect(
-          ::boost::bind(&EntityPainter::update, this, _1));
+//  this->voronoiCell.changeSignals.visualChangedSignal.connect(
+//      ::boost::bind(&EntityPainter::update, this, _1));
 }
 
 VoronoiCellPainter::~VoronoiCellPainter() {}
@@ -47,9 +47,9 @@ QSGNode *VoronoiCellPainter::updatePaintNode(QSGNode *oldNode,
   }
 
   QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
-  material->setColor(
-      QColor(0, static_cast<int>(this->voronoiCell.getTile().getHeight() * 255),
-             static_cast<int>((1 - this->voronoiCell.getTile().getHeight()) * 255)));
+  material->setColor(QColor(
+      0, static_cast<int>(this->voronoiCell.getTile().getAltitude() * 255),
+      static_cast<int>((1 - this->voronoiCell.getTile().getAltitude()) * 255)));
 
   node->setMaterial(material);
   node->setFlag(QSGNode::OwnsMaterial);

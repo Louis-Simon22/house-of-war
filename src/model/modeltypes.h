@@ -23,6 +23,13 @@ using polygon_t = ::boost::geometry::model::polygon<point_t, false, true>;
 using ring_t = ::boost::geometry::model::ring<point_t, true, true>;
 
 } // namespace types
+
+namespace model {
+enum Layers {
+  TILES_LAYER = 0,
+  CHARACTERS_LAYER = 1
+};
+}
 } // namespace how
 
 #endif // MODELTYPES_H

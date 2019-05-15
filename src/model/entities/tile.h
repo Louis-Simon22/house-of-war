@@ -2,12 +2,13 @@
 #define TILE_H
 
 #include "../modeltypes.h"
+#include "./graphentity.h"
 
 namespace how {
 namespace model {
 namespace {
 using charac_t = types::characteristics_t;
-}
+} // namespace
 
 class Tile {
 public:
@@ -15,12 +16,12 @@ public:
   ~Tile();
 
 public:
-  const charac_t &getHeight() const;
-  charac_t &getHeight();
-  void setHeight(charac_t height);
+  const charac_t &getAltitude() const;
+  charac_t &getAltitude();
+  void setAltitude(charac_t altitude);
 
 private:
-  charac_t height;
+  charac_t altitude;
 };
 } // namespace model
 } // namespace how

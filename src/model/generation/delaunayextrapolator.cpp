@@ -23,11 +23,11 @@ extractDelaunayTriangulation(std::vector<VoronoiCell> voronoiCells) {
         const auto &found = *foundIt;
         const auto &foundVertex = found.second;
         auto delaunayEdge1 = DelaunayEdge(
-            types::segment_t(delaunayGraph[vertex].getCentroid(),
-                             delaunayGraph[foundVertex].getCentroid()));
+            types::segment_t(delaunayGraph[vertex].getCenter(),
+                             delaunayGraph[foundVertex].getCenter()));
         auto delaunayEdge2 = DelaunayEdge(
-            types::segment_t(delaunayGraph[foundVertex].getCentroid(),
-                             delaunayGraph[vertex].getCentroid()));
+            types::segment_t(delaunayGraph[foundVertex].getCenter(),
+                             delaunayGraph[vertex].getCenter()));
         ::boost::add_edge(vertex, foundVertex, delaunayEdge1, delaunayGraph);
         ::boost::add_edge(foundVertex, vertex, delaunayEdge2, delaunayGraph);
         pathSegmentsSet.insert(delaunayEdge1.getSegment());

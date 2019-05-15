@@ -8,14 +8,14 @@ namespace how {
 namespace ui {
 class CharacterPainter : public EntityPainter {
 public:
-  CharacterPainter(const model::Character &character);
+  CharacterPainter(model::Character &character);
   ~CharacterPainter() override;
 
 public:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 private:
-  const model::Character &character;
+  model::Character &character;
 };
 } // namespace ui
 } // namespace how

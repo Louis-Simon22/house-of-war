@@ -6,25 +6,21 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-VoronoiCell::VoronoiCell() : GraphEntity() {}
+VoronoiCell::VoronoiCell()
+    : GraphEntity(Layers::TILES_LAYER, types::point_t()) {}
 
 VoronoiCell::VoronoiCell(types::box_t envelope, types::point_t center,
                          types::polygon_t polygon,
                          std::vector<types::point_t> outlinePoints,
                          std::vector<types::segment_t> segments)
-    : GraphEntity(VORONOI_CELL_LAYER), envelope(envelope), center(center),
-      polygon(polygon), outlinePoints(outlinePoints), outlineSegments(segments),
-      tile() {}
+    : GraphEntity(Layers::TILES_LAYER,
+                  types::point_t(bg::get<bg::min_corner, 0>(envelope),
+                                 bg::get<bg::min_corner, 1>(envelope))),
+      envelope(envelope), center(center), polygon(polygon),
+      outlinePoints(outlinePoints), outlineSegments(segments),
+      tilePtr(new Tile()) {}
 
 VoronoiCell::~VoronoiCell() {}
-
-types::coordinate_t VoronoiCell::getPosX() const {
-  return bg::get<bg::min_corner, 0>(this->envelope);
-}
-
-types::coordinate_t VoronoiCell::getPosY() const {
-  return bg::get<bg::min_corner, 1>(this->envelope);
-}
 
 types::coordinate_t VoronoiCell::getWidth() const {
   return bg::get<bg::max_corner, 0>(this->envelope) -
@@ -56,9 +52,9 @@ const std::vector<types::segment_t> &VoronoiCell::getOutlineSegments() const {
   return this->outlineSegments;
 }
 
-const Tile &VoronoiCell::getTile() const { return this->tile; }
+const Tile &VoronoiCell::getTile() const { return *this->tilePtr; }
 
-Tile &VoronoiCell::getTile() { return this->tile; }
+Tile &VoronoiCell::getTile() { return *this->tilePtr; }
 
 } // namespace model
 } // namespace how

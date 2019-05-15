@@ -3,15 +3,15 @@
 namespace how {
 namespace model {
 
-Tile::Tile() : height() {}
+Tile::Tile() : altitude() {}
 
 Tile::~Tile() {}
 
-void Tile::setHeight(charac_t height) { this->height = height; }
+void Tile::setAltitude(charac_t altitude) { this->altitude = altitude; }
 
-const charac_t &Tile::getHeight() const { return this->height; }
+const charac_t &Tile::getAltitude() const { return this->altitude; }
 
-charac_t &Tile::getHeight() { return this->height; }
+charac_t &Tile::getAltitude() { return this->altitude; }
 
 } // namespace model
 } // namespace how

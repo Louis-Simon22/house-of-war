@@ -8,14 +8,14 @@ namespace how {
 namespace ui {
 class ArmyPainter : public EntityPainter {
 public:
-  ArmyPainter(const model::Army &army);
+  ArmyPainter(model::Army &army);
   ~ArmyPainter() override;
 
 public:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 private:
-  const model::Army &army;
+  model::Army &army;
 };
 } // namespace ui
 } // namespace how

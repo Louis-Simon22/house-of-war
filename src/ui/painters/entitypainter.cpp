@@ -8,7 +8,7 @@ namespace {
 namespace bs = ::boost::signals2;
 }
 
-EntityPainter::EntityPainter(const model::GraphEntity &graphEntity,
+EntityPainter::EntityPainter(model::GraphEntity &graphEntity,
                              QQuickItem *parent)
     : QQuickItem(parent), graphEntity(graphEntity) {
   this->setAntialiasing(true);
@@ -24,7 +24,7 @@ void EntityPainter::updateDimensions() {
   this->setHeight(static_cast<double>(this->graphEntity.getHeight()));
 }
 
-const model::GraphEntity &EntityPainter::getGraphEntity() const {
+model::GraphEntity &EntityPainter::getGraphEntity() {
   return this->graphEntity;
 }
 

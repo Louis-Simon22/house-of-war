@@ -1,4 +1,4 @@
-#include "worldmanagerwrapper.h"
+#include "worldcontroller.h"
 
 #include "../conversion/converter.h"
 

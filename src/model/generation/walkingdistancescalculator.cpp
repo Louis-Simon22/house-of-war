@@ -18,7 +18,7 @@ void calculateWalkingDistances(types::graph_t &graph) {
     auto &edge = graph[edgeDesc];
 
     const auto heightDifference =
-        targetVertex.getTile().getHeight() - sourceVertex.getTile().getHeight();
+        targetVertex.getTile().getAltitude() - sourceVertex.getTile().getAltitude();
     const auto walkingDistance =
         edge.getDistanceAsCrowFlies() * (1 + heightDifference);
     edge.setDistanceWalking(std::max(walkingDistance, 0.0F));

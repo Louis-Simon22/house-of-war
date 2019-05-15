@@ -20,9 +20,7 @@ class MainController : public QObject {
 
   Q_PROPERTY(EntityController *entityController READ getEntityController NOTIFY
                  newModelGenerated FINAL)
-  Q_PROPERTY(EntitiesModel *entitiesModel READ getEntitiesModel NOTIFY
-                 newModelGenerated FINAL)
-  Q_PROPERTY(WorldController *worldManagerWrapper READ getWorldManagerWrapper
+  Q_PROPERTY(WorldController *worldController READ getWorldController
                  NOTIFY newModelGenerated FINAL)
 
 public:
@@ -37,19 +35,18 @@ public slots:
   void instantiateUiElements(QQuickItem *parent);
 
 private:
-  static void bindEntityPainter(QQuickItem *parent,
-                                EntityPainter *entityPainter);
+  void bindEntityPainter(QQuickItem *parent, EntityPainter *entityPainter);
   static QQuickItem *instantiateMouseAreaItem(QQuickItem *parent);
 
 public:
   EntityController *getEntityController();
-  WorldController *getWorldManagerWrapper();
+  WorldController *getWorldController();
 
 private:
   model::ModelManager modelManager;
   ModelThreadManager modelThreadManager;
   std::unique_ptr<EntityController> entityControllerPtr;
-  std::unique_ptr<WorldController> worldManagerWrapperPtr;
+  std::unique_ptr<WorldController> worldControllerPtr;
 };
 } // namespace ui
 } // namespace how

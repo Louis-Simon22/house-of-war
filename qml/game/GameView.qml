@@ -32,7 +32,8 @@ Item {
             id: mapView
         }
         onLoaded: {
-            item.mainController = mainController
+            item.mainController = gameView.mainController
+            item.loadMap()
         }
     }
 

@@ -18,8 +18,8 @@ public:
 
 public:
   GraphEntityManager &getGraphEntityManager();
-  const std::vector<Army> getArmies() const;
-  const std::vector<Character> getCharacters() const;
+  std::vector<Army> &getArmies();
+  std::vector<Character> &getCharacters();
   WorldManager *getWorldManagerPtr() const;
 
 private:

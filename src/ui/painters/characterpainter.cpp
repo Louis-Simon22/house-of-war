@@ -11,7 +11,7 @@
 namespace how {
 namespace ui {
 
-CharacterPainter::CharacterPainter(const model::Character &character)
+CharacterPainter::CharacterPainter(model::Character &character)
     : EntityPainter(character), character(character) {}
 
 CharacterPainter::~CharacterPainter() {}

@@ -12,7 +12,7 @@ GraphEntityPositionChange *
 graphEntityPathfinding(GraphEntity &sourceEntity,
                        types::graph_vertex_desc_t destinationVertexDesc,
                        const types::graph_t &graph) {
-  const auto sourceVertexDesc = sourceEntity.getCurrentVertexDesc();
+  const auto sourceVertexDesc = 1; // sourceEntity.getCurrentVertexDesc();
 
   // Map of the shortest path by predecessors
   std::vector<types::graph_vertex_desc_t> predecessors;

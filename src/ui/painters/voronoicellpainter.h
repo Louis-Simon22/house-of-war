@@ -9,14 +9,14 @@ namespace ui {
 class VoronoiCellPainter : public EntityPainter {
 
 public:
-  VoronoiCellPainter(const model::VoronoiCell &voronoiCell);
+  VoronoiCellPainter(model::VoronoiCell &voronoiCell);
   ~VoronoiCellPainter() override;
 
 public:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 private:
-  const model::VoronoiCell &voronoiCell;
+  model::VoronoiCell &voronoiCell;
 };
 } // namespace ui
 } // namespace how

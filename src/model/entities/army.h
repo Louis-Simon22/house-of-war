@@ -1,18 +1,22 @@
 #ifndef ARMY_H
 #define ARMY_H
 
-
-#include "../modeltypes.h"
 #include "../graphtypes.h"
+#include "../modeltypes.h"
 #include "./graphentity.h"
 
 namespace how {
 namespace model {
 class Army : public GraphEntity {
 public:
-  Army(types::point_t initialPosition,
-       types::graph_vertex_desc_t currentVertexIndex);
+  Army(types::point_t initialPosition);
   ~Army() override;
+
+public:
+  types::coordinate_t getWidth() const override;
+  types::coordinate_t getHeight() const override;
+  bool isTargetable() const override;
+  bool isSelectable() const override;
 
 public:
   void onIteration(float deltaTime);

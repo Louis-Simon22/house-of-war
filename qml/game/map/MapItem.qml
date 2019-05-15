@@ -4,8 +4,6 @@ import QtQml 2.12
 
 import com.louissimonmcnicoll.how.ui.maincontroller 1.0
 import com.louissimonmcnicoll.how.ui.entitycontroller 1.0
-import com.louissimonmcnicoll.how.ui.worldmanager 1.0
-import com.louissimonmcnicoll.how.ui.entitiesmodel 1.0
 
 Flickable {
     id: mapItemFlickable
@@ -16,12 +14,17 @@ Flickable {
 
     property MainController mainController
 
+    signal loadMap
+    onLoadMap: {
+        mapItemFlickable.mainController.instantiateUiElements(mapItem)
+    }
+
     Item {
         id: mapItem
-        x: mainController.worldManagerWrapper.worldBounds.x
-        y: mainController.worldManagerWrapper.worldBounds.y
-        width: mainController.worldManagerWrapper.worldBounds.width
-        height: mainController.worldManagerWrapper.worldBounds.height
+        x: mapItemFlickable.mainController.worldController.worldBounds.x
+        y: mapItemFlickable.mainController.worldController.worldBounds.y
+        width: mapItemFlickable.mainController.worldController.worldBounds.width
+        height: mapItemFlickable.mainController.worldController.worldBounds.height
         property real minScale: Math.max(
                                     mapItemFlickable.width / mapItem.width,
                                     mapItemFlickable.height / mapItem.height)
@@ -42,39 +45,6 @@ Flickable {
                             mapItem.minScale,
                             mapItem.scale + (wheel.angleDelta.y > 0 ? 0.1 : -0.1))
                 wheel.accepted = true
-            }
-        }
-
-        Repeater {
-            id: entities
-            model: mainController.entitiesModel
-
-            property int selectedCharacterIndex: -1
-
-            delegate: MouseArea {
-                id: envelope
-                x: rolePosX
-                y: rolePosY
-                z: roleLayer
-                width: roleWidth
-                height: roleHeight
-
-                // ignore "Enum value must be a string" warning
-                acceptedButtons: roleAcceptedButtons
-                propagateComposedEvents: false
-                onClicked: {
-                    mainController.entityController.onEntityWrapperClicked(
-                                index, mouse.button)
-                    mouse.accepted = true
-                }
-
-                Component.onCompleted: {
-                    var entityWrapperPainter = mainController.entityController.createEntityWrapperPainterAtIndex(
-                                index)
-                    entityWrapperPainter.z = roleLayer
-                    entityWrapperPainter.parent = mapItem
-                    entityWrapperPainter.anchors.fill = envelope
-                }
             }
         }
     }
