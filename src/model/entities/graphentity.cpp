@@ -7,9 +7,9 @@ namespace model {
 
 GraphEntity::GraphEntity(types::layer_t layer, types::point_t position)
     : uuid(uuids::random_generator()()), layer(layer), position(position),
-      changeSignals() {}
+      selected(false), dimensionsChangedSignal(), visualChangedSignal() {}
 
-GraphEntity::~GraphEntity() { this->changeSignals.destructionSignal(); }
+GraphEntity::~GraphEntity() {}
 
 const uuids::uuid &GraphEntity::getUuid() const { return this->uuid; }
 
@@ -30,25 +30,14 @@ const types::point_t &GraphEntity::getPosition() const {
 void GraphEntity::setPosition(const types::point_t &position) {
   bg::set<0>(this->position, bg::get<0>(position));
   bg::set<1>(this->position, bg::get<1>(position));
-  this->changeSignals.dimensionsChangedSignal();
+  this->dimensionsChangedSignal();
 }
 
 bool GraphEntity::isSelected() const { return this->selected; }
 
 void GraphEntity::setSelected(bool selected) {
   this->selected = selected;
-  this->changeSignals.visualChangedSignal();
-}
-
-GraphEntity::ChangeSignals::ChangeSignals()
-    : dimensionsChangedSignal(), visualChangedSignal(), destructionSignal() {}
-
-GraphEntity::ChangeSignals::ChangeSignals(const GraphEntity::ChangeSignals &)
-    : ChangeSignals() {}
-
-GraphEntity::ChangeSignals &GraphEntity::ChangeSignals::
-operator=(const GraphEntity::ChangeSignals &) {
-  return *this;
+  this->visualChangedSignal();
 }
 
 } // namespace model

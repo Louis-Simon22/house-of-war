@@ -6,8 +6,8 @@
 namespace how {
 namespace model {
 
-std::tuple<types::graph_t, std::vector<types::segment_t>>
-extractDelaunayTriangulation(std::vector<VoronoiCell> voronoiCells);
+types::graph_t createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
+        std::vector<std::shared_ptr<VoronoiCell>> voronoiCells);
 
 } // namespace model
 } // namespace how

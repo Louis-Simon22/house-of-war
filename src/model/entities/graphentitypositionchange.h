@@ -1,17 +1,15 @@
 #ifndef GRAPHMOVEMENT_H
 #define GRAPHMOVEMENT_H
 
-#include "../graphtypes.h"
-#include "./entitychange.h"
-#include "./graphentity.h"
+#include "./graphentitychange.h"
+#include "./voronoicell.h"
 
 namespace how {
 namespace model {
-class GraphEntityPositionChange : public EntityChange {
+class GraphEntityPositionChange : public GraphEntityChange {
 public:
-  GraphEntityPositionChange(
-      const types::graph_t &delaunayGraph, GraphEntity &entity,
-      std::vector<types::graph_vertex_desc_t> destinations);
+  GraphEntityPositionChange(GraphEntity *entity,
+                            std::vector<VoronoiCell *> destinations);
   ~GraphEntityPositionChange() override;
 
 public:
@@ -19,9 +17,8 @@ public:
   void destinationReached() override;
 
 private:
-  const types::graph_t &delaunayGraph;
-  GraphEntity &graphEntity;
-  std::vector<types::graph_vertex_desc_t> destinations;
+  GraphEntity *graphEntity;
+  std::vector<VoronoiCell *> destinations;
   std::size_t currentDestinationIndex;
 };
 } // namespace model

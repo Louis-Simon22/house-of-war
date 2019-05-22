@@ -5,3 +5,6 @@
 [submodule "lib/poisson-disk-sampling"]
     path = lib/poisson-disk-sampling
     url = https://github.com/thinks/poisson-disk-sampling.git
+[submodule "lib/delaunay"]
+	path = lib/delaunay
+	url = https://github.com/delfrrr/delaunator-cpp.git

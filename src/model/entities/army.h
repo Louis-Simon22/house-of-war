@@ -13,10 +13,11 @@ public:
   ~Army() override;
 
 public:
-  types::coordinate_t getWidth() const override;
-  types::coordinate_t getHeight() const override;
   bool isTargetable() const override;
   bool isSelectable() const override;
+  bool isWithinSelectionArea(types::coordinate_t posX,
+                          types::coordinate_t posY) const override;
+  types::coordinate_t getDetectionRadius() const;
 
 public:
   void onIteration(float deltaTime);

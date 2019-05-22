@@ -1,6 +1,8 @@
 #include "segmentcomparator.h"
 
 #include <boost/geometry/algorithms/centroid.hpp>
+#include <boost/geometry/algorithms/distance.hpp>
+#include <boost/geometry/strategies/strategies.hpp>
 
 #include "./pointcomparator.h"
 

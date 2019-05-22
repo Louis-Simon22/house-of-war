@@ -11,20 +11,19 @@ namespace bg = ::boost::geometry;
 
 class DelaunayEdge {
 public:
-  DelaunayEdge();
   DelaunayEdge(types::segment_t segment);
   ~DelaunayEdge();
 
 public:
   const types::segment_t &getSegment() const;
-  const types::coordinate_fpt_t &getDistanceAsCrowFlies() const;
-  const types::coordinate_fpt_t &getDistanceWalking() const;
-  void setDistanceWalking(types::coordinate_fpt_t distanceWalking);
+  const types::coordinate_t &getDistanceAsCrowFlies() const;
+  const types::coordinate_t &getDistanceWalking() const;
+  void setDistanceWalking(types::coordinate_t distanceWalking);
 
 private:
   types::segment_t segment;
-  types::coordinate_fpt_t distanceAsCrowFlies;
-  types::coordinate_fpt_t distanceWalking;
+  types::coordinate_t distanceAsCrowFlies;
+  types::coordinate_t distanceWalking;
 };
 
 } // namespace model

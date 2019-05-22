@@ -23,8 +23,8 @@ public:
   virtual ~GraphEntity();
 
 public:
-  virtual types::coordinate_t getWidth() const = 0;
-  virtual types::coordinate_t getHeight() const = 0;
+  virtual bool isWithinSelectionArea(types::coordinate_t posX,
+                                  types::coordinate_t posY) const = 0;
   virtual bool isTargetable() const = 0;
   virtual bool isSelectable() const = 0;
 
@@ -44,21 +44,9 @@ private:
   types::point_t position;
   bool selected;
 
-private:
-  class ChangeSignals {
-  public:
-    ChangeSignals();
-    ChangeSignals(const ChangeSignals &);
-    ChangeSignals &operator=(const ChangeSignals &);
-
-  public:
-    dimensions_changed_signal_t dimensionsChangedSignal;
-    visual_changed_signal_t visualChangedSignal;
-    destruction_signal_t destructionSignal;
-  };
-
 public:
-  ChangeSignals changeSignals;
+  dimensions_changed_signal_t dimensionsChangedSignal;
+  visual_changed_signal_t visualChangedSignal;
 };
 
 } // namespace model

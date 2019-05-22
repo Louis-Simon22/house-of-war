@@ -21,10 +21,10 @@ Flickable {
 
     Item {
         id: mapItem
-        x: mapItemFlickable.mainController.worldController.worldBounds.x
-        y: mapItemFlickable.mainController.worldController.worldBounds.y
-        width: mapItemFlickable.mainController.worldController.worldBounds.width
-        height: mapItemFlickable.mainController.worldController.worldBounds.height
+        x: mapItemFlickable.mainController.graphEntityController.worldBounds.x
+        y: mapItemFlickable.mainController.graphEntityController.worldBounds.y
+        width: mapItemFlickable.mainController.graphEntityController.worldBounds.width
+        height: mapItemFlickable.mainController.graphEntityController.worldBounds.height
         property real minScale: Math.max(
                                     mapItemFlickable.width / mapItem.width,
                                     mapItemFlickable.height / mapItem.height)
@@ -43,7 +43,7 @@ Flickable {
             onWheel: {
                 mapItem.scale = Math.max(
                             mapItem.minScale,
-                            mapItem.scale + (wheel.angleDelta.y > 0 ? 0.1 : -0.1))
+                            mapItem.scale * (wheel.angleDelta.y > 0 ? 1.05 : 0.95))
                 wheel.accepted = true
             }
         }

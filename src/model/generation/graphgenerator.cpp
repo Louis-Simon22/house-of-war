@@ -1,4 +1,4 @@
-#include "worldgenerator.h"
+#include "graphgenerator.h"
 
 #include <chrono>
 #include <iostream>
@@ -6,27 +6,26 @@
 #include "../utils/easingfunctions.h"
 #include "./celldatagenerator.h"
 #include "./delaunayextrapolator.h"
+#include "./jcv_voronoi_adapter.h"
 #include "./poissondisksamplingadapter.h"
 #include "./walkingdistancescalculator.h"
 
 namespace how {
 namespace model {
 
-WorldManager *generateWorld(const WorldGenerationConfig &config) {
+types::graph_t generateGraph(const WorldGenerationConfig &config) {
   std::cout << "Starting world generation" << std::endl;
   std::cout << "=============================" << std::endl;
-  const auto &startTime = std::chrono::system_clock::now();
-  const auto &minCorner = types::point_t(config.minCornerX, config.minCornerY);
-  const auto &maxCorner = types::point_t(config.maxCornerX, config.maxCornerY);
-  const auto &boundingBox = types::box_t(minCorner, maxCorner);
-  const auto &randomSeed = config.randomSeed;
+  const auto startTime = std::chrono::system_clock::now();
+  const auto boundingBox = config.getBoundingBox();
+  const auto randomSeed = config.randomSeed;
 
-  // Voronoi points generation
+  // PDS points generation
   const std::uint32_t maximumAttempts = 40;
-  const auto &points = generatePoissonDiskSamplingByMinimumDistance(
+  const auto pdsPoints = generatePoissonDiskSamplingByMinimumDistance(
       config.minimumVoronoiCellDistance, boundingBox, maximumAttempts,
       randomSeed);
-  std::cout << "Generated " << points.size() << " points "
+  std::cout << "Generated " << pdsPoints.size() << " points "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)
                    .count()
@@ -34,10 +33,8 @@ WorldManager *generateWorld(const WorldGenerationConfig &config) {
   std::cout << "=============================" << std::endl;
 
   // Voronoi graph generation
-  const auto &voronoiPair = generateVoronoi(boundingBox, points);
-  const auto &uniqueVoronoiSegments = voronoiPair.first;
-  auto voronoiCells = voronoiPair.second;
-  std::cout << "Generated voronoi "
+  const auto voronoiCells = generateVoronoiCells(boundingBox, pdsPoints);
+  std::cout << "Generated voronoi cells "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)
                    .count()
@@ -45,10 +42,8 @@ WorldManager *generateWorld(const WorldGenerationConfig &config) {
   std::cout << "=============================" << std::endl;
 
   // Delaunay graph extracion
-  auto delaunayTuple = extractDelaunayTriangulation(voronoiCells);
-  auto graph = std::get<0>(delaunayTuple);
-  const auto &uniqueDelaunaySegments = std::get<1>(delaunayTuple);
-  std::cout << "Generated delaunay "
+  auto graph = createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(voronoiCells);
+  std::cout << "Generated graph "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)
                    .count()
@@ -73,8 +68,7 @@ WorldManager *generateWorld(const WorldGenerationConfig &config) {
             << std::endl;
   std::cout << "=============================" << std::endl;
 
-  return new WorldManager(boundingBox, uniqueVoronoiSegments,
-                          uniqueDelaunaySegments, graph);
+  return graph;
 }
 } // namespace model
 } // namespace how

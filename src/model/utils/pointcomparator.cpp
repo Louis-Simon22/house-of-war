@@ -1,5 +1,7 @@
 #include "./pointcomparator.h"
 
+#include <cmath>
+
 namespace how {
 namespace model {
 

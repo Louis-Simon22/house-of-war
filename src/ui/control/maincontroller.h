@@ -9,19 +9,16 @@
 
 #include "../../model/managers/modelmanager.h"
 #include "../painters/entitypainter.h"
-#include "./entitycontroller.h"
+#include "./graphentitycontroller.h"
 #include "./modelthreadmanager.h"
-#include "./worldcontroller.h"
 
 namespace how {
 namespace ui {
 class MainController : public QObject {
   Q_OBJECT
 
-  Q_PROPERTY(EntityController *entityController READ getEntityController NOTIFY
-                 newModelGenerated FINAL)
-  Q_PROPERTY(WorldController *worldController READ getWorldController
-                 NOTIFY newModelGenerated FINAL)
+  Q_PROPERTY(GraphEntityController *graphEntityController READ
+                 getGraphEntityController NOTIFY newModelGenerated FINAL)
 
 public:
   MainController();
@@ -35,18 +32,13 @@ public slots:
   void instantiateUiElements(QQuickItem *parent);
 
 private:
-  void bindEntityPainter(QQuickItem *parent, EntityPainter *entityPainter);
-  static QQuickItem *instantiateMouseAreaItem(QQuickItem *parent);
-
-public:
-  EntityController *getEntityController();
-  WorldController *getWorldController();
+  GraphEntityController *getGraphEntityController();
+  void bindClickSignalAndSetObjectOwnership(EntityPainter* entityPainter);
 
 private:
   model::ModelManager modelManager;
   ModelThreadManager modelThreadManager;
-  std::unique_ptr<EntityController> entityControllerPtr;
-  std::unique_ptr<WorldController> worldControllerPtr;
+  std::unique_ptr<GraphEntityController> graphEntityControllerPtr;
 };
 } // namespace ui
 } // namespace how

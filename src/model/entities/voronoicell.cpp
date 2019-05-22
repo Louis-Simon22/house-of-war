@@ -1,48 +1,50 @@
 #include "voronoicell.h"
 
+#include <boost/geometry/algorithms/append.hpp>
+#include <boost/geometry/algorithms/covered_by.hpp>
+#include <boost/geometry/algorithms/envelope.hpp>
+#include <boost/geometry/strategies/strategies.hpp>
+
 namespace how {
 namespace model {
 namespace {
 namespace bg = ::boost::geometry;
 }
 
-VoronoiCell::VoronoiCell()
-    : GraphEntity(Layers::TILES_LAYER, types::point_t()) {}
+VoronoiCell::VoronoiCell(types::point_t center,
+                         std::vector<types::point_t> outlinePoints)
+    : GraphEntity(Layers::TILES, center), outlinePoints(outlinePoints),
+      polygon(), envelope(), outlineSegments(), tilePtr(new Tile()) {
+  // Loops to get the first point again
+  for (std::size_t i = 0; i < outlinePoints.size(); i++) {
+    const auto &outlinePoint1 = outlinePoints[i];
+    const auto &outlinePoint2 = outlinePoints[(i + 1) % outlinePoints.size()];
+    bg::append(this->polygon.outer(), outlinePoint1);
+    this->outlineSegments.push_back(
+        types::segment_t(outlinePoint1, outlinePoint2));
+  }
+  // Add the first point again to close the polygon
+  bg::append(this->polygon.outer(), *outlinePoints.begin());
 
-VoronoiCell::VoronoiCell(types::box_t envelope, types::point_t center,
-                         types::polygon_t polygon,
-                         std::vector<types::point_t> outlinePoints,
-                         std::vector<types::segment_t> segments)
-    : GraphEntity(Layers::TILES_LAYER,
-                  types::point_t(bg::get<bg::min_corner, 0>(envelope),
-                                 bg::get<bg::min_corner, 1>(envelope))),
-      envelope(envelope), center(center), polygon(polygon),
-      outlinePoints(outlinePoints), outlineSegments(segments),
-      tilePtr(new Tile()) {}
+  bg::envelope(this->polygon, this->envelope);
+}
 
 VoronoiCell::~VoronoiCell() {}
-
-types::coordinate_t VoronoiCell::getWidth() const {
-  return bg::get<bg::max_corner, 0>(this->envelope) -
-         bg::get<bg::min_corner, 0>(this->envelope);
-}
-
-types::coordinate_t VoronoiCell::getHeight() const {
-  return bg::get<bg::max_corner, 1>(this->envelope) -
-         bg::get<bg::min_corner, 1>(this->envelope);
-}
 
 bool VoronoiCell::isTargetable() const { return true; }
 
 bool VoronoiCell::isSelectable() const { return false; }
 
-const types::box_t &VoronoiCell::getEnvelope() const { return this->envelope; }
-
-const types::point_t &VoronoiCell::getCenter() const { return this->center; }
+bool VoronoiCell::isWithinSelectionArea(types::coordinate_t posX,
+                                        types::coordinate_t posY) const {
+  return bg::covered_by(types::point_t(posX, posY), this->polygon);
+}
 
 const types::polygon_t &VoronoiCell::getPolygon() const {
   return this->polygon;
 }
+
+const types::box_t &VoronoiCell::getEnvelope() const { return this->envelope; }
 
 const std::vector<types::point_t> &VoronoiCell::getOutlinePoints() const {
   return this->outlinePoints;

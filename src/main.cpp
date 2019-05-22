@@ -6,6 +6,7 @@
 #include <QThread>
 
 #include <iostream>
+#include <memory>
 
 #define BOOST_UUID_NO_SIMD
 #define BOOST_UUID_NO_TYPE_TRAITS
@@ -15,13 +16,15 @@
 // Debug output of qml renderer
 #define QSG_RENDERER_DEBUG = render
 
-#include "../src/ui/control/entitycontroller.h"
+#include "../src/ui/control/graphentitycontroller.h"
 #include "../src/ui/control/maincontroller.h"
 #include "../src/ui/control/modelthreadmanager.h"
 #include "../src/ui/painters/armypainter.h"
 #include "../src/ui/painters/characterpainter.h"
 #include "../src/ui/painters/segmentspainter.h"
 #include "../src/ui/painters/voronoicellpainter.h"
+
+Q_DECLARE_METATYPE(std::shared_ptr<::how::model::GraphEntity>)
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -42,10 +45,7 @@ int main(int argc, char *argv[]) {
       "com.louissimonmcnicoll.how.ui.segmentspainter", 1, 0, "SegmentsPainter",
       uncreatableTypeErrorMessage);
   // Controllers
-  qmlRegisterUncreatableType<::how::ui::WorldController>(
-      "com.louissimonmcnicoll.how.ui.worldcontroller", 1, 0, "WorldController",
-      uncreatableTypeErrorMessage);
-  qmlRegisterUncreatableType<::how::ui::EntityController>(
+  qmlRegisterUncreatableType<::how::ui::GraphEntityController>(
       "com.louissimonmcnicoll.how.ui.entitycontroller", 1, 0,
       "EntityController", uncreatableTypeErrorMessage);
   qmlRegisterType<::how::ui::MainController>(
@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
   qmlRegisterUncreatableType<::how::ui::ModelThreadManager>(
       "com.louissimonmcnicoll.how.ui.modelthreadmanager", 1, 0,
       "ModelThreadManager", uncreatableTypeErrorMessage);
+  qRegisterMetaType<std::shared_ptr<::how::model::GraphEntity>>();
 
   engine.load(QUrl(QStringLiteral("qrc:/qml/Window.qml")));
   if (engine.rootObjects().isEmpty()) {

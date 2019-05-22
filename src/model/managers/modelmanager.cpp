@@ -1,45 +1,38 @@
 #include "modelmanager.h"
 
 #include "../generation/entitygenerator.h"
-#include "../generation/worldgenerator.h"
+#include "../generation/graphgenerator.h"
 
 namespace how {
 namespace model {
 
-ModelManager::ModelManager() : graphEntityManager(), worldManagerPtr() {}
+ModelManager::ModelManager() : graphEntityManagerPtr() {}
 
 void ModelManager::newModel(WorldGenerationConfig config) {
-  this->worldManagerPtr.reset(generateWorld(config));
+  this->graphEntityManagerPtr = std::make_unique<GraphEntityManager>(
+      generateGraph(config), config.getBoundingBox());
   types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
   ::boost::tie(vertexItBegin, vertexItEnd) =
-      ::boost::vertices(this->worldManagerPtr->getGraph());
+      ::boost::vertices(this->graphEntityManagerPtr->getGraph());
   for (auto vertexIt = vertexItBegin; vertexIt != vertexItEnd; vertexIt++) {
     const auto vertexDesc = *vertexIt;
-    auto &voronoiCell = this->worldManagerPtr->getVoronoiCellByDesc(vertexDesc);
-    this->graphEntityManager.addGraphEntity(&voronoiCell);
+    auto voronoiCellPtr =
+        this->graphEntityManagerPtr->getVoronoiCellPtrByDesc(vertexDesc);
+    this->graphEntityManagerPtr->addVoronoiCell(voronoiCellPtr);
   }
-  this->armies = generateArmies(this->worldManagerPtr->getGraph());
-  for (auto &army : armies) {
-    this->graphEntityManager.addGraphEntity(&army);
+  auto armyPtrs = generateArmies(this->graphEntityManagerPtr->getGraph());
+  for (auto &armyPtr : armyPtrs) {
+    this->graphEntityManagerPtr->addArmy(armyPtr);
   }
-  this->characters = generateCharacters(this->worldManagerPtr->getGraph());
-  for (auto &character : characters) {
-    this->graphEntityManager.addGraphEntity(&character);
+  auto characterPtrs =
+      generateCharacters(this->graphEntityManagerPtr->getGraph());
+  for (auto &characterPtr : characterPtrs) {
+    this->graphEntityManagerPtr->addCharacter(characterPtr);
   }
 }
 
-WorldManager *ModelManager::getWorldManagerPtr() const {
-  return this->worldManagerPtr.get();
-}
-
-GraphEntityManager &ModelManager::getGraphEntityManager() {
-  return this->graphEntityManager;
-}
-
-std::vector<Army> &ModelManager::getArmies() { return this->armies; }
-
-std::vector<Character> &ModelManager::getCharacters() {
-  return this->characters;
+GraphEntityManager *ModelManager::getGraphEntityManagerPtr() {
+  return this->graphEntityManagerPtr.get();
 }
 
 } // namespace model

@@ -1,42 +1,70 @@
 #include "segmentspainter.h"
 
+#include <QColor>
+#include <QSGFlatColorMaterial>
+#include <QSGGeometryNode>
+#include <QSGNode>
+
+#include <iostream>
+
 namespace how {
 namespace ui {
+namespace {
+namespace bg = ::boost::geometry;
+}
 
-SegmentsPainter::SegmentsPainter(const model::WorldManager &worldManager)
-    : QQuickPaintedItem(nullptr), worldManager(worldManager),
-      showVoronoiSegments(false), showDelaunaySegments(false) {
+SegmentsPainter::SegmentsPainter(QQuickItem *parent,
+                                 const std::vector<types::segment_t> &segments)
+    : QQuickItem(parent), segments(segments) {
   this->setAntialiasing(true);
+  this->setFlag(QQuickItem::ItemHasContents, true);
+  this->setX(parent->x());
+  this->setY(parent->y());
+  this->setZ(static_cast<double>(model::Layers::MAP_ELEMENTS));
+  this->setWidth(parent->width());
+  this->setHeight(parent->height());
 }
 
-void SegmentsPainter::paint(QPainter *painter) {
-  painter->setRenderHints(QPainter::Antialiasing, true);
-  if (this->showVoronoiSegments) {
-    this->paintSegmentsList(painter,
-                            this->worldManager.getUniqueVoronoiSegments());
+QSGNode *SegmentsPainter::updatePaintNode(QSGNode *oldNode,
+                                          QQuickItem::UpdatePaintNodeData *) {
+  QSGGeometryNode *node = nullptr;
+  QSGGeometry *geometry = nullptr;
+
+  const int pointsCount = static_cast<int>(this->segments.size()) * 2;
+
+  if (!oldNode) {
+    node = new QSGGeometryNode();
+
+    geometry =
+        new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), pointsCount);
+    geometry->setDrawingMode(QSGGeometry::DrawLines);
+    geometry->setLineWidth(3);
+    node->setGeometry(geometry);
+    node->setFlag(QSGNode::OwnsGeometry);
+
+    QSGFlatColorMaterial *material = new QSGFlatColorMaterial();
+    material->setColor(Qt::black);
+    node->setMaterial(material);
+    node->setFlag(QSGNode::OwnsMaterial);
+  } else {
+    node = static_cast<QSGGeometryNode *>(oldNode);
+    geometry = node->geometry();
+    geometry->allocate(pointsCount);
   }
-  if (this->showDelaunaySegments) {
-    this->paintSegmentsList(painter,
-                            this->worldManager.getUniqueDelaunaySegments());
+
+  auto *vertices = geometry->vertexDataAsPoint2D();
+  for (std::size_t i = 0; i < this->segments.size(); i++) {
+    const auto &segment = this->segments[i];
+    const float posX1 = bg::get<0, 0>(segment);
+    const float posY1 = bg::get<0, 1>(segment);
+    const float posX2 = bg::get<1, 0>(segment);
+    const float posY2 = bg::get<1, 1>(segment);
+    const auto verticesIndex = i * 2;
+    vertices[verticesIndex].set(posX1, posY1);
+    vertices[verticesIndex + 1].set(posX2, posY2);
   }
-}
 
-void SegmentsPainter::setShowVoronoiSegments(bool show) {
-  this->showVoronoiSegments = show;
-  this->update();
-}
-
-void SegmentsPainter::setShowDelaunaySegments(bool show) {
-  this->showDelaunaySegments = show;
-  this->update();
-}
-
-void SegmentsPainter::paintSegmentsList(
-    QPainter *painter, const std::vector<types::segment_t> &segments) {
-  for (const auto &segment : segments) {
-    painter->drawLine(bg::get<0, 0>(segment), bg::get<0, 1>(segment),
-                      bg::get<1, 0>(segment), bg::get<1, 1>(segment));
-  }
+  return node;
 }
 } // namespace ui
 } // namespace how

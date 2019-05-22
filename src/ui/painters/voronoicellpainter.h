@@ -9,14 +9,16 @@ namespace ui {
 class VoronoiCellPainter : public EntityPainter {
 
 public:
-  VoronoiCellPainter(model::VoronoiCell &voronoiCell);
+  VoronoiCellPainter(QQuickItem *parent,
+                     std::shared_ptr<model::VoronoiCell> voronoiCellPtr);
   ~VoronoiCellPainter() override;
 
 public:
+  void updateDimensions() override;
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 private:
-  model::VoronoiCell &voronoiCell;
+  std::shared_ptr<model::VoronoiCell> voronoiCellPtr;
 };
 } // namespace ui
 } // namespace how

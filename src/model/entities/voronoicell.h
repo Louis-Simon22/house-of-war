@@ -13,33 +13,27 @@ namespace bg = ::boost::geometry;
 
 class VoronoiCell : public GraphEntity {
 public:
-  VoronoiCell();
-  VoronoiCell(types::box_t envelope, types::point_t center,
-              types::polygon_t polygon,
-              std::vector<types::point_t> outlinePoints,
-              std::vector<types::segment_t> outlineSegments);
+  VoronoiCell(types::point_t center, std::vector<types::point_t> outlinePoints);
   ~VoronoiCell() override;
 
 public:
-  types::coordinate_t getWidth() const override;
-  types::coordinate_t getHeight() const override;
   bool isTargetable() const override;
   bool isSelectable() const override;
+  bool isWithinSelectionArea(types::coordinate_t posX,
+                          types::coordinate_t posY) const override;
 
 public:
-  const types::box_t &getEnvelope() const;
-  const types::point_t &getCenter() const;
   const types::polygon_t &getPolygon() const;
+  const types::box_t &getEnvelope() const;
   const std::vector<types::point_t> &getOutlinePoints() const;
   const std::vector<types::segment_t> &getOutlineSegments() const;
   const Tile &getTile() const;
   Tile &getTile();
 
 private:
-  types::box_t envelope;
-  types::point_t center;
-  types::polygon_t polygon;
   std::vector<types::point_t> outlinePoints;
+  types::polygon_t polygon;
+  types::box_t envelope;
   std::vector<types::segment_t> outlineSegments;
   std::shared_ptr<Tile> tilePtr;
 };

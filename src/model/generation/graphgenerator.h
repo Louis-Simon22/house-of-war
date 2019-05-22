@@ -2,8 +2,6 @@
 #define WORLDBUILDER_H
 
 #include "../graphtypes.h"
-#include "../managers/worldmanager.h"
-#include "./jcv_voronoi_adapter.h"
 #include "./worldgenerationconfig.h"
 
 namespace how {
@@ -12,7 +10,7 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-WorldManager *generateWorld(const WorldGenerationConfig &config);
+types::graph_t generateGraph(const WorldGenerationConfig &config);
 
 } // namespace model
 } // namespace how

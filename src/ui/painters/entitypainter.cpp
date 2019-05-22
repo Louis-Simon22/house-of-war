@@ -2,30 +2,44 @@
 
 #include <boost/signals2.hpp>
 
+#include <iostream>
+
 namespace how {
 namespace ui {
 namespace {
 namespace bs = ::boost::signals2;
 }
 
-EntityPainter::EntityPainter(model::GraphEntity &graphEntity,
-                             QQuickItem *parent)
-    : QQuickItem(parent), graphEntity(graphEntity) {
+EntityPainter::EntityPainter(QQuickItem *parent,
+                             std::shared_ptr<model::GraphEntity> graphEntityPtr)
+    : QQuickItem(parent), graphEntityPtr(graphEntityPtr) {
   this->setAntialiasing(true);
   this->setFlag(QQuickItem::ItemHasContents, true);
-  this->updateDimensions();
+  this->updateAcceptedMouseButtons();
 }
 
-void EntityPainter::updateDimensions() {
-  this->setX(static_cast<double>(this->graphEntity.getPosX()));
-  this->setY(static_cast<double>(this->graphEntity.getPosY()));
-  this->setZ(static_cast<double>(this->graphEntity.getLayer()));
-  this->setWidth(static_cast<double>(this->graphEntity.getWidth()));
-  this->setHeight(static_cast<double>(this->graphEntity.getHeight()));
+void EntityPainter::mousePressEvent(QMouseEvent *event) {
+  const auto mappedPoint =
+      this->mapToItem(this->parentItem(), QPointF(event->x(), event->y()));
+  if (this->graphEntityPtr->isWithinSelectionArea(
+          static_cast<float>(mappedPoint.x()),
+          static_cast<float>(mappedPoint.y()))) {
+    this->mousePressedOnGraphEntityPainter(event, this->graphEntityPtr);
+  } else {
+    event->ignore();
+  }
 }
 
-model::GraphEntity &EntityPainter::getGraphEntity() {
-  return this->graphEntity;
+// TODO connect a signal from the graph entity to this
+void EntityPainter::updateAcceptedMouseButtons() {
+  QFlags<Qt::MouseButton> acceptedMouseButtons = Qt::NoButton;
+  if (this->graphEntityPtr->isSelectable()) {
+    acceptedMouseButtons |= Qt::LeftButton;
+  }
+  if (this->graphEntityPtr->isTargetable()) {
+    acceptedMouseButtons |= Qt::RightButton;
+  }
+  this->setAcceptedMouseButtons(acceptedMouseButtons);
 }
 
 EntityPainter::~EntityPainter() {}

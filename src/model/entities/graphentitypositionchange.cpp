@@ -4,18 +4,16 @@ namespace how {
 namespace model {
 
 GraphEntityPositionChange::GraphEntityPositionChange(
-    const types::graph_t &delaunayGraph, GraphEntity &graphEntity,
-    std::vector<types::graph_vertex_desc_t> destinations)
-    : delaunayGraph(delaunayGraph), graphEntity(graphEntity), destinations(destinations),
+    GraphEntity *graphEntity, std::vector<VoronoiCell *> destinations)
+    : graphEntity(graphEntity), destinations(destinations),
       currentDestinationIndex(0) {}
 
 GraphEntityPositionChange::~GraphEntityPositionChange() {}
 
 bool GraphEntityPositionChange::progress(float deltaTime) {
-  const auto &currentDestination =
+  const auto *destinationVoronoiCellPtr =
       this->destinations[this->currentDestinationIndex];
-  const auto &destinationVoronoiCell = this->delaunayGraph[currentDestination];
-  this->graphEntity.setPosition(destinationVoronoiCell.getCenter());
+  this->graphEntity->setPosition(destinationVoronoiCellPtr->getPosition());
   this->currentDestinationIndex++;
   return this->currentDestinationIndex >= this->destinations.size();
 }

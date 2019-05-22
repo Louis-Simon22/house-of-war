@@ -5,7 +5,7 @@ namespace ui {
 
 SelectionManager::SelectionManager() : QObject(), selection(nullptr) {}
 
-void SelectionManager::selectEntity(model::GraphEntity *newSelection) {
+void SelectionManager::setSelection(model::GraphEntity *newSelection) {
   if (this->hasSelection()) {
     this->selection->setSelected(false);
   }

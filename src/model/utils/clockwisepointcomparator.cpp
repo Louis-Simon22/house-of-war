@@ -1,11 +1,16 @@
 #include "./clockwisepointcomparator.h"
 
 #include <boost/geometry/algorithms/distance.hpp>
+#include <boost/geometry/algorithms/equals.hpp>
 #include <boost/geometry/arithmetic/arithmetic.hpp>
 #include <boost/geometry/arithmetic/cross_product.hpp>
+#include <boost/geometry/strategies/strategies.hpp>
 
 namespace how {
 namespace model {
+namespace {
+namespace bg = ::boost::geometry;
+}
 
 ClockwisePointComparator::ClockwisePointComparator(types::point_t pivot)
     : pivot(pivot) {}
@@ -16,9 +21,12 @@ ClockwisePointComparator::ClockwisePointComparator(types::point_t pivot)
  */
 bool ClockwisePointComparator::operator()(const types::point_t &p1,
                                           const types::point_t &p2) const {
-  const auto &x1 = bg::get<0>(p1);
-  const auto &x2 = bg::get<0>(p2);
-  const auto &xPivot = bg::get<0>(this->pivot);
+  const auto x1 = bg::get<0>(p1);
+  const auto x2 = bg::get<0>(p2);
+  const auto xPivot = bg::get<0>(this->pivot);
+  if (bg::equals(p1, p2)) {
+    return false;
+  }
   if (x1 >= xPivot && x2 < xPivot) {
     return true;
   } else if (x1 < xPivot && x2 >= xPivot) {

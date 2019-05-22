@@ -1,6 +1,8 @@
 #ifndef GRAPHENTITYPAINTER_H
 #define GRAPHENTITYPAINTER_H
 
+#include <memory>
+
 #include <QQuickItem>
 
 #include "../../model/entities/graphentity.h"
@@ -11,17 +13,28 @@ class EntityPainter : public QQuickItem {
   Q_OBJECT
 
 public:
-  EntityPainter(model::GraphEntity &graphEntity, QQuickItem *parent = nullptr);
-  virtual ~EntityPainter() = 0;
+  EntityPainter(QQuickItem *parent,
+                std::shared_ptr<model::GraphEntity> graphEntityPtr);
+  virtual ~EntityPainter() override = 0;
+
+signals:
+  void mousePressedOnGraphEntityPainter(
+      QMouseEvent *event, std::shared_ptr<model::GraphEntity> graphEntityPtr);
 
 public slots:
-  void updateDimensions();
+  virtual void updateDimensions() = 0;
 
 public:
-  model::GraphEntity &getGraphEntity();
+  void mousePressEvent(QMouseEvent *event) override;
 
 private:
-  model::GraphEntity &graphEntity;
+  void updateAcceptedMouseButtons();
+
+private:
+  std::shared_ptr<model::GraphEntity> graphEntityPtr;
+
+public:
+  std::size_t index;
 };
 } // namespace ui
 } // namespace how

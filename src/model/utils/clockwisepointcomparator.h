@@ -5,9 +5,7 @@
 
 namespace how {
 namespace model {
-namespace {
-namespace bg = ::boost::geometry;
-}
+
 class ClockwisePointComparator {
 public:
   ClockwisePointComparator(types::point_t pivot);

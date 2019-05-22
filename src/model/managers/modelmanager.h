@@ -5,7 +5,6 @@
 
 #include "../generation/worldgenerationconfig.h"
 #include "./graphentitymanager.h"
-#include "./worldmanager.h"
 
 namespace how {
 namespace model {
@@ -17,16 +16,10 @@ public:
   void newModel(WorldGenerationConfig config);
 
 public:
-  GraphEntityManager &getGraphEntityManager();
-  std::vector<Army> &getArmies();
-  std::vector<Character> &getCharacters();
-  WorldManager *getWorldManagerPtr() const;
+  GraphEntityManager *getGraphEntityManagerPtr();
 
 private:
-  GraphEntityManager graphEntityManager;
-  std::vector<Army> armies;
-  std::vector<Character> characters;
-  std::unique_ptr<WorldManager> worldManagerPtr;
+  std::unique_ptr<GraphEntityManager> graphEntityManagerPtr;
 };
 } // namespace model
 } // namespace how

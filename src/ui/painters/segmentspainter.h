@@ -2,40 +2,25 @@
 #define CELLOUTLINESPAINTER_H
 
 #include <QPainter>
-#include <QQuickPaintedItem>
+#include <QQuickItem>
 
-#include "../../model/managers/worldmanager.h"
+#include "../../model/managers/graphentitymanager.h"
 
 namespace how {
 namespace ui {
-namespace {
-namespace bg = ::boost::geometry;
-}
 
-class SegmentsPainter : public QQuickPaintedItem {
+class SegmentsPainter : public QQuickItem {
   Q_OBJECT
 
-  Q_PROPERTY(bool showVoronoiSegments MEMBER showVoronoiSegments WRITE
-                 setShowVoronoiSegments FINAL)
-  Q_PROPERTY(bool showDelaunaySegments MEMBER showDelaunaySegments WRITE
-                 setShowDelaunaySegments FINAL)
+public:
+  SegmentsPainter(QQuickItem *parent,
+                  const std::vector<types::segment_t> &segments);
 
 public:
-  SegmentsPainter(const model::WorldManager &worldManager);
-
-public:
-  void paint(QPainter *painter) override;
+  QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 private:
-  void setShowVoronoiSegments(bool show);
-  void setShowDelaunaySegments(bool show);
-  static void paintSegmentsList(QPainter *painter,
-                                const std::vector<types::segment_t> &segments);
-
-private:
-  const model::WorldManager &worldManager;
-  bool showVoronoiSegments;
-  bool showDelaunaySegments;
+  const std::vector<types::segment_t> &segments;
 };
 
 } // namespace ui

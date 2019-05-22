@@ -7,17 +7,20 @@ namespace bg = ::boost::geometry;
 }
 
 Army::Army(types::point_t initialPosition)
-    : GraphEntity(Layers::CHARACTERS_LAYER, initialPosition) {}
+    : GraphEntity(Layers::CHARACTERS, initialPosition) {}
 
 Army::~Army() {}
-
-types::coordinate_t Army::getWidth() const { return 10; }
-
-types::coordinate_t Army::getHeight() const { return 10; }
 
 bool Army::isTargetable() const { return false; }
 
 bool Army::isSelectable() const { return true; }
+
+bool Army::isWithinSelectionArea(types::coordinate_t posX,
+                                 types::coordinate_t posY) const {
+  return true;
+}
+
+types::coordinate_t Army::getDetectionRadius() const { return 6; }
 
 void Army::onIteration(float deltaTime) {
   auto minPoint = this->getPosition();

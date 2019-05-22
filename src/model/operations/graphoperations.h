@@ -34,9 +34,6 @@ computeDijkstra(types::graph_vertex_desc_t source,
                    std::vector<types::coordinate_t>>(predecessors, distanceMap);
 }
 
-types::graph_vertex_desc_t
-nearestVoronoiCell(types::point_t point, types::graph_t &graph);
-
 } // namespace model
 } // namespace how
 #endif // GRAPHOPERATIONS_H

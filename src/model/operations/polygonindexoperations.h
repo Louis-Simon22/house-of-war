@@ -3,6 +3,9 @@
 
 #include <vector>
 
+#include <boost/geometry/algorithms/intersects.hpp>
+#include <boost/geometry/strategies/strategies.hpp>
+
 #include "../graphtypes.h"
 
 namespace how {
@@ -12,27 +15,31 @@ namespace bg = ::boost::geometry;
 namespace bgi = ::boost::geometry::index;
 } // namespace
 
-types::graph_vertex_desc_t
-cellDescAtPosition(const types::graph_t *graph,
-                   const types::polygon_index_tree_t *polygonIndexTree,
-                   types::point_t position);
-
 template <typename Geometry>
 std::vector<types::graph_vertex_desc_t>
-cellDescsInArea(const types::polygon_index_tree_t *polygonIndexTree,
-                Geometry area) {
-  auto intersectingIndices = std::vector<types::polygon_index_t>();
-  auto cellDescsInArea = std::vector<types::graph_vertex_desc_t>();
+intersectingArea(Geometry area,
+                 const types::spatial_index_tree_t &spatialIndexTree,
+                 const types::graph_t &graph) {
+  auto intersectingVertexDescs = std::vector<types::graph_vertex_desc_t>();
 
-  polygonIndexTree->query(bgi::intersects(area),
-                          std::back_inserter(intersectingIndices));
-  for (const auto &intersectingIndex : intersectingIndices) {
-    const auto &desc = std::get<1>(intersectingIndex);
-    cellDescsInArea.push_back(desc);
-  }
+  spatialIndexTree.query(bgi::intersects(area),
+                         boost::make_function_output_iterator(
+                             [&area, &intersectingVertexDescs,
+                              &graph](types::spatial_index_value_t value) {
+                               const auto desc = std::get<1>(value);
+                               const auto &polygon = graph[desc]->getPolygon();
+                               if (bg::intersects(area, polygon)) {
+                                 intersectingVertexDescs.push_back(desc);
+                               }
+                             }));
 
-  return cellDescsInArea;
+  return intersectingVertexDescs;
 }
+
+types::graph_vertex_desc_t
+coveredByPoint(types::point_t position,
+               const types::spatial_index_tree_t &spatialIndexTree,
+               const types::graph_t &graph);
 
 } // namespace model
 } // namespace how

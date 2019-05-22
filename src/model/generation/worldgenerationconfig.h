@@ -15,6 +15,9 @@ public:
                         std::uint32_t randomSeed);
 
 public:
+  types::box_t getBoundingBox() const;
+
+public:
   types::coordinate_t minCornerX;
   types::coordinate_t minCornerY;
   types::coordinate_t maxCornerX;

@@ -3,17 +3,17 @@
 namespace how {
 namespace model {
 
-std::vector<Character> generateCharacters(const types::graph_t &delaunayGraph) {
-  auto characters = std::vector<Character>();
-  characters.emplace_back(delaunayGraph[3].getCenter());
-  characters.emplace_back(delaunayGraph[6].getCenter());
+std::vector<std::shared_ptr<Character>> generateCharacters(const types::graph_t &delaunayGraph) {
+  auto characters = std::vector<std::shared_ptr<Character>>();
+  characters.emplace_back(new Character(delaunayGraph[3]->getPosition()));
+  characters.emplace_back(new Character(delaunayGraph[6]->getPosition()));
   return characters;
 }
 
-std::vector<Army> generateArmies(const types::graph_t &delaunayGraph) {
-  auto armies = std::vector<Army>();
-  armies.emplace_back(delaunayGraph[9].getCenter());
-  armies.emplace_back(delaunayGraph[12].getCenter());
+std::vector<std::shared_ptr<Army>> generateArmies(const types::graph_t &delaunayGraph) {
+  auto armies = std::vector<std::shared_ptr<Army>>();
+  armies.emplace_back(new Army(delaunayGraph[9]->getPosition()));
+  armies.emplace_back(new Army(delaunayGraph[12]->getPosition()));
   return armies;
 }
 

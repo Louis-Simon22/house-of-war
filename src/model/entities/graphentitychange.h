@@ -3,10 +3,10 @@
 
 namespace how {
 namespace model {
-class EntityChange {
+class GraphEntityChange {
 public:
-  EntityChange();
-  virtual ~EntityChange();
+  GraphEntityChange();
+  virtual ~GraphEntityChange();
 
 public:
   virtual bool progress(float deltaTime) = 0;

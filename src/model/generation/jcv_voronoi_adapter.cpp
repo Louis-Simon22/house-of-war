@@ -3,27 +3,22 @@
 
 #include <set>
 
-#include <boost/geometry/algorithms/append.hpp>
-#include <boost/geometry/algorithms/envelope.hpp>
-
 #include "../utils/clockwisepointcomparator.h"
-#include "../utils/segmentcomparator.h"
 
 namespace how {
 namespace model {
+namespace {
+namespace bg = ::boost::geometry;
+} // namespace
 
 const jcv_rect *convert(types::box_t box) {
-  auto jcvRect = new jcv_rect();
+  auto *jcvRect = new jcv_rect();
   auto jcvMinCorner = jcv_point();
   auto jcvMaxCorner = jcv_point();
-  jcvMinCorner.x =
-      static_cast<types::coordinate_fpt_t>(bg::get<bg::min_corner, 0>(box));
-  jcvMinCorner.y =
-      static_cast<types::coordinate_fpt_t>(bg::get<bg::min_corner, 1>(box));
-  jcvMaxCorner.x =
-      static_cast<types::coordinate_fpt_t>(bg::get<bg::max_corner, 0>(box));
-  jcvMaxCorner.y =
-      static_cast<types::coordinate_fpt_t>(bg::get<bg::max_corner, 1>(box));
+  jcvMinCorner.x = bg::get<bg::min_corner, 0>(box);
+  jcvMinCorner.y = bg::get<bg::min_corner, 1>(box);
+  jcvMaxCorner.x = bg::get<bg::max_corner, 0>(box);
+  jcvMaxCorner.y = bg::get<bg::max_corner, 1>(box);
   jcvRect->min = jcvMinCorner;
   jcvRect->max = jcvMaxCorner;
   return jcvRect;
@@ -31,8 +26,8 @@ const jcv_rect *convert(types::box_t box) {
 
 jcv_point convert(types::point_t point) {
   auto jcvRect = jcv_point();
-  jcvRect.x = static_cast<types::coordinate_fpt_t>(bg::get<0>(point));
-  jcvRect.y = static_cast<types::coordinate_fpt_t>(bg::get<1>(point));
+  jcvRect.x = static_cast<types::coordinate_t>(bg::get<0>(point));
+  jcvRect.y = static_cast<types::coordinate_t>(bg::get<1>(point));
   return jcvRect;
 }
 
@@ -49,19 +44,9 @@ const jcv_point *convert(std::vector<types::point_t> points) {
   return jcvPoint;
 }
 
-std::vector<types::segment_t>
-extractVoronoiEdges(std::vector<VoronoiCell> voronoiCells) {
-  auto voronoiEdgesSet = std::set<types::segment_t, SegmentComparator>();
-  for (const auto &voronoiCell : voronoiCells) {
-    voronoiEdgesSet.insert(voronoiCell.getOutlineSegments().begin(),
-                           voronoiCell.getOutlineSegments().end());
-  }
-  return std::vector<types::segment_t>(voronoiEdgesSet.begin(),
-                                       voronoiEdgesSet.end());
-}
-
-std::vector<VoronoiCell> extractVoronoiCells(jcv_diagram *voronoiDiagram) {
-  auto voronoiCells = std::vector<VoronoiCell>();
+std::vector<std::shared_ptr<VoronoiCell>>
+extractVoronoiCells(jcv_diagram *voronoiDiagram) {
+  auto voronoiCells = std::vector<std::shared_ptr<VoronoiCell>>();
   const jcv_site *sites = jcv_diagram_get_sites(voronoiDiagram);
   for (int i = 0; i < voronoiDiagram->numsites; ++i) {
     const jcv_site *site = &sites[i];
@@ -69,37 +54,22 @@ std::vector<VoronoiCell> extractVoronoiCells(jcv_diagram *voronoiDiagram) {
     const jcv_graphedge *edge = site->edges;
     auto cellOutlinePointsSet =
         std::set<types::point_t, ClockwisePointComparator>(center);
-    auto cellEdgesSet = std::set<types::segment_t, SegmentComparator>();
     while (edge) {
       if (!jcv_point_eq(&edge->pos[0], &edge->pos[1])) {
         cellOutlinePointsSet.insert(convert(edge->pos[0]));
-        cellOutlinePointsSet.insert(convert(edge->pos[1]));
-        const auto &segment =
-            types::segment_t(convert(edge->pos[0]), convert(edge->pos[1]));
-        cellEdgesSet.insert(segment);
       }
       edge = edge->next;
     }
-    auto polygon = types::polygon_t();
-    for (const auto &point : cellOutlinePointsSet) {
-      bg::append(polygon.outer(), point);
-    }
-    // Add the first point again to close the polygon
-    bg::append(polygon.outer(), *cellOutlinePointsSet.begin());
-    auto envelopeBox = types::box_t();
-    bg::envelope(polygon, envelopeBox);
-    voronoiCells.push_back(
-        VoronoiCell(envelopeBox, center, polygon,
-                    std::vector<types::point_t>(cellOutlinePointsSet.begin(),
-                                                cellOutlinePointsSet.end()),
-                    std::vector<types::segment_t>(cellEdgesSet.begin(),
-                                                  cellEdgesSet.end())));
+    voronoiCells.push_back(std::shared_ptr<VoronoiCell>(new VoronoiCell(
+        center, std::vector<types::point_t>(cellOutlinePointsSet.begin(),
+                                            cellOutlinePointsSet.end()))));
   }
   return voronoiCells;
 }
 
-std::pair<std::vector<types::segment_t>, std::vector<VoronoiCell>>
-generateVoronoi(types::box_t boundingBox, std::vector<types::point_t> points) {
+std::vector<std::shared_ptr<VoronoiCell>>
+generateVoronoiCells(types::box_t boundingBox,
+                     std::vector<types::point_t> points) {
   auto diagram = jcv_diagram();
   memset(&diagram, 0, sizeof(jcv_diagram));
   const jcv_point *jcvPoints = convert(points);
@@ -109,13 +79,12 @@ generateVoronoi(types::box_t boundingBox, std::vector<types::point_t> points) {
                        jcvBoundingBox, &diagram);
 
   auto voronoiCells = extractVoronoiCells(&diagram);
-  auto voronoiEdges = extractVoronoiEdges(voronoiCells);
 
   jcv_diagram_free(&diagram);
   delete jcvBoundingBox;
   delete[] jcvPoints;
 
-  return std::make_pair(voronoiEdges, voronoiCells);
+  return voronoiCells;
 }
 } // namespace model
 } // namespace how

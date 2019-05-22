@@ -1,22 +1,22 @@
 #include "polygonindexoperations.h"
 
 #include <boost/geometry/algorithms/covered_by.hpp>
-#include <boost/geometry/strategies/strategies.hpp>
 
 namespace how {
 namespace model {
 
 types::graph_vertex_desc_t
-cellDescAtPosition(const types::graph_t *graph,
-                   const types::polygon_index_tree_t *polygonIndexTree,
-                   types::point_t position) {
-  auto intersectingIndices = std::vector<types::polygon_index_t>();
+coveredByPoint(types::point_t position,
+               const types::spatial_index_tree_t &spatialIndexTree,
+               const types::graph_t &graph) {
+  auto coveredValues = std::vector<types::spatial_index_value_t>();
 
-  polygonIndexTree->query(bgi::intersects(position),
-                          std::back_inserter(intersectingIndices));
-  for (const auto &intersectingIndex : intersectingIndices) {
-    const auto &desc = std::get<1>(intersectingIndex);
-    const auto &polygon = graph->operator[](desc).getPolygon();
+  spatialIndexTree.query(bgi::intersects(position),
+                         std::back_inserter(coveredValues));
+
+  for (const auto &coveredValue : coveredValues) {
+    const auto desc = std::get<1>(coveredValue);
+    const auto &polygon = graph[desc]->getPolygon();
     if (bg::covered_by(position, polygon)) {
       return desc;
     }

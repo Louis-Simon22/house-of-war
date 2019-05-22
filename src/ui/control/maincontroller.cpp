@@ -6,6 +6,7 @@
 
 #include "../painters/armypainter.h"
 #include "../painters/characterpainter.h"
+#include "../painters/segmentspainter.h"
 #include "../painters/voronoicellpainter.h"
 
 #include <boost/signals2.hpp>
@@ -14,8 +15,7 @@ namespace how {
 namespace ui {
 
 MainController::MainController()
-    : modelManager(), modelThreadManager(), entityControllerPtr(),
-      worldControllerPtr() {}
+    : modelManager(), modelThreadManager(), graphEntityControllerPtr() {}
 
 void MainController::newModel(int width, int height,
                               float minimumVoronoiCellDistance,
@@ -24,74 +24,65 @@ void MainController::newModel(int width, int height,
       0, 0, width, height, minimumVoronoiCellDistance,
       static_cast<std::uint32_t>(randomSeed));
   this->modelManager.newModel(config);
-  this->worldControllerPtr.reset(
-      new WorldController(this->modelManager.getWorldManagerPtr()));
-  this->entityControllerPtr.reset(
-      new EntityController(this->modelManager.getGraphEntityManager()));
+  this->graphEntityControllerPtr.reset(
+      new GraphEntityController(this->modelManager.getGraphEntityManagerPtr()));
   this->newModelGenerated();
+//  this->modelThreadManager.registerQObjectOnThread(
+//      graphEntityControllerPtr.get());
+  connect(&modelThreadManager, &ModelThreadManager::iteration,
+          this->graphEntityControllerPtr.get(),
+          &GraphEntityController::progressAll, Qt::QueuedConnection);
+  this->modelThreadManager.resumeIterations();
 }
 
 void MainController::instantiateUiElements(QQuickItem *parent) {
-  auto &armies = modelManager.getArmies();
-  for (auto &army : armies) {
-    auto *armyPainter = new ArmyPainter(army);
-    this->bindEntityPainter(parent, armyPainter);
-    auto &graphEntity = armyPainter->getGraphEntity();
-    graphEntity.changeSignals.visualChangedSignal.connect(
-        ::boost::bind(&QQuickItem::update, armyPainter));
-    graphEntity.changeSignals.dimensionsChangedSignal.connect(
-        ::boost::bind(&EntityPainter::updateDimensions, armyPainter));
-    graphEntity.changeSignals.destructionSignal.connect(
-        ::boost::bind(&QQuickItem::deleteLater, armyPainter));
+  auto *graphEntityManagerPtr = this->modelManager.getGraphEntityManagerPtr();
+  auto &armyPtrs = graphEntityManagerPtr->getArmyPtrs();
+  for (auto &armyPtr : armyPtrs) {
+    auto *armyPainter = new ArmyPainter(parent, armyPtr);
+    this->bindClickSignalAndSetObjectOwnership(armyPainter);
   }
 
-  auto &characters = this->modelManager.getCharacters();
-  for (auto &character : characters) {
-    auto characterPainter =
-        boost::shared_ptr<CharacterPainter>(new CharacterPainter(character));
-    this->bindEntityPainter(parent, characterPainter.get());
-    auto &graphEntity = characterPainter->getGraphEntity();
-    graphEntity.changeSignals.visualChangedSignal.connect(
-        ::boost::bind(&QQuickItem::update, characterPainter));
-    graphEntity.changeSignals.dimensionsChangedSignal.connect(
-        ::boost::bind(&EntityPainter::updateDimensions, characterPainter));
-    graphEntity.changeSignals.destructionSignal.connect(
-        ::boost::bind(&QQuickItem::deleteLater, characterPainter));
+  auto &characterPtrs = graphEntityManagerPtr->getCharacterPtrs();
+  for (auto &characterPtr : characterPtrs) {
+    auto *characterPainter = new CharacterPainter(parent, characterPtr);
+    this->bindClickSignalAndSetObjectOwnership(characterPainter);
   }
 
-  auto *worldManagerPtr = this->modelManager.getWorldManagerPtr();
-  types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
-  std::tie(vertexItBegin, vertexItEnd) = worldManagerPtr->getVertexIterators();
-  for (auto vertexIt = vertexItBegin; vertexIt != vertexItEnd; vertexIt++) {
-    const auto vertexDesc = *vertexIt;
-    model::VoronoiCell &voronoiCell =
-        worldManagerPtr->getVoronoiCellByDesc(vertexDesc);
-    auto *voronoiPainter = new VoronoiCellPainter(voronoiCell);
-    this->bindEntityPainter(parent, voronoiPainter);
-    auto &graphEntity = voronoiPainter->getGraphEntity();
-    graphEntity.changeSignals.visualChangedSignal.connect(
-        ::boost::bind(&QQuickItem::update, voronoiPainter));
-    graphEntity.changeSignals.dimensionsChangedSignal.connect(
-        ::boost::bind(&EntityPainter::updateDimensions, voronoiPainter));
-    graphEntity.changeSignals.destructionSignal.connect(
-        ::boost::bind(&QQuickItem::deleteLater, voronoiPainter));
+  auto &voronoiCellPtrs = graphEntityManagerPtr->getVoronoiCellPtrs();
+  std::size_t greg = 0;
+  for (auto &voronoiCellPtr : voronoiCellPtrs) {
+    auto *voronoiCellPainter = new VoronoiCellPainter(parent, voronoiCellPtr);
+    this->bindClickSignalAndSetObjectOwnership(voronoiCellPainter);
+    voronoiCellPainter->index = greg++;
   }
+
+  auto *delaunaySegmentsPainter = new SegmentsPainter(
+      parent,
+      this->modelManager.getGraphEntityManagerPtr()->getDelaunaySegments());
+  QQmlEngine::setObjectOwnership(delaunaySegmentsPainter,
+                                 QQmlEngine::JavaScriptOwnership);
+  delaunaySegmentsPainter->setVisible(true);
+  auto *voronoiSegmentsPainter = new SegmentsPainter(
+      parent,
+      this->modelManager.getGraphEntityManagerPtr()->getVoronoiSegments());
+  QQmlEngine::setObjectOwnership(voronoiSegmentsPainter,
+                                 QQmlEngine::JavaScriptOwnership);
+  voronoiSegmentsPainter->setVisible(false);
 }
 
-void MainController::bindEntityPainter(QQuickItem *parent,
-                                       EntityPainter *entityPainter) {
-  entityPainter->setParentItem(parent);
-  entityPainter->setParent(parent);
+GraphEntityController *MainController::getGraphEntityController() {
+  return this->graphEntityControllerPtr.get();
+}
+
+void MainController::bindClickSignalAndSetObjectOwnership(
+    EntityPainter *entityPainter) {
+  connect(entityPainter, &EntityPainter::mousePressedOnGraphEntityPainter,
+          this->graphEntityControllerPtr.get(),
+          &GraphEntityController::mousePressedOnGraphEntityPainter,
+          Qt::QueuedConnection);
   QQmlEngine::setObjectOwnership(entityPainter,
                                  QQmlEngine::JavaScriptOwnership);
-}
-
-EntityController *MainController::getEntityController() {
-  return this->entityControllerPtr.get();
-}
-
-WorldController *MainController::getWorldController() {
-  return this->worldControllerPtr.get();
 }
 
 } // namespace ui

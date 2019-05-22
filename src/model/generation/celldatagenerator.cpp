@@ -21,20 +21,20 @@ void generateHeightData(types::box_t boundingBox, std::uint32_t randomSeed,
   auto dimensions = maxCorner;
   bg::subtract_point(dimensions, minCorner);
   for (std::size_t i = 0; i < ::boost::num_vertices(graph); i++) {
-    auto &voronoiCell = graph[i];
-    auto positionRatios = voronoiCell.getCenter();
+    auto &voronoiCellPtr = graph[i];
+    auto positionRatios = voronoiCellPtr->getPosition();
     bg::subtract_point(positionRatios, minCorner);
     bg::divide_point(positionRatios, dimensions);
     auto nx = static_cast<double>(bg::get<0>(positionRatios));
     auto ny = static_cast<double>(bg::get<1>(positionRatios));
     const auto heightValue = noiseModule->GetValue(nx, ny, 0);
-    voronoiCell.getTile().setAltitude(static_cast<float>(heightValue));
+    voronoiCellPtr->getTile().setAltitude(static_cast<float>(heightValue));
   }
 
   auto heightReferenceAccessor =
       [](types::graph_vertex_desc_t desc,
          types::graph_t &graph) -> types::characteristics_t & {
-    return graph[desc].getTile().getAltitude();
+    return graph[desc]->getTile().getAltitude();
   };
   normalizeCellCharacteristic01(heightReferenceAccessor, graph);
 }

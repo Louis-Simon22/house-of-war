@@ -14,7 +14,7 @@ public:
   SelectionManager();
 
 public:
-  void selectEntity(model::GraphEntity *newSelection);
+  void setSelection(model::GraphEntity *newSelection);
   model::GraphEntity *getSelection() const;
   bool hasSelection() const;
   void clearSelection();

@@ -15,7 +15,7 @@ set(HEADER_FILES
     src/model/entities/army.h
     src/model/entities/character.h
     src/model/entities/delaunayedge.h
-    src/model/entities/entitychange.h
+    src/model/entities/graphentitychange.h
     src/model/entities/graphentity.h
     src/model/entities/graphentitypositionchange.h
     src/model/entities/tile.h
@@ -23,18 +23,17 @@ set(HEADER_FILES
     src/model/graphtypes.h
     src/model/managers/graphentitymanager.h
     src/model/managers/modelmanager.h
-    src/model/managers/worldmanager.h
     src/model/modeltypes.h
     src/model/operations/celldataoperations.h
     src/model/generation/celldatagenerator.h
     src/model/generation/delaunayextrapolator.h
     src/model/generation/elevationgenerator.h
     src/model/generation/entitygenerator.h
+    src/model/generation/graphgenerator.h
     src/model/generation/jcv_voronoi_adapter.h
     src/model/generation/poissondisksamplingadapter.h
     src/model/generation/walkingdistancescalculator.h
     src/model/generation/worldgenerationconfig.h
-    src/model/generation/worldgenerator.h
     src/model/operations/graphoperations.h
     src/model/operations/pathfindingoperations.h
     src/model/operations/polygonindexoperations.h
@@ -43,11 +42,10 @@ set(HEADER_FILES
     src/model/utils/easingfunctions.h
     src/model/utils/pointcomparator.h
     src/model/utils/segmentcomparator.h
-    src/ui/control/entitycontroller.h
+    src/ui/control/graphentitycontroller.h
     src/ui/control/maincontroller.h
     src/ui/control/modelthreadmanager.h
     src/ui/control/selectionmanager.h
-    src/ui/control/worldcontroller.h
     src/ui/conversion/converter.h
     src/ui/painters/armypainter.h
     src/ui/painters/characterpainter.h
@@ -61,23 +59,22 @@ set(CPP_FILES
     src/model/entities/army.cpp
     src/model/entities/character.cpp
     src/model/entities/delaunayedge.cpp
-    src/model/entities/entitychange.cpp
+    src/model/entities/graphentitychange.cpp
     src/model/entities/graphentity.cpp
     src/model/entities/graphentitypositionchange.cpp
     src/model/entities/tile.cpp
     src/model/entities/voronoicell.cpp
     src/model/managers/graphentitymanager.cpp
     src/model/managers/modelmanager.cpp
-    src/model/managers/worldmanager.cpp
     src/model/generation/celldatagenerator.cpp
     src/model/generation/delaunayextrapolator.cpp
     src/model/generation/elevationgenerator.cpp
     src/model/generation/entitygenerator.cpp
+    src/model/generation/graphgenerator.cpp
     src/model/generation/jcv_voronoi_adapter.cpp
     src/model/generation/poissondisksamplingadapter.cpp
     src/model/generation/walkingdistancescalculator.cpp
     src/model/generation/worldgenerationconfig.cpp
-    src/model/generation/worldgenerator.cpp
     src/model/operations/graphoperations.cpp
     src/model/operations/pathfindingoperations.cpp
     src/model/operations/polygonindexoperations.cpp
@@ -85,11 +82,10 @@ set(CPP_FILES
     src/model/utils/easingfunctions.cpp
     src/model/utils/pointcomparator.cpp
     src/model/utils/segmentcomparator.cpp
-    src/ui/control/entitycontroller.cpp
+    src/ui/control/graphentitycontroller.cpp
     src/ui/control/maincontroller.cpp
     src/ui/control/modelthreadmanager.cpp
     src/ui/control/selectionmanager.cpp
-    src/ui/control/worldcontroller.cpp
     src/ui/conversion/converter.cpp
     src/ui/painters/armypainter.cpp
     src/ui/painters/characterpainter.cpp

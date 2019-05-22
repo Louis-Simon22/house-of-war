@@ -8,14 +8,15 @@ namespace how {
 namespace ui {
 class ArmyPainter : public EntityPainter {
 public:
-  ArmyPainter(model::Army &army);
+  ArmyPainter(QQuickItem *parent, std::shared_ptr<model::Army> armyPtr);
   ~ArmyPainter() override;
 
 public:
+  void updateDimensions() override;
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 private:
-  model::Army &army;
+  std::shared_ptr<model::Army> armyPtr;
 };
 } // namespace ui
 } // namespace how

@@ -21,10 +21,10 @@ using graph_vertex_desc_t = ::boost::graph_traits<graph_t>::vertex_descriptor;
 using graph_edge_desc_t = ::boost::graph_traits<graph_t>::edge_descriptor;
 using graph_edge_iterator_t = ::boost::graph_traits<graph_t>::edge_iterator;
 using graph_vertex_iterator_t = ::boost::graph_traits<graph_t>::vertex_iterator;
-using polygon_index_t =
-    std::pair<types::box_t, std::shared_ptr<::how::model::GraphEntity>>;
-using polygon_index_tree_t =
-    ::boost::geometry::index::rtree<polygon_index_t,
+
+using spatial_index_value_t = std::pair<types::box_t, graph_vertex_desc_t>;
+using spatial_index_tree_t =
+    ::boost::geometry::index::rtree<spatial_index_value_t,
                                     ::boost::geometry::index::quadratic<16>>;
 } // namespace types
 } // namespace how

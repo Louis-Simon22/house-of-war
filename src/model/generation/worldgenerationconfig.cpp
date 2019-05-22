@@ -12,5 +12,11 @@ WorldGenerationConfig::WorldGenerationConfig(
       minimumVoronoiCellDistance(minimumVoronoiCellDistance),
       randomSeed(randomSeed) {}
 
+types::box_t WorldGenerationConfig::getBoundingBox() const {
+  const auto &minCorner = types::point_t(this->minCornerX, this->minCornerY);
+  const auto &maxCorner = types::point_t(this->maxCornerX, this->maxCornerY);
+  return types::box_t(minCorner, maxCorner);
+}
+
 } // namespace model
 } // namespace how

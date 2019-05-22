@@ -34,37 +34,37 @@ void normalizeCellCharacteristic01(
         characteristicReferenceAccessor(vertexSet[i], graph);
     characteristicReference =
         normalize01(characteristicReference, minCharacteristicValue,
-                  maxCharacteristicValue);
+                    maxCharacteristicValue);
   }
 }
 
 template <typename CharacteristicReferenceAccessor>
 void normalizeCellCharacteristic11(
-        CharacteristicReferenceAccessor characteristicReferenceAccessor,
-        types::graph_t &graph) {
-    const auto &vertexSet = graph.vertex_set();
-    const auto &minMaxPair = std::minmax_element(
-                vertexSet.begin(), vertexSet.end(),
-                [characteristicReferenceAccessor,
-                &graph](types::graph_vertex_desc_t desc1,
-                types::graph_vertex_desc_t desc2) -> bool {
+    CharacteristicReferenceAccessor characteristicReferenceAccessor,
+    types::graph_t &graph) {
+  const auto &vertexSet = graph.vertex_set();
+  const auto &minMaxPair = std::minmax_element(
+      vertexSet.begin(), vertexSet.end(),
+      [characteristicReferenceAccessor,
+       &graph](types::graph_vertex_desc_t desc1,
+               types::graph_vertex_desc_t desc2) -> bool {
         return characteristicReferenceAccessor(desc1, graph) <
-                characteristicReferenceAccessor(desc2, graph);
-    });
-    const auto minVertexDesc = *std::get<0>(minMaxPair);
-    const auto maxVertexDesc = *std::get<1>(minMaxPair);
-    // Make sure these characteristics are a copy because they will get changed
-    const auto minCharacteristicValue =
-            characteristicReferenceAccessor(minVertexDesc, graph);
-    const auto maxCharacteristicValue =
-            characteristicReferenceAccessor(maxVertexDesc, graph);
-    for (std::size_t i = 0; i < vertexSet.size(); i++) {
-        auto &characteristicReference =
-                characteristicReferenceAccessor(vertexSet[i], graph);
-        characteristicReference =
-                normalize11(characteristicReference, minCharacteristicValue,
-                          maxCharacteristicValue);
-    }
+               characteristicReferenceAccessor(desc2, graph);
+      });
+  const auto minVertexDesc = *std::get<0>(minMaxPair);
+  const auto maxVertexDesc = *std::get<1>(minMaxPair);
+  // Make sure these characteristics are a copy because they will get changed
+  const auto minCharacteristicValue =
+      characteristicReferenceAccessor(minVertexDesc, graph);
+  const auto maxCharacteristicValue =
+      characteristicReferenceAccessor(maxVertexDesc, graph);
+  for (std::size_t i = 0; i < vertexSet.size(); i++) {
+    auto &characteristicReference =
+        characteristicReferenceAccessor(vertexSet[i], graph);
+    characteristicReference =
+        normalize11(characteristicReference, minCharacteristicValue,
+                    maxCharacteristicValue);
+  }
 }
 
 // Sets the characteristic to the reverse of the fractional value for numbers
@@ -105,8 +105,8 @@ void distanceBasedCharacteristicSpread(
     types::graph_t &graph) {
   std::vector<types::coordinate_t> distances;
   std::tie(std::ignore, distances) = computeDijkstra(
-      sourceVertexDesc,
-      [](DelaunayEdge) -> types::coordinate_fpt_t { return 1; }, graph);
+      sourceVertexDesc, [](DelaunayEdge) -> types::coordinate_t { return 1; },
+      graph);
   const auto &greatestDistance =
       *std::max_element(distances.begin(), distances.end());
   for (std::size_t vertexDesc = 0; vertexDesc < distances.size();
