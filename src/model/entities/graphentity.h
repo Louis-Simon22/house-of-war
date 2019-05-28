@@ -24,7 +24,7 @@ public:
 
 public:
   virtual bool isWithinSelectionArea(types::coordinate_t posX,
-                                  types::coordinate_t posY) const = 0;
+                                     types::coordinate_t posY) const = 0;
   virtual bool isTargetable() const = 0;
   virtual bool isSelectable() const = 0;
 

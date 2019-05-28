@@ -3,6 +3,7 @@
 
 #include "../graphtypes.h"
 #include "../modeltypes.h"
+#include "./circularinfluencezone.h"
 #include "./graphentity.h"
 
 namespace how {
@@ -16,14 +17,17 @@ public:
   bool isTargetable() const override;
   bool isSelectable() const override;
   bool isWithinSelectionArea(types::coordinate_t posX,
-                          types::coordinate_t posY) const override;
-  types::coordinate_t getDetectionRadius() const;
-
-public:
-  void onIteration(float deltaTime);
+                             types::coordinate_t posY) const override;
+  const CircularInfluenceZone &getSelectionZone();
+  const CircularInfluenceZone &getEngagementZone();
+  const CircularInfluenceZone &getForagingZone();
+  const CircularInfluenceZone &getScoutingZone();
 
 private:
-  types::coordinate_t influenceAreaWidth = 50;
+  CircularInfluenceZone selectionZone;
+  CircularInfluenceZone engagementZone;
+  CircularInfluenceZone foragingZone;
+  CircularInfluenceZone scoutingZone;
 };
 } // namespace model
 } // namespace how

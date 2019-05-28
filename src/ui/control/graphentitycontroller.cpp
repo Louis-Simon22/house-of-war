@@ -1,13 +1,7 @@
 #include "graphentitycontroller.h"
 
-#include <QQmlEngine>
-
-#include <boost/signals2.hpp>
-
 #include "../../model/entities/graphentity.h"
 #include "../conversion/converter.h"
-
-#include <iostream>
 
 namespace how {
 namespace ui {
@@ -16,18 +10,14 @@ GraphEntityController::GraphEntityController(
     model::GraphEntityManager *graphEntityManagerPtr)
     : graphEntityManagerPtr(graphEntityManagerPtr) {}
 
-void GraphEntityController::progressAll(float deltaTime) {
-  this->graphEntityManagerPtr->progressAll(deltaTime);
-}
-
 void GraphEntityController::mousePressedOnGraphEntityPainter(
-    QMouseEvent *event, std::shared_ptr<model::GraphEntity> graphEntityPtr) {
+    QMouseEvent *event, model::GraphEntity *graphEntity) {
   switch (event->button()) {
   case Qt::LeftButton:
-    this->onGraphEntitySelected(graphEntityPtr);
+    this->onGraphEntitySelected(graphEntity);
     break;
   case Qt::RightButton:
-    this->onGraphEntityTargeted(graphEntityPtr);
+    this->onGraphEntityTargeted(graphEntity);
     break;
   default:
     event->ignore();
@@ -40,16 +30,17 @@ QRect GraphEntityController::getWorldBounds() const {
 }
 
 void GraphEntityController::onGraphEntitySelected(
-    std::shared_ptr<model::GraphEntity> graphEntityPtr) {
-  this->selectionManager.setSelection(graphEntityPtr.get());
+    model::GraphEntity *graphEntity) {
+  // TODO able to select voronoiCells and display their stats
+  this->selectionManager.setSelection(graphEntity);
 }
 
 void GraphEntityController::onGraphEntityTargeted(
-    std::shared_ptr<model::GraphEntity> graphEntityPtr) {
+    model::GraphEntity *graphEntity) {
   if (this->selectionManager.hasSelection()) {
     auto *selection = this->selectionManager.getSelection();
-    this->graphEntityManagerPtr->addGraphEntityPositionChange(
-        selection, graphEntityPtr.get());
+    this->graphEntityManagerPtr->addGraphEntityPositionChange(selection,
+                                                              graphEntity);
   }
 }
 

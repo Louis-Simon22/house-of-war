@@ -29,7 +29,7 @@ void addEdgeToGraph(
   // This removes the edges that go around the edge cells to far away cells
   if (!(isVoronoiCellOnBounds(bounds, voronoiCellPtr1) &&
         isVoronoiCellOnBounds(bounds, voronoiCellPtr2) &&
-        intersectingArea<>(segment, spatialIndexTree, graph).size() > 2)) {
+        intersectingGeometry<>(segment, spatialIndexTree, graph).size() > 2)) {
     auto vertexDesc1 = vertexDescByCell[voronoiCellPtr1];
     auto vertexDesc2 = vertexDescByCell[voronoiCellPtr2];
     if (!::boost::edge(vertexDesc1, vertexDesc2, graph).second) {

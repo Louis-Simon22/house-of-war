@@ -34,7 +34,7 @@ void ModelThreadManager::setIterationInterval(int msec) {
 }
 
 void ModelThreadManager::workerThreadIteration() {
-  this->iteration(this->modelIterationTimer.interval());
+  this->iterate();
 }
 
 } // namespace ui

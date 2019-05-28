@@ -2,14 +2,11 @@
 #define CHARACTERPAINTER_H
 
 #include "../../model/entities/character.h"
-#include "./entitypainter.h"
+#include "./graphentitypainter.h"
 
 namespace how {
 namespace ui {
-class CharacterPainter : public EntityPainter {
-private:
-  static constexpr float CHARACTER_WIDTH = 5;
-
+class CharacterPainter : public PainterItem {
 public:
   CharacterPainter(QQuickItem *parent,
                    std::shared_ptr<model::Character> characterPtr);

@@ -13,7 +13,7 @@ public:
   ~GraphEntityPositionChange() override;
 
 public:
-  bool progress(float deltaTime) override;
+  bool progress() override;
   void destinationReached() override;
 
 private:

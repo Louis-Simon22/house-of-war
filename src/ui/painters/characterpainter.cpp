@@ -12,14 +12,12 @@
 namespace how {
 namespace ui {
 
+constexpr float CHARACTER_WIDTH = 7;
+
 CharacterPainter::CharacterPainter(
     QQuickItem *parent, std::shared_ptr<model::Character> characterPtr)
-    : EntityPainter(parent, characterPtr), characterPtr(characterPtr) {
-  this->characterPtr->visualChangedSignal.connect(
-      ::boost::bind(&QQuickItem::update, this));
-  this->characterPtr->dimensionsChangedSignal.connect(
-      ::boost::bind(&EntityPainter::updateDimensions, this));
-  this->updateDimensions();
+    : PainterItem(parent, characterPtr), characterPtr(characterPtr) {
+    this->updateDimensions();
 }
 
 CharacterPainter::~CharacterPainter() {}

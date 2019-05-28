@@ -14,10 +14,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(HEADER_FILES
     src/model/entities/army.h
     src/model/entities/character.h
+    src/model/entities/circularinfluencezone.h
     src/model/entities/delaunayedge.h
     src/model/entities/graphentitychange.h
     src/model/entities/graphentity.h
     src/model/entities/graphentitypositionchange.h
+    src/model/entities/influencezone.h
     src/model/entities/tile.h
     src/model/entities/voronoicell.h
     src/model/graphtypes.h
@@ -34,9 +36,11 @@ set(HEADER_FILES
     src/model/generation/poissondisksamplingadapter.h
     src/model/generation/walkingdistancescalculator.h
     src/model/generation/worldgenerationconfig.h
+    src/model/operations/armiesiterator.h
     src/model/operations/graphoperations.h
     src/model/operations/pathfindingoperations.h
     src/model/operations/polygonindexoperations.h
+    src/model/operations/tilesiterator.h
     src/model/random/utilsrandom.h
     src/model/utils/clockwisepointcomparator.h
     src/model/utils/easingfunctions.h
@@ -44,13 +48,15 @@ set(HEADER_FILES
     src/model/utils/segmentcomparator.h
     src/ui/control/graphentitycontroller.h
     src/ui/control/maincontroller.h
+    src/ui/control/modelcontroller.h
     src/ui/control/modelthreadmanager.h
     src/ui/control/selectionmanager.h
     src/ui/conversion/converter.h
+    src/ui/entities/armyitem.h
+    src/ui/entities/graphentityitem.h
     src/ui/painters/armypainter.h
     src/ui/painters/characterpainter.h
-    src/ui/painters/entitypainter.h
-    src/ui/painters/paintingsutils.h
+    src/ui/painters/painteritem.h
     src/ui/painters/voronoicellpainter.h
     src/ui/painters/segmentspainter.h
     )
@@ -58,10 +64,12 @@ set(HEADER_FILES
 set(CPP_FILES
     src/model/entities/army.cpp
     src/model/entities/character.cpp
+    src/model/entities/circularinfluencezone.cpp
     src/model/entities/delaunayedge.cpp
     src/model/entities/graphentitychange.cpp
     src/model/entities/graphentity.cpp
     src/model/entities/graphentitypositionchange.cpp
+    src/model/entities/influencezone.cpp
     src/model/entities/tile.cpp
     src/model/entities/voronoicell.cpp
     src/model/managers/graphentitymanager.cpp
@@ -75,22 +83,26 @@ set(CPP_FILES
     src/model/generation/poissondisksamplingadapter.cpp
     src/model/generation/walkingdistancescalculator.cpp
     src/model/generation/worldgenerationconfig.cpp
+    src/model/operations/armiesiterator.cpp
     src/model/operations/graphoperations.cpp
     src/model/operations/pathfindingoperations.cpp
     src/model/operations/polygonindexoperations.cpp
+    src/model/operations/tilesiterator.cpp
     src/model/utils/clockwisepointcomparator.cpp
     src/model/utils/easingfunctions.cpp
     src/model/utils/pointcomparator.cpp
     src/model/utils/segmentcomparator.cpp
     src/ui/control/graphentitycontroller.cpp
     src/ui/control/maincontroller.cpp
+    src/ui/control/modelcontroller.cpp
     src/ui/control/modelthreadmanager.cpp
     src/ui/control/selectionmanager.cpp
     src/ui/conversion/converter.cpp
+    src/ui/entities/armyitem.cpp
+    src/ui/entities/graphentityitem.cpp
     src/ui/painters/armypainter.cpp
     src/ui/painters/characterpainter.cpp
-    src/ui/painters/entitypainter.cpp
-    src/ui/painters/paintingsutils.cpp
+    src/ui/painters/painteritem.cpp
     src/ui/painters/voronoicellpainter.cpp
     src/ui/painters/segmentspainter.cpp
     )

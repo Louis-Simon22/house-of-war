@@ -19,18 +19,13 @@ GraphEntityManager::GraphEntityManager(types::graph_t graph,
       voronoiCellPtrs() {
   types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
   std::tie(vertexItBegin, vertexItEnd) = ::boost::vertices(graph);
+  auto uniqueVoronoiSegmentsSet =
+      std::set<types::segment_t, SegmentComparator>();
   for (auto vertexIt = vertexItBegin; vertexIt != vertexItEnd; vertexIt++) {
     auto vertexDesc = *vertexIt;
     auto &voronoiCell = *graph[vertexDesc];
     auto &envelope = voronoiCell.getEnvelope();
     this->spatialIndexTree.insert(std::make_pair(envelope, vertexDesc));
-  }
-
-  auto uniqueVoronoiSegmentsSet =
-      std::set<types::segment_t, SegmentComparator>();
-  for (auto vertexIt = vertexItBegin; vertexIt < vertexItEnd; vertexIt++) {
-    auto vertexDesc = *vertexIt;
-    auto &voronoiCell = *graph[vertexDesc];
     const auto &outlineSegments = voronoiCell.getOutlineSegments();
     for (const auto &outlineSegment : outlineSegments) {
       uniqueVoronoiSegmentsSet.insert(outlineSegment);
@@ -63,10 +58,10 @@ void GraphEntityManager::addGraphEntityPositionChange(
       std::make_unique<GraphEntityPositionChange>(source, destinations));
 }
 
-void GraphEntityManager::progressAll(float deltaTime) {
+void GraphEntityManager::iterateAllEntityChanges() {
   for (auto it = this->graphEntityChangePtrs.begin();
        it != this->graphEntityChangePtrs.end();) {
-    if ((*it)->progress(deltaTime)) {
+    if ((*it)->progress()) {
       it = this->graphEntityChangePtrs.erase(it);
     } else {
       it++;
@@ -93,6 +88,11 @@ const types::graph_t &GraphEntityManager::getGraph() const {
 
 const types::box_t &GraphEntityManager::getBounds() const {
   return this->bounds;
+}
+
+const types::spatial_index_tree_t &
+GraphEntityManager::getSpatialIndexTree() const {
+  return this->spatialIndexTree;
 }
 
 const std::vector<types::segment_t> &

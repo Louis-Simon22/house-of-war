@@ -13,11 +13,7 @@ namespace bg = ::boost::geometry;
 
 VoronoiCellPainter::VoronoiCellPainter(
     QQuickItem *parent, std::shared_ptr<model::VoronoiCell> voronoiCellPtr)
-    : EntityPainter(parent, voronoiCellPtr), voronoiCellPtr(voronoiCellPtr) {
-  this->voronoiCellPtr->visualChangedSignal.connect(
-      ::boost::bind(&QQuickItem::update, this));
-  this->voronoiCellPtr->dimensionsChangedSignal.connect(
-      ::boost::bind(&EntityPainter::updateDimensions, this));
+    : PainterItem(parent, voronoiCellPtr), voronoiCellPtr(voronoiCellPtr) {
   this->updateDimensions();
 }
 

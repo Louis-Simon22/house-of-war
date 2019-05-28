@@ -33,7 +33,7 @@ void generateHeightData(types::box_t boundingBox, std::uint32_t randomSeed,
 
   auto heightReferenceAccessor =
       [](types::graph_vertex_desc_t desc,
-         types::graph_t &graph) -> types::characteristics_t & {
+         types::graph_t &graph) -> types::charac_t & {
     return graph[desc]->getTile().getAltitude();
   };
   normalizeCellCharacteristic01(heightReferenceAccessor, graph);

@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include <QMetaType>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQmlEngine>
@@ -6,7 +7,6 @@
 #include <QThread>
 
 #include <iostream>
-#include <memory>
 
 #define BOOST_UUID_NO_SIMD
 #define BOOST_UUID_NO_TYPE_TRAITS
@@ -24,7 +24,7 @@
 #include "../src/ui/painters/segmentspainter.h"
 #include "../src/ui/painters/voronoicellpainter.h"
 
-Q_DECLARE_METATYPE(std::shared_ptr<::how::model::GraphEntity>)
+Q_DECLARE_METATYPE(::how::model::GraphEntity *)
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -50,11 +50,13 @@ int main(int argc, char *argv[]) {
       "EntityController", uncreatableTypeErrorMessage);
   qmlRegisterType<::how::ui::MainController>(
       "com.louissimonmcnicoll.how.ui.maincontroller", 1, 0, "MainController");
+  qmlRegisterType<::how::ui::ModelController>(
+      "com.louissimonmcnicoll.how.ui.modelcontroller", 1, 0, "ModelController");
   // Others
   qmlRegisterUncreatableType<::how::ui::ModelThreadManager>(
       "com.louissimonmcnicoll.how.ui.modelthreadmanager", 1, 0,
       "ModelThreadManager", uncreatableTypeErrorMessage);
-  qRegisterMetaType<std::shared_ptr<::how::model::GraphEntity>>();
+  qRegisterMetaType<::how::model::GraphEntity *>("GraphEntityPtr");
 
   engine.load(QUrl(QStringLiteral("qrc:/qml/Window.qml")));
   if (engine.rootObjects().isEmpty()) {

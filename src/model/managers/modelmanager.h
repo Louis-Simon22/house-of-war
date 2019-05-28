@@ -17,6 +17,7 @@ public:
 
 public:
   GraphEntityManager *getGraphEntityManagerPtr();
+  void iterateModel();
 
 private:
   std::unique_ptr<GraphEntityManager> graphEntityManagerPtr;

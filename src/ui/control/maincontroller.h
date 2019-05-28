@@ -1,5 +1,5 @@
-#ifndef MODELCONTROLLER_H
-#define MODELCONTROLLER_H
+#ifndef MAINCONTROLLER_H
+#define MAINCONTROLLER_H
 
 #include <memory>
 #include <vector>
@@ -8,8 +8,9 @@
 #include <QQuickItem>
 
 #include "../../model/managers/modelmanager.h"
-#include "../painters/entitypainter.h"
+#include "../painters/graphentitypainter.h"
 #include "./graphentitycontroller.h"
+#include "./modelcontroller.h"
 #include "./modelthreadmanager.h"
 
 namespace how {
@@ -17,29 +18,23 @@ namespace ui {
 class MainController : public QObject {
   Q_OBJECT
 
-  Q_PROPERTY(GraphEntityController *graphEntityController READ
-                 getGraphEntityController NOTIFY newModelGenerated FINAL)
+  Q_PROPERTY(ModelController *modelController READ getModelController CONSTANT)
 
 public:
   MainController();
 
-signals:
-  void newModelGenerated();
-
 public slots:
-  void newModel(int width, int height, float minimumVoronoiCellDistance,
-                int randomSeed);
-  void instantiateUiElements(QQuickItem *parent);
+  void generateMapElements(QQuickItem *parent);
 
 private:
-  GraphEntityController *getGraphEntityController();
-  void bindClickSignalAndSetObjectOwnership(EntityPainter* entityPainter);
+  ModelController *getModelController();
+  void bindPainterClickSignalAndSetObjectOwnership(
+      PainterItem *entityPainter);
 
 private:
-  model::ModelManager modelManager;
   ModelThreadManager modelThreadManager;
-  std::unique_ptr<GraphEntityController> graphEntityControllerPtr;
+  ModelController modelController;
 };
 } // namespace ui
 } // namespace how
-#endif // MODELCONTROLLER_H
+#endif // MAINCONTROLLER_H

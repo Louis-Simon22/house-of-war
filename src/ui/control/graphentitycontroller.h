@@ -1,10 +1,8 @@
 #ifndef CHARACTERSCONTROLLER_H
 #define CHARACTERSCONTROLLER_H
 
-#include <memory>
-
+#include <QMouseEvent>
 #include <QObject>
-#include <QQuickItem>
 
 #include "../../model/managers/graphentitymanager.h"
 #include "./selectionmanager.h"
@@ -20,16 +18,13 @@ public:
   GraphEntityController(model::GraphEntityManager *graphEntityManagerPtr);
 
 public slots:
-  void progressAll(float deltaTime);
-  void mousePressedOnGraphEntityPainter(
-      QMouseEvent *event, std::shared_ptr<model::GraphEntity> graphEntityPtr);
+  void mousePressedOnGraphEntityPainter(QMouseEvent *event,
+                                        model::GraphEntity *graphEntity);
 
 private:
   QRect getWorldBounds() const;
-  void
-  onGraphEntitySelected(std::shared_ptr<model::GraphEntity> graphEntityPtr);
-  void
-  onGraphEntityTargeted(std::shared_ptr<model::GraphEntity> graphEntityPtr);
+  void onGraphEntitySelected(model::GraphEntity *graphEntity);
+  void onGraphEntityTargeted(model::GraphEntity *graphEntity);
 
 private:
   SelectionManager selectionManager;

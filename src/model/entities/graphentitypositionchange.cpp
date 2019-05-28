@@ -10,7 +10,7 @@ GraphEntityPositionChange::GraphEntityPositionChange(
 
 GraphEntityPositionChange::~GraphEntityPositionChange() {}
 
-bool GraphEntityPositionChange::progress(float deltaTime) {
+bool GraphEntityPositionChange::progress() {
   const auto *destinationVoronoiCellPtr =
       this->destinations[this->currentDestinationIndex];
   this->graphEntity->setPosition(destinationVoronoiCellPtr->getPosition());

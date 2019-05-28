@@ -17,21 +17,32 @@ namespace bgi = ::boost::geometry::index;
 
 template <typename Geometry>
 std::vector<types::graph_vertex_desc_t>
-intersectingArea(Geometry area,
-                 const types::spatial_index_tree_t &spatialIndexTree,
-                 const types::graph_t &graph) {
+intersectingGeometry(Geometry geometry,
+                     const types::spatial_index_tree_t &spatialIndexTree,
+                     const types::graph_t &graph) {
   auto intersectingVertexDescs = std::vector<types::graph_vertex_desc_t>();
 
-  spatialIndexTree.query(bgi::intersects(area),
+  spatialIndexTree.query(bgi::intersects(geometry),
                          boost::make_function_output_iterator(
-                             [&area, &intersectingVertexDescs,
+                             [&geometry, &intersectingVertexDescs,
                               &graph](types::spatial_index_value_t value) {
                                const auto desc = std::get<1>(value);
                                const auto &polygon = graph[desc]->getPolygon();
-                               if (bg::intersects(area, polygon)) {
+                               if (bg::intersects(geometry, polygon)) {
                                  intersectingVertexDescs.push_back(desc);
                                }
                              }));
+
+  return intersectingVertexDescs;
+}
+
+std::vector<types::graph_vertex_desc_t>
+intersectingArea(types::box_t area,
+                 const types::spatial_index_tree_t &spatialIndexTree) {
+  auto intersectingVertexDescs = std::vector<types::graph_vertex_desc_t>();
+
+  spatialIndexTree.query(bgi::intersects(area),
+                         std::back_inserter(intersectingVertexDescs));
 
   return intersectingVertexDescs;
 }

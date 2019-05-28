@@ -17,8 +17,8 @@ public:
 
 public:
   void addGraphEntityPositionChange(GraphEntity *source,
-                                     GraphEntity *destination);
-  void progressAll(float deltaTime);
+                                    GraphEntity *destination);
+  void iterateAllEntityChanges();
   void addArmy(std::shared_ptr<Army> armyPtr);
   void addCharacter(std::shared_ptr<Character> characterPtr);
   void addVoronoiCell(std::shared_ptr<VoronoiCell> voronoiCellPtr);
@@ -26,6 +26,7 @@ public:
 public:
   const types::graph_t &getGraph() const;
   const types::box_t &getBounds() const;
+  const types::spatial_index_tree_t &getSpatialIndexTree() const;
   const std::vector<types::segment_t> &getVoronoiSegments() const;
   const std::vector<types::segment_t> &getDelaunaySegments() const;
   std::vector<std::shared_ptr<Army>> &getArmyPtrs();

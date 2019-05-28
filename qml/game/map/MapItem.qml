@@ -3,6 +3,7 @@ import QtQuick.Shapes 1.12
 import QtQml 2.12
 
 import com.louissimonmcnicoll.how.ui.maincontroller 1.0
+import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
 import com.louissimonmcnicoll.how.ui.entitycontroller 1.0
 
 Flickable {
@@ -21,10 +22,11 @@ Flickable {
 
     Item {
         id: mapItem
-        x: mapItemFlickable.mainController.graphEntityController.worldBounds.x
-        y: mapItemFlickable.mainController.graphEntityController.worldBounds.y
-        width: mapItemFlickable.mainController.graphEntityController.worldBounds.width
-        height: mapItemFlickable.mainController.graphEntityController.worldBounds.height
+        // TODO only go one level deep to get controllers
+        x: mapItemFlickable.mainController.modelController.graphEntityController.worldBounds.x
+        y: mapItemFlickable.mainController.modelController.graphEntityController.worldBounds.y
+        width: mapItemFlickable.mainController.modelController.graphEntityController.worldBounds.width
+        height: mapItemFlickable.mainController.modelController.graphEntityController.worldBounds.height
         property real minScale: Math.max(
                                     mapItemFlickable.width / mapItem.width,
                                     mapItemFlickable.height / mapItem.height)

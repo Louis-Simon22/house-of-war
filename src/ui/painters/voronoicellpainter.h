@@ -2,11 +2,11 @@
 #define TilePainter_H
 
 #include "../../model/entities/voronoicell.h"
-#include "./entitypainter.h"
+#include "./graphentitypainter.h"
 
 namespace how {
 namespace ui {
-class VoronoiCellPainter : public EntityPainter {
+class VoronoiCellPainter : public PainterItem {
 
 public:
   VoronoiCellPainter(QQuickItem *parent,

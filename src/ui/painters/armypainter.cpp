@@ -10,11 +10,7 @@ namespace ui {
 
 ArmyPainter::ArmyPainter(QQuickItem *parent,
                          std::shared_ptr<model::Army> armyPtr)
-    : EntityPainter(parent, armyPtr), armyPtr(armyPtr) {
-  this->armyPtr->visualChangedSignal.connect(
-      ::boost::bind(&QQuickItem::update, this));
-  this->armyPtr->dimensionsChangedSignal.connect(
-      ::boost::bind(&EntityPainter::updateDimensions, this));
+    : PainterItem(parent, armyPtr), armyPtr(armyPtr) {
   this->updateDimensions();
 }
 

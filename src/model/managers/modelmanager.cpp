@@ -2,6 +2,7 @@
 
 #include "../generation/entitygenerator.h"
 #include "../generation/graphgenerator.h"
+#include "../operations/tilesiterator.h"
 
 namespace how {
 namespace model {
@@ -33,6 +34,11 @@ void ModelManager::newModel(WorldGenerationConfig config) {
 
 GraphEntityManager *ModelManager::getGraphEntityManagerPtr() {
   return this->graphEntityManagerPtr.get();
+}
+
+void ModelManager::iterateModel() {
+  iterateTiles(this->graphEntityManagerPtr.get());
+  this->graphEntityManagerPtr->iterateAllEntityChanges();
 }
 
 } // namespace model

@@ -16,7 +16,7 @@ public:
   bool isTargetable() const override;
   bool isSelectable() const override;
   bool isWithinSelectionArea(types::coordinate_t posX,
-                                  types::coordinate_t posY) const override;
+                             types::coordinate_t posY) const override;
 };
 } // namespace model
 } // namespace how

@@ -9,7 +9,7 @@ public:
   virtual ~GraphEntityChange();
 
 public:
-  virtual bool progress(float deltaTime) = 0;
+  virtual bool progress() = 0;
   virtual void destinationReached() = 0;
 };
 } // namespace model

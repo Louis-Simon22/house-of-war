@@ -12,9 +12,9 @@ bool Character::isTargetable() const { return false; }
 
 bool Character::isSelectable() const { return true; }
 
-bool Character::isWithinSelectionArea(types::coordinate_t posX, types::coordinate_t posY) const
-{
-    return true;
+bool Character::isWithinSelectionArea(types::coordinate_t posX,
+                                      types::coordinate_t posY) const {
+  return true;
 }
 
 } // namespace model

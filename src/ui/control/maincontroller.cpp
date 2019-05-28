@@ -14,71 +14,64 @@
 namespace how {
 namespace ui {
 
-MainController::MainController()
-    : modelManager(), modelThreadManager(), graphEntityControllerPtr() {}
-
-void MainController::newModel(int width, int height,
-                              float minimumVoronoiCellDistance,
-                              int randomSeed) {
-  auto config = model::WorldGenerationConfig(
-      0, 0, width, height, minimumVoronoiCellDistance,
-      static_cast<std::uint32_t>(randomSeed));
-  this->modelManager.newModel(config);
-  this->graphEntityControllerPtr.reset(
-      new GraphEntityController(this->modelManager.getGraphEntityManagerPtr()));
-  this->newModelGenerated();
-//  this->modelThreadManager.registerQObjectOnThread(
-//      graphEntityControllerPtr.get());
-  connect(&modelThreadManager, &ModelThreadManager::iteration,
-          this->graphEntityControllerPtr.get(),
-          &GraphEntityController::progressAll, Qt::QueuedConnection);
-  this->modelThreadManager.resumeIterations();
+MainController::MainController() : modelThreadManager(), modelController() {
+  connect(&modelThreadManager, &ModelThreadManager::iterate,
+          &this->modelController, &ModelController::iterateModel,
+          Qt::QueuedConnection);
+  // TODO move graphentitycontroller to this class
+  this->modelThreadManager.registerQObjectOnThread(
+      this->modelController.getGraphEntityControllerPtr());
+  this->modelThreadManager.registerQObjectOnThread(&this->modelController);
+  connect(&this->modelThreadManager, &ModelThreadManager::iterate,
+          &this->modelController, &ModelController::iterateModel,
+          Qt::QueuedConnection);
 }
 
-void MainController::instantiateUiElements(QQuickItem *parent) {
-  auto *graphEntityManagerPtr = this->modelManager.getGraphEntityManagerPtr();
+void MainController::generateMapElements(QQuickItem *parent) {
+  auto *graphEntityManagerPtr =
+      this->modelController.getGraphEntityManagerPtr();
   auto &armyPtrs = graphEntityManagerPtr->getArmyPtrs();
   for (auto &armyPtr : armyPtrs) {
     auto *armyPainter = new ArmyPainter(parent, armyPtr);
-    this->bindClickSignalAndSetObjectOwnership(armyPainter);
+    this->bindPainterClickSignalAndSetObjectOwnership(armyPainter);
   }
 
   auto &characterPtrs = graphEntityManagerPtr->getCharacterPtrs();
   for (auto &characterPtr : characterPtrs) {
     auto *characterPainter = new CharacterPainter(parent, characterPtr);
-    this->bindClickSignalAndSetObjectOwnership(characterPainter);
+    this->bindPainterClickSignalAndSetObjectOwnership(characterPainter);
   }
 
   auto &voronoiCellPtrs = graphEntityManagerPtr->getVoronoiCellPtrs();
-  std::size_t greg = 0;
   for (auto &voronoiCellPtr : voronoiCellPtrs) {
     auto *voronoiCellPainter = new VoronoiCellPainter(parent, voronoiCellPtr);
-    this->bindClickSignalAndSetObjectOwnership(voronoiCellPainter);
-    voronoiCellPainter->index = greg++;
+    this->bindPainterClickSignalAndSetObjectOwnership(voronoiCellPainter);
   }
 
   auto *delaunaySegmentsPainter = new SegmentsPainter(
       parent,
-      this->modelManager.getGraphEntityManagerPtr()->getDelaunaySegments());
+      this->modelController.getGraphEntityManagerPtr()->getDelaunaySegments());
   QQmlEngine::setObjectOwnership(delaunaySegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
   delaunaySegmentsPainter->setVisible(true);
   auto *voronoiSegmentsPainter = new SegmentsPainter(
       parent,
-      this->modelManager.getGraphEntityManagerPtr()->getVoronoiSegments());
+      this->modelController.getGraphEntityManagerPtr()->getVoronoiSegments());
   QQmlEngine::setObjectOwnership(voronoiSegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
   voronoiSegmentsPainter->setVisible(false);
 }
 
-GraphEntityController *MainController::getGraphEntityController() {
-  return this->graphEntityControllerPtr.get();
+ModelController *MainController::getModelController() {
+  return &this->modelController;
 }
 
-void MainController::bindClickSignalAndSetObjectOwnership(
-    EntityPainter *entityPainter) {
-  connect(entityPainter, &EntityPainter::mousePressedOnGraphEntityPainter,
-          this->graphEntityControllerPtr.get(),
+void MainController::bindPainterClickSignalAndSetObjectOwnership(
+    PainterItem *entityPainter) {
+  auto *graphEntityControllerPtr =
+      this->modelController.getGraphEntityControllerPtr();
+  connect(entityPainter, &PainterItem::mousePressedOnGraphEntityPainter,
+          graphEntityControllerPtr,
           &GraphEntityController::mousePressedOnGraphEntityPainter,
           Qt::QueuedConnection);
   QQmlEngine::setObjectOwnership(entityPainter,

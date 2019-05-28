@@ -2,11 +2,11 @@
 #define ARMYPAINTER_H
 
 #include "../../model/entities/army.h"
-#include "./entitypainter.h"
+#include "./painteritem.h"
 
 namespace how {
 namespace ui {
-class ArmyPainter : public EntityPainter {
+class ArmyPainter : public PainterItem {
 public:
   ArmyPainter(QQuickItem *parent, std::shared_ptr<model::Army> armyPtr);
   ~ArmyPainter() override;

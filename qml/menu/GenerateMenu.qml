@@ -41,19 +41,19 @@ BaseMenu {
             Layout.alignment: Qt.AlignCenter
             id: worldWidth
             label: "World Width"
-            input: "500"
+            input: "1000"
         }
         MenuNumberInput {
             Layout.alignment: Qt.AlignCenter
             id: worldHeight
             label: "World Height"
-            input: "300"
+            input: "600"
         }
         MenuNumberInput {
             Layout.alignment: Qt.AlignCenter
             id: minimumVoronoiCellDistance
             label: "Minimum Voronoi Cell Distance"
-            input: "30"
+            input: "7"
         }
         MenuNumberInput {
             Layout.alignment: Qt.AlignCenter
