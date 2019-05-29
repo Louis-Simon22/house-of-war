@@ -47,6 +47,7 @@ set(HEADER_FILES
     src/model/utils/pointcomparator.h
     src/model/utils/segmentcomparator.h
     src/ui/control/graphentitycontroller.h
+    src/ui/control/iterationtimermanager.h
     src/ui/control/maincontroller.h
     src/ui/control/modelcontroller.h
     src/ui/control/modelthreadmanager.h
@@ -54,10 +55,12 @@ set(HEADER_FILES
     src/ui/conversion/converter.h
     src/ui/entities/armyitem.h
     src/ui/entities/graphentityitem.h
-    src/ui/painters/armypainter.h
-    src/ui/painters/characterpainter.h
+    src/ui/entities/influencezoneitem.h
+    src/ui/entities/voronoicellitem.h
+    src/ui/painters/circlepainter.h
     src/ui/painters/painteritem.h
-    src/ui/painters/voronoicellpainter.h
+    src/ui/painters/rectanglepainter.h
+    src/ui/painters/polygonpainter.h
     src/ui/painters/segmentspainter.h
     )
 
@@ -93,6 +96,7 @@ set(CPP_FILES
     src/model/utils/pointcomparator.cpp
     src/model/utils/segmentcomparator.cpp
     src/ui/control/graphentitycontroller.cpp
+    src/ui/control/iterationtimermanager.cpp
     src/ui/control/maincontroller.cpp
     src/ui/control/modelcontroller.cpp
     src/ui/control/modelthreadmanager.cpp
@@ -100,10 +104,12 @@ set(CPP_FILES
     src/ui/conversion/converter.cpp
     src/ui/entities/armyitem.cpp
     src/ui/entities/graphentityitem.cpp
-    src/ui/painters/armypainter.cpp
-    src/ui/painters/characterpainter.cpp
+    src/ui/entities/influencezoneitem.cpp
+    src/ui/entities/voronoicellitem.cpp
+    src/ui/painters/circlepainter.cpp
     src/ui/painters/painteritem.cpp
-    src/ui/painters/voronoicellpainter.cpp
+    src/ui/painters/rectanglepainter.cpp
+    src/ui/painters/polygonpainter.cpp
     src/ui/painters/segmentspainter.cpp
     )
 

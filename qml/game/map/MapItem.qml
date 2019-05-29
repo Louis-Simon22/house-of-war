@@ -17,7 +17,7 @@ Flickable {
 
     signal loadMap
     onLoadMap: {
-        mapItemFlickable.mainController.instantiateUiElements(mapItem)
+        mapItemFlickable.mainController.generateMapItems(mapItem)
     }
 
     Item {

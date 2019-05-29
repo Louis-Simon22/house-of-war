@@ -9,13 +9,13 @@ void iterateArmies(GraphEntityManager *graphEntityManager) {
   auto &armyPtrs = graphEntityManager->getArmyPtrs();
   for (auto &armyPtr : armyPtrs) {
     auto intersectedVertexIds =
-        intersectingArea(armyPtr->getForagingShape(),
+        intersectingArea(armyPtr->getForagingZone().getEnvelope(),
                          graphEntityManager->getSpatialIndexTree());
     for (auto intersectedVertexId : intersectedVertexIds) {
       auto voronoiCellPtr =
           graphEntityManager->getVoronoiCellPtrByDesc(intersectedVertexId);
-      if (armyPtr->isWithinScoutingArea(voronoiCellPtr->getPosX(),
-                                         voronoiCellPtr->getPosY())) {
+      if (armyPtr->getScoutingZone().isPointWithinZone(
+              voronoiCellPtr->getPosX(), voronoiCellPtr->getPosY())) {
         voronoiCellPtr->getTile().getResources() -= 3;
       }
     }

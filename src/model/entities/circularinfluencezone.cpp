@@ -41,7 +41,7 @@ types::coordinate_t CircularInfluenceZone::getRadius() const {
 
 void CircularInfluenceZone::setRadius(types::coordinate_t radius) {
   this->radius = radius;
-  this->attachedEntity.visualChangedSignal();
+  this->changedSignal();
 }
 
 } // namespace model

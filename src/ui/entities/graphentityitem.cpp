@@ -3,19 +3,20 @@
 namespace how {
 namespace ui {
 
-GraphEntityItem::GraphEntityItem(QQuickItem *parent,
-                       std::shared_ptr<model::GraphEntity> graphEntityPtr)
-    : QQuickItem(parent), graphEntityPtr(graphEntityPtr) {
+GraphEntityItem::GraphEntityItem(
+    std::shared_ptr<model::GraphEntity> graphEntityPtr,
+    QQuickItem *visualParent, QObject *memoryParent)
+    : QQuickItem(nullptr), graphEntityPtr(graphEntityPtr) {
+  this->setParent(memoryParent);
+  this->setParentItem(visualParent);
   this->updateAcceptedMouseButtons();
-  this->graphEntityPtr->visualChangedSignal.connect(
+  this->graphEntityPtr->changedSignal.connect(
       ::boost::bind(&GraphEntityItem::updateOnGuiThread, this));
-  connect(this, &GraphEntityItem::updateOnGuiThread, this, &QQuickItem::update,
-          Qt::QueuedConnection);
-  this->graphEntityPtr->dimensionsChangedSignal.connect(
-      ::boost::bind(&GraphEntityItem::updateDimensionsOnGuiThread, this));
-  connect(this, &GraphEntityItem::updateDimensionsOnGuiThread, this,
-          &GraphEntityItem::updateDimensions, Qt::QueuedConnection);
+  connect(this, &GraphEntityItem::updateOnGuiThread, this,
+          &GraphEntityItem::onGraphEntityUpdated, Qt::QueuedConnection);
 }
+
+GraphEntityItem::~GraphEntityItem() {}
 
 void GraphEntityItem::mousePressEvent(QMouseEvent *event) {
   const auto mappedPoint =

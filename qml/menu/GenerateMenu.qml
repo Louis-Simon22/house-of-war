@@ -25,14 +25,15 @@ BaseMenu {
             Layout.alignment: Qt.AlignCenter
             text: "Generate"
             onClicked: {
-                mainController.newModelGenerated.connect(
+                var modelController = mainController.modelController
+                modelController.newModelGenerated.connect(
                             generateMenu.newModelGenerated)
-                mainController.newModel(parseInt(worldWidth.input, 10),
-                                        parseInt(worldHeight.input, 10),
-                                        parseFloat(
-                                            minimumVoronoiCellDistance.input),
-                                        parseInt(randomSeed.input, 10))
-                mainController.newModelGenerated.disconnect(
+                modelController.newModel(parseInt(worldWidth.input, 10),
+                                         parseInt(worldHeight.input, 10),
+                                         parseFloat(
+                                             minimumVoronoiCellDistance.input),
+                                         parseInt(randomSeed.input, 10))
+                modelController.newModelGenerated.disconnect(
                             generateMenu.newModelGenerated)
             }
         }
@@ -41,19 +42,19 @@ BaseMenu {
             Layout.alignment: Qt.AlignCenter
             id: worldWidth
             label: "World Width"
-            input: "1000"
+            input: "300"
         }
         MenuNumberInput {
             Layout.alignment: Qt.AlignCenter
             id: worldHeight
             label: "World Height"
-            input: "600"
+            input: "200"
         }
         MenuNumberInput {
             Layout.alignment: Qt.AlignCenter
             id: minimumVoronoiCellDistance
             label: "Minimum Voronoi Cell Distance"
-            input: "7"
+            input: "20"
         }
         MenuNumberInput {
             Layout.alignment: Qt.AlignCenter

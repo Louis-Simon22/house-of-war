@@ -23,7 +23,7 @@ intersectingGeometry(Geometry geometry,
   auto intersectingVertexDescs = std::vector<types::graph_vertex_desc_t>();
 
   spatialIndexTree.query(bgi::intersects(geometry),
-                         boost::make_function_output_iterator(
+                         ::boost::make_function_output_iterator(
                              [&geometry, &intersectingVertexDescs,
                               &graph](types::spatial_index_value_t value) {
                                const auto desc = std::get<1>(value);
@@ -38,14 +38,7 @@ intersectingGeometry(Geometry geometry,
 
 std::vector<types::graph_vertex_desc_t>
 intersectingArea(types::box_t area,
-                 const types::spatial_index_tree_t &spatialIndexTree) {
-  auto intersectingVertexDescs = std::vector<types::graph_vertex_desc_t>();
-
-  spatialIndexTree.query(bgi::intersects(area),
-                         std::back_inserter(intersectingVertexDescs));
-
-  return intersectingVertexDescs;
-}
+                 const types::spatial_index_tree_t &spatialIndexTree);
 
 types::graph_vertex_desc_t
 coveredByPoint(types::point_t position,

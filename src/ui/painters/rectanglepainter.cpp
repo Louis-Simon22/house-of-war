@@ -1,4 +1,4 @@
-#include "characterpainter.h"
+#include "rectanglepainter.h"
 
 #include <QColor>
 #include <QSGFlatColorMaterial>
@@ -12,27 +12,12 @@
 namespace how {
 namespace ui {
 
-constexpr float CHARACTER_WIDTH = 7;
+RectanglePainter::RectanglePainter(QQuickItem *parent, QColor color)
+    : PainterItem(parent), color(color) {}
 
-CharacterPainter::CharacterPainter(
-    QQuickItem *parent, std::shared_ptr<model::Character> characterPtr)
-    : PainterItem(parent, characterPtr), characterPtr(characterPtr) {
-    this->updateDimensions();
-}
+RectanglePainter::~RectanglePainter() {}
 
-CharacterPainter::~CharacterPainter() {}
-
-void CharacterPainter::updateDimensions() {
-  this->setX(
-      static_cast<double>(this->characterPtr->getPosX() - CHARACTER_WIDTH / 2));
-  this->setY(
-      static_cast<double>(this->characterPtr->getPosY() - CHARACTER_WIDTH / 2));
-  this->setZ(static_cast<double>(this->characterPtr->getLayer()));
-  this->setWidth(static_cast<double>(CHARACTER_WIDTH * 2));
-  this->setHeight(static_cast<double>(CHARACTER_WIDTH * 2));
-}
-
-QSGNode *CharacterPainter::updatePaintNode(QSGNode *oldNode,
+QSGNode *RectanglePainter::updatePaintNode(QSGNode *oldNode,
                                            UpdatePaintNodeData *) {
   QSGGeometryNode *node = nullptr;
   QSGGeometry *geometry = nullptr;
@@ -61,16 +46,21 @@ QSGNode *CharacterPainter::updatePaintNode(QSGNode *oldNode,
 
   auto *vertices = geometry->vertexDataAsPoint2D();
   vertices[0].set(0, 0);
-  vertices[1].set(CHARACTER_WIDTH, 0);
-  vertices[2].set(CHARACTER_WIDTH, CHARACTER_WIDTH);
-  vertices[3].set(0, CHARACTER_WIDTH);
+  vertices[1].set(static_cast<float>(this->width()), 0);
+  vertices[2].set(static_cast<float>(this->width()),
+                  static_cast<float>(this->height()));
+  vertices[3].set(0, static_cast<float>(this->height()));
   node->markDirty(QSGNode::DirtyGeometry);
 
-  const QColor color = this->characterPtr->isSelected() ? Qt::yellow : Qt::red;
-  material->setColor(color);
+  material->setColor(this->color);
   node->markDirty(QSGNode::DirtyMaterial);
 
   return node;
+}
+
+void RectanglePainter::setColor(QColor color) {
+  this->color = color;
+  this->update();
 }
 
 } // namespace ui

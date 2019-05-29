@@ -3,7 +3,8 @@
 namespace how {
 namespace ui {
 
-ModelController::ModelController() : modelManager() {}
+ModelController::ModelController(QObject *parent)
+    : QObject(parent), modelManager() {}
 
 void ModelController::newModel(int width, int height,
                                float minimumVoronoiCellDistance,

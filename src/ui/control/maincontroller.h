@@ -8,8 +8,9 @@
 #include <QQuickItem>
 
 #include "../../model/managers/modelmanager.h"
-#include "../painters/graphentitypainter.h"
+#include "../entities/graphentityitem.h"
 #include "./graphentitycontroller.h"
+#include "./iterationtimermanager.h"
 #include "./modelcontroller.h"
 #include "./modelthreadmanager.h"
 
@@ -24,16 +25,17 @@ public:
   MainController();
 
 public slots:
-  void generateMapElements(QQuickItem *parent);
+  void generateMapItems(QQuickItem *parent);
 
 private:
   ModelController *getModelController();
-  void bindPainterClickSignalAndSetObjectOwnership(
-      PainterItem *entityPainter);
+  void bindGraphEntityItemClickSignalAndSetObjectOwnership(
+      GraphEntityItem *graphEntityItem);
 
 private:
-  ModelThreadManager modelThreadManager;
-  ModelController modelController;
+  ModelThreadManager *modelThreadManager;
+  IterationTimerManager* iterationTimerManager;
+  ModelController* modelController;
 };
 } // namespace ui
 } // namespace how

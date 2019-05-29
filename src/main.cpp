@@ -19,10 +19,7 @@
 #include "../src/ui/control/graphentitycontroller.h"
 #include "../src/ui/control/maincontroller.h"
 #include "../src/ui/control/modelthreadmanager.h"
-#include "../src/ui/painters/armypainter.h"
-#include "../src/ui/painters/characterpainter.h"
 #include "../src/ui/painters/segmentspainter.h"
-#include "../src/ui/painters/voronoicellpainter.h"
 
 Q_DECLARE_METATYPE(::how::model::GraphEntity *)
 
@@ -40,10 +37,6 @@ int main(int argc, char *argv[]) {
       "This object may not be created in QML";
 
   // Registering c++ bindings for QML
-  // Painters
-  qmlRegisterUncreatableType<::how::ui::SegmentsPainter>(
-      "com.louissimonmcnicoll.how.ui.segmentspainter", 1, 0, "SegmentsPainter",
-      uncreatableTypeErrorMessage);
   // Controllers
   qmlRegisterUncreatableType<::how::ui::GraphEntityController>(
       "com.louissimonmcnicoll.how.ui.entitycontroller", 1, 0,

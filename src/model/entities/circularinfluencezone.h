@@ -22,6 +22,7 @@ public:
   void setRadius(types::coordinate_t radius);
 
 private:
+  // Maybe connect the graphEntity's signal to this one
   types::coordinate_t radius;
 };
 } // namespace model

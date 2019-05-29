@@ -16,7 +16,7 @@ class ModelController : public QObject {
                  getGraphEntityControllerPtr NOTIFY newModelGenerated FINAL)
 
 public:
-  ModelController();
+  ModelController(QObject *parent = nullptr);
 
 signals:
   void newModelGenerated();

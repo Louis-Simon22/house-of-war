@@ -1,11 +1,7 @@
 #ifndef GRAPHENTITYPAINTER_H
 #define GRAPHENTITYPAINTER_H
 
-#include <memory>
-
 #include <QQuickItem>
-
-#include "../../model/entities/graphentity.h"
 
 namespace how {
 namespace ui {
@@ -15,6 +11,9 @@ class PainterItem : public QQuickItem {
 public:
   PainterItem(QQuickItem *parent);
   virtual ~PainterItem() override = 0;
+
+signals:
+  void updateOnGuiThread();
 };
 } // namespace ui
 } // namespace how

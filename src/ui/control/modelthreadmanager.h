@@ -11,25 +11,13 @@ class ModelThreadManager : public QObject {
   Q_OBJECT
 
 public:
-  ModelThreadManager();
+  ModelThreadManager(QObject *parent);
   ~ModelThreadManager();
 
 public:
-  void registerQObjectOnThread(QObject* qObject);
-
-public slots:
-  void pauseIterations();
-  void resumeIterations();
-  void setIterationInterval(int msec);
-
-signals:
-  void iterate();
+  void registerQObjectOnThread(QObject *qObject);
 
 private:
-  void workerThreadIteration();
-
-private:
-  QTimer modelIterationTimer;
   QThread modelWorkerThread;
 };
 } // namespace ui
