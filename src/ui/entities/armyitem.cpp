@@ -6,7 +6,6 @@ namespace ui {
 ArmyItem::ArmyItem(QQuickItem *parent, std::shared_ptr<model::Army> armyPtr)
     : GraphEntityItem(parent, armyPtr), armyPtr(armyPtr) {
     // TODO instantiate appropriate painters parented to this
-    // TODO give a "reference" object to painters so they can map points to it
 }
 
 void ArmyItem::updateDimensions() {
