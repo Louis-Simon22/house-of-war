@@ -1,11 +1,13 @@
 #ifndef TILESITERATOR_H
 #define TILESITERATOR_H
 
-#include "../managers/graphentitymanager.h"
+#include "../managers/entitiesmanager.h"
 
 namespace how {
 namespace model {
-void iterateTiles(GraphEntityManager *graphEntityManager);
+
+void iterateTiles(EntitiesManager &entitiesManager);
+
 }
 } // namespace how
 #endif // TILESITERATOR_H

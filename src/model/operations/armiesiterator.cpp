@@ -5,16 +5,17 @@
 namespace how {
 namespace model {
 
-void iterateArmies(GraphEntityManager *graphEntityManager) {
-  auto &armyPtrs = graphEntityManager->getArmyPtrs();
+void iterateArmies(EntitiesManager &entitiesManager,
+                   DelaunayVoronoiGraph *delaunayVoronoiGraph) {
+  auto &armyPtrs = entitiesManager.getArmyPtrs();
   for (auto &armyPtr : armyPtrs) {
     auto intersectedVertexIds =
-        intersectingArea(armyPtr->getForagingZone().getEnvelope(),
-                         graphEntityManager->getSpatialIndexTree());
+        intersectingArea(armyPtr->getForagingZonePtr()->getEnvelope(),
+                         delaunayVoronoiGraph->getSpatialIndexTree());
     for (auto intersectedVertexId : intersectedVertexIds) {
       auto voronoiCellPtr =
-          graphEntityManager->getVoronoiCellPtrByDesc(intersectedVertexId);
-      if (armyPtr->getScoutingZone().isPointWithinZone(
+          delaunayVoronoiGraph->getVoronoiCellPtrByDesc(intersectedVertexId);
+      if (armyPtr->getScoutingZonePtr()->isPointWithinZone(
               voronoiCellPtr->getPosX(), voronoiCellPtr->getPosY())) {
         voronoiCellPtr->getTile().getResources() -= 3;
       }

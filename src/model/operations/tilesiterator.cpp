@@ -3,8 +3,8 @@
 namespace how {
 namespace model {
 
-void iterateTiles(GraphEntityManager *graphEntityManager) {
-  auto &voronoiCellPtrs = graphEntityManager->getVoronoiCellPtrs();
+void iterateTiles(EntitiesManager &entitiesManager) {
+  auto &voronoiCellPtrs = entitiesManager.getVoronoiCellPtrs();
   for (auto &voronoiCellPtr : voronoiCellPtrs) {
     auto &tile = voronoiCellPtr->getTile();
     tile.setResources(tile.getResources() + 1);

@@ -1,12 +1,12 @@
-#ifndef ENTITYMOVEMENT_H
-#define ENTITYMOVEMENT_H
+#ifndef ENTITY_CHANGE_H
+#define ENTITY_CHANGE_H
 
 namespace how {
 namespace model {
-class GraphEntityChange {
+class EntityChange {
 public:
-  GraphEntityChange();
-  virtual ~GraphEntityChange();
+  EntityChange();
+  virtual ~EntityChange();
 
 public:
   virtual bool progress() = 0;
@@ -15,4 +15,4 @@ public:
 } // namespace model
 } // namespace how
 
-#endif // ENTITYMOVEMENT_H
+#endif // ENTITY_CHANGE_H

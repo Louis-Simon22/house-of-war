@@ -4,11 +4,11 @@
 #include "../graphtypes.h"
 #include "../modeltypes.h"
 #include "./circularinfluencezone.h"
-#include "./graphentity.h"
+#include "./interactiveentity.h"
 
 namespace how {
 namespace model {
-class Army : public GraphEntity {
+class Army : public InteractiveEntity {
 public:
   Army(types::point_t initialPosition);
   ~Army() override;
@@ -18,16 +18,15 @@ public:
   bool isSelectable() const override;
   bool isWithinSelectionArea(types::coordinate_t posX,
                              types::coordinate_t posY) const override;
-  const CircularInfluenceZone &getSelectionZone();
-  const CircularInfluenceZone &getEngagementZone();
-  const CircularInfluenceZone &getForagingZone();
-  const CircularInfluenceZone &getScoutingZone();
+  std::shared_ptr<CircularInfluenceZone> getEngagementZonePtr() const;
+  std::shared_ptr<CircularInfluenceZone> getForagingZonePtr() const;
+  std::shared_ptr<CircularInfluenceZone> getScoutingZonePtr() const;
 
 private:
-  CircularInfluenceZone selectionZone;
-  CircularInfluenceZone engagementZone;
-  CircularInfluenceZone foragingZone;
-  CircularInfluenceZone scoutingZone;
+  std::shared_ptr<CircularInfluenceZone> selectionZonePtr;
+  std::shared_ptr<CircularInfluenceZone> engagementZonePtr;
+  std::shared_ptr<CircularInfluenceZone> foragingZonePtr;
+  std::shared_ptr<CircularInfluenceZone> scoutingZonePtr;
 };
 } // namespace model
 } // namespace how

@@ -2,10 +2,10 @@ import QtQuick 2.12
 import QtQuick.Shapes 1.12
 import QtQml 2.12
 
-import com.louissimonmcnicoll.how.ui.maincontroller 1.0
 import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
 import com.louissimonmcnicoll.how.ui.entitycontroller 1.0
 
+// TODO overlay for tile stats
 Flickable {
     id: mapItemFlickable
     contentWidth: mapItem.width * mapItem.scale
@@ -13,20 +13,19 @@ Flickable {
     boundsBehavior: Flickable.DragAndOvershootBounds
     clip: true
 
-    property MainController mainController
+    property ModelController modelController
 
     signal loadMap
     onLoadMap: {
-        mapItemFlickable.mainController.generateMapItems(mapItem)
+        modelController.generateMapItems(mapItem)
     }
 
     Item {
         id: mapItem
-        // TODO only go one level deep to get controllers
-        x: mapItemFlickable.mainController.modelController.graphEntityController.worldBounds.x
-        y: mapItemFlickable.mainController.modelController.graphEntityController.worldBounds.y
-        width: mapItemFlickable.mainController.modelController.graphEntityController.worldBounds.width
-        height: mapItemFlickable.mainController.modelController.graphEntityController.worldBounds.height
+        x: modelController.worldBounds.x
+        y: modelController.worldBounds.y
+        width: modelController.worldBounds.width
+        height: modelController.worldBounds.height
         property real minScale: Math.max(
                                     mapItemFlickable.width / mapItem.width,
                                     mapItemFlickable.height / mapItem.height)

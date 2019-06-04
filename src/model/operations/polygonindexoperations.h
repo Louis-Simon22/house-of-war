@@ -17,7 +17,7 @@ namespace bgi = ::boost::geometry::index;
 
 template <typename Geometry>
 std::vector<types::graph_vertex_desc_t>
-intersectingGeometry(Geometry geometry,
+intersectingGeometry(const Geometry &geometry,
                      const types::spatial_index_tree_t &spatialIndexTree,
                      const types::graph_t &graph) {
   auto intersectingVertexDescs = std::vector<types::graph_vertex_desc_t>();
@@ -37,11 +37,11 @@ intersectingGeometry(Geometry geometry,
 }
 
 std::vector<types::graph_vertex_desc_t>
-intersectingArea(types::box_t area,
+intersectingArea(const types::box_t &area,
                  const types::spatial_index_tree_t &spatialIndexTree);
 
 types::graph_vertex_desc_t
-coveredByPoint(types::point_t position,
+coveredByPoint(const types::point_t &position,
                const types::spatial_index_tree_t &spatialIndexTree,
                const types::graph_t &graph);
 

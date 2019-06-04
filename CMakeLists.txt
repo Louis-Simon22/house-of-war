@@ -16,14 +16,17 @@ set(HEADER_FILES
     src/model/entities/character.h
     src/model/entities/circularinfluencezone.h
     src/model/entities/delaunayedge.h
-    src/model/entities/graphentitychange.h
-    src/model/entities/graphentity.h
-    src/model/entities/graphentitypositionchange.h
+    src/model/entities/entity.h
+    src/model/entities/entitychange.h
+    src/model/entities/entitypositionchange.h
+    src/model/entities/interactiveentity.h
     src/model/entities/influencezone.h
     src/model/entities/tile.h
     src/model/entities/voronoicell.h
     src/model/graphtypes.h
-    src/model/managers/graphentitymanager.h
+    src/model/managers/delaunayvoronoigraph.h
+    src/model/managers/entitychangemanager.h
+    src/model/managers/entitiesmanager.h
     src/model/managers/modelmanager.h
     src/model/modeltypes.h
     src/model/operations/celldataoperations.h
@@ -46,22 +49,22 @@ set(HEADER_FILES
     src/model/utils/easingfunctions.h
     src/model/utils/pointcomparator.h
     src/model/utils/segmentcomparator.h
-    src/ui/control/graphentitycontroller.h
-    src/ui/control/iterationtimermanager.h
-    src/ui/control/maincontroller.h
+    src/ui/control/entitiescontroller.h
     src/ui/control/modelcontroller.h
-    src/ui/control/modelthreadmanager.h
     src/ui/control/selectionmanager.h
     src/ui/conversion/converter.h
-    src/ui/entities/armyitem.h
-    src/ui/entities/graphentityitem.h
-    src/ui/entities/influencezoneitem.h
-    src/ui/entities/voronoicellitem.h
+    src/ui/items/armyitem.h
+    src/ui/items/entityitem.h
+    src/ui/items/influencezoneitem.h
+    src/ui/items/interactiveentityitem.h
+    src/ui/items/voronoicellitem.h
     src/ui/painters/circlepainter.h
     src/ui/painters/painteritem.h
     src/ui/painters/rectanglepainter.h
     src/ui/painters/polygonpainter.h
     src/ui/painters/segmentspainter.h
+    src/ui/threading/iterationtimermanager.h
+    src/ui/threading/modelthreadmanager.h
     )
 
 set(CPP_FILES
@@ -69,13 +72,16 @@ set(CPP_FILES
     src/model/entities/character.cpp
     src/model/entities/circularinfluencezone.cpp
     src/model/entities/delaunayedge.cpp
-    src/model/entities/graphentitychange.cpp
-    src/model/entities/graphentity.cpp
-    src/model/entities/graphentitypositionchange.cpp
+    src/model/entities/entity.cpp
+    src/model/entities/entitychange.cpp
+    src/model/entities/entitypositionchange.cpp
+    src/model/entities/interactiveentity.cpp
     src/model/entities/influencezone.cpp
     src/model/entities/tile.cpp
     src/model/entities/voronoicell.cpp
-    src/model/managers/graphentitymanager.cpp
+    src/model/managers/delaunayvoronoigraph.cpp
+    src/model/managers/entitychangemanager.cpp
+    src/model/managers/entitiesmanager.cpp
     src/model/managers/modelmanager.cpp
     src/model/generation/celldatagenerator.cpp
     src/model/generation/delaunayextrapolator.cpp
@@ -95,22 +101,22 @@ set(CPP_FILES
     src/model/utils/easingfunctions.cpp
     src/model/utils/pointcomparator.cpp
     src/model/utils/segmentcomparator.cpp
-    src/ui/control/graphentitycontroller.cpp
-    src/ui/control/iterationtimermanager.cpp
-    src/ui/control/maincontroller.cpp
+    src/ui/control/entitiescontroller.cpp
     src/ui/control/modelcontroller.cpp
-    src/ui/control/modelthreadmanager.cpp
     src/ui/control/selectionmanager.cpp
     src/ui/conversion/converter.cpp
-    src/ui/entities/armyitem.cpp
-    src/ui/entities/graphentityitem.cpp
-    src/ui/entities/influencezoneitem.cpp
-    src/ui/entities/voronoicellitem.cpp
+    src/ui/items/armyitem.cpp
+    src/ui/items/entityitem.cpp
+    src/ui/items/influencezoneitem.cpp
+    src/ui/items/interactiveentityitem.cpp
+    src/ui/items/voronoicellitem.cpp
     src/ui/painters/circlepainter.cpp
     src/ui/painters/painteritem.cpp
     src/ui/painters/rectanglepainter.cpp
     src/ui/painters/polygonpainter.cpp
     src/ui/painters/segmentspainter.cpp
+    src/ui/threading/modelthreadmanager.cpp
+    src/ui/threading/iterationtimermanager.cpp
     )
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")

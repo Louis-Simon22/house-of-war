@@ -1,13 +1,13 @@
 import QtQuick 2.11
 
-import com.louissimonmcnicoll.how.ui.maincontroller 1.0
+import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
 
 import "map/"
 
 Item {
     id: gameView
 
-    property MainController mainController
+    property ModelController modelController
 
     signal instantiateGame
 
@@ -24,15 +24,15 @@ Item {
     }
 
     Loader {
-        id: mapViewLoader
+        id: mapItemLoader
         anchors.fill: parent
 
         active: false
         sourceComponent: MapItem {
-            id: mapView
+            id: mapItem
         }
         onLoaded: {
-            item.mainController = gameView.mainController
+            item.modelController = gameView.modelController
             item.loadMap()
         }
     }
@@ -50,7 +50,7 @@ Item {
         State {
             name: "map"
             PropertyChanges {
-                target: mapViewLoader
+                target: mapItemLoader
                 active: true
             }
         }

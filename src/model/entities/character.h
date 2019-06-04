@@ -2,11 +2,11 @@
 #define CHARACTER_H
 
 #include "../graphtypes.h"
-#include "./graphentity.h"
+#include "./interactiveentity.h"
 
 namespace how {
 namespace model {
-class Character : public GraphEntity {
+class Character : public InteractiveEntity {
 
 public:
   Character(types::point_t initialPosition);

@@ -8,7 +8,7 @@
 namespace how {
 namespace model {
 
-std::vector<VoronoiCell *>
+std::vector<const VoronoiCell *>
 graphEntityPathfinding(types::graph_vertex_desc_t sourceVertexDesc,
                        types::graph_vertex_desc_t destinationVertexDesc,
                        types::graph_t &graph) {
@@ -22,18 +22,14 @@ graphEntityPathfinding(types::graph_vertex_desc_t sourceVertexDesc,
       },
       graph);
 
-  std::cout << "Source : " << sourceVertexDesc << std::endl;
-  std::cout << "Destination : " << destinationVertexDesc << std::endl;
   // Find the current vertex in the predecessors map starting from the
   // destination vertex
-  auto destinations = std::vector<VoronoiCell *>();
+  auto destinations = std::vector<const VoronoiCell *>();
   auto currentVertexIndex = destinationVertexDesc;
   while (currentVertexIndex != sourceVertexDesc) {
     destinations.push_back(graph[currentVertexIndex].get());
     currentVertexIndex = predecessors[currentVertexIndex];
-    std::cout << currentVertexIndex << std::endl;
   }
-  std::cout << "======" << std::endl;
   // Reverse the destinations list since it was obtained from a predecessors
   // map
   std::reverse(destinations.begin(), destinations.end());

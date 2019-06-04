@@ -7,9 +7,11 @@ namespace bg = ::boost::geometry;
 }
 
 Army::Army(types::point_t initialPosition)
-    : GraphEntity(Layers::CHARACTERS, initialPosition), selectionZone(1, *this),
-      engagementZone(2, *this), foragingZone(3, *this), scoutingZone(4, *this) {
-}
+    : InteractiveEntity(Layers::CHARACTERS, initialPosition),
+      selectionZonePtr(std::make_shared<CircularInfluenceZone>(5, this)),
+      engagementZonePtr(std::make_shared<CircularInfluenceZone>(5, this)),
+      foragingZonePtr(std::make_shared<CircularInfluenceZone>(20, this)),
+      scoutingZonePtr(std::make_shared<CircularInfluenceZone>(100, this)) {}
 
 Army::~Army() {}
 
@@ -19,23 +21,19 @@ bool Army::isSelectable() const { return true; }
 
 bool Army::isWithinSelectionArea(types::coordinate_t posX,
                                  types::coordinate_t posY) const {
-  return this->selectionZone.isPointWithinZone(posX, posY);
+  return this->selectionZonePtr->isPointWithinZone(posX, posY);
 }
 
-const CircularInfluenceZone &Army::getSelectionZone() {
-  return this->selectionZone;
+std::shared_ptr<CircularInfluenceZone> Army::getEngagementZonePtr() const {
+  return this->engagementZonePtr;
 }
 
-const CircularInfluenceZone &Army::getEngagementZone() {
-  return this->engagementZone;
+std::shared_ptr<CircularInfluenceZone> Army::getForagingZonePtr() const {
+  return this->foragingZonePtr;
 }
 
-const CircularInfluenceZone &Army::getForagingZone() {
-  return this->foragingZone;
-}
-
-const CircularInfluenceZone &Army::getScoutingZone() {
-  return this->scoutingZone;
+std::shared_ptr<CircularInfluenceZone> Army::getScoutingZonePtr() const {
+  return this->scoutingZonePtr;
 }
 
 } // namespace model

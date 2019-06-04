@@ -13,7 +13,8 @@
 namespace how {
 namespace model {
 
-types::graph_t generateGraph(const WorldGenerationConfig &config) {
+std::pair<types::graph_t, types::spatial_index_tree_t>
+generateGraph(const WorldGenerationConfig &config) {
   std::cout << "Starting world generation" << std::endl;
   std::cout << "=============================" << std::endl;
   const auto startTime = std::chrono::system_clock::now();
@@ -42,7 +43,9 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
   std::cout << "=============================" << std::endl;
 
   // Delaunay graph extracion
-  auto graph = createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(voronoiCells);
+  auto graphAndSpatialIndexTree =
+      createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(voronoiCells);
+  auto &graph = std::get<0>(graphAndSpatialIndexTree);
   std::cout << "Generated graph "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)
@@ -68,7 +71,7 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
             << std::endl;
   std::cout << "=============================" << std::endl;
 
-  return graph;
+  return graphAndSpatialIndexTree;
 }
 } // namespace model
 } // namespace how

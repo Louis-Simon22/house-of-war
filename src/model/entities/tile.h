@@ -2,7 +2,6 @@
 #define TILE_H
 
 #include "../modeltypes.h"
-#include "./graphentity.h"
 
 namespace how {
 namespace model {

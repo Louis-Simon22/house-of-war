@@ -2,18 +2,21 @@
 #define MODELCONTROLLER_H
 
 #include <QObject>
+#include <QQuickItem>
 
-#include "../../model/managers/graphentitymanager.h"
 #include "../../model/managers/modelmanager.h"
-#include "./graphentitycontroller.h"
+#include "../items/interactiveentityitem.h"
+#include "./entitiescontroller.h"
 
+// TODO all modifications come through this class
 namespace how {
 namespace ui {
 class ModelController : public QObject {
   Q_OBJECT
 
-  Q_PROPERTY(GraphEntityController *graphEntityController READ
-                 getGraphEntityControllerPtr NOTIFY newModelGenerated FINAL)
+  Q_PROPERTY(QRect worldBounds READ getWorldBounds CONSTANT FINAL)
+  Q_PROPERTY(EntitiesController *entitiesController READ getEntitiesController
+                 CONSTANT)
 
 public:
   ModelController(QObject *parent = nullptr);
@@ -25,14 +28,22 @@ public slots:
   void newModel(int width, int height, float minimumVoronoiCellDistance,
                 int randomSeed);
   void iterateModel();
+  void generateMapItems(QQuickItem *parent);
+
+private:
+  void bindEntityItemClickSignalAndSetObjectOwnership(
+      InteractiveEntityItem *interactiveEntityItem);
 
 public:
-  model::GraphEntityManager *getGraphEntityManagerPtr();
-  GraphEntityController *getGraphEntityControllerPtr();
+  EntitiesController *getEntitiesController();
+
+private:
+  QRect getWorldBounds() const;
+  ModelController *getModelController();
 
 private:
   model::ModelManager modelManager;
-  std::unique_ptr<GraphEntityController> graphEntityControllerPtr;
+  EntitiesController entitiesController;
 };
 } // namespace ui
 } // namespace how

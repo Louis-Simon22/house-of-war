@@ -1,12 +1,14 @@
 #ifndef ARMIESITERATOR_H
 #define ARMIESITERATOR_H
 
-#include "../managers/graphentitymanager.h"
+#include "../managers/delaunayvoronoigraph.h"
+#include "../managers/entitiesmanager.h"
 
 namespace how {
 namespace model {
 
-void iterateArmies(GraphEntityManager *graphEntityManager);
+void iterateArmies(EntitiesManager &entitiesManager,
+                   DelaunayVoronoiGraph *delaunayVoronoiGraph);
 
 } // namespace model
 } // namespace how

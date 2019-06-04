@@ -47,7 +47,8 @@ void addEdgeToGraph(
   }
 }
 
-types::graph_t createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
+std::pair<types::graph_t, types::spatial_index_tree_t>
+createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
     std::vector<std::shared_ptr<VoronoiCell>> voronoiCells) {
   auto graph = types::graph_t();
   auto vertexDescByCell =
@@ -87,7 +88,7 @@ types::graph_t createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
                    voronoiCellPtr1);
   }
 
-  return graph;
+  return std::make_pair<>(graph, spatialIndexTree);
 }
 
 } // namespace model

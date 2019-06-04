@@ -4,32 +4,31 @@
 #include <QQuickItem>
 
 #include "../../model/entities/army.h"
-#include "../painters/circlepainter.h"
 #include "../painters/rectanglepainter.h"
-#include "./graphentityitem.h"
+#include "./influencezoneitem.h"
+#include "./interactiveentityitem.h"
 
 namespace how {
 namespace ui {
-class ArmyItem : public GraphEntityItem {
+class ArmyItem : public InteractiveEntityItem {
 private:
   const QColor armyColor = Qt::red;
   const QColor engagementZoneColor = QColor(255, 0, 0, 0);
   const QColor foragingZoneColor = QColor(255, 0, 0, 0);
   const QColor scoutingZoneColor = QColor(255, 0, 0, 0);
-  static constexpr float ZONE_LINE_WIDTH = 2;
 
 public:
-  ArmyItem(std::shared_ptr<model::Army> armyPtr, QQuickItem *parent = nullptr);
+  ArmyItem(std::shared_ptr<model::Army> armyPtr, QQuickItem *parent);
 
 protected:
   void onGraphEntityUpdated() override;
 
 private:
-  std::shared_ptr<model::Army> armyPtr;
-  RectanglePainter *armyPainter;
-  CirclePainter *engagementZonePainter;
-  CirclePainter *foragingZonePainter;
-  CirclePainter *scoutingZonePainter;
+  std::shared_ptr<const model::Army> armyPtr;
+  RectanglePainter *rectanglePainter;
+  InfluenceZoneItem *engagementZoneItem;
+  InfluenceZoneItem *foragingZoneItem;
+  InfluenceZoneItem *scoutingZoneItem;
 };
 } // namespace ui
 } // namespace how

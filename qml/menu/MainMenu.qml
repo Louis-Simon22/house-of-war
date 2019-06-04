@@ -21,7 +21,6 @@ BaseMenu {
         text: "Main Menu"
     }
 
-    // The buttons menu
     Column {
         anchors.centerIn: parent
         spacing: 10

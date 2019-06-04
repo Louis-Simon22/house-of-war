@@ -18,10 +18,12 @@ public:
 public:
   void setLineWidth(float lineWidth);
   void setColor(QColor color);
+  void setRadius(float radius);
 
 private:
   float lineWidth;
   QColor color;
+  float radius;
 };
 } // namespace ui
 } // namespace how

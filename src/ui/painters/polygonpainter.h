@@ -9,18 +9,17 @@ namespace ui {
 class PolygonPainter : public PainterItem {
 
 public:
-  PolygonPainter(QQuickItem *parent);
+  PolygonPainter(QQuickItem *parent, std::vector<types::point_t> points);
   ~PolygonPainter() override;
 
 public:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
 public:
-  void setPoints(std::vector<float> points);
   void setColor(QColor color);
 
 private:
-  std::vector<float> points;
+  std::vector<types::point_t> points;
   QColor color;
 };
 } // namespace ui

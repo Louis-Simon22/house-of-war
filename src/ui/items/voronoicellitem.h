@@ -4,11 +4,11 @@
 #include "../../model/entities/voronoicell.h"
 #include "../painters/painteritem.h"
 #include "../painters/polygonpainter.h"
-#include "./graphentityitem.h"
+#include "./interactiveentityitem.h"
 
 namespace how {
 namespace ui {
-class VoronoiCellItem : public GraphEntityItem {
+class VoronoiCellItem : public InteractiveEntityItem {
 public:
   VoronoiCellItem(std::shared_ptr<model::VoronoiCell> voronoiCellPtr,
                   QQuickItem *parent);

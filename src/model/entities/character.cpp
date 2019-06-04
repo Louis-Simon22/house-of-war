@@ -4,7 +4,7 @@ namespace how {
 namespace model {
 
 Character::Character(types::point_t initialPosition)
-    : GraphEntity(Layers::CHARACTERS, initialPosition) {}
+    : InteractiveEntity(Layers::CHARACTERS, initialPosition) {}
 
 Character::~Character() {}
 

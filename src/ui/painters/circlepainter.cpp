@@ -19,16 +19,14 @@ QSGNode *CirclePainter::updatePaintNode(QSGNode *oldNode,
   QSGGeometry *geometry = nullptr;
   QSGFlatColorMaterial *material = nullptr;
 
-  constexpr int pointsCount = 20;
-  // One extra vertex to close the circle
-  constexpr int vertexCount = pointsCount + 1;
+  const int pointsCount = 50 + static_cast<int>(this->radius) * 2;
 
   if (!oldNode) {
     node = new QSGGeometryNode();
 
     geometry =
-        new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), vertexCount);
-    geometry->setDrawingMode(QSGGeometry::DrawLines);
+        new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), pointsCount);
+    geometry->setDrawingMode(QSGGeometry::DrawLineLoop);
     geometry->setLineWidth(this->lineWidth);
     node->setGeometry(geometry);
     node->setFlag(QSGNode::OwnsGeometry);
@@ -39,17 +37,15 @@ QSGNode *CirclePainter::updatePaintNode(QSGNode *oldNode,
   } else {
     node = static_cast<QSGGeometryNode *>(oldNode);
     geometry = node->geometry();
-    geometry->allocate(vertexCount);
+    geometry->allocate(pointsCount);
     material = static_cast<QSGFlatColorMaterial *>(node->material());
   }
 
-  auto radius = static_cast<float>(this->width() / 2);
   auto *vertices = geometry->vertexDataAsPoint2D();
-  auto center = radius;
   auto angleStep = static_cast<float>(2 * M_PI / pointsCount);
-  for (std::size_t i = 0; i < vertexCount; i++) {
+  for (std::size_t i = 0; i < static_cast<std::size_t>(pointsCount); i++) {
     const auto angle = i * angleStep;
-    vertices[i].set(center + radius * cos(angle), center + radius * sin(angle));
+    vertices[i].set(this->radius * cos(angle), this->radius * sin(angle));
   }
   node->markDirty(QSGNode::DirtyGeometry);
 
@@ -61,13 +57,11 @@ QSGNode *CirclePainter::updatePaintNode(QSGNode *oldNode,
 
 void CirclePainter::setLineWidth(float lineWidth) {
   this->lineWidth = lineWidth;
-  this->update();
 }
 
-void CirclePainter::setColor(QColor color) {
-  this->color = color;
-  this->update();
-}
+void CirclePainter::setColor(QColor color) { this->color = color; }
+
+void CirclePainter::setRadius(float radius) { this->radius = radius; }
 
 } // namespace ui
 } // namespace how

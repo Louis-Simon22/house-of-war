@@ -1,44 +1,47 @@
 #include "modelmanager.h"
 
-#include "../generation/entitygenerator.h"
 #include "../generation/graphgenerator.h"
+#include "../operations/armiesiterator.h"
 #include "../operations/tilesiterator.h"
 
 namespace how {
 namespace model {
 
-ModelManager::ModelManager() : graphEntityManagerPtr() {}
+ModelManager::ModelManager()
+    : entityChangeManager(), entitiesManager(), delaunayVoronoiGraphPtr() {}
 
-void ModelManager::newModel(WorldGenerationConfig config) {
-  this->graphEntityManagerPtr = std::make_unique<GraphEntityManager>(
-      generateGraph(config), config.getBoundingBox());
-  types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
-  ::boost::tie(vertexItBegin, vertexItEnd) =
-      ::boost::vertices(this->graphEntityManagerPtr->getGraph());
-  for (auto vertexIt = vertexItBegin; vertexIt != vertexItEnd; vertexIt++) {
-    const auto vertexDesc = *vertexIt;
-    auto voronoiCellPtr =
-        this->graphEntityManagerPtr->getVoronoiCellPtrByDesc(vertexDesc);
-    this->graphEntityManagerPtr->addVoronoiCell(voronoiCellPtr);
-  }
-  auto armyPtrs = generateArmies(this->graphEntityManagerPtr->getGraph());
-  for (auto &armyPtr : armyPtrs) {
-    this->graphEntityManagerPtr->addArmy(armyPtr);
-  }
-  auto characterPtrs =
-      generateCharacters(this->graphEntityManagerPtr->getGraph());
-  for (auto &characterPtr : characterPtrs) {
-    this->graphEntityManagerPtr->addCharacter(characterPtr);
-  }
-}
-
-GraphEntityManager *ModelManager::getGraphEntityManagerPtr() {
-  return this->graphEntityManagerPtr.get();
+void ModelManager::newModel(const WorldGenerationConfig &config) {
+  auto graphAndSpatialIndexTree = generateGraph(config);
+  auto &graph = std::get<0>(graphAndSpatialIndexTree);
+  auto &spatialIndexTree = std::get<1>(graphAndSpatialIndexTree);
+  this->delaunayVoronoiGraphPtr = std::make_unique<DelaunayVoronoiGraph>(
+      graph, spatialIndexTree, config.getBoundingBox());
+  this->entitiesManager.generateEntities(graph);
 }
 
 void ModelManager::iterateModel() {
-  iterateTiles(this->graphEntityManagerPtr.get());
-  this->graphEntityManagerPtr->iterateAllEntityChanges();
+  iterateTiles(this->entitiesManager);
+  iterateArmies(this->entitiesManager, this->delaunayVoronoiGraphPtr.get());
+  this->entityChangeManager.iterateAllEntityChanges();
+}
+
+void ModelManager::addGraphEntityPositionChange(Entity *source,
+                                                const Entity *destination) {
+  auto destinations = this->delaunayVoronoiGraphPtr->getDestinationsBetween(
+      source, destination);
+  this->entityChangeManager.addGraphEntityPositionChange(source, destinations);
+}
+
+EntityChangeManager *ModelManager::getEntityChangeManager() {
+  return &this->entityChangeManager;
+}
+
+EntitiesManager *ModelManager::getEntitiesManager() {
+  return &this->entitiesManager;
+}
+
+const DelaunayVoronoiGraph *ModelManager::getDelaunayVoronoiGraphPtr() const {
+  return this->delaunayVoronoiGraphPtr.get();
 }
 
 } // namespace model

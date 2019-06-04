@@ -6,7 +6,7 @@ namespace how {
 namespace model {
 
 std::vector<types::graph_vertex_desc_t>
-intersectingArea(types::box_t area,
+intersectingArea(const types::box_t &area,
                  const types::spatial_index_tree_t &spatialIndexTree) {
   auto intersectingVertexDescs = std::vector<types::graph_vertex_desc_t>();
 
@@ -22,7 +22,7 @@ intersectingArea(types::box_t area,
 }
 
 types::graph_vertex_desc_t
-coveredByPoint(types::point_t position,
+coveredByPoint(const types::point_t &position,
                const types::spatial_index_tree_t &spatialIndexTree,
                const types::graph_t &graph) {
   auto coveredValues = std::vector<types::spatial_index_value_t>();

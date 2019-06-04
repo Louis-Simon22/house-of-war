@@ -12,8 +12,9 @@
 namespace how {
 namespace ui {
 
-RectanglePainter::RectanglePainter(QQuickItem *parent, QColor color)
-    : PainterItem(parent), color(color) {}
+RectanglePainter::RectanglePainter(QColor color, float width, float height,
+                                   QQuickItem *parent)
+    : PainterItem(parent), color(color), width(width), height(height) {}
 
 RectanglePainter::~RectanglePainter() {}
 
@@ -45,11 +46,12 @@ QSGNode *RectanglePainter::updatePaintNode(QSGNode *oldNode,
   }
 
   auto *vertices = geometry->vertexDataAsPoint2D();
-  vertices[0].set(0, 0);
-  vertices[1].set(static_cast<float>(this->width()), 0);
-  vertices[2].set(static_cast<float>(this->width()),
-                  static_cast<float>(this->height()));
-  vertices[3].set(0, static_cast<float>(this->height()));
+  auto halfwidth = this->width / 2;
+  auto halfheight = this->height / 2;
+  vertices[0].set(-halfwidth, -halfheight);
+  vertices[1].set(halfwidth, -halfheight);
+  vertices[2].set(halfwidth, halfheight);
+  vertices[3].set(-halfwidth, halfheight);
   node->markDirty(QSGNode::DirtyGeometry);
 
   material->setColor(this->color);

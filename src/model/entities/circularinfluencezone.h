@@ -7,8 +7,7 @@ namespace how {
 namespace model {
 class CircularInfluenceZone : public InfluenceZone {
 public:
-  CircularInfluenceZone(types::coordinate_t radius,
-                        const GraphEntity &attachedGraphEntity);
+  CircularInfluenceZone(types::coordinate_t radius, const Entity *parentEntity);
   ~CircularInfluenceZone() override;
 
 public:

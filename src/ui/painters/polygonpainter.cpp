@@ -11,8 +11,9 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-PolygonPainter::PolygonPainter(QQuickItem *parent)
-    : PainterItem(parent), points() {}
+PolygonPainter::PolygonPainter(QQuickItem *parent,
+                               std::vector<types::point_t> points)
+    : PainterItem(parent), points(points) {}
 
 PolygonPainter::~PolygonPainter() {}
 
@@ -44,8 +45,9 @@ QSGNode *PolygonPainter::updatePaintNode(QSGNode *oldNode,
   }
 
   auto *vertices = geometry->vertexDataAsPoint2D();
-  for (std::size_t i = 0; i < this->points.size(); i += 2) {
-    vertices[i].set(this->points[i], this->points[i + 1]);
+  for (std::size_t i = 0; i < points.size(); i++) {
+    const auto &point = points[i];
+    vertices[i].set(bg::get<0>(point), bg::get<1>(point));
   }
   node->markDirty(QSGNode::DirtyGeometry);
 
@@ -55,14 +57,8 @@ QSGNode *PolygonPainter::updatePaintNode(QSGNode *oldNode,
   return node;
 }
 
-void PolygonPainter::setPoints(std::vector<float> points) {
-  this->points = points;
-  this->update();
-}
-
 void PolygonPainter::setColor(QColor color) {
   this->color = color;
-  this->update();
 }
 
 } // namespace ui

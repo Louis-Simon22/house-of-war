@@ -16,12 +16,11 @@
 // Debug output of qml renderer
 #define QSG_RENDERER_DEBUG = render
 
-#include "../src/ui/control/graphentitycontroller.h"
-#include "../src/ui/control/maincontroller.h"
-#include "../src/ui/control/modelthreadmanager.h"
+#include "../src/ui/control/modelcontroller.h"
+#include "../src/ui/control/modelcontroller.h"
 #include "../src/ui/painters/segmentspainter.h"
 
-Q_DECLARE_METATYPE(::how::model::GraphEntity *)
+Q_DECLARE_METATYPE(::how::model::InteractiveEntity *)
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -38,18 +37,14 @@ int main(int argc, char *argv[]) {
 
   // Registering c++ bindings for QML
   // Controllers
-  qmlRegisterUncreatableType<::how::ui::GraphEntityController>(
+  qmlRegisterUncreatableType<::how::ui::EntitiesController>(
       "com.louissimonmcnicoll.how.ui.entitycontroller", 1, 0,
       "EntityController", uncreatableTypeErrorMessage);
-  qmlRegisterType<::how::ui::MainController>(
-      "com.louissimonmcnicoll.how.ui.maincontroller", 1, 0, "MainController");
   qmlRegisterType<::how::ui::ModelController>(
       "com.louissimonmcnicoll.how.ui.modelcontroller", 1, 0, "ModelController");
-  // Others
-  qmlRegisterUncreatableType<::how::ui::ModelThreadManager>(
-      "com.louissimonmcnicoll.how.ui.modelthreadmanager", 1, 0,
-      "ModelThreadManager", uncreatableTypeErrorMessage);
-  qRegisterMetaType<::how::model::GraphEntity *>("GraphEntityPtr");
+  qmlRegisterType<::how::ui::ModelController>(
+      "com.louissimonmcnicoll.how.ui.modelcontroller", 1, 0, "ModelController");
+  qRegisterMetaType<::how::model::InteractiveEntity *>("InteractiveEntity");
 
   engine.load(QUrl(QStringLiteral("qrc:/qml/Window.qml")));
   if (engine.rootObjects().isEmpty()) {

@@ -4,7 +4,9 @@
 #include <memory>
 
 #include "../generation/worldgenerationconfig.h"
-#include "./graphentitymanager.h"
+#include "./delaunayvoronoigraph.h"
+#include "./entitiesmanager.h"
+#include "./entitychangemanager.h"
 
 namespace how {
 namespace model {
@@ -13,14 +15,19 @@ public:
   ModelManager();
 
 public:
-  void newModel(WorldGenerationConfig config);
+  void newModel(const WorldGenerationConfig &config);
+  void iterateModel();
+  void addGraphEntityPositionChange(Entity *source, const Entity *destination);
 
 public:
-  GraphEntityManager *getGraphEntityManagerPtr();
-  void iterateModel();
+  EntityChangeManager *getEntityChangeManager();
+  EntitiesManager *getEntitiesManager();
+  const DelaunayVoronoiGraph *getDelaunayVoronoiGraphPtr() const;
 
 private:
-  std::unique_ptr<GraphEntityManager> graphEntityManagerPtr;
+  EntityChangeManager entityChangeManager;
+  EntitiesManager entitiesManager;
+  std::unique_ptr<DelaunayVoronoiGraph> delaunayVoronoiGraphPtr;
 };
 } // namespace model
 } // namespace how

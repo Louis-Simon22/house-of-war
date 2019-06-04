@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <QQuickItem>
 
-#include "../../model/managers/graphentitymanager.h"
+#include "../../model/modeltypes.h"
 
 namespace how {
 namespace ui {

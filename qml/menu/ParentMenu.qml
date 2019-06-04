@@ -1,13 +1,13 @@
 import QtQuick 2.11
 
-import com.louissimonmcnicoll.how.ui.maincontroller 1.0
+import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
 
 Item {
     id: parentMenu
 
     signal startGame
 
-    property MainController mainController
+    property ModelController modelController
 
     MainMenu {
         id: mainMenu
@@ -25,7 +25,7 @@ Item {
         id: generateMenu
         anchors.fill: parent
 
-        mainController: parentMenu.mainController
+        modelController: parentMenu.modelController
         onNewModelGenerated: {
             parentMenu.startGame()
         }

@@ -10,7 +10,8 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-types::graph_t generateGraph(const WorldGenerationConfig &config);
+std::pair<types::graph_t, types::spatial_index_tree_t>
+generateGraph(const WorldGenerationConfig &config);
 
 } // namespace model
 } // namespace how
