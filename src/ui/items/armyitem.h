@@ -6,11 +6,13 @@
 #include "../../model/entities/army.h"
 #include "../painters/rectanglepainter.h"
 #include "./influencezoneitem.h"
-#include "./interactiveentityitem.h"
+#include "./entityitem.h"
 
 namespace how {
 namespace ui {
-class ArmyItem : public InteractiveEntityItem {
+class ArmyItem : public EntityItem {
+  Q_OBJECT
+
 private:
   const QColor armyColor = Qt::red;
   const QColor engagementZoneColor = QColor(255, 0, 0, 0);

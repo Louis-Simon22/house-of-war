@@ -2,7 +2,6 @@
 #define ARMY_H
 
 #include "../graphtypes.h"
-#include "../modeltypes.h"
 #include "./circularinfluencezone.h"
 #include "./interactiveentity.h"
 
@@ -16,8 +15,7 @@ public:
 public:
   bool isTargetable() const override;
   bool isSelectable() const override;
-  bool isWithinSelectionArea(types::coordinate_t posX,
-                             types::coordinate_t posY) const override;
+  std::shared_ptr<const CircularInfluenceZone> getSelectionZonePtr() const;
   std::shared_ptr<CircularInfluenceZone> getEngagementZonePtr() const;
   std::shared_ptr<CircularInfluenceZone> getForagingZonePtr() const;
   std::shared_ptr<CircularInfluenceZone> getScoutingZonePtr() const;

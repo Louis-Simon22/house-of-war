@@ -4,7 +4,7 @@ namespace how {
 namespace ui {
 
 ArmyItem::ArmyItem(std::shared_ptr<model::Army> armyPtr, QQuickItem *parent)
-    : InteractiveEntityItem(armyPtr, parent), armyPtr(armyPtr),
+    : EntityItem(armyPtr, parent), armyPtr(armyPtr),
       rectanglePainter(new RectanglePainter(Qt::red, 2, 3, this)),
       engagementZoneItem(
           new InfluenceZoneItem(armyPtr->getEngagementZonePtr(), this)),

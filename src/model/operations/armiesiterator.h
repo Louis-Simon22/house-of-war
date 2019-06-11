@@ -8,7 +8,7 @@ namespace how {
 namespace model {
 
 void iterateArmies(EntitiesManager &entitiesManager,
-                   DelaunayVoronoiGraph *delaunayVoronoiGraph);
+                   GraphManager *delaunayVoronoiGraph);
 
 } // namespace model
 } // namespace how

@@ -7,6 +7,7 @@
 #include "./delaunayvoronoigraph.h"
 #include "./entitiesmanager.h"
 #include "./entitychangemanager.h"
+#include "./selectionmanager.h"
 
 namespace how {
 namespace model {
@@ -22,12 +23,13 @@ public:
 public:
   EntityChangeManager *getEntityChangeManager();
   EntitiesManager *getEntitiesManager();
-  const DelaunayVoronoiGraph *getDelaunayVoronoiGraphPtr() const;
+  const GraphManager *getDelaunayVoronoiGraphPtr() const;
 
 private:
   EntityChangeManager entityChangeManager;
   EntitiesManager entitiesManager;
-  std::unique_ptr<DelaunayVoronoiGraph> delaunayVoronoiGraphPtr;
+  SelectionManager selectionManager;
+  std::unique_ptr<GraphManager> delaunayVoronoiGraphPtr;
 };
 } // namespace model
 } // namespace how

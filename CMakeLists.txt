@@ -24,10 +24,11 @@ set(HEADER_FILES
     src/model/entities/tile.h
     src/model/entities/voronoicell.h
     src/model/graphtypes.h
-    src/model/managers/delaunayvoronoigraph.h
+    src/model/managers/graphmanager.h
     src/model/managers/entitychangemanager.h
     src/model/managers/entitiesmanager.h
     src/model/managers/modelmanager.h
+    src/model/managers/selectionmanager.h
     src/model/modeltypes.h
     src/model/operations/celldataoperations.h
     src/model/generation/celldatagenerator.h
@@ -42,21 +43,21 @@ set(HEADER_FILES
     src/model/operations/armiesiterator.h
     src/model/operations/graphoperations.h
     src/model/operations/pathfindingoperations.h
-    src/model/operations/polygonindexoperations.h
     src/model/operations/tilesiterator.h
     src/model/random/utilsrandom.h
     src/model/utils/clockwisepointcomparator.h
     src/model/utils/easingfunctions.h
+    src/model/utils/influencezonertree.h
     src/model/utils/pointcomparator.h
     src/model/utils/segmentcomparator.h
+    src/ui/bindings/armybindings.h
+    src/ui/bindings/voronoicellbindings.h
     src/ui/control/entitiescontroller.h
     src/ui/control/modelcontroller.h
-    src/ui/control/selectionmanager.h
     src/ui/conversion/converter.h
     src/ui/items/armyitem.h
     src/ui/items/entityitem.h
     src/ui/items/influencezoneitem.h
-    src/ui/items/interactiveentityitem.h
     src/ui/items/voronoicellitem.h
     src/ui/painters/circlepainter.h
     src/ui/painters/painteritem.h
@@ -79,10 +80,11 @@ set(CPP_FILES
     src/model/entities/influencezone.cpp
     src/model/entities/tile.cpp
     src/model/entities/voronoicell.cpp
-    src/model/managers/delaunayvoronoigraph.cpp
+    src/model/managers/graphmanager.cpp
     src/model/managers/entitychangemanager.cpp
     src/model/managers/entitiesmanager.cpp
     src/model/managers/modelmanager.cpp
+    src/model/managers/selectionmanager.cpp
     src/model/generation/celldatagenerator.cpp
     src/model/generation/delaunayextrapolator.cpp
     src/model/generation/elevationgenerator.cpp
@@ -95,20 +97,19 @@ set(CPP_FILES
     src/model/operations/armiesiterator.cpp
     src/model/operations/graphoperations.cpp
     src/model/operations/pathfindingoperations.cpp
-    src/model/operations/polygonindexoperations.cpp
     src/model/operations/tilesiterator.cpp
     src/model/utils/clockwisepointcomparator.cpp
     src/model/utils/easingfunctions.cpp
     src/model/utils/pointcomparator.cpp
     src/model/utils/segmentcomparator.cpp
+    src/ui/bindings/armybindings.cpp
+    src/ui/bindings/voronoicellbindings.cpp
     src/ui/control/entitiescontroller.cpp
     src/ui/control/modelcontroller.cpp
-    src/ui/control/selectionmanager.cpp
     src/ui/conversion/converter.cpp
     src/ui/items/armyitem.cpp
     src/ui/items/entityitem.cpp
     src/ui/items/influencezoneitem.cpp
-    src/ui/items/interactiveentityitem.cpp
     src/ui/items/voronoicellitem.cpp
     src/ui/painters/circlepainter.cpp
     src/ui/painters/painteritem.cpp

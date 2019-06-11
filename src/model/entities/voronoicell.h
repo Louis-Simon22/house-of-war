@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "../graphtypes.h"
 #include "./interactiveentity.h"
 #include "./tile.h"
 
@@ -21,8 +22,6 @@ public:
 public:
   bool isTargetable() const override;
   bool isSelectable() const override;
-  bool isWithinSelectionArea(types::coordinate_t posX,
-                             types::coordinate_t posY) const override;
 
 public:
   const types::polygon_t &getPolygon() const;
@@ -32,8 +31,10 @@ public:
   const std::vector<types::segment_t> &getOutlineSegments() const;
   const Tile &getTile() const;
   Tile &getTile();
+  std::shared_ptr<Tile> getTilePtr();
 
 private:
+  types::graph_vertex_desc_t vertexDesc;
   std::vector<types::point_t> outlinePoints;
   std::vector<types::point_t> relativeOutlinePoints;
   types::polygon_t polygon;

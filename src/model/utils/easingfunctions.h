@@ -8,7 +8,7 @@
 namespace how {
 namespace model {
 namespace {
-using fpt_t = types::charac_t;
+using fpt_t = types::carac_t;
 namespace bm = ::boost::math;
 } // namespace
 

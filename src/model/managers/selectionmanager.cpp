@@ -1,15 +1,17 @@
 #include "selectionmanager.h"
 
 namespace how {
-namespace ui {
+namespace model {
 
-SelectionManager::SelectionManager() : QObject(), selection(nullptr) {}
+SelectionManager::SelectionManager() : selection(nullptr) {}
 
-void SelectionManager::setSelection(model::InteractiveEntity *newSelection) {
+void SelectionManager::setSelection(InteractiveEntity *newSelection) {
   if (this->hasSelection()) {
     this->selection->setSelected(false);
   }
-  newSelection->setSelected(true);
+  if (newSelection) {
+    newSelection->setSelected(true);
+  }
   this->selection = newSelection;
 }
 
@@ -19,7 +21,7 @@ model::InteractiveEntity *SelectionManager::getSelection() const {
 
 bool SelectionManager::hasSelection() const { return this->selection; }
 
-void SelectionManager::clearSelection() { this->selection = nullptr; }
+void SelectionManager::clearSelection() { this->setSelection(nullptr); }
 
-} // namespace ui
+} // namespace model
 } // namespace how

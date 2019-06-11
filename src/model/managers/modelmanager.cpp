@@ -8,13 +8,14 @@ namespace how {
 namespace model {
 
 ModelManager::ModelManager()
-    : entityChangeManager(), entitiesManager(), delaunayVoronoiGraphPtr() {}
+    : entityChangeManager(), entitiesManager(), selectionManager(),
+      delaunayVoronoiGraphPtr() {}
 
 void ModelManager::newModel(const WorldGenerationConfig &config) {
   auto graphAndSpatialIndexTree = generateGraph(config);
   auto &graph = std::get<0>(graphAndSpatialIndexTree);
   auto &spatialIndexTree = std::get<1>(graphAndSpatialIndexTree);
-  this->delaunayVoronoiGraphPtr = std::make_unique<DelaunayVoronoiGraph>(
+  this->delaunayVoronoiGraphPtr = std::make_unique<GraphManager>(
       graph, spatialIndexTree, config.getBoundingBox());
   this->entitiesManager.generateEntities(graph);
 }
@@ -40,7 +41,7 @@ EntitiesManager *ModelManager::getEntitiesManager() {
   return &this->entitiesManager;
 }
 
-const DelaunayVoronoiGraph *ModelManager::getDelaunayVoronoiGraphPtr() const {
+const GraphManager *ModelManager::getDelaunayVoronoiGraphPtr() const {
   return this->delaunayVoronoiGraphPtr.get();
 }
 

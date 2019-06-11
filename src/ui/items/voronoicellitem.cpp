@@ -20,12 +20,20 @@ VoronoiCellItem::VoronoiCellItem(
   this->onGraphEntityUpdated();
 }
 
+void VoronoiCellItem::onInteractiveItemSelected() {
+  this->onVoronoiCellItemSelected(this);
+}
+
 void VoronoiCellItem::onGraphEntityUpdated() {
   const auto altitude = this->voronoiCellPtr->getTile().getAltitude();
   const QColor color = QColor(0, static_cast<int>(altitude * 255),
                               static_cast<int>((1 - altitude) * 255));
   this->voronoiCellPainter->setColor(color);
   this->voronoiCellPainter->update();
+}
+
+model::VoronoiCell *VoronoiCellItem::getVoronoiCell() {
+  return this->voronoiCellPtr.get();
 }
 
 } // namespace ui

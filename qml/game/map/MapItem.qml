@@ -3,9 +3,9 @@ import QtQuick.Shapes 1.12
 import QtQml 2.12
 
 import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
-import com.louissimonmcnicoll.how.ui.entitycontroller 1.0
 
-// TODO overlay for tile stats
+import "./overlay"
+
 Flickable {
     id: mapItemFlickable
     contentWidth: mapItem.width * mapItem.scale
@@ -17,7 +17,7 @@ Flickable {
 
     signal loadMap
     onLoadMap: {
-        modelController.generateMapItems(mapItem)
+        modelController.entitiesController.generateMapItems(mapItem)
     }
 
     Item {
@@ -36,17 +36,22 @@ Flickable {
         }
 
         // TODO initial zoom and on window resize
-        MouseArea {
-            anchors.fill: parent
+//        MouseArea {
+//            anchors.fill: parent
 
-            acceptedButtons: Qt.NoButton
-            propagateComposedEvents: false
-            onWheel: {
-                mapItem.scale = Math.max(
-                            mapItem.minScale,
-                            mapItem.scale * (wheel.angleDelta.y > 0 ? 1.05 : 0.95))
-                wheel.accepted = true
-            }
-        }
+//            acceptedButtons: Qt.NoButton
+//            propagateComposedEvents: false
+//            onWheel: {
+//                mapItem.scale = Math.max(
+//                            mapItem.minScale,
+//                            mapItem.scale * (wheel.angleDelta.y > 0 ? 1.05 : 0.95))
+//                wheel.accepted = true
+//            }
+//        }
     }
+
+//    MapOverlay {
+//        id: mapOverlay
+//        modelController: mapItemFlickable.modelController
+//    }
 }

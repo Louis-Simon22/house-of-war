@@ -1,7 +1,6 @@
 #include "voronoicell.h"
 
 #include <boost/geometry/algorithms/append.hpp>
-#include <boost/geometry/algorithms/covered_by.hpp>
 #include <boost/geometry/algorithms/envelope.hpp>
 #include <boost/geometry/arithmetic/arithmetic.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
@@ -39,12 +38,7 @@ VoronoiCell::~VoronoiCell() {}
 
 bool VoronoiCell::isTargetable() const { return true; }
 
-bool VoronoiCell::isSelectable() const { return false; }
-
-bool VoronoiCell::isWithinSelectionArea(types::coordinate_t posX,
-                                        types::coordinate_t posY) const {
-  return bg::covered_by(types::point_t(posX, posY), this->polygon);
-}
+bool VoronoiCell::isSelectable() const { return true; }
 
 const types::polygon_t &VoronoiCell::getPolygon() const {
   return this->polygon;
@@ -61,14 +55,15 @@ VoronoiCell::getRelativeOutlinePoints() const {
   return this->relativeOutlinePoints;
 }
 
-const std::vector<types::segment_t> &
-VoronoiCell::getOutlineSegments() const {
+const std::vector<types::segment_t> &VoronoiCell::getOutlineSegments() const {
   return this->outlineSegments;
 }
 
 const Tile &VoronoiCell::getTile() const { return *this->tilePtr; }
 
 Tile &VoronoiCell::getTile() { return *this->tilePtr; }
+
+std::shared_ptr<Tile> VoronoiCell::getTilePtr() { return this->tilePtr; }
 
 } // namespace model
 } // namespace how

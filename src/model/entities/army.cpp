@@ -19,9 +19,8 @@ bool Army::isTargetable() const { return false; }
 
 bool Army::isSelectable() const { return true; }
 
-bool Army::isWithinSelectionArea(types::coordinate_t posX,
-                                 types::coordinate_t posY) const {
-  return this->selectionZonePtr->isPointWithinZone(posX, posY);
+std::shared_ptr<const CircularInfluenceZone> Army::getSelectionZonePtr() const {
+  return this->selectionZonePtr;
 }
 
 std::shared_ptr<CircularInfluenceZone> Army::getEngagementZonePtr() const {

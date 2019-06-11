@@ -8,7 +8,6 @@
 #include "../items/interactiveentityitem.h"
 #include "./entitiescontroller.h"
 
-// TODO all modifications come through this class
 namespace how {
 namespace ui {
 class ModelController : public QObject {
@@ -28,11 +27,6 @@ public slots:
   void newModel(int width, int height, float minimumVoronoiCellDistance,
                 int randomSeed);
   void iterateModel();
-  void generateMapItems(QQuickItem *parent);
-
-private:
-  void bindEntityItemClickSignalAndSetObjectOwnership(
-      InteractiveEntityItem *interactiveEntityItem);
 
 public:
   EntitiesController *getEntitiesController();

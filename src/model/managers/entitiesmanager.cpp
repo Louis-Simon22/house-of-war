@@ -8,7 +8,7 @@ namespace model {
 EntitiesManager::EntitiesManager()
     : armyPtrs(), characterPtrs(), voronoiCellPtrs() {}
 
-void EntitiesManager::generateEntities(const types::graph_t& graph) {
+void EntitiesManager::generateEntities(const types::graph_t &graph) {
   auto armyPtrs = generateArmies(graph);
   for (auto &armyPtr : armyPtrs) {
     this->addArmy(armyPtr);
@@ -20,7 +20,7 @@ void EntitiesManager::generateEntities(const types::graph_t& graph) {
   types::graph_vertex_iterator_t vertexBegin, vertexEnd;
   ::boost::tie(vertexBegin, vertexEnd) = ::boost::vertices(graph);
   for (auto vertexIt = vertexBegin; vertexIt != vertexEnd; vertexIt++) {
-    this->voronoiCellPtrs.push_back(graph[*vertexIt]);
+    this->addVoronoiCell(graph[*vertexIt]);
   }
 }
 
@@ -30,6 +30,11 @@ void EntitiesManager::addArmy(std::shared_ptr<Army> armyPtr) {
 
 void EntitiesManager::addCharacter(std::shared_ptr<Character> characterPtr) {
   this->characterPtrs.push_back(characterPtr);
+}
+
+void EntitiesManager::addVoronoiCell(
+    std::shared_ptr<VoronoiCell> voronoiCellPtr) {
+  this->voronoiCellPtrs.push_back(voronoiCellPtr);
 }
 
 std::vector<std::shared_ptr<Army>> &EntitiesManager::getArmyPtrs() {

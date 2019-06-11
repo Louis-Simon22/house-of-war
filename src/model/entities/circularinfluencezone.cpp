@@ -15,22 +15,21 @@ CircularInfluenceZone::CircularInfluenceZone(types::coordinate_t radius,
 
 CircularInfluenceZone::~CircularInfluenceZone() {}
 
-bool CircularInfluenceZone::isPointWithinZone(types::coordinate_t posX,
-                                              types::coordinate_t posY) const {
-  auto distance =
-      bg::distance(this->parent->getPosition(), types::point_t(posX, posY));
+bool CircularInfluenceZone::isPointWithinZone(
+    const types::point_t &position) const {
+  auto distance = bg::distance(this->parent->getAbsolutePosition(), position);
   return static_cast<float>(distance) < radius;
 }
 
 bool CircularInfluenceZone::isPolygonOverlappingZone(
     types::polygon_t polygon) const {
-  auto distance = bg::distance(this->parent->getPosition(), polygon);
+  auto distance = bg::distance(this->parent->getAbsolutePosition(), polygon);
   return static_cast<float>(distance) < radius;
 }
 
 types::box_t CircularInfluenceZone::getEnvelope() const {
-  auto posX = this->getPosX();
-  auto posY = this->getPosY();
+  auto posX = this->getAbsolutePosX();
+  auto posY = this->getAbsolutePosY();
   return types::box_t(types::point_t(posX - this->radius, posY - this->radius),
                       types::point_t(posX + this->radius, posY + this->radius));
 }

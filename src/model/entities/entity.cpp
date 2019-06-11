@@ -20,6 +20,8 @@ Entity::~Entity() {}
 
 types::layer_t Entity::getLayer() const { return this->layer; }
 
+const types::point_t &Entity::getPosition() const { return this->position; }
+
 types::coordinate_t Entity::getPosX() const {
   return bg::get<0>(this->position);
 }
@@ -27,8 +29,6 @@ types::coordinate_t Entity::getPosX() const {
 types::coordinate_t Entity::getPosY() const {
   return bg::get<1>(this->position);
 }
-
-const types::point_t &Entity::getPosition() const { return this->position; }
 
 types::coordinate_t Entity::getAbsolutePosX() const {
   return bg::get<0>(this->position) +

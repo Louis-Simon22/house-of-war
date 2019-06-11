@@ -20,9 +20,9 @@ public:
 
 public:
   types::layer_t getLayer() const;
+  const types::point_t &getPosition() const;
   types::coordinate_t getPosX() const;
   types::coordinate_t getPosY() const;
-  const types::point_t &getPosition() const;
   types::coordinate_t getAbsolutePosX() const;
   types::coordinate_t getAbsolutePosY() const;
   types::point_t getAbsolutePosition() const;

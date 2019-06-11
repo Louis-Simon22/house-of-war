@@ -20,7 +20,7 @@ bool isVoronoiCellOnBounds(const types::box_t &bounds,
 }
 
 void addEdgeToGraph(
-    types::graph_t &graph, const types::spatial_index_tree_t &spatialIndexTree,
+    types::graph_t &graph, const types::graph_vertex_rtree_t &spatialIndexTree,
     std::map<const VoronoiCell *, types::graph_vertex_desc_t> &vertexDescByCell,
     const VoronoiCell *voronoiCellPtr1, const VoronoiCell *voronoiCellPtr2) {
   auto segment = types::segment_t(voronoiCellPtr1->getPosition(),
@@ -47,7 +47,7 @@ void addEdgeToGraph(
   }
 }
 
-std::pair<types::graph_t, types::spatial_index_tree_t>
+std::pair<types::graph_t, types::graph_vertex_rtree_t>
 createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
     std::vector<std::shared_ptr<VoronoiCell>> voronoiCells) {
   auto graph = types::graph_t();
@@ -63,7 +63,7 @@ createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
   }
 
   // TODO only do this once
-  auto spatialIndexTree = types::spatial_index_tree_t();
+  auto spatialIndexTree = types::graph_vertex_rtree_t();
   types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
   std::tie(vertexItBegin, vertexItEnd) = ::boost::vertices(graph);
   for (auto vertexIt = vertexItBegin; vertexIt != vertexItEnd; vertexIt++) {

@@ -1,22 +1,16 @@
-#include "delaunayvoronoigraph.h"
+#include "graphmanager.h"
 
 #include <set>
 
 #include "../entities/entitypositionchange.h"
 #include "../operations/pathfindingoperations.h"
-#include "../operations/polygonindexoperations.h"
 #include "../utils/segmentcomparator.h"
 
 namespace how {
 namespace model {
 
-DelaunayVoronoiGraph::DelaunayVoronoiGraph(
-    types::graph_t graph,
-    types::spatial_index_tree_t voronoiCellSpatialIndexTree,
-    types::box_t bounds)
-    : graph(graph), bounds(bounds),
-      voronoiCellsSpatialIndexTree(voronoiCellSpatialIndexTree),
-      voronoiSegments(), delaunaySegments() {
+GraphManager::GraphManager(types::graph_t graph, types::box_t bounds)
+    : graph(graph), bounds(bounds), voronoiSegments(), delaunaySegments() {
   types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
   std::tie(vertexItBegin, vertexItEnd) = ::boost::vertices(graph);
   auto uniqueVoronoiSegmentsSet =
@@ -48,52 +42,21 @@ DelaunayVoronoiGraph::DelaunayVoronoiGraph(
                                 uniqueDelaunaySegmentsSet.end());
 }
 
-const types::graph_t &DelaunayVoronoiGraph::getGraph() const {
-  return this->graph;
-}
+const types::graph_t &GraphManager::getGraph() const { return this->graph; }
 
-const types::box_t &DelaunayVoronoiGraph::getBounds() const {
-  return this->bounds;
-}
+const types::box_t &GraphManager::getBounds() const { return this->bounds; }
 
-const types::spatial_index_tree_t &
-DelaunayVoronoiGraph::getSpatialIndexTree() const {
-  return this->voronoiCellsSpatialIndexTree;
-}
-
-const std::vector<types::segment_t> &
-DelaunayVoronoiGraph::getVoronoiSegments() const {
+const std::vector<types::segment_t> &GraphManager::getVoronoiSegments() const {
   return this->voronoiSegments;
 }
 
-const std::vector<types::segment_t> &
-DelaunayVoronoiGraph::getDelaunaySegments() const {
+const std::vector<types::segment_t> &GraphManager::getDelaunaySegments() const {
   return this->delaunaySegments;
 }
 
-std::shared_ptr<VoronoiCell> DelaunayVoronoiGraph::getVoronoiCellPtrByDesc(
-    types::graph_vertex_desc_t vertexDesc) {
-  return this->graph[vertexDesc];
-}
-
-types::graph_vertex_desc_t DelaunayVoronoiGraph::getVertexDescByPosition(
-    const types::point_t &position) const {
-  return coveredByPoint(position, this->voronoiCellsSpatialIndexTree,
-                        this->graph);
-}
-
-VoronoiCell *DelaunayVoronoiGraph::getVoronoiCellByPosition(
-    const types::point_t &position) const {
-  return this->graph[this->getVertexDescByPosition(position)].get();
-}
-
-std::vector<const VoronoiCell *>
-DelaunayVoronoiGraph::getDestinationsBetween(const Entity *source,
-                                             const Entity *destination) {
-  const auto sourceVertexDesc =
-      this->getVertexDescByPosition(source->getPosition());
-  const auto destinationVertexDesc =
-      this->getVertexDescByPosition(destination->getPosition());
+std::vector<const VoronoiCell *> GraphManager::getDestinationsBetween(
+    types::graph_vertex_desc_t sourceVertexDesc,
+    types::graph_vertex_desc_t destinationVertexDesc) {
   return graphEntityPathfinding(sourceVertexDesc, destinationVertexDesc,
                                 this->graph);
 }

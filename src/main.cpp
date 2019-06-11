@@ -16,11 +16,8 @@
 // Debug output of qml renderer
 #define QSG_RENDERER_DEBUG = render
 
-#include "../src/ui/control/modelcontroller.h"
-#include "../src/ui/control/modelcontroller.h"
-#include "../src/ui/painters/segmentspainter.h"
-
-Q_DECLARE_METATYPE(::how::model::InteractiveEntity *)
+#include "./ui/control/modelcontroller.h"
+#include "./ui/painters/segmentspainter.h"
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -42,9 +39,15 @@ int main(int argc, char *argv[]) {
       "EntityController", uncreatableTypeErrorMessage);
   qmlRegisterType<::how::ui::ModelController>(
       "com.louissimonmcnicoll.how.ui.modelcontroller", 1, 0, "ModelController");
-  qmlRegisterType<::how::ui::ModelController>(
-      "com.louissimonmcnicoll.how.ui.modelcontroller", 1, 0, "ModelController");
-  qRegisterMetaType<::how::model::InteractiveEntity *>("InteractiveEntity");
+  qmlRegisterType<::how::ui::SelectionManager>(
+      "com.louissimonmcnicoll.how.ui.selectionmanager", 1, 0,
+      "SelectionManager");
+  // Bindings
+  qmlRegisterType<::how::ui::VoronoiCellBindings>(
+      "com.louissimonmcnicoll.how.ui.voronoicellbindings", 1, 0,
+      "VoronoiCellBindings");
+  qmlRegisterType<::how::ui::ArmyBindings>(
+      "com.louissimonmcnicoll.how.ui.armybindings", 1, 0, "ArmyBindings");
 
   engine.load(QUrl(QStringLiteral("qrc:/qml/Window.qml")));
   if (engine.rootObjects().isEmpty()) {

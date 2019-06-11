@@ -11,8 +11,7 @@ public:
   ~CircularInfluenceZone() override;
 
 public:
-  bool isPointWithinZone(types::coordinate_t posX,
-                         types::coordinate_t posY) const override;
+  bool isPointWithinZone(const types::point_t &position) const override;
   bool isPolygonOverlappingZone(types::polygon_t polygon) const override;
   types::box_t getEnvelope() const override;
 

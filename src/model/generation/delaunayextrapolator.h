@@ -6,7 +6,7 @@
 namespace how {
 namespace model {
 
-std::pair<types::graph_t, types::spatial_index_tree_t>
+std::pair<types::graph_t, types::graph_vertex_rtree_t>
 createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
     std::vector<std::shared_ptr<VoronoiCell>> voronoiCells);
 

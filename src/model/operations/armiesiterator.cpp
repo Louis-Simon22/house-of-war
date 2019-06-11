@@ -6,7 +6,7 @@ namespace how {
 namespace model {
 
 void iterateArmies(EntitiesManager &entitiesManager,
-                   DelaunayVoronoiGraph *delaunayVoronoiGraph) {
+                   GraphManager *delaunayVoronoiGraph) {
   auto &armyPtrs = entitiesManager.getArmyPtrs();
   for (auto &armyPtr : armyPtrs) {
     auto intersectedVertexIds =

@@ -6,7 +6,7 @@
 namespace how {
 namespace model {
 namespace {
-using charac_t = types::charac_t;
+using charac_t = types::carac_t;
 } // namespace
 
 class Tile {

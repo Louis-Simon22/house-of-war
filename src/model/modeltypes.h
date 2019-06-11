@@ -10,8 +10,8 @@ namespace how {
 namespace types {
 
 using coordinate_t = float;
-using charac_t = float;
-using charac_int_t = int;
+using carac_t = float;
+using carac_int_t = int;
 using layer_t = int;
 using point_t =
     ::boost::geometry::model::point<coordinate_t, 2,
