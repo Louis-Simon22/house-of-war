@@ -10,22 +10,27 @@
 
 namespace how {
 namespace model {
-namespace {} // namespace
 class EntitiesManager {
 public:
   EntitiesManager();
 
 public:
   void generateEntities(const types::graph_t &graph);
+  types::graph_vertex_desc_t
+  getVertexDescByPosition(const types::point_t &position);
 
 private:
   void addArmy(std::shared_ptr<Army> armyPtr);
   void addCharacter(std::shared_ptr<Character> characterPtr);
+  void addVoronoiCell(std::shared_ptr<VoronoiCell> voronoiCellPtr);
 
 public:
   std::vector<std::shared_ptr<Army>> &getArmyPtrs();
+  InfluenceZoneRTree<std::shared_ptr<Army>> &getArmiesRtree();
   std::vector<std::shared_ptr<Character>> &getCharacterPtrs();
+  InfluenceZoneRTree<std::shared_ptr<Character>> &getCharactersRtree();
   std::vector<std::shared_ptr<VoronoiCell>> &getVoronoiCellPtrs();
+  InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &getVoronoiCellsRtree();
 
 private:
   std::vector<std::shared_ptr<Army>> armyPtrs;

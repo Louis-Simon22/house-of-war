@@ -60,9 +60,9 @@ extractVoronoiCells(jcv_diagram *voronoiDiagram) {
       }
       edge = edge->next;
     }
-    voronoiCells.push_back(std::shared_ptr<VoronoiCell>(new VoronoiCell(
+    voronoiCells.push_back(std::make_shared<VoronoiCell>(
         center, std::vector<types::point_t>(cellOutlinePointsSet.begin(),
-                                            cellOutlinePointsSet.end()))));
+                                            cellOutlinePointsSet.end())));
   }
   return voronoiCells;
 }

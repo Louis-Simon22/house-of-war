@@ -1,10 +1,21 @@
 #include "delaunayextrapolator.h"
 
+#include <boost/geometry/algorithms/intersects.hpp>
+#include <boost/geometry/index/rtree.hpp>
+#include <boost/geometry/strategies/strategies.hpp>
+
 #include "../../../lib/delaunay/include/delaunator.hpp"
-#include "../operations/polygonindexoperations.h"
 
 namespace how {
 namespace model {
+namespace {
+namespace bg = ::boost::geometry;
+namespace bgi = ::boost::geometry::index;
+using voronoi_cells_rtree_value_t =
+    std::pair<types::box_t, std::shared_ptr<const VoronoiCell>>;
+using voronoi_cells_rtree_t =
+    bgi::rtree<voronoi_cells_rtree_value_t, bgi::quadratic<16>>;
+} // namespace
 
 bool isVoronoiCellOnBounds(const types::box_t &bounds,
                            const VoronoiCell *voronoiCellPtr) {
@@ -19,19 +30,29 @@ bool isVoronoiCellOnBounds(const types::box_t &bounds,
   return false;
 }
 
-void addEdgeToGraph(
-    types::graph_t &graph, const types::graph_vertex_rtree_t &spatialIndexTree,
-    std::map<const VoronoiCell *, types::graph_vertex_desc_t> &vertexDescByCell,
-    const VoronoiCell *voronoiCellPtr1, const VoronoiCell *voronoiCellPtr2) {
+bool isSegmentIntersectingMoreThanTwoVoronoiCells(
+    const types::segment_t &segment,
+    const voronoi_cells_rtree_t &voronoiCellsRTree) {
+  auto intersecteingValues = std::vector<voronoi_cells_rtree_value_t>();
+  voronoiCellsRTree.query(bgi::intersects(segment),
+                          std::back_inserter(intersecteingValues));
+  return intersecteingValues.size() > 2;
+}
+
+void addEdgeToGraph(types::graph_t &graph,
+                    const voronoi_cells_rtree_t &voronoiCellsRTree,
+                    const VoronoiCell *voronoiCellPtr1,
+                    const VoronoiCell *voronoiCellPtr2) {
   auto segment = types::segment_t(voronoiCellPtr1->getPosition(),
                                   voronoiCellPtr2->getPosition());
-  const auto &bounds = spatialIndexTree.bounds();
-  // This removes the edges that go around the edge cells to far away cells
+  const auto &bounds = voronoiCellsRTree.bounds();
+  // This doesn't include the edges that wrap around edge cells
   if (!(isVoronoiCellOnBounds(bounds, voronoiCellPtr1) &&
         isVoronoiCellOnBounds(bounds, voronoiCellPtr2) &&
-        intersectingGeometry<>(segment, spatialIndexTree, graph).size() > 2)) {
-    auto vertexDesc1 = vertexDescByCell[voronoiCellPtr1];
-    auto vertexDesc2 = vertexDescByCell[voronoiCellPtr2];
+        isSegmentIntersectingMoreThanTwoVoronoiCells(segment,
+                                                     voronoiCellsRTree))) {
+    auto vertexDesc1 = voronoiCellPtr1->getVertexDesc();
+    auto vertexDesc2 = voronoiCellPtr2->getVertexDesc();
     if (!::boost::edge(vertexDesc1, vertexDesc2, graph).second) {
       auto delaunayEdge1 =
           std::shared_ptr<DelaunayEdge>(new DelaunayEdge(types::segment_t(
@@ -47,30 +68,20 @@ void addEdgeToGraph(
   }
 }
 
-std::pair<types::graph_t, types::graph_vertex_rtree_t>
-createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
+types::graph_t createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
     std::vector<std::shared_ptr<VoronoiCell>> voronoiCells) {
   auto graph = types::graph_t();
-  auto vertexDescByCell =
-      std::map<const VoronoiCell *, types::graph_vertex_desc_t>();
+  auto spatialIndexTree = voronoi_cells_rtree_t();
   auto coords = std::vector<double>();
+
   for (const auto &voronoiCellPtr : voronoiCells) {
     const auto &position = voronoiCellPtr->getPosition();
     coords.push_back(static_cast<double>(bg::get<0>(position)));
     coords.push_back(static_cast<double>(bg::get<1>(position)));
     auto vertexDesc = ::boost::add_vertex(voronoiCellPtr, graph);
-    vertexDescByCell[voronoiCellPtr.get()] = vertexDesc;
-  }
-
-  // TODO only do this once
-  auto spatialIndexTree = types::graph_vertex_rtree_t();
-  types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
-  std::tie(vertexItBegin, vertexItEnd) = ::boost::vertices(graph);
-  for (auto vertexIt = vertexItBegin; vertexIt != vertexItEnd; vertexIt++) {
-    auto vertexDesc = *vertexIt;
-    auto &voronoiCell = *graph[vertexDesc];
-    auto &envelope = voronoiCell.getEnvelope();
-    spatialIndexTree.insert(std::make_pair(envelope, vertexDesc));
+    voronoiCellPtr->setVertexDesc(vertexDesc);
+    const auto &envelope = voronoiCellPtr->getEnvelopeZonePtr()->getEnvelope();
+    spatialIndexTree.insert(std::make_pair<>(envelope, voronoiCellPtr));
   }
 
   auto delaunator = delaunator::Delaunator(coords);
@@ -80,15 +91,12 @@ createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
     const auto *voronoiCellPtr1 = voronoiCells[triangles[i]].get();
     const auto *voronoiCellPtr2 = voronoiCells[triangles[i + 1]].get();
     const auto *voronoiCellPtr3 = voronoiCells[triangles[i + 2]].get();
-    addEdgeToGraph(graph, spatialIndexTree, vertexDescByCell, voronoiCellPtr1,
-                   voronoiCellPtr2);
-    addEdgeToGraph(graph, spatialIndexTree, vertexDescByCell, voronoiCellPtr2,
-                   voronoiCellPtr3);
-    addEdgeToGraph(graph, spatialIndexTree, vertexDescByCell, voronoiCellPtr3,
-                   voronoiCellPtr1);
+    addEdgeToGraph(graph, spatialIndexTree, voronoiCellPtr1, voronoiCellPtr2);
+    addEdgeToGraph(graph, spatialIndexTree, voronoiCellPtr2, voronoiCellPtr3);
+    addEdgeToGraph(graph, spatialIndexTree, voronoiCellPtr3, voronoiCellPtr1);
   }
 
-  return std::make_pair<>(graph, spatialIndexTree);
+  return graph;
 }
 
 } // namespace model

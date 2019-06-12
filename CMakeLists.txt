@@ -13,6 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(HEADER_FILES
     src/model/entities/army.h
+    src/model/entities/boxinfluencezone.h
     src/model/entities/character.h
     src/model/entities/circularinfluencezone.h
     src/model/entities/delaunayedge.h
@@ -70,6 +71,7 @@ set(HEADER_FILES
 
 set(CPP_FILES
     src/model/entities/army.cpp
+    src/model/entities/boxinfluencezone.cpp
     src/model/entities/character.cpp
     src/model/entities/circularinfluencezone.cpp
     src/model/entities/delaunayedge.cpp

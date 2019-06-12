@@ -21,13 +21,7 @@ public:
   EntitiesController(model::ModelManager &modelManager);
 
 public slots:
-  void interactiveItemMouseEvent(QMouseEvent *event,
-                                 InteractiveEntityItem *interactiveItem);
   void generateMapItems(QQuickItem *parent);
-
-public:
-  void onGraphEntitySelected(model::InteractiveEntity *interactiveEntity);
-  void onGraphEntityTargeted(model::InteractiveEntity *interactiveEntity);
 
 private:
   ArmyBindings *getArmyBindings();
@@ -36,7 +30,6 @@ private:
 private:
   model::ModelManager &modelManager;
   const model::EntitiesManager *entitiesManager;
-  SelectionManager selectionManager;
   ArmyBindings armyBindings;
   VoronoiCellBindings voronoiCellBindings;
 };

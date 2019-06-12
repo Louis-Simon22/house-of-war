@@ -1,7 +1,7 @@
 #ifndef ARMIESITERATOR_H
 #define ARMIESITERATOR_H
 
-#include "../managers/delaunayvoronoigraph.h"
+#include "../managers/graphmanager.h"
 #include "../managers/entitiesmanager.h"
 
 namespace how {

@@ -5,11 +5,11 @@
 #include "../../model/modeltypes.h"
 #include "../painters/painteritem.h"
 #include "../painters/polygonpainter.h"
-#include "./interactiveentityitem.h"
+#include "./entityitem.h"
 
 namespace how {
 namespace ui {
-class VoronoiCellItem : public InteractiveEntityItem {
+class VoronoiCellItem : public EntityItem {
   Q_OBJECT
 
 public:
@@ -18,9 +18,6 @@ public:
 
 signals:
   void onVoronoiCellItemSelected(VoronoiCellItem *voronoiCellItem);
-
-public slots:
-  void onInteractiveItemSelected() override;
 
 private slots:
   void onGraphEntityUpdated() override;

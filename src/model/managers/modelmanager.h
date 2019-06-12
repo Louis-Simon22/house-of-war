@@ -1,12 +1,12 @@
-#ifndef GAMEDATAMANAGER_H
-#define GAMEDATAMANAGER_H
+#ifndef MODELMANAGER_H
+#define MODELMANAGER_H
 
 #include <memory>
 
 #include "../generation/worldgenerationconfig.h"
-#include "./delaunayvoronoigraph.h"
 #include "./entitiesmanager.h"
 #include "./entitychangemanager.h"
+#include "./graphmanager.h"
 #include "./selectionmanager.h"
 
 namespace how {
@@ -18,7 +18,12 @@ public:
 public:
   void newModel(const WorldGenerationConfig &config);
   void iterateModel();
-  void addGraphEntityPositionChange(Entity *source, const Entity *destination);
+  void onSelectionEvent(types::coordinate_t posX, types::coordinate_t posY);
+  void onTargetingEvent(types::coordinate_t posX, types::coordinate_t posY);
+
+private:
+  void addGraphEntityPositionChange(Entity *source,
+                                    const types::point_t &destinationPos);
 
 public:
   EntityChangeManager *getEntityChangeManager();
@@ -34,4 +39,4 @@ private:
 } // namespace model
 } // namespace how
 
-#endif // GAMEDATAMANAGER_H
+#endif // MODELMANAGER_H

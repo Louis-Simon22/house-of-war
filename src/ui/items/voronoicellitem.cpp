@@ -10,18 +10,13 @@ namespace bg = ::boost::geometry;
 
 VoronoiCellItem::VoronoiCellItem(
     std::shared_ptr<model::VoronoiCell> voronoiCellPtr, QQuickItem *parent)
-    : InteractiveEntityItem(voronoiCellPtr, parent),
-      voronoiCellPtr(voronoiCellPtr),
+    : EntityItem(voronoiCellPtr, parent), voronoiCellPtr(voronoiCellPtr),
       voronoiCellPainter(new PolygonPainter(
           this, voronoiCellPtr->getRelativeOutlinePoints())) {
   this->setX(this->voronoiCellPtr->getPosX());
   this->setY(this->voronoiCellPtr->getPosY());
   this->setZ(this->voronoiCellPtr->getLayer());
   this->onGraphEntityUpdated();
-}
-
-void VoronoiCellItem::onInteractiveItemSelected() {
-  this->onVoronoiCellItemSelected(this);
 }
 
 void VoronoiCellItem::onGraphEntityUpdated() {

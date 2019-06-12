@@ -12,23 +12,8 @@ namespace ui {
 
 EntitiesController::EntitiesController(model::ModelManager &modelManager)
     : modelManager(modelManager),
-      entitiesManager(modelManager.getEntitiesManager()), selectionManager(),
+      entitiesManager(modelManager.getEntitiesManager()), armyBindings(),
       voronoiCellBindings() {}
-
-void EntitiesController::interactiveItemMouseEvent(
-    QMouseEvent *event, InteractiveEntityItem *interactiveItem) {
-  switch (event->button()) {
-  case Qt::LeftButton:
-    this->onGraphEntitySelected(interactiveItem->getInteractiveEntity());
-    break;
-  case Qt::RightButton:
-    this->onGraphEntityTargeted(interactiveItem->getInteractiveEntity());
-    break;
-  default:
-    event->ignore();
-    break;
-  }
-}
 
 void EntitiesController::generateMapItems(QQuickItem *parent) {
   auto *entitiesManager = this->modelManager.getEntitiesManager();
@@ -57,22 +42,6 @@ void EntitiesController::generateMapItems(QQuickItem *parent) {
   QQmlEngine::setObjectOwnership(voronoiSegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
   voronoiSegmentsPainter->setVisible(false);
-}
-
-void EntitiesController::onGraphEntitySelected(
-    model::InteractiveEntity *interactiveEntity) {
-  this->armyBindings.onArmyItemSelected(nullptr);
-  this->voronoiCellBindings.onVoronoiCellItemSelected(nullptr);
-  this->selectionManager.setSelection(interactiveEntity);
-}
-
-void EntitiesController::onGraphEntityTargeted(
-    model::InteractiveEntity *interactiveEntity) {
-  if (this->selectionManager.hasSelection()) {
-    auto *selection = this->selectionManager.getSelection();
-    this->modelManager.addGraphEntityPositionChange(selection,
-                                                    interactiveEntity);
-  }
 }
 
 ArmyBindings *EntitiesController::getArmyBindings() {

@@ -26,10 +26,12 @@ void EntitiesManager::generateEntities(const types::graph_t &graph) {
 
 void EntitiesManager::addArmy(std::shared_ptr<Army> armyPtr) {
   this->armyPtrs.push_back(armyPtr);
+  this->armiesRtree.addValue(armyPtr->getSelectionZonePtr(), armyPtr);
 }
 
 void EntitiesManager::addCharacter(std::shared_ptr<Character> characterPtr) {
   this->characterPtrs.push_back(characterPtr);
+  //    this->charactersRtree.addValue(characterPtr->get(), characterPtr);
 }
 
 void EntitiesManager::addVoronoiCell(
@@ -37,17 +39,39 @@ void EntitiesManager::addVoronoiCell(
   this->voronoiCellPtrs.push_back(voronoiCellPtr);
 }
 
+types::graph_vertex_desc_t
+EntitiesManager::getVertexDescByPosition(const types::point_t &position) {
+  const auto &vertexDesc =
+      this->voronoiCellsRtree.getValuesByPosition(position);
+  return vertexDesc[0]->getVertexDesc();
+}
+
 std::vector<std::shared_ptr<Army>> &EntitiesManager::getArmyPtrs() {
   return this->armyPtrs;
+}
+
+InfluenceZoneRTree<std::shared_ptr<Army>> &
+EntitiesManager::getArmiesRtree() {
+  return this->armiesRtree;
 }
 
 std::vector<std::shared_ptr<Character>> &EntitiesManager::getCharacterPtrs() {
   return this->characterPtrs;
 }
 
+InfluenceZoneRTree<std::shared_ptr<Character>> &
+EntitiesManager::getCharactersRtree() {
+  return this->charactersRtree;
+}
+
 std::vector<std::shared_ptr<VoronoiCell>> &
 EntitiesManager::getVoronoiCellPtrs() {
   return this->voronoiCellPtrs;
+}
+
+InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &
+EntitiesManager::getVoronoiCellsRtree() {
+  return this->voronoiCellsRtree;
 }
 
 } // namespace model

@@ -36,22 +36,22 @@ Flickable {
         }
 
         // TODO initial zoom and on window resize
-//        MouseArea {
-//            anchors.fill: parent
+        MouseArea {
+            anchors.fill: parent
 
-//            acceptedButtons: Qt.NoButton
-//            propagateComposedEvents: false
-//            onWheel: {
-//                mapItem.scale = Math.max(
-//                            mapItem.minScale,
-//                            mapItem.scale * (wheel.angleDelta.y > 0 ? 1.05 : 0.95))
-//                wheel.accepted = true
-//            }
-//        }
+            acceptedButtons: Qt.NoButton
+            propagateComposedEvents: false
+            onWheel: {
+                mapItem.scale = Math.max(
+                            mapItem.minScale,
+                            mapItem.scale * (wheel.angleDelta.y > 0 ? 1.05 : 0.95))
+                wheel.accepted = true
+            }
+        }
     }
 
-//    MapOverlay {
-//        id: mapOverlay
-//        modelController: mapItemFlickable.modelController
-//    }
+    MapOverlay {
+        id: mapOverlay
+        modelController: mapItemFlickable.modelController
+    }
 }

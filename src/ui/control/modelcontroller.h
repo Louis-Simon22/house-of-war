@@ -5,7 +5,6 @@
 #include <QQuickItem>
 
 #include "../../model/managers/modelmanager.h"
-#include "../items/interactiveentityitem.h"
 #include "./entitiescontroller.h"
 
 namespace how {
@@ -27,6 +26,7 @@ public slots:
   void newModel(int width, int height, float minimumVoronoiCellDistance,
                 int randomSeed);
   void iterateModel();
+  void entitiesMouseEvent(QMouseEvent *event);
 
 public:
   EntitiesController *getEntitiesController();
