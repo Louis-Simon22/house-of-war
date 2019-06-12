@@ -26,7 +26,7 @@ public slots:
   void newModel(int width, int height, float minimumVoronoiCellDistance,
                 int randomSeed);
   void iterateModel();
-  void entitiesMouseEvent(QMouseEvent *event);
+  void entitiesMouseEvent(int x, int y, int button);
 
 public:
   EntitiesController *getEntitiesController();

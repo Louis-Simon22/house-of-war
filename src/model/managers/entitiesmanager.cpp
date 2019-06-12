@@ -31,12 +31,13 @@ void EntitiesManager::addArmy(std::shared_ptr<Army> armyPtr) {
 
 void EntitiesManager::addCharacter(std::shared_ptr<Character> characterPtr) {
   this->characterPtrs.push_back(characterPtr);
-  //    this->charactersRtree.addValue(characterPtr->get(), characterPtr);
 }
 
 void EntitiesManager::addVoronoiCell(
     std::shared_ptr<VoronoiCell> voronoiCellPtr) {
   this->voronoiCellPtrs.push_back(voronoiCellPtr);
+  this->voronoiCellsRtree.addValue(voronoiCellPtr->getEnvelopeZonePtr(),
+                                   voronoiCellPtr);
 }
 
 types::graph_vertex_desc_t
@@ -50,8 +51,7 @@ std::vector<std::shared_ptr<Army>> &EntitiesManager::getArmyPtrs() {
   return this->armyPtrs;
 }
 
-InfluenceZoneRTree<std::shared_ptr<Army>> &
-EntitiesManager::getArmiesRtree() {
+InfluenceZoneRTree<std::shared_ptr<Army>> &EntitiesManager::getArmiesRtree() {
   return this->armiesRtree;
 }
 

@@ -27,10 +27,17 @@ void ModelManager::iterateModel() {
 void ModelManager::onSelectionEvent(types::coordinate_t posX,
                                     types::coordinate_t posY) {
   auto position = types::point_t(posX, posY);
-  const auto &armies =
+  const auto &selectedArmies =
       this->entitiesManager.getArmiesRtree().getValuesByPosition(position);
-  if (armies.size() > 0) {
-    this->selectionManager.setSelection(armies[0].get());
+  if (selectedArmies.size() > 0) {
+    this->selectionManager.setSelection(selectedArmies[0].get());
+  } else {
+    const auto &selectedVoronoiCells =
+        this->entitiesManager.getVoronoiCellsRtree().getValuesByPosition(
+            position);
+    if (selectedVoronoiCells.size() > 0) {
+      this->selectionManager.setSelection(selectedVoronoiCells[0].get());
+    }
   }
 }
 

@@ -21,16 +21,13 @@ void ModelController::newModel(int width, int height,
 
 void ModelController::iterateModel() { this->modelManager.iterateModel(); }
 
-void ModelController::entitiesMouseEvent(QMouseEvent *event) {
-  switch (event->button()) {
+void ModelController::entitiesMouseEvent(int x, int y, int button) {
+  switch (button) {
   case Qt::LeftButton:
-    this->modelManager.onSelectionEvent(event->x(), event->y());
+    this->modelManager.onSelectionEvent(x, y);
     break;
   case Qt::RightButton:
-    this->modelManager.onTargetingEvent(event->x(), event->y());
-    break;
-  default:
-    event->ignore();
+    this->modelManager.onTargetingEvent(x, y);
     break;
   }
 }
