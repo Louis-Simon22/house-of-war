@@ -13,7 +13,7 @@ std::vector<std::shared_ptr<Character>> generateCharacters(const types::graph_t 
 std::vector<std::shared_ptr<Army>> generateArmies(const types::graph_t &delaunayGraph) {
   auto armies = std::vector<std::shared_ptr<Army>>();
   armies.emplace_back(new Army(delaunayGraph[9]->getPosition()));
-  armies.emplace_back(new Army(delaunayGraph[12]->getPosition()));
+  armies.emplace_back(new Army(delaunayGraph[30]->getPosition()));
   return armies;
 }
 

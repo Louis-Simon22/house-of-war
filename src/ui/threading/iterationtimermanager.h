@@ -10,7 +10,7 @@ class IterationTimerManager : public QObject {
   Q_OBJECT
 
 public:
-  IterationTimerManager(QObject* parent);
+  IterationTimerManager(QObject *parent = nullptr);
   ~IterationTimerManager();
 
 public slots:

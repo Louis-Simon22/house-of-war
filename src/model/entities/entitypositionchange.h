@@ -14,7 +14,6 @@ public:
 
 public:
   bool progress() override;
-  void destinationReached() override;
 
 private:
   Entity *entity;

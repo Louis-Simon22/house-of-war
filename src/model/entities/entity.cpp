@@ -45,6 +45,7 @@ types::point_t Entity::getAbsolutePosition() const {
 }
 
 void Entity::setPosition(const types::point_t &position) {
+  // TODO move the entities in the spatial index
   bg::set<0>(this->position, bg::get<0>(position));
   bg::set<1>(this->position, bg::get<1>(position));
   this->changedSignal();

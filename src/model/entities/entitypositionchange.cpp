@@ -17,7 +17,5 @@ bool EntityPositionChange::progress() {
   return this->currentDestinationIndex >= this->destinations.size();
 }
 
-void EntityPositionChange::destinationReached() {}
-
 } // namespace model
 } // namespace how

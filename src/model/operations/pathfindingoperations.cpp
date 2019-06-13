@@ -17,8 +17,7 @@ graphEntityPathfinding(types::graph_vertex_desc_t sourceVertexDesc,
   std::tie(predecessors, std::ignore) = computeDijkstra<>(
       sourceVertexDesc,
       [](const std::shared_ptr<DelaunayEdge> &edgePtr) -> types::coordinate_t {
-        return 1;
-        //        return edgePtr->getDistanceWalking();
+        return edgePtr->getDistanceWalking();
       },
       graph);
 
@@ -30,8 +29,9 @@ graphEntityPathfinding(types::graph_vertex_desc_t sourceVertexDesc,
     destinations.push_back(graph[currentVertexIndex].get());
     currentVertexIndex = predecessors[currentVertexIndex];
   }
-  // Reverse the destinations list since it was obtained from a predecessors
-  // map
+
+  // Reverse the destinations because they were obtained from a map of
+  // predecessors
   std::reverse(destinations.begin(), destinations.end());
 
   return destinations;

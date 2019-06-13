@@ -50,12 +50,12 @@ void ModelManager::onTargetingEvent(types::coordinate_t posX,
 
 void ModelManager::addGraphEntityPositionChange(
     Entity *source, const types::point_t &destinationPos) {
-  const auto &destinationVertexDesc =
-      this->entitiesManager.getVertexDescByPosition(destinationPos);
   const auto &sourceVertexDesc = this->entitiesManager.getVertexDescByPosition(
       source->getAbsolutePosition());
+  const auto &destinationVertexDesc =
+      this->entitiesManager.getVertexDescByPosition(destinationPos);
   auto destinations = this->delaunayVoronoiGraphPtr->getDestinationsBetween(
-      destinationVertexDesc, sourceVertexDesc);
+      sourceVertexDesc, destinationVertexDesc);
   this->entityChangeManager.addGraphEntityPositionChange(source, destinations);
 }
 

@@ -7,7 +7,11 @@ namespace how {
 namespace ui {
 
 ModelController::ModelController(QObject *parent)
-    : QObject(parent), modelManager(), entitiesController(this->modelManager) {}
+    : QObject(parent), modelManager(), entitiesController(this->modelManager),
+      iterationTimerManager() {
+  connect(&this->iterationTimerManager, &IterationTimerManager::iterate, this,
+          &ModelController::iterateModel, Qt::QueuedConnection);
+}
 
 void ModelController::newModel(int width, int height,
                                float minimumVoronoiCellDistance,
@@ -17,6 +21,7 @@ void ModelController::newModel(int width, int height,
       static_cast<std::uint32_t>(randomSeed));
   this->modelManager.newModel(config);
   this->newModelGenerated();
+  this->iterationTimerManager.resumeIterations();
 }
 
 void ModelController::iterateModel() { this->modelManager.iterateModel(); }

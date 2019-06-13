@@ -6,6 +6,7 @@
 
 #include "../../model/managers/modelmanager.h"
 #include "./entitiescontroller.h"
+#include "../threading/iterationtimermanager.h"
 
 namespace how {
 namespace ui {
@@ -25,8 +26,10 @@ signals:
 public slots:
   void newModel(int width, int height, float minimumVoronoiCellDistance,
                 int randomSeed);
-  void iterateModel();
   void entitiesMouseEvent(int x, int y, int button);
+
+private slots:
+  void iterateModel();
 
 public:
   EntitiesController *getEntitiesController();
@@ -38,6 +41,7 @@ private:
 private:
   model::ModelManager modelManager;
   EntitiesController entitiesController;
+  IterationTimerManager iterationTimerManager;
 };
 } // namespace ui
 } // namespace how

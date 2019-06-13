@@ -10,7 +10,6 @@ public:
 
 public:
   virtual bool progress() = 0;
-  virtual void destinationReached() = 0;
 };
 } // namespace model
 } // namespace how
