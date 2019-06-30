@@ -1,26 +1,32 @@
 #ifndef ENTITYPOSITIONCHANGE_H
 #define ENTITYPOSITIONCHANGE_H
 
-#include "./entitychange.h"
-#include "./voronoicell.h"
+#include <vector>
+
+#include "../modeltypes.h"
 
 namespace how {
 namespace model {
-class EntityPositionChange : public EntityChange {
+class Entity;
+
+class EntityPositionChange {
 public:
   EntityPositionChange(Entity *entity,
-                       std::vector<const VoronoiCell *> destinations);
-  ~EntityPositionChange() override;
+                       std::vector<types::point_t> destinations);
+  ~EntityPositionChange();
 
 public:
-  bool progress() override;
+  bool progress();
+  bool isDone();
 
 private:
   Entity *entity;
-  std::vector<const VoronoiCell *> destinations;
+  std::vector<types::point_t> destinations;
   std::size_t currentDestinationIndex;
 };
 } // namespace model
 } // namespace how
+
+#include "./entity.h"
 
 #endif // ENTITYPOSITIONCHANGE_H

@@ -4,8 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "../entities/army.h"
-#include "../entities/character.h"
+#include "../entities/player.h"
 #include "../utils/influencezonertree.h"
 
 namespace how {
@@ -20,25 +19,17 @@ public:
   getVertexDescByPosition(const types::point_t &position);
 
 private:
-  void addArmy(std::shared_ptr<Army> armyPtr);
-  void addCharacter(std::shared_ptr<Character> characterPtr);
-  void addVoronoiCell(std::shared_ptr<VoronoiCell> voronoiCellPtr);
+  void addTile(std::shared_ptr<Tile> tilePtr);
 
 public:
-  std::vector<std::shared_ptr<Army>> &getArmyPtrs();
-  InfluenceZoneRTree<std::shared_ptr<Army>> &getArmiesRtree();
-  std::vector<std::shared_ptr<Character>> &getCharacterPtrs();
-  InfluenceZoneRTree<std::shared_ptr<Character>> &getCharactersRtree();
-  std::vector<std::shared_ptr<VoronoiCell>> &getVoronoiCellPtrs();
-  InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &getVoronoiCellsRtree();
+  std::vector<Player> &getPlayers();
+  std::vector<std::shared_ptr<Tile>> &getTilePtrs();
+  InfluenceZoneRTree<std::shared_ptr<Tile>> &getTilesRtree();
 
 private:
-  std::vector<std::shared_ptr<Army>> armyPtrs;
-  InfluenceZoneRTree<std::shared_ptr<Army>> armiesRtree;
-  std::vector<std::shared_ptr<Character>> characterPtrs;
-  InfluenceZoneRTree<std::shared_ptr<Character>> charactersRtree;
-  std::vector<std::shared_ptr<VoronoiCell>> voronoiCellPtrs;
-  InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> voronoiCellsRtree;
+  std::vector<Player> players;
+  std::vector<std::shared_ptr<Tile>> tilePtrs;
+  InfluenceZoneRTree<std::shared_ptr<Tile>> tilesRtree;
 };
 } // namespace model
 } // namespace how

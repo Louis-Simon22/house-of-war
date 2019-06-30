@@ -1,4 +1,4 @@
-#include "polygonpainter.h"
+#include "polygonoutlinepainter.h"
 
 #include <QSGFlatColorMaterial>
 #include <QSGGeometryNode>
@@ -11,26 +11,30 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-PolygonPainter::PolygonPainter(std::vector<types::point_t> points,
-                               QQuickItem *parent)
+PolygonOutlinePainter::PolygonOutlinePainter(QQuickItem *parent,
+                                             std::vector<types::point_t> points)
     : PainterItem(parent), points(points) {}
 
-PolygonPainter::~PolygonPainter() {}
+PolygonOutlinePainter::~PolygonOutlinePainter() {}
 
-QSGNode *PolygonPainter::updatePaintNode(QSGNode *oldNode,
-                                         UpdatePaintNodeData *) {
+// TODO Pulsing outline
+// TODO No gaps between outlines
+// TODO move this boilerplate code in a parent
+// TODO QSGTransformNode as parent of QSGGeometryNode to apply rotations?
+QSGNode *PolygonOutlinePainter::updatePaintNode(QSGNode *oldNode,
+                                                UpdatePaintNodeData *) {
   QSGGeometryNode *node = nullptr;
   QSGGeometry *geometry = nullptr;
   QSGFlatColorMaterial *material = nullptr;
 
-  int pointsCount = this->points.size();
+  const int pointsCount = static_cast<int>(this->points.size());
 
-  if (!oldNode) {
+  if (!node) {
     node = new QSGGeometryNode();
-
     geometry =
         new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), pointsCount);
-    geometry->setDrawingMode(QSGGeometry::DrawTriangleFan);
+    geometry->setDrawingMode(QSGGeometry::DrawLineLoop);
+    geometry->setLineWidth(10);
     node->setGeometry(geometry);
     node->setFlag(QSGNode::OwnsGeometry);
 
@@ -45,8 +49,8 @@ QSGNode *PolygonPainter::updatePaintNode(QSGNode *oldNode,
   }
 
   auto *vertices = geometry->vertexDataAsPoint2D();
-  for (std::size_t i = 0; i < this->points.size(); i++) {
-    const auto &point = this->points[i];
+  for (std::size_t i = 0; i < points.size(); i++) {
+    const auto &point = points[i];
     vertices[i].set(bg::get<0>(point), bg::get<1>(point));
   }
   node->markDirty(QSGNode::DirtyGeometry);
@@ -57,10 +61,7 @@ QSGNode *PolygonPainter::updatePaintNode(QSGNode *oldNode,
   return node;
 }
 
-void PolygonPainter::setColor(QColor color) {
-  this->color = color;
-  this->update();
-}
+void PolygonOutlinePainter::setColor(QColor color) { this->color = color; }
 
 } // namespace ui
 } // namespace how

@@ -1,77 +1,40 @@
 #include "entitiesmanager.h"
 
-#include "../generation/entitygenerator.h"
+#include "../generation/playergenerator.h"
 
 namespace how {
 namespace model {
 
-EntitiesManager::EntitiesManager()
-    : armyPtrs(), characterPtrs(), voronoiCellPtrs() {}
+EntitiesManager::EntitiesManager() : players(), tilePtrs() {}
 
 void EntitiesManager::generateEntities(const types::graph_t &graph) {
-  auto armyPtrs = generateArmies(graph);
-  for (auto &armyPtr : armyPtrs) {
-    this->addArmy(armyPtr);
-  }
-  auto characterPtrs = generateCharacters(graph);
-  for (auto &characterPtr : characterPtrs) {
-    this->addCharacter(characterPtr);
-  }
+  this->players.push_back(generatePlayer(graph));
   types::graph_vertex_iterator_t vertexBegin, vertexEnd;
   ::boost::tie(vertexBegin, vertexEnd) = ::boost::vertices(graph);
   for (auto vertexIt = vertexBegin; vertexIt != vertexEnd; vertexIt++) {
-    this->addVoronoiCell(graph[*vertexIt]);
+    this->addTile(graph[*vertexIt]);
   }
 }
 
-void EntitiesManager::addArmy(std::shared_ptr<Army> armyPtr) {
-  this->armyPtrs.push_back(armyPtr);
-  this->armiesRtree.addValue(armyPtr->getSelectionZonePtr(), armyPtr);
+void EntitiesManager::addTile(std::shared_ptr<Tile> tilePtr) {
+  this->tilePtrs.push_back(tilePtr);
+  this->tilesRtree.addValue(tilePtr->getPolygonInfluenceZone(), tilePtr);
 }
 
-void EntitiesManager::addCharacter(std::shared_ptr<Character> characterPtr) {
-  this->characterPtrs.push_back(characterPtr);
-}
-
-void EntitiesManager::addVoronoiCell(
-    std::shared_ptr<VoronoiCell> voronoiCellPtr) {
-  this->voronoiCellPtrs.push_back(voronoiCellPtr);
-  this->voronoiCellsRtree.addValue(voronoiCellPtr->getEnvelopeZonePtr(),
-                                   voronoiCellPtr);
-}
+std::vector<Player> &EntitiesManager::getPlayers() { return this->players; }
 
 types::graph_vertex_desc_t
 EntitiesManager::getVertexDescByPosition(const types::point_t &position) {
-  const auto &vertexDesc =
-      this->voronoiCellsRtree.getValuesByPosition(position);
+  const auto &vertexDesc = this->tilesRtree.getValuesByPosition(position);
   return vertexDesc[0]->getVertexDesc();
 }
 
-std::vector<std::shared_ptr<Army>> &EntitiesManager::getArmyPtrs() {
-  return this->armyPtrs;
+std::vector<std::shared_ptr<Tile>> &EntitiesManager::getTilePtrs() {
+  return this->tilePtrs;
 }
 
-InfluenceZoneRTree<std::shared_ptr<Army>> &EntitiesManager::getArmiesRtree() {
-  return this->armiesRtree;
-}
-
-std::vector<std::shared_ptr<Character>> &EntitiesManager::getCharacterPtrs() {
-  return this->characterPtrs;
-}
-
-InfluenceZoneRTree<std::shared_ptr<Character>> &
-EntitiesManager::getCharactersRtree() {
-  return this->charactersRtree;
-}
-
-std::vector<std::shared_ptr<VoronoiCell>> &
-EntitiesManager::getVoronoiCellPtrs() {
-  return this->voronoiCellPtrs;
-}
-
-InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &
-EntitiesManager::getVoronoiCellsRtree() {
-  return this->voronoiCellsRtree;
+InfluenceZoneRTree<std::shared_ptr<Tile>> &EntitiesManager::getTilesRtree() {
+  return this->tilesRtree;
 }
 
 } // namespace model

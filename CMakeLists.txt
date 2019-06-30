@@ -13,20 +13,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(HEADER_FILES
     src/model/entities/army.h
-    src/model/entities/boxinfluencezone.h
     src/model/entities/character.h
     src/model/entities/circularinfluencezone.h
     src/model/entities/delaunayedge.h
     src/model/entities/entity.h
-    src/model/entities/entitychange.h
     src/model/entities/entitypositionchange.h
     src/model/entities/interactiveentity.h
     src/model/entities/influencezone.h
+    src/model/entities/player.h
+    src/model/entities/polygoninfluencezone.h
     src/model/entities/tile.h
     src/model/entities/voronoicell.h
     src/model/graphtypes.h
     src/model/managers/graphmanager.h
-    src/model/managers/entitychangemanager.h
     src/model/managers/entitiesmanager.h
     src/model/managers/modelmanager.h
     src/model/managers/selectionmanager.h
@@ -35,16 +34,16 @@ set(HEADER_FILES
     src/model/generation/celldatagenerator.h
     src/model/generation/delaunayextrapolator.h
     src/model/generation/elevationgenerator.h
-    src/model/generation/entitygenerator.h
     src/model/generation/graphgenerator.h
     src/model/generation/jcv_voronoi_adapter.h
+    src/model/generation/playergenerator.h
     src/model/generation/poissondisksamplingadapter.h
     src/model/generation/walkingdistancescalculator.h
     src/model/generation/worldgenerationconfig.h
-    src/model/operations/armiesiterator.h
+    src/model/operations/modeliterators.h
+    src/model/operations/collisiondetector.h
     src/model/operations/graphoperations.h
     src/model/operations/pathfindingoperations.h
-    src/model/operations/tilesiterator.h
     src/model/random/utilsrandom.h
     src/model/utils/clockwisepointcomparator.h
     src/model/utils/easingfunctions.h
@@ -52,17 +51,19 @@ set(HEADER_FILES
     src/model/utils/pointcomparator.h
     src/model/utils/segmentcomparator.h
     src/ui/bindings/armybindings.h
-    src/ui/bindings/voronoicellbindings.h
+    src/ui/bindings/entitybindings.h
+    src/ui/bindings/tilebindings.h
     src/ui/control/entitiescontroller.h
     src/ui/control/modelcontroller.h
     src/ui/conversion/converter.h
     src/ui/items/armyitem.h
     src/ui/items/entityitem.h
     src/ui/items/influencezoneitem.h
-    src/ui/items/voronoicellitem.h
+    src/ui/items/tileitem.h
     src/ui/painters/circlepainter.h
     src/ui/painters/painteritem.h
     src/ui/painters/rectanglepainter.h
+    src/ui/painters/polygonoutlinepainter.h
     src/ui/painters/polygonpainter.h
     src/ui/painters/segmentspainter.h
     src/ui/threading/iterationtimermanager.h
@@ -71,51 +72,52 @@ set(HEADER_FILES
 
 set(CPP_FILES
     src/model/entities/army.cpp
-    src/model/entities/boxinfluencezone.cpp
     src/model/entities/character.cpp
     src/model/entities/circularinfluencezone.cpp
     src/model/entities/delaunayedge.cpp
     src/model/entities/entity.cpp
-    src/model/entities/entitychange.cpp
     src/model/entities/entitypositionchange.cpp
     src/model/entities/interactiveentity.cpp
     src/model/entities/influencezone.cpp
+    src/model/entities/player.cpp
+    src/model/entities/polygoninfluencezone.cpp
     src/model/entities/tile.cpp
     src/model/entities/voronoicell.cpp
     src/model/managers/graphmanager.cpp
-    src/model/managers/entitychangemanager.cpp
     src/model/managers/entitiesmanager.cpp
     src/model/managers/modelmanager.cpp
     src/model/managers/selectionmanager.cpp
     src/model/generation/celldatagenerator.cpp
     src/model/generation/delaunayextrapolator.cpp
     src/model/generation/elevationgenerator.cpp
-    src/model/generation/entitygenerator.cpp
     src/model/generation/graphgenerator.cpp
     src/model/generation/jcv_voronoi_adapter.cpp
+    src/model/generation/playergenerator.cpp
     src/model/generation/poissondisksamplingadapter.cpp
     src/model/generation/walkingdistancescalculator.cpp
     src/model/generation/worldgenerationconfig.cpp
-    src/model/operations/armiesiterator.cpp
+    src/model/operations/modeliterators.cpp
+    src/model/operations/collisiondetector.cpp
     src/model/operations/graphoperations.cpp
     src/model/operations/pathfindingoperations.cpp
-    src/model/operations/tilesiterator.cpp
     src/model/utils/clockwisepointcomparator.cpp
     src/model/utils/easingfunctions.cpp
     src/model/utils/pointcomparator.cpp
     src/model/utils/segmentcomparator.cpp
     src/ui/bindings/armybindings.cpp
-    src/ui/bindings/voronoicellbindings.cpp
+    src/ui/bindings/entitybindings.cpp
+    src/ui/bindings/tilebindings.cpp
     src/ui/control/entitiescontroller.cpp
     src/ui/control/modelcontroller.cpp
     src/ui/conversion/converter.cpp
     src/ui/items/armyitem.cpp
     src/ui/items/entityitem.cpp
     src/ui/items/influencezoneitem.cpp
-    src/ui/items/voronoicellitem.cpp
+    src/ui/items/tileitem.cpp
     src/ui/painters/circlepainter.cpp
     src/ui/painters/painteritem.cpp
     src/ui/painters/rectanglepainter.cpp
+    src/ui/painters/polygonoutlinepainter.cpp
     src/ui/painters/polygonpainter.cpp
     src/ui/painters/segmentspainter.cpp
     src/ui/threading/modelthreadmanager.cpp

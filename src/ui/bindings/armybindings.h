@@ -3,31 +3,28 @@
 
 #include <QObject>
 
-#include "../items/armyitem.h"
+#include "../../model/entities/army.h"
+#include "./entitybindings.h"
 
 namespace how {
 namespace ui {
-class ArmyBindings : public QObject {
+class ArmyBindings : public EntityBindings {
   Q_OBJECT
 
-  Q_PROPERTY(bool isBound READ isBound NOTIFY updateBindings)
   Q_PROPERTY(float size READ getSize NOTIFY updateBindings)
 
 public:
   ArmyBindings();
+  ~ArmyBindings() override;
 
-signals:
-  void updateBindings();
-
-public slots:
-  void onArmyItemSelected(ArmyItem *armyItem);
+public:
+  void bindArmy(model::Army *army);
 
 private:
-  bool isBound() const;
   types::carac_t getSize() const;
 
 private:
-  ArmyItem *armyItem;
+  model::Army *army;
 };
 } // namespace ui
 } // namespace how

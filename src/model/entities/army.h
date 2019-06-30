@@ -15,16 +15,16 @@ public:
 public:
   bool isTargetable() const override;
   bool isSelectable() const override;
-  std::shared_ptr<const CircularInfluenceZone> getSelectionZonePtr() const;
-  std::shared_ptr<CircularInfluenceZone> getEngagementZonePtr() const;
-  std::shared_ptr<CircularInfluenceZone> getForagingZonePtr() const;
-  std::shared_ptr<CircularInfluenceZone> getScoutingZonePtr() const;
+  CircularInfluenceZone *getSelectionZone();
+  CircularInfluenceZone *getEngagementZone();
+  CircularInfluenceZone *getForagingZone();
+  CircularInfluenceZone *getScoutingZone();
 
 private:
-  std::shared_ptr<CircularInfluenceZone> selectionZonePtr;
-  std::shared_ptr<CircularInfluenceZone> engagementZonePtr;
-  std::shared_ptr<CircularInfluenceZone> foragingZonePtr;
-  std::shared_ptr<CircularInfluenceZone> scoutingZonePtr;
+  CircularInfluenceZone selectionZone;
+  CircularInfluenceZone engagementZone;
+  CircularInfluenceZone foragingZone;
+  CircularInfluenceZone scoutingZone;
 };
 } // namespace model
 } // namespace how

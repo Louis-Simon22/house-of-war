@@ -18,7 +18,7 @@ Item {
 
     TileDetails {
         id: tileDetails
-        voronoiCellBindings: mapOverlay.modelController.entitiesController.voronoiCellBindings
+        tileBindings: mapOverlay.modelController.entitiesController.tileBindings
     }
 
     ArmyDetails {

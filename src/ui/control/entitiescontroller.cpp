@@ -4,7 +4,7 @@
 
 #include "../conversion/converter.h"
 #include "../items/armyitem.h"
-#include "../items/voronoicellitem.h"
+#include "../items/tileitem.h"
 #include "../painters/segmentspainter.h"
 
 namespace how {
@@ -13,32 +13,37 @@ namespace ui {
 EntitiesController::EntitiesController(model::ModelManager &modelManager)
     : modelManager(modelManager),
       entitiesManager(modelManager.getEntitiesManager()), armyBindings(),
-      voronoiCellBindings() {}
+      tileBindings() {
+  auto *selectionManager = modelManager.getSelectionManager();
+  selectionManager->armySelectedSignal.connect(
+      ::boost::bind(&ArmyBindings::bindArmy, &this->armyBindings, _1));
+  selectionManager->tileSelectedSignal.connect(
+      ::boost::bind(&TileBindings::bindTile, &this->tileBindings, _1));
+}
 
 void EntitiesController::generateMapItems(QQuickItem *parent) {
   auto *entitiesManager = this->modelManager.getEntitiesManager();
-  auto &armyPtrs = entitiesManager->getArmyPtrs();
+  auto &armyPtrs = entitiesManager->getPlayers()[0].getArmyPtrs();
   for (auto &armyPtr : armyPtrs) {
-    auto *armyItem = new ArmyItem(armyPtr, parent);
+    auto *armyItem = new ArmyItem(armyPtr.get(), parent);
     QQmlEngine::setObjectOwnership(armyItem, QQmlEngine::JavaScriptOwnership);
   }
 
-  auto &voronoiCellPtrs = entitiesManager->getVoronoiCellPtrs();
-  for (auto &voronoiCellPtr : voronoiCellPtrs) {
-    auto *voronoiCellItem = new VoronoiCellItem(voronoiCellPtr, parent);
-    QQmlEngine::setObjectOwnership(voronoiCellItem,
-                                   QQmlEngine::JavaScriptOwnership);
+  auto &tilePtrs = entitiesManager->getTilePtrs();
+  for (auto &tilePtr : tilePtrs) {
+    auto *tileItem = new TileItem(tilePtr.get(), parent);
+    QQmlEngine::setObjectOwnership(tileItem, QQmlEngine::JavaScriptOwnership);
   }
 
   auto *delaunaySegmentsPainter = new SegmentsPainter(
-      parent,
-      this->modelManager.getDelaunayVoronoiGraphPtr()->getDelaunaySegments());
+      this->modelManager.getDelaunayVoronoiGraphPtr()->getDelaunaySegments(),
+      parent);
   QQmlEngine::setObjectOwnership(delaunaySegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
   delaunaySegmentsPainter->setVisible(true);
   auto *voronoiSegmentsPainter = new SegmentsPainter(
-      parent,
-      this->modelManager.getDelaunayVoronoiGraphPtr()->getVoronoiSegments());
+      this->modelManager.getDelaunayVoronoiGraphPtr()->getVoronoiSegments(),
+      parent);
   QQmlEngine::setObjectOwnership(voronoiSegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
   voronoiSegmentsPainter->setVisible(false);
@@ -48,8 +53,8 @@ ArmyBindings *EntitiesController::getArmyBindings() {
   return &this->armyBindings;
 }
 
-VoronoiCellBindings *EntitiesController::getVoronoiCellBindings() {
-  return &this->voronoiCellBindings;
+TileBindings *EntitiesController::getTileBindings() {
+  return &this->tileBindings;
 }
 
 } // namespace ui

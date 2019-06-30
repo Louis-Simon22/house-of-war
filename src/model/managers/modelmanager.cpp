@@ -1,15 +1,14 @@
 #include "modelmanager.h"
 
 #include "../generation/graphgenerator.h"
-#include "../operations/armiesiterator.h"
-#include "../operations/tilesiterator.h"
+#include "../operations/modeliterators.h"
 
 namespace how {
 namespace model {
 
 ModelManager::ModelManager()
-    : entityChangeManager(), entitiesManager(), selectionManager(),
-      delaunayVoronoiGraphPtr() {}
+    : entitiesManager(), selectionManager(this->entitiesManager),
+      delaunayVoronoiGraphPtr(), iterationsCount(0) {}
 
 void ModelManager::newModel(const WorldGenerationConfig &config) {
   auto graph = generateGraph(config);
@@ -19,36 +18,30 @@ void ModelManager::newModel(const WorldGenerationConfig &config) {
 }
 
 void ModelManager::iterateModel() {
-  iterateTiles(this->entitiesManager);
-  iterateArmies(this->entitiesManager, this->delaunayVoronoiGraphPtr.get());
-  this->entityChangeManager.iterateAllEntityChanges();
+  iterateMovement(this->entitiesManager);
+  if (this->iterationsCount == LONG_ITERATION_CYCLES_COUNT) {
+    this->iterationsCount = 0;
+    iterateTiles(this->entitiesManager);
+    iterateArmies(this->entitiesManager);
+  } else {
+    this->iterationsCount++;
+  }
 }
 
 void ModelManager::onSelectionEvent(types::coordinate_t posX,
                                     types::coordinate_t posY) {
   auto position = types::point_t(posX, posY);
-  const auto &selectedArmies =
-      this->entitiesManager.getArmiesRtree().getValuesByPosition(position);
-  if (selectedArmies.size() > 0) {
-    this->selectionManager.setSelection(selectedArmies[0].get());
-  } else {
-    const auto &selectedVoronoiCells =
-        this->entitiesManager.getVoronoiCellsRtree().getValuesByPosition(
-            position);
-    if (selectedVoronoiCells.size() > 0) {
-      this->selectionManager.setSelection(selectedVoronoiCells[0].get());
-    }
-  }
+  this->selectionManager.selectByPosition(position);
 }
 
 void ModelManager::onTargetingEvent(types::coordinate_t posX,
                                     types::coordinate_t posY) {
   auto position = types::point_t(posX, posY);
-  this->addGraphEntityPositionChange(this->selectionManager.getSelection(),
-                                     position);
+  this->setEntityPositionChange(this->selectionManager.getSelection(),
+                                position);
 }
 
-void ModelManager::addGraphEntityPositionChange(
+void ModelManager::setEntityPositionChange(
     Entity *source, const types::point_t &destinationPos) {
   const auto &sourceVertexDesc = this->entitiesManager.getVertexDescByPosition(
       source->getAbsolutePosition());
@@ -56,11 +49,8 @@ void ModelManager::addGraphEntityPositionChange(
       this->entitiesManager.getVertexDescByPosition(destinationPos);
   auto destinations = this->delaunayVoronoiGraphPtr->getDestinationsBetween(
       sourceVertexDesc, destinationVertexDesc);
-  this->entityChangeManager.addGraphEntityPositionChange(source, destinations);
-}
-
-EntityChangeManager *ModelManager::getEntityChangeManager() {
-  return &this->entityChangeManager;
+  source->setEntityPositionChange(
+      new EntityPositionChange(source, destinations));
 }
 
 EntitiesManager *ModelManager::getEntitiesManager() {
@@ -69,6 +59,10 @@ EntitiesManager *ModelManager::getEntitiesManager() {
 
 const GraphManager *ModelManager::getDelaunayVoronoiGraphPtr() const {
   return this->delaunayVoronoiGraphPtr.get();
+}
+
+SelectionManager *ModelManager::getSelectionManager() {
+  return &this->selectionManager;
 }
 
 } // namespace model

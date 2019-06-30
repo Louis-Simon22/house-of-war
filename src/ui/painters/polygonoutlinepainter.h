@@ -1,16 +1,16 @@
-#ifndef POLYGONPAINTER_H
-#define POLYGONPAINTER_H
+#ifndef POLYGONOUTLINEPAINTER_H
+#define POLYGONOUTLINEPAINTER_H
 
 #include "../../model/entities/voronoicell.h"
 #include "./painteritem.h"
 
 namespace how {
 namespace ui {
-class PolygonPainter : public PainterItem {
+class PolygonOutlinePainter : public PainterItem {
 
 public:
-  PolygonPainter(std::vector<types::point_t> points, QQuickItem *parent);
-  ~PolygonPainter() override;
+  PolygonOutlinePainter(QQuickItem *parent, std::vector<types::point_t> points);
+  ~PolygonOutlinePainter() override;
 
 public:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
@@ -19,10 +19,10 @@ public:
   void setColor(QColor color);
 
 private:
-  QColor color;
   std::vector<types::point_t> points;
+  QColor color;
 };
 } // namespace ui
 } // namespace how
 
-#endif // POLYGONPAINTER_H
+#endif // POLYGONOUTLINEPAINTER_H

@@ -44,9 +44,9 @@ const jcv_point *convert(std::vector<types::point_t> points) {
   return jcvPoint;
 }
 
-std::vector<std::shared_ptr<VoronoiCell>>
+std::vector<std::shared_ptr<Tile>>
 extractVoronoiCells(jcv_diagram *voronoiDiagram) {
-  auto voronoiCells = std::vector<std::shared_ptr<VoronoiCell>>();
+  auto voronoiCells = std::vector<std::shared_ptr<Tile>>();
   const jcv_site *sites = jcv_diagram_get_sites(voronoiDiagram);
   for (int i = 0; i < voronoiDiagram->numsites; ++i) {
     const jcv_site *site = &sites[i];
@@ -60,14 +60,14 @@ extractVoronoiCells(jcv_diagram *voronoiDiagram) {
       }
       edge = edge->next;
     }
-    voronoiCells.push_back(std::make_shared<VoronoiCell>(
+    voronoiCells.push_back(std::make_shared<Tile>(
         center, std::vector<types::point_t>(cellOutlinePointsSet.begin(),
                                             cellOutlinePointsSet.end())));
   }
   return voronoiCells;
 }
 
-std::vector<std::shared_ptr<VoronoiCell>>
+std::vector<std::shared_ptr<Tile>>
 generateVoronoiCells(types::box_t boundingBox,
                      std::vector<types::point_t> points) {
   auto diagram = jcv_diagram();
@@ -78,13 +78,13 @@ generateVoronoiCells(types::box_t boundingBox,
   jcv_diagram_generate(static_cast<int>(points.size()), jcvPoints,
                        jcvBoundingBox, &diagram);
 
-  auto voronoiCells = extractVoronoiCells(&diagram);
+  auto tiles = extractVoronoiCells(&diagram);
 
   jcv_diagram_free(&diagram);
   delete jcvBoundingBox;
   delete[] jcvPoints;
 
-  return voronoiCells;
+  return tiles;
 }
 } // namespace model
 } // namespace how

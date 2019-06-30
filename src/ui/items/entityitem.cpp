@@ -3,10 +3,9 @@
 namespace how {
 namespace ui {
 
-EntityItem::EntityItem(std::shared_ptr<model::Entity> entityPtr,
-                       QQuickItem *parent)
-    : QQuickItem(parent), entityPtr(entityPtr) {
-  entityPtr->changedSignal.connect(
+EntityItem::EntityItem(model::Entity *entity, QQuickItem *parent)
+    : QQuickItem(parent), entity(entity) {
+  entity->changedSignal.connect(
       ::boost::bind(&EntityItem::updateOnGuiThread, this));
   connect(this, &EntityItem::updateOnGuiThread, this,
           &EntityItem::onGraphEntityUpdated, Qt::QueuedConnection);

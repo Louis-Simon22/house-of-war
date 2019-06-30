@@ -14,7 +14,8 @@ Entity::Entity(types::layer_t layer, const Entity *parent)
 
 Entity::Entity(types::layer_t layer, types::point_t position,
                const Entity *parent)
-    : changedSignal(), parent(parent), layer(layer), position(position) {}
+    : changedSignal(), parent(parent), layer(layer), position(position),
+      entityPositionChangePtr() {}
 
 Entity::~Entity() {}
 
@@ -45,10 +46,21 @@ types::point_t Entity::getAbsolutePosition() const {
 }
 
 void Entity::setPosition(const types::point_t &position) {
-  // TODO move the entities in the spatial index
   bg::set<0>(this->position, bg::get<0>(position));
   bg::set<1>(this->position, bg::get<1>(position));
   this->changedSignal();
+}
+
+void Entity::progressEntityPositionChange() {
+  if (entityPositionChangePtr) {
+    if (entityPositionChangePtr->progress()) {
+      this->entityPositionChangePtr.reset(nullptr);
+    }
+  }
+}
+void Entity::setEntityPositionChange(
+    EntityPositionChange *entityPositionChange) {
+  this->entityPositionChangePtr.reset(entityPositionChange);
 }
 } // namespace model
 } // namespace how

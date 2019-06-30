@@ -1,12 +1,12 @@
 import QtQuick 2.0
 
-import com.louissimonmcnicoll.how.ui.voronoicellbindings 1.0
+import com.louissimonmcnicoll.how.ui.tilebindings 1.0
 
 Item {
     id: voronoiCellDetails
-    visible: voronoiCellBindings.isBound
+    visible: tileBindings.visible
 
-    property VoronoiCellBindings voronoiCellBindings
+    property TileBindings tileBindings
 
     Text {
         id: title
@@ -17,7 +17,7 @@ Item {
     }
 
     Text {
-        id: label
+        id: altitudeLabel
         anchors.top: title.bottom
         anchors.left: parent.left
         text: qsTr("Altitude")
@@ -25,10 +25,27 @@ Item {
     }
 
     Text {
-        id: value
-        anchors.top: label.top
-        anchors.left: label.right
-        text: voronoiCellDetails.voronoiCellBindings.altitude
+        id: altitudeValue
+        anchors.top: altitudeLabel.top
+        anchors.left: altitudeLabel.right
+        text: tileBindings.altitude
+        horizontalAlignment: Text.AlignRight
+        font.pixelSize: 12
+    }
+
+    Text {
+        id: resourcesLabel
+        anchors.top: altitudeLabel.bottom
+        anchors.left: parent.left
+        text: qsTr("Resources")
+        font.pixelSize: 12
+    }
+
+    Text {
+        id: resourcesValue
+        anchors.top: resourcesLabel.top
+        anchors.left: resourcesLabel.right
+        text: tileBindings.resources
         horizontalAlignment: Text.AlignRight
         font.pixelSize: 12
     }

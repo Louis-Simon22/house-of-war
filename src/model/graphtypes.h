@@ -1,5 +1,5 @@
-#ifndef graphtypes_H
-#define graphtypes_H
+#ifndef GRAPHTYPES_H
+#define GRAPHTYPES_H
 
 #include <memory>
 
@@ -9,14 +9,14 @@
 
 namespace how {
 namespace model {
-class VoronoiCell;
 class DelaunayEdge;
+class Tile;
 } // namespace model
 
 namespace types {
 using graph_t =
     ::boost::adjacency_list<::boost::vecS, ::boost::vecS, ::boost::directedS,
-                            std::shared_ptr<::how::model::VoronoiCell>,
+                            std::shared_ptr<::how::model::Tile>,
                             std::shared_ptr<::how::model::DelaunayEdge>,
                             ::boost::no_property, ::boost::vecS>;
 using graph_vertex_desc_t = ::boost::graph_traits<graph_t>::vertex_descriptor;
@@ -30,4 +30,4 @@ using graph_vertex_iterator_t = ::boost::graph_traits<graph_t>::vertex_iterator;
 #include "./entities/delaunayedge.h"
 #include "./entities/voronoicell.h"
 
-#endif // graphtypes_H
+#endif // GRAPHTYPES_H

@@ -1,13 +1,11 @@
 #ifndef VORONOICELL_H
 #define VORONOICELL_H
 
-#include <memory>
 #include <vector>
 
 #include "../graphtypes.h"
-#include "./boxinfluencezone.h"
 #include "./interactiveentity.h"
-#include "./tile.h"
+#include "./polygoninfluencezone.h"
 
 namespace how {
 namespace model {
@@ -19,11 +17,7 @@ class VoronoiCell : public InteractiveEntity {
 public:
   VoronoiCell(types::point_t position,
               std::vector<types::point_t> relativeOutlinePoints);
-  ~VoronoiCell() override;
-
-public:
-  bool isTargetable() const override;
-  bool isSelectable() const override;
+  virtual ~VoronoiCell() = 0;
 
 public:
   types::graph_vertex_desc_t getVertexDesc() const;
@@ -31,10 +25,7 @@ public:
   const std::vector<types::point_t> &getOutlinePoints() const;
   const std::vector<types::point_t> &getRelativeOutlinePoints() const;
   const std::vector<types::segment_t> &getOutlineSegments() const;
-  std::shared_ptr<const BoxInfluenceZone> getEnvelopeZonePtr() const;
-  const Tile &getTile() const;
-  Tile &getTile();
-  std::shared_ptr<Tile> getTilePtr();
+  PolygonInfluenceZone *getPolygonInfluenceZone();
 
 public:
   void setVertexDesc(types::graph_vertex_desc_t vertexDesc);
@@ -44,11 +35,13 @@ private:
   std::vector<types::point_t> outlinePoints;
   std::vector<types::point_t> relativeOutlinePoints;
   types::polygon_t polygon;
-  std::shared_ptr<BoxInfluenceZone> envelopeZonePtr;
+  PolygonInfluenceZone polygonInfluenceZone;
   std::vector<types::segment_t> outlineSegments;
-  std::shared_ptr<Tile> tilePtr;
 };
 
 } // namespace model
 } // namespace how
+
+#include "./tile.h"
+
 #endif // VORONOICELL_H

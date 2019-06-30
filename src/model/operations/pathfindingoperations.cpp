@@ -8,7 +8,7 @@
 namespace how {
 namespace model {
 
-std::vector<const VoronoiCell *>
+std::vector<types::point_t>
 graphEntityPathfinding(types::graph_vertex_desc_t sourceVertexDesc,
                        types::graph_vertex_desc_t destinationVertexDesc,
                        types::graph_t &graph) {
@@ -23,10 +23,10 @@ graphEntityPathfinding(types::graph_vertex_desc_t sourceVertexDesc,
 
   // Find the current vertex in the predecessors map starting from the
   // destination vertex
-  auto destinations = std::vector<const VoronoiCell *>();
+  auto destinations = std::vector<types::point_t>();
   auto currentVertexIndex = destinationVertexDesc;
   while (currentVertexIndex != sourceVertexDesc) {
-    destinations.push_back(graph[currentVertexIndex].get());
+    destinations.push_back(graph[currentVertexIndex]->getPosition());
     currentVertexIndex = predecessors[currentVertexIndex];
   }
 

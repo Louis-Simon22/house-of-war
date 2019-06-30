@@ -3,24 +3,22 @@
 namespace how {
 namespace ui {
 
-ArmyItem::ArmyItem(std::shared_ptr<model::Army> armyPtr, QQuickItem *parent)
-    : EntityItem(armyPtr, parent), armyPtr(armyPtr),
-      rectanglePainter(new RectanglePainter(Qt::red, 2, 3, this)),
+ArmyItem::ArmyItem(model::Army *army, QQuickItem *parent)
+    : EntityItem(army, parent), army(army),
+      rectanglePainter(new RectanglePainter(2, 3, this)),
       engagementZoneItem(
-          new InfluenceZoneItem(armyPtr->getEngagementZonePtr(), this)),
-      foragingZoneItem(
-          new InfluenceZoneItem(armyPtr->getForagingZonePtr(), this)),
-      scoutingZoneItem(
-          new InfluenceZoneItem(armyPtr->getScoutingZonePtr(), this)) {
+          new InfluenceZoneItem(army->getEngagementZone(), this)),
+      foragingZoneItem(new InfluenceZoneItem(army->getForagingZone(), this)),
+      scoutingZoneItem(new InfluenceZoneItem(army->getScoutingZone(), this)) {
   this->onGraphEntityUpdated();
 }
 
 void ArmyItem::onGraphEntityUpdated() {
-  this->setX(this->armyPtr->getPosX());
-  this->setY(this->armyPtr->getPosY());
-  this->setZ(static_cast<double>(this->armyPtr->getLayer()));
-  this->rectanglePainter->setColor(this->armyPtr->isSelected() ? Qt::yellow
-                                                               : Qt::red);
+  this->setX(this->army->getPosX());
+  this->setY(this->army->getPosY());
+  this->setZ(static_cast<double>(this->army->getLayer()));
+  this->rectanglePainter->setColor(this->army->isSelected() ? Qt::yellow
+                                                            : Qt::red);
 }
 
 } // namespace ui

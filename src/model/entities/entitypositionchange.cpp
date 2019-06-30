@@ -4,16 +4,18 @@ namespace how {
 namespace model {
 
 EntityPositionChange::EntityPositionChange(
-    Entity *entity, std::vector<const VoronoiCell *> destinations)
+    Entity *entity, std::vector<types::point_t> destinations)
     : entity(entity), destinations(destinations), currentDestinationIndex(0) {}
 
 EntityPositionChange::~EntityPositionChange() {}
 
 bool EntityPositionChange::progress() {
-  const auto *destinationVoronoiCellPtr =
-      this->destinations[this->currentDestinationIndex];
-  this->entity->setPosition(destinationVoronoiCellPtr->getPosition());
+  this->entity->setPosition(this->destinations[this->currentDestinationIndex]);
   this->currentDestinationIndex++;
+  return this->isDone();
+}
+
+bool EntityPositionChange::isDone() {
   return this->currentDestinationIndex >= this->destinations.size();
 }
 

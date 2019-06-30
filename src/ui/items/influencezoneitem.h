@@ -18,14 +18,14 @@ class InfluenceZoneItem : public EntityItem {
 
 public:
   InfluenceZoneItem(
-      std::shared_ptr<model::CircularInfluenceZone> influenceZonePtr,
+      model::CircularInfluenceZone* influenceZone,
       QQuickItem *parent);
 
 private slots:
   void onGraphEntityUpdated();
 
 private:
-  std::shared_ptr<const model::CircularInfluenceZone> influenceZonePtr;
+  const model::CircularInfluenceZone* influenceZone;
   CirclePainter *circlePainter;
 };
 } // namespace ui

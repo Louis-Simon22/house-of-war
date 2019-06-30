@@ -47,6 +47,7 @@ void addEdgeToGraph(types::graph_t &graph,
                                   voronoiCellPtr2->getPosition());
   const auto &bounds = voronoiCellsRTree.bounds();
   // This doesn't include the edges that wrap around edge cells
+  // TODO this removes too many edges
   if (!(isVoronoiCellOnBounds(bounds, voronoiCellPtr1) &&
         isVoronoiCellOnBounds(bounds, voronoiCellPtr2) &&
         isSegmentIntersectingMoreThanTwoVoronoiCells(segment,
@@ -69,18 +70,19 @@ void addEdgeToGraph(types::graph_t &graph,
 }
 
 types::graph_t createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
-    std::vector<std::shared_ptr<VoronoiCell>> voronoiCells) {
+    std::vector<std::shared_ptr<Tile>> tiles) {
   auto graph = types::graph_t();
   auto spatialIndexTree = voronoi_cells_rtree_t();
   auto coords = std::vector<double>();
 
-  for (const auto &voronoiCellPtr : voronoiCells) {
+  for (const auto &voronoiCellPtr : tiles) {
     const auto &position = voronoiCellPtr->getPosition();
     coords.push_back(static_cast<double>(bg::get<0>(position)));
     coords.push_back(static_cast<double>(bg::get<1>(position)));
     auto vertexDesc = ::boost::add_vertex(voronoiCellPtr, graph);
     voronoiCellPtr->setVertexDesc(vertexDesc);
-    const auto &envelope = voronoiCellPtr->getEnvelopeZonePtr()->getEnvelope();
+    const auto &envelope =
+        voronoiCellPtr->getPolygonInfluenceZone()->getEnvelope();
     spatialIndexTree.insert(std::make_pair<>(envelope, voronoiCellPtr));
   }
 
@@ -88,9 +90,9 @@ types::graph_t createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
   const auto &triangles = delaunator.triangles;
 
   for (std::size_t i = 0; i < triangles.size(); i += 3) {
-    const auto *voronoiCellPtr1 = voronoiCells[triangles[i]].get();
-    const auto *voronoiCellPtr2 = voronoiCells[triangles[i + 1]].get();
-    const auto *voronoiCellPtr3 = voronoiCells[triangles[i + 2]].get();
+    const auto *voronoiCellPtr1 = tiles[triangles[i]].get();
+    const auto *voronoiCellPtr2 = tiles[triangles[i + 1]].get();
+    const auto *voronoiCellPtr3 = tiles[triangles[i + 2]].get();
     addEdgeToGraph(graph, spatialIndexTree, voronoiCellPtr1, voronoiCellPtr2);
     addEdgeToGraph(graph, spatialIndexTree, voronoiCellPtr2, voronoiCellPtr3);
     addEdgeToGraph(graph, spatialIndexTree, voronoiCellPtr3, voronoiCellPtr1);

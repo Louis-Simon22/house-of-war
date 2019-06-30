@@ -13,8 +13,8 @@ class SegmentsPainter : public QQuickItem {
   Q_OBJECT
 
 public:
-  SegmentsPainter(QQuickItem *parent,
-                  const std::vector<types::segment_t> &segments);
+  SegmentsPainter(const std::vector<types::segment_t> &segments,
+                  QQuickItem *parent);
 
 public:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;

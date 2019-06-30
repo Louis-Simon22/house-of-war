@@ -13,7 +13,7 @@ class EntityItem : public QQuickItem {
   Q_OBJECT
 
 public:
-  EntityItem(std::shared_ptr<model::Entity> entityPtr, QQuickItem *parent);
+  EntityItem(model::Entity *entity, QQuickItem *parent);
   virtual ~EntityItem() override = 0;
 
 signals:
@@ -23,7 +23,7 @@ private slots:
   virtual void onGraphEntityUpdated() = 0;
 
 private:
-  std::shared_ptr<const model::Entity> entityPtr;
+  const model::Entity *entity;
 };
 } // namespace ui
 } // namespace how

@@ -2,7 +2,6 @@
 
 #include <set>
 
-#include "../entities/entitypositionchange.h"
 #include "../operations/pathfindingoperations.h"
 #include "../utils/segmentcomparator.h"
 
@@ -17,8 +16,8 @@ GraphManager::GraphManager(types::graph_t graph, types::box_t bounds)
       std::set<types::segment_t, SegmentComparator>();
   for (auto vertexIt = vertexItBegin; vertexIt != vertexItEnd; vertexIt++) {
     auto vertexDesc = *vertexIt;
-    auto &voronoiCellPtr = graph[vertexDesc];
-    const auto &outlineSegments = voronoiCellPtr->getOutlineSegments();
+    auto &tilePtr = graph[vertexDesc];
+    const auto &outlineSegments = tilePtr->getOutlineSegments();
     for (const auto &outlineSegment : outlineSegments) {
       uniqueVoronoiSegmentsSet.insert(outlineSegment);
     }
@@ -54,7 +53,7 @@ const std::vector<types::segment_t> &GraphManager::getDelaunaySegments() const {
   return this->delaunaySegments;
 }
 
-std::vector<const VoronoiCell *> GraphManager::getDestinationsBetween(
+std::vector<types::point_t> GraphManager::getDestinationsBetween(
     types::graph_vertex_desc_t sourceVertexDesc,
     types::graph_vertex_desc_t destinationVertexDesc) {
   return graphEntityPathfinding(sourceVertexDesc, destinationVertexDesc,

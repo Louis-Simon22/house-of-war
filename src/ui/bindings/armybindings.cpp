@@ -3,16 +3,16 @@
 namespace how {
 namespace ui {
 
-ArmyBindings::ArmyBindings() {}
+ArmyBindings::ArmyBindings() : army(nullptr) {}
 
-void ArmyBindings::onArmyItemSelected(ArmyItem *armyItem) {
-  this->armyItem = armyItem;
-  this->updateBindings();
+ArmyBindings::~ArmyBindings() {}
+
+void ArmyBindings::bindArmy(model::Army *army) {
+  this->army = army;
+  this->bindEntity(army);
 }
 
-bool ArmyBindings::isBound() const { return this->armyItem; }
-
-types::carac_t ArmyBindings::getSize() const { return this->armyItem ? 20 : 0; }
+types::carac_t ArmyBindings::getSize() const { return this->army ? 20 : 0; }
 
 } // namespace ui
 } // namespace how

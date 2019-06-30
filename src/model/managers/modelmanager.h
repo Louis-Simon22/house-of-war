@@ -5,13 +5,14 @@
 
 #include "../generation/worldgenerationconfig.h"
 #include "./entitiesmanager.h"
-#include "./entitychangemanager.h"
 #include "./graphmanager.h"
 #include "./selectionmanager.h"
 
 namespace how {
 namespace model {
 class ModelManager {
+  constexpr static std::size_t LONG_ITERATION_CYCLES_COUNT = 0;
+
 public:
   ModelManager();
 
@@ -22,19 +23,19 @@ public:
   void onTargetingEvent(types::coordinate_t posX, types::coordinate_t posY);
 
 private:
-  void addGraphEntityPositionChange(Entity *source,
-                                    const types::point_t &destinationPos);
+  void setEntityPositionChange(Entity *source,
+                               const types::point_t &destinationPos);
 
 public:
-  EntityChangeManager *getEntityChangeManager();
   EntitiesManager *getEntitiesManager();
   const GraphManager *getDelaunayVoronoiGraphPtr() const;
+  SelectionManager *getSelectionManager();
 
 private:
-  EntityChangeManager entityChangeManager;
   EntitiesManager entitiesManager;
   SelectionManager selectionManager;
   std::unique_ptr<GraphManager> delaunayVoronoiGraphPtr;
+  std::size_t iterationsCount;
 };
 } // namespace model
 } // namespace how

@@ -4,7 +4,7 @@ import com.louissimonmcnicoll.how.ui.armybindings 1.0
 
 Item {
     id: armyDetails
-    visible: armyBindings.isBound
+    visible: armyBindings.visible
 
     property ArmyBindings armyBindings
 

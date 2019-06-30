@@ -33,7 +33,7 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
   std::cout << "=============================" << std::endl;
 
   // Voronoi graph generation
-  const auto voronoiCells = generateVoronoiCells(boundingBox, pdsPoints);
+  const auto tiles = generateVoronoiCells(boundingBox, pdsPoints);
   std::cout << "Generated voronoi cells "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)
@@ -43,7 +43,7 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
 
   // Delaunay graph extracion
   auto graph =
-      createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(voronoiCells);
+      createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(tiles);
   std::cout << "Generated graph "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)

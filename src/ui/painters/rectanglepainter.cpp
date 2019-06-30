@@ -12,9 +12,9 @@
 namespace how {
 namespace ui {
 
-RectanglePainter::RectanglePainter(QColor color, float width, float height,
+RectanglePainter::RectanglePainter(float width, float height,
                                    QQuickItem *parent)
-    : PainterItem(parent), color(color), width(width), height(height) {}
+    : PainterItem(parent), width(width), height(height) {}
 
 RectanglePainter::~RectanglePainter() {}
 

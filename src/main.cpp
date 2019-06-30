@@ -17,7 +17,6 @@
 #define QSG_RENDERER_DEBUG = render
 
 #include "./ui/control/modelcontroller.h"
-#include "./ui/painters/segmentspainter.h"
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -40,9 +39,9 @@ int main(int argc, char *argv[]) {
   qmlRegisterType<::how::ui::ModelController>(
       "com.louissimonmcnicoll.how.ui.modelcontroller", 1, 0, "ModelController");
   // Bindings
-  qmlRegisterType<::how::ui::VoronoiCellBindings>(
-      "com.louissimonmcnicoll.how.ui.voronoicellbindings", 1, 0,
-      "VoronoiCellBindings");
+  qmlRegisterType<::how::ui::TileBindings>(
+      "com.louissimonmcnicoll.how.ui.tilebindings", 1, 0,
+      "TileBindings");
   qmlRegisterType<::how::ui::ArmyBindings>(
       "com.louissimonmcnicoll.how.ui.armybindings", 1, 0, "ArmyBindings");
 

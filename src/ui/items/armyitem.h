@@ -20,13 +20,13 @@ private:
   const QColor scoutingZoneColor = QColor(255, 0, 0, 0);
 
 public:
-  ArmyItem(std::shared_ptr<model::Army> armyPtr, QQuickItem *parent);
+  ArmyItem(model::Army* army, QQuickItem *parent);
 
 protected:
   void onGraphEntityUpdated() override;
 
 private:
-  std::shared_ptr<const model::Army> armyPtr;
+  const model::Army* army;
   RectanglePainter *rectanglePainter;
   InfluenceZoneItem *engagementZoneItem;
   InfluenceZoneItem *foragingZoneItem;

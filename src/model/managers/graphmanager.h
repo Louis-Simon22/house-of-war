@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "../entities/entitychange.h"
 #include "../graphtypes.h"
 
 namespace how {
@@ -17,7 +16,7 @@ public:
   const types::box_t &getBounds() const;
   const std::vector<types::segment_t> &getVoronoiSegments() const;
   const std::vector<types::segment_t> &getDelaunaySegments() const;
-  std::vector<const VoronoiCell *>
+  std::vector<types::point_t>
   getDestinationsBetween(types::graph_vertex_desc_t sourceVertexDesc,
                          types::graph_vertex_desc_t destinationVertexDesc);
 

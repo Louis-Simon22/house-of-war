@@ -13,8 +13,8 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-SegmentsPainter::SegmentsPainter(QQuickItem *parent,
-                                 const std::vector<types::segment_t> &segments)
+SegmentsPainter::SegmentsPainter(const std::vector<types::segment_t> &segments,
+                                 QQuickItem *parent)
     : QQuickItem(parent), segments(segments) {
   this->setAntialiasing(true);
   this->setFlag(QQuickItem::ItemHasContents, true);

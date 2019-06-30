@@ -7,6 +7,8 @@
 
 namespace how {
 namespace model {
+class EntityPositionChange;
+
 class Entity {
 public:
   using changed_signal_t = ::boost::signals2::signal<void()>;
@@ -27,6 +29,8 @@ public:
   types::coordinate_t getAbsolutePosY() const;
   types::point_t getAbsolutePosition() const;
   void setPosition(const types::point_t &position);
+  void progressEntityPositionChange();
+  void setEntityPositionChange(EntityPositionChange *entityPositionChange);
 
 public:
   changed_signal_t changedSignal;
@@ -37,8 +41,11 @@ protected:
 private:
   types::layer_t layer;
   types::point_t position;
+  std::unique_ptr<EntityPositionChange> entityPositionChangePtr;
 };
 } // namespace model
 } // namespace how
+
+#include "./entitypositionchange.h"
 
 #endif // ENTITY_H
