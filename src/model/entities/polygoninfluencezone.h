@@ -16,7 +16,8 @@ public:
 
 public:
   bool isPointWithinZone(const types::point_t &position) const override;
-  bool isPolygonOverlappingZone(types::polygon_t polygon) const override;
+  bool isPolygonOverlappingZone(const types::polygon_t &polygon) const override;
+  bool isSegmentOverlappingZone(const types::segment_t &segment) const override;
   types::box_t getEnvelope() const override;
 
 public:

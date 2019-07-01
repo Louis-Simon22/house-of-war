@@ -32,12 +32,6 @@ public:
         index_rtree_value_t(influenceZone->getEnvelope(), influenceZone));
   }
 
-  void removeValue(const InfluenceZone *influenceZone) {
-    this->influenceZoneToValueMap.erase(influenceZone);
-    this->indexRTree.remove(
-        index_rtree_value_t(influenceZone->getEnvelope(), influenceZone));
-  }
-
   std::vector<Value> getValuesByPosition(const types::point_t &position) {
     auto coveredValues = std::vector<Value>();
 
@@ -82,6 +76,24 @@ public:
             [&coveredValues, &polygon, this](const index_rtree_value_t &value) {
               auto *influenceZone = std::get<1>(value);
               if (influenceZone->isPolygonOverlappingZone(polygon)) {
+                coveredValues.push_back(
+                    this->influenceZoneToValueMap[influenceZone]);
+              }
+            }));
+
+    return coveredValues;
+  }
+
+  std::vector<Value>
+  getValuesBySegmentIntersection(const types::segment_t &segment) {
+    auto coveredValues = std::vector<Value>();
+
+    this->indexRTree.query(
+        bgi::intersects(segment),
+        ::boost::make_function_output_iterator(
+            [&coveredValues, &segment, this](const index_rtree_value_t &value) {
+              auto *influenceZone = std::get<1>(value);
+              if (influenceZone->isSegmentOverlappingZone(segment)) {
                 coveredValues.push_back(
                     this->influenceZoneToValueMap[influenceZone]);
               }

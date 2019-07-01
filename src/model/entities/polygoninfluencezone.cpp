@@ -4,6 +4,7 @@
 #include <boost/geometry/algorithms/covered_by.hpp>
 #include <boost/geometry/algorithms/envelope.hpp>
 #include <boost/geometry/algorithms/overlaps.hpp>
+#include <boost/geometry/algorithms/intersects.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
 
 namespace how {
@@ -35,8 +36,13 @@ bool PolygonInfluenceZone::isPointWithinZone(
 }
 
 bool PolygonInfluenceZone::isPolygonOverlappingZone(
-    types::polygon_t polygon) const {
+   const types::polygon_t &polygon) const {
   return bg::overlaps(polygon, this->polygon);
+}
+
+bool PolygonInfluenceZone::isSegmentOverlappingZone(
+  const  types::segment_t &segment) const {
+  return bg::intersects(segment, this->polygon);
 }
 
 types::box_t PolygonInfluenceZone::getEnvelope() const {

@@ -42,8 +42,8 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
   std::cout << "=============================" << std::endl;
 
   // Delaunay graph extracion
-  auto graph =
-      createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(tiles);
+  auto graph = createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
+      tiles, boundingBox);
   std::cout << "Generated graph "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)

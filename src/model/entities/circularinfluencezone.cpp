@@ -22,8 +22,14 @@ bool CircularInfluenceZone::isPointWithinZone(
 }
 
 bool CircularInfluenceZone::isPolygonOverlappingZone(
-    types::polygon_t polygon) const {
+    const types::polygon_t &polygon) const {
   auto distance = bg::distance(this->parent->getAbsolutePosition(), polygon);
+  return static_cast<float>(distance) < radius;
+}
+
+bool CircularInfluenceZone::isSegmentOverlappingZone(
+    const types::segment_t &segment) const {
+  auto distance = bg::distance(this->parent->getAbsolutePosition(), segment);
   return static_cast<float>(distance) < radius;
 }
 

@@ -46,7 +46,7 @@ void EntitiesController::generateMapItems(QQuickItem *parent) {
       parent);
   QQmlEngine::setObjectOwnership(voronoiSegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
-  voronoiSegmentsPainter->setVisible(false);
+  voronoiSegmentsPainter->setVisible(true);
 }
 
 ArmyBindings *EntitiesController::getArmyBindings() {
