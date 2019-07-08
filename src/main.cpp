@@ -34,16 +34,24 @@ int main(int argc, char *argv[]) {
   // Registering c++ bindings for QML
   // Controllers
   qmlRegisterUncreatableType<::how::ui::EntitiesController>(
-      "com.louissimonmcnicoll.how.ui.entitycontroller", 1, 0,
-      "EntityController", uncreatableTypeErrorMessage);
+      "com.louissimonmcnicoll.how.ui.entitiescontroller", 1, 0,
+      "EntitiesController", uncreatableTypeErrorMessage);
   qmlRegisterType<::how::ui::ModelController>(
       "com.louissimonmcnicoll.how.ui.modelcontroller", 1, 0, "ModelController");
+  qmlRegisterUncreatableType<::how::ui::TilesController>(
+      "com.louissimonmcnicoll.how.ui.tilescontroller", 1, 0, "TilesController",
+      uncreatableTypeErrorMessage);
   // Bindings
-  qmlRegisterType<::how::ui::TileBindings>(
-      "com.louissimonmcnicoll.how.ui.tilebindings", 1, 0,
-      "TileBindings");
-  qmlRegisterType<::how::ui::ArmyBindings>(
-      "com.louissimonmcnicoll.how.ui.armybindings", 1, 0, "ArmyBindings");
+  qmlRegisterUncreatableType<::how::ui::TileBindings>(
+      "com.louissimonmcnicoll.how.ui.tilebindings", 1, 0, "TileBindings",
+      uncreatableTypeErrorMessage);
+  qmlRegisterUncreatableType<::how::ui::ArmyBindings>(
+      "com.louissimonmcnicoll.how.ui.armybindings", 1, 0, "ArmyBindings",
+      uncreatableTypeErrorMessage);
+  // ENUMS
+  qmlRegisterUncreatableType<::how::ui::TileDisplayStatusWrapper>(
+      "com.louissimonmcnicoll.how.ui.tiledisplaystatuswrapper", 1, 0,
+      "TileDisplayStatusWrapper", uncreatableTypeErrorMessage);
 
   engine.load(QUrl(QStringLiteral("qrc:/qml/Window.qml")));
   if (engine.rootObjects().isEmpty()) {

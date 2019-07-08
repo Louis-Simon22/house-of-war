@@ -2,6 +2,7 @@
 #define TILE_H
 
 #include "../modeltypes.h"
+#include "./player.h"
 #include "./voronoicell.h"
 
 namespace how {
@@ -26,10 +27,13 @@ public:
   charac_t getResources() const;
   charac_t &getResources();
   void setResources(charac_t resources);
+  const Player *getOwner() const;
+  void setOwner(const Player *owner);
 
 private:
   charac_t altitude;
   charac_t resources;
+  const Player *owner;
 };
 } // namespace model
 } // namespace how

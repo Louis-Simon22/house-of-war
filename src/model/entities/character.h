@@ -1,7 +1,6 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-#include "../graphtypes.h"
 #include "./interactiveentity.h"
 
 namespace how {

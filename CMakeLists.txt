@@ -55,10 +55,12 @@ set(HEADER_FILES
     src/ui/bindings/tilebindings.h
     src/ui/control/entitiescontroller.h
     src/ui/control/modelcontroller.h
+    src/ui/control/tilescontroller.h
     src/ui/conversion/converter.h
     src/ui/items/armyitem.h
     src/ui/items/entityitem.h
     src/ui/items/influencezoneitem.h
+    src/ui/items/tiledisplaystatus.h
     src/ui/items/tileitem.h
     src/ui/painters/circlepainter.h
     src/ui/painters/painteritem.h
@@ -109,6 +111,7 @@ set(CPP_FILES
     src/ui/bindings/tilebindings.cpp
     src/ui/control/entitiescontroller.cpp
     src/ui/control/modelcontroller.cpp
+    src/ui/control/tilescontroller.cpp
     src/ui/conversion/converter.cpp
     src/ui/items/armyitem.cpp
     src/ui/items/entityitem.cpp

@@ -1,7 +1,6 @@
 #ifndef ARMY_H
 #define ARMY_H
 
-#include "../graphtypes.h"
 #include "./circularinfluencezone.h"
 #include "./interactiveentity.h"
 

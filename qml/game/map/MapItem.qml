@@ -61,6 +61,7 @@ Item {
 
     MapOverlay {
         id: mapOverlay
+        anchors.fill: parent
         modelController: mapContainer.modelController
     }
 }

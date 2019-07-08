@@ -17,7 +17,9 @@ public:
   std::vector<std::shared_ptr<Army>> &getArmyPtrs();
 
 private:
+  // TODO create new army from the owned land
   std::vector<std::shared_ptr<Army>> armyPtrs;
+  // TODO unique identifier for the player?
 };
 } // namespace model
 } // namespace how

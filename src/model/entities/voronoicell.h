@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "../graphtypes.h"
 #include "./interactiveentity.h"
 #include "./polygoninfluencezone.h"
 
@@ -20,18 +19,16 @@ public:
   virtual ~VoronoiCell() = 0;
 
 public:
-  types::graph_vertex_desc_t getVertexDesc() const;
+  std::size_t getVertexDesc() const;
+  void setVertexDesc(std::size_t vertexDesc);
   const types::polygon_t &getPolygon() const;
   const std::vector<types::point_t> &getOutlinePoints() const;
   const std::vector<types::point_t> &getRelativeOutlinePoints() const;
   const std::vector<types::segment_t> &getOutlineSegments() const;
   PolygonInfluenceZone *getPolygonInfluenceZone();
 
-public:
-  void setVertexDesc(types::graph_vertex_desc_t vertexDesc);
-
 private:
-  types::graph_vertex_desc_t vertexDesc;
+  std::size_t vertexDesc;
   std::vector<types::point_t> outlinePoints;
   std::vector<types::point_t> relativeOutlinePoints;
   types::polygon_t polygon;
@@ -41,7 +38,5 @@ private:
 
 } // namespace model
 } // namespace how
-
-#include "./tile.h"
 
 #endif // VORONOICELL_H

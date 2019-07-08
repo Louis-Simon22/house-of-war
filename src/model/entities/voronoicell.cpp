@@ -36,8 +36,10 @@ VoronoiCell::VoronoiCell(types::point_t position,
 
 VoronoiCell::~VoronoiCell() {}
 
-types::graph_vertex_desc_t VoronoiCell::getVertexDesc() const {
-  return this->vertexDesc;
+std::size_t VoronoiCell::getVertexDesc() const { return this->vertexDesc; }
+
+void VoronoiCell::setVertexDesc(std::size_t vertexDesc) {
+  this->vertexDesc = vertexDesc;
 }
 
 const types::polygon_t &VoronoiCell::getPolygon() const {
@@ -59,10 +61,6 @@ const std::vector<types::segment_t> &VoronoiCell::getOutlineSegments() const {
 
 PolygonInfluenceZone *VoronoiCell::getPolygonInfluenceZone() {
   return &this->polygonInfluenceZone;
-}
-
-void VoronoiCell::setVertexDesc(types::graph_vertex_desc_t vertexDesc) {
-  this->vertexDesc = vertexDesc;
 }
 
 } // namespace model

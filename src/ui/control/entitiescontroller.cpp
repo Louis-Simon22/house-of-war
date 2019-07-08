@@ -13,7 +13,7 @@ namespace ui {
 EntitiesController::EntitiesController(model::ModelManager &modelManager)
     : modelManager(modelManager),
       entitiesManager(modelManager.getEntitiesManager()), armyBindings(),
-      tileBindings() {
+      tileBindings(), tilesController() {
   auto *selectionManager = modelManager.getSelectionManager();
   selectionManager->armySelectedSignal.connect(
       ::boost::bind(&ArmyBindings::bindArmy, &this->armyBindings, _1));
@@ -31,7 +31,11 @@ void EntitiesController::generateMapItems(QQuickItem *parent) {
 
   auto &tilePtrs = entitiesManager->getTilePtrs();
   for (auto &tilePtr : tilePtrs) {
-    auto *tileItem = new TileItem(tilePtr.get(), parent);
+    auto *tileItem =
+        new TileItem(tilePtr.get(), &this->tilesController, parent);
+    connect(&this->tilesController,
+            &TilesController::onTileDisplayStatusChanged, tileItem,
+            &TileItem::onTileDisplayStatusChanged);
     QQmlEngine::setObjectOwnership(tileItem, QQmlEngine::JavaScriptOwnership);
   }
 
@@ -46,7 +50,7 @@ void EntitiesController::generateMapItems(QQuickItem *parent) {
       parent);
   QQmlEngine::setObjectOwnership(voronoiSegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
-  voronoiSegmentsPainter->setVisible(true);
+  voronoiSegmentsPainter->setVisible(false);
 }
 
 ArmyBindings *EntitiesController::getArmyBindings() {
@@ -55,6 +59,10 @@ ArmyBindings *EntitiesController::getArmyBindings() {
 
 TileBindings *EntitiesController::getTileBindings() {
   return &this->tileBindings;
+}
+
+TilesController *EntitiesController::getTilesController() {
+  return &this->tilesController;
 }
 
 } // namespace ui
