@@ -4,8 +4,8 @@
 #include <memory>
 #include <vector>
 
-#include "../graphtypes.h"
 #include "../entities/player.h"
+#include "../graphtypes.h"
 #include "../utils/influencezonertree.h"
 
 namespace how {
@@ -15,16 +15,19 @@ public:
   EntitiesManager();
 
 public:
-  void generateEntities(const types::graph_t &graph);
-  types::graph_vertex_desc_t
-  getVertexDescByPosition(const types::point_t &position);
+  void addEntities(const types::graph_t &graph);
+  void clearAllEntities();
 
 private:
   void addTile(std::shared_ptr<Tile> tilePtr);
 
 public:
+  types::graph_vertex_desc_t
+  getVertexDescByPosition(const types::point_t &position);
   std::vector<Player> &getPlayers();
+  const std::vector<Player> &getPlayers() const;
   std::vector<std::shared_ptr<Tile>> &getTilePtrs();
+  const std::vector<std::shared_ptr<Tile>> &getTilePtrs() const;
   InfluenceZoneRTree<std::shared_ptr<Tile>> &getTilesRtree();
 
 private:

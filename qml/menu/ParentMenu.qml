@@ -26,9 +26,7 @@ Item {
         anchors.fill: parent
 
         modelController: parentMenu.modelController
-        onNewModelGenerated: {
-            parentMenu.startGame()
-        }
+        onNewModelGenerated: parentMenu.startGame()
         onBack: parentMenu.state = "main"
     }
 
@@ -36,6 +34,8 @@ Item {
         id: loadGameMenu
         anchors.fill: parent
 
+        modelController: parentMenu.modelController
+        onModelLoaded: parentMenu.startGame()
         onBack: parentMenu.state = "main"
     }
 

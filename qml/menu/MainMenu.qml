@@ -21,6 +21,7 @@ BaseMenu {
         text: "Main Menu"
     }
 
+    // TODO editor menu
     Column {
         anchors.centerIn: parent
         spacing: 10

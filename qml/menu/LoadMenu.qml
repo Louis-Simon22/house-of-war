@@ -2,14 +2,33 @@ import QtQuick 2.11
 
 import "components/"
 
+import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
+
 BaseMenu {
     id: loadScene
 
-    Text {
-        text: "Load Game Menu"
-        color: "blue"
+    property ModelController modelController
+
+    signal modelLoaded
+
+    ListView {
+        id: saveFilesList
+
+        width: childrenRect.width
+        height: childrenRect.height
 
         anchors.centerIn: parent
+
+        model: loadScene.modelController.getAllSaveFiles()
+        delegate: MenuListItem {
+            labelText: modelData.name
+            buttonText: "Load"
+
+            onClicked: {
+                loadScene.modelController.loadFromFile(modelData.name)
+                loadScene.modelLoaded()
+            }
+        }
     }
 
     MenuButton {

@@ -15,7 +15,7 @@ namespace bg = ::boost::geometry;
 class VoronoiCell : public InteractiveEntity {
 public:
   VoronoiCell(types::point_t position,
-              std::vector<types::point_t> relativeOutlinePoints);
+              std::vector<types::point_t> outlinePoints);
   virtual ~VoronoiCell() = 0;
 
 public:

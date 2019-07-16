@@ -7,7 +7,8 @@ namespace model {
 
 EntitiesManager::EntitiesManager() : players(), tilePtrs() {}
 
-void EntitiesManager::generateEntities(const types::graph_t &graph) {
+void EntitiesManager::addEntities(const types::graph_t &graph) {
+  // TODO move this to another method maybe
   this->players.push_back(generatePlayer(graph));
   types::graph_vertex_iterator_t vertexBegin, vertexEnd;
   ::boost::tie(vertexBegin, vertexEnd) = ::boost::vertices(graph);
@@ -21,7 +22,11 @@ void EntitiesManager::addTile(std::shared_ptr<Tile> tilePtr) {
   this->tilesRtree.addValue(tilePtr->getPolygonInfluenceZone(), tilePtr);
 }
 
-std::vector<Player> &EntitiesManager::getPlayers() { return this->players; }
+void EntitiesManager::clearAllEntities() {
+  this->players.clear();
+  this->tilePtrs.clear();
+  this->tilesRtree.clearAllValues();
+}
 
 types::graph_vertex_desc_t
 EntitiesManager::getVertexDescByPosition(const types::point_t &position) {
@@ -29,7 +34,17 @@ EntitiesManager::getVertexDescByPosition(const types::point_t &position) {
   return vertexDesc[0]->getVertexDesc();
 }
 
+std::vector<Player> &EntitiesManager::getPlayers() { return this->players; }
+
+const std::vector<Player> &EntitiesManager::getPlayers() const {
+  return this->players;
+}
+
 std::vector<std::shared_ptr<Tile>> &EntitiesManager::getTilePtrs() {
+  return this->tilePtrs;
+}
+
+const std::vector<std::shared_ptr<Tile>> &EntitiesManager::getTilePtrs() const {
   return this->tilePtrs;
 }
 

@@ -15,5 +15,6 @@
         <file>qml/game/map/overlay/MapOverlay.qml</file>
         <file>qml/game/map/overlay/TileDetails.qml</file>
         <file>qml/game/map/overlay/ArmyDetails.qml</file>
+        <file>qml/menu/components/MenuListItem.qml</file>
     </qresource>
 </RCC>

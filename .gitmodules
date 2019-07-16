@@ -8,3 +8,6 @@
 [submodule "lib/delaunay"]
 	path = lib/delaunay
 	url = https://github.com/delfrrr/delaunator-cpp.git
+[submodule "lib/json"]
+	path = lib/json
+	url = https://github.com/nlohmann/json.git

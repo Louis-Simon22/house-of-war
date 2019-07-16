@@ -7,6 +7,10 @@ namespace how {
 namespace model {
 struct WorldGenerationConfig {
 public:
+  WorldGenerationConfig();
+  WorldGenerationConfig(types::box_t boundingBox,
+                        types::coordinate_t minimumVoronoiCellDistance,
+                        std::uint32_t randomSeed);
   WorldGenerationConfig(types::coordinate_t minCornerX,
                         types::coordinate_t minCornerY,
                         types::coordinate_t maxCornerX,
@@ -15,13 +19,7 @@ public:
                         std::uint32_t randomSeed);
 
 public:
-  types::box_t getBoundingBox() const;
-
-public:
-  types::coordinate_t minCornerX;
-  types::coordinate_t minCornerY;
-  types::coordinate_t maxCornerX;
-  types::coordinate_t maxCornerY;
+  types::box_t boundingBox;
   types::coordinate_t minimumVoronoiCellDistance;
   std::uint32_t randomSeed;
 };

@@ -58,9 +58,11 @@ void Entity::progressEntityPositionChange() {
     }
   }
 }
+
 void Entity::setEntityPositionChange(
     EntityPositionChange *entityPositionChange) {
   this->entityPositionChangePtr.reset(entityPositionChange);
 }
+
 } // namespace model
 } // namespace how

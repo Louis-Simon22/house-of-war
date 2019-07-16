@@ -40,13 +40,13 @@ void EntitiesController::generateMapItems(QQuickItem *parent) {
   }
 
   auto *delaunaySegmentsPainter = new SegmentsPainter(
-      this->modelManager.getDelaunayVoronoiGraphPtr()->getDelaunaySegments(),
+      this->modelManager.getDelaunayVoronoiGraph()->getDelaunaySegments(),
       parent);
   QQmlEngine::setObjectOwnership(delaunaySegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
   delaunaySegmentsPainter->setVisible(true);
   auto *voronoiSegmentsPainter = new SegmentsPainter(
-      this->modelManager.getDelaunayVoronoiGraphPtr()->getVoronoiSegments(),
+      this->modelManager.getDelaunayVoronoiGraph()->getVoronoiSegments(),
       parent);
   QQmlEngine::setObjectOwnership(voronoiSegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);

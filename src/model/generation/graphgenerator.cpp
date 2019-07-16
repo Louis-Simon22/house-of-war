@@ -17,7 +17,7 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
   std::cout << "Starting world generation" << std::endl;
   std::cout << "=============================" << std::endl;
   const auto startTime = std::chrono::system_clock::now();
-  const auto boundingBox = config.getBoundingBox();
+  const auto &boundingBox = config.boundingBox;
   const auto randomSeed = config.randomSeed;
 
   // PDS points generation
@@ -33,7 +33,7 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
   std::cout << "=============================" << std::endl;
 
   // Voronoi graph generation
-  const auto tiles = generateVoronoiCells(boundingBox, pdsPoints);
+  auto tilePtrs = generateVoronoiCells(boundingBox, pdsPoints);
   std::cout << "Generated voronoi cells "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)
@@ -43,7 +43,7 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
 
   // Delaunay graph extracion
   auto graph = createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
-      tiles, boundingBox);
+      tilePtrs, boundingBox);
   std::cout << "Generated graph "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)
@@ -71,5 +71,12 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
 
   return graph;
 }
+
+types::graph_t generateGraph(const WorldGenerationConfig &config,
+                             std::vector<std::shared_ptr<Tile>> tilePtrs) {
+    return createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
+                tilePtrs, config.boundingBox);
+}
+
 } // namespace model
 } // namespace how

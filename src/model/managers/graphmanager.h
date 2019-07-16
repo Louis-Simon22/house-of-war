@@ -9,7 +9,7 @@ namespace how {
 namespace model {
 class GraphManager {
 public:
-  GraphManager(types::graph_t graph, types::box_t bounds);
+  GraphManager(types::graph_t graph);
 
 public:
   const types::graph_t &getGraph() const;
@@ -22,7 +22,6 @@ public:
 
 private:
   types::graph_t graph;
-  types::box_t bounds;
   std::vector<types::segment_t> voronoiSegments;
   std::vector<types::segment_t> delaunaySegments;
 };

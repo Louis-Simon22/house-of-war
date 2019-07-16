@@ -31,6 +31,7 @@ public:
   void setOwner(const Player *owner);
 
 private:
+  // TODO see notebook
   charac_t altitude;
   charac_t resources;
   const Player *owner;

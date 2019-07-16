@@ -64,7 +64,7 @@ void addEdgeToGraph(
 }
 
 types::graph_t createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
-    std::vector<std::shared_ptr<Tile>> tiles, const types::box_t &bounds) {
+    std::vector<std::shared_ptr<Tile>>& tiles, const types::box_t &bounds) {
   auto graph = types::graph_t();
   auto spatialIndexTree = InfluenceZoneRTree<std::shared_ptr<VoronoiCell>>();
   auto coords = std::vector<double>();

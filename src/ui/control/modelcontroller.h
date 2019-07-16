@@ -1,21 +1,23 @@
 #ifndef MODELCONTROLLER_H
 #define MODELCONTROLLER_H
 
+#include <QList>
 #include <QObject>
 #include <QQuickItem>
 
 #include "../../model/managers/modelmanager.h"
-#include "./entitiescontroller.h"
 #include "../threading/iterationtimermanager.h"
+#include "./entitiescontroller.h"
 
 namespace how {
 namespace ui {
 class ModelController : public QObject {
   Q_OBJECT
 
-  Q_PROPERTY(QRect worldBounds READ getWorldBounds CONSTANT FINAL)
+  Q_PROPERTY(
+      QRect worldBounds READ getWorldBounds NOTIFY newModelGenerated FINAL)
   Q_PROPERTY(EntitiesController *entitiesController READ getEntitiesController
-                 CONSTANT)
+                 CONSTANT FINAL)
 
 public:
   ModelController(QObject *parent = nullptr);
@@ -26,7 +28,12 @@ signals:
 public slots:
   void newModel(int width, int height, float minimumVoronoiCellDistance,
                 int randomSeed);
+  void saveToFile(QString name);
+  void loadFromFile(QString name);
   void entitiesMouseEvent(int x, int y, int button);
+
+public:
+  Q_INVOKABLE QList<QObject *> getAllSaveFiles();
 
 private slots:
   void iterateModel();

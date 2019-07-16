@@ -8,7 +8,7 @@ project(house-of-war LANGUAGES CXX)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(HEADER_FILES
@@ -44,6 +44,9 @@ set(HEADER_FILES
     src/model/operations/collisiondetector.h
     src/model/operations/graphoperations.h
     src/model/operations/pathfindingoperations.h
+    src/model/persistence/savefilesmanager.h
+    src/model/persistence/modeldeserializer.h
+    src/model/persistence/modelserializer.h
     src/model/random/utilsrandom.h
     src/model/utils/clockwisepointcomparator.h
     src/model/utils/easingfunctions.h
@@ -55,6 +58,7 @@ set(HEADER_FILES
     src/ui/bindings/tilebindings.h
     src/ui/control/entitiescontroller.h
     src/ui/control/modelcontroller.h
+    src/ui/control/savefile.h
     src/ui/control/tilescontroller.h
     src/ui/conversion/converter.h
     src/ui/items/armyitem.h
@@ -102,6 +106,9 @@ set(CPP_FILES
     src/model/operations/collisiondetector.cpp
     src/model/operations/graphoperations.cpp
     src/model/operations/pathfindingoperations.cpp
+    src/model/persistence/savefilesmanager.cpp
+    src/model/persistence/modeldeserializer.cpp
+    src/model/persistence/modelserializer.cpp
     src/model/utils/clockwisepointcomparator.cpp
     src/model/utils/easingfunctions.cpp
     src/model/utils/pointcomparator.cpp
@@ -111,6 +118,7 @@ set(CPP_FILES
     src/ui/bindings/tilebindings.cpp
     src/ui/control/entitiescontroller.cpp
     src/ui/control/modelcontroller.cpp
+    src/ui/control/savefile.cpp
     src/ui/control/tilescontroller.cpp
     src/ui/conversion/converter.cpp
     src/ui/items/armyitem.cpp
@@ -128,6 +136,7 @@ set(CPP_FILES
     )
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+
 find_package(LibNoise REQUIRED)
 find_package(Qt5 REQUIRED COMPONENTS Core Quick)
 find_package(Boost REQUIRED COMPONENTS graph)

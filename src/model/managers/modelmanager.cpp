@@ -2,29 +2,49 @@
 
 #include "../generation/graphgenerator.h"
 #include "../operations/modeliterators.h"
+#include "../persistence/modeldeserializer.h"
+#include "../persistence/modelserializer.h"
 
 namespace how {
 namespace model {
 
 ModelManager::ModelManager()
-    : entitiesManager(), selectionManager(this->entitiesManager),
-      delaunayVoronoiGraphPtr(), iterationsCount(0) {}
+    : worldGenerationConfig(), entitiesManager(),
+      selectionManager(this->entitiesManager), delaunayVoronoiGraphPtr(),
+      iterationsCount(0) {}
 
 void ModelManager::newModel(const WorldGenerationConfig &config) {
+  this->worldGenerationConfig = config;
   auto graph = generateGraph(config);
-  this->delaunayVoronoiGraphPtr =
-      std::make_unique<GraphManager>(graph, config.getBoundingBox());
-  this->entitiesManager.generateEntities(graph);
+  this->delaunayVoronoiGraphPtr = std::make_unique<GraphManager>(graph);
+  this->entitiesManager.addEntities(graph);
+  this->saveToFile("greg.json");
+}
+
+void ModelManager::loadModel(const WorldGenerationConfig &config,
+                             std::vector<std::shared_ptr<Tile>> &tilePtrs) {
+  this->worldGenerationConfig = config;
+  auto graph = generateGraph(config, tilePtrs);
+  this->delaunayVoronoiGraphPtr = std::make_unique<GraphManager>(graph);
+  this->entitiesManager.clearAllEntities();
+  this->entitiesManager.addEntities(graph);
+}
+
+void ModelManager::saveToFile(std::string fileName) {
+  serializeToFile(fileName, serializeModel(*this));
+}
+
+void ModelManager::loadFromFile(std::string fileName) {
+  deserializeModel(*this, deserializeFile(fileName));
 }
 
 void ModelManager::iterateModel() {
   iterateMovement(this->entitiesManager);
+  this->iterationsCount++;
   if (this->iterationsCount == LONG_ITERATION_CYCLES_COUNT) {
     this->iterationsCount = 0;
-    iterateTiles(this->entitiesManager);
     iterateArmies(this->entitiesManager);
-  } else {
-    this->iterationsCount++;
+    iterateTiles(this->entitiesManager);
   }
 }
 
@@ -53,16 +73,32 @@ void ModelManager::setEntityPositionChange(
       new EntityPositionChange(source, destinations));
 }
 
+const WorldGenerationConfig &ModelManager::getWorldGenerationConfig() const {
+  return this->worldGenerationConfig;
+}
+
+const types::box_t &ModelManager::getWorldBounds() const {
+  return this->worldGenerationConfig.boundingBox;
+}
+
 EntitiesManager *ModelManager::getEntitiesManager() {
   return &this->entitiesManager;
 }
 
-const GraphManager *ModelManager::getDelaunayVoronoiGraphPtr() const {
+const EntitiesManager &ModelManager::getEntitiesManager() const {
+  return this->entitiesManager;
+}
+
+const GraphManager *ModelManager::getDelaunayVoronoiGraph() const {
   return this->delaunayVoronoiGraphPtr.get();
 }
 
 SelectionManager *ModelManager::getSelectionManager() {
   return &this->selectionManager;
+}
+
+const SelectionManager &ModelManager::getSelectionManager() const {
+  return this->selectionManager;
 }
 
 } // namespace model

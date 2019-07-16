@@ -26,6 +26,7 @@ Rectangle {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+
         hoverEnabled: true
         onClicked: button.clicked()
         onPressed: button.opacity = 0.5

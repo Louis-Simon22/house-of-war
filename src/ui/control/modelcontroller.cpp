@@ -2,6 +2,7 @@
 
 #include "../../model/generation/worldgenerationconfig.h"
 #include "../conversion/converter.h"
+#include "./savefile.h"
 
 namespace how {
 namespace ui {
@@ -24,6 +25,14 @@ void ModelController::newModel(int width, int height,
   this->iterationTimerManager.resumeIterations();
 }
 
+void ModelController::saveToFile(QString name) {
+  this->modelManager.saveToFile(name.toStdString());
+}
+
+void ModelController::loadFromFile(QString name) {
+  this->modelManager.loadFromFile(name.toStdString());
+  this->iterationTimerManager.resumeIterations();
+}
 void ModelController::iterateModel() { this->modelManager.iterateModel(); }
 
 void ModelController::entitiesMouseEvent(int x, int y, int button) {
@@ -37,8 +46,17 @@ void ModelController::entitiesMouseEvent(int x, int y, int button) {
   }
 }
 
+QList<QObject *> ModelController::getAllSaveFiles() {
+  // TODO maybe memory leak
+  auto saveFiles = QList<QObject *>();
+  for (auto &fileName : model::getAllSaveFileNames()) {
+    saveFiles.append(new SaveFile(QString::fromStdString(fileName)));
+  }
+  return saveFiles;
+}
+
 QRect ModelController::getWorldBounds() const {
-  return convert(this->modelManager.getDelaunayVoronoiGraphPtr()->getBounds());
+  return convert(this->modelManager.getWorldBounds());
 }
 
 EntitiesController *ModelController::getEntitiesController() {

@@ -8,8 +8,8 @@
 namespace how {
 namespace model {
 
-GraphManager::GraphManager(types::graph_t graph, types::box_t bounds)
-    : graph(graph), bounds(bounds), voronoiSegments(), delaunaySegments() {
+GraphManager::GraphManager(types::graph_t graph)
+    : graph(graph), voronoiSegments(), delaunaySegments() {
   types::graph_vertex_iterator_t vertexItBegin, vertexItEnd;
   std::tie(vertexItBegin, vertexItEnd) = ::boost::vertices(graph);
   auto uniqueVoronoiSegmentsSet =
@@ -42,8 +42,6 @@ GraphManager::GraphManager(types::graph_t graph, types::box_t bounds)
 }
 
 const types::graph_t &GraphManager::getGraph() const { return this->graph; }
-
-const types::box_t &GraphManager::getBounds() const { return this->bounds; }
 
 const std::vector<types::segment_t> &GraphManager::getVoronoiSegments() const {
   return this->voronoiSegments;

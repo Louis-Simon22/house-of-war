@@ -53,7 +53,7 @@ BaseMenu {
             Layout.alignment: Qt.AlignCenter
             id: minimumVoronoiCellDistance
             label: "Minimum Voronoi Cell Distance"
-            input: "5"
+            input: "25"
         }
         MenuNumberInput {
             Layout.alignment: Qt.AlignCenter

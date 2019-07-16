@@ -32,6 +32,11 @@ public:
         index_rtree_value_t(influenceZone->getEnvelope(), influenceZone));
   }
 
+  void clearAllValues() {
+    this->influenceZoneToValueMap.clear();
+    this->indexRTree.clear();
+  }
+
   std::vector<Value> getValuesByPosition(const types::point_t &position) {
     auto coveredValues = std::vector<Value>();
 
