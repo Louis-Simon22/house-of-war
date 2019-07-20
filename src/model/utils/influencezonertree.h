@@ -10,7 +10,7 @@
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
 
-#include "../entities/influencezone.h"
+#include "../entities/influencezones/influencezone.h"
 #include "../modeltypes.h"
 
 namespace how {

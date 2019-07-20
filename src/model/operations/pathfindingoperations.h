@@ -1,8 +1,8 @@
 #ifndef MOVEMENTCALCULATOR_H
 #define MOVEMENTCALCULATOR_H
 
-#include "../entities/voronoicell.h"
-#include "../entities/entitypositionchange.h"
+#include "../entities/terrain/voronoicell.h"
+#include "../entities/change/entitypositionchange.h"
 #include "../graphtypes.h"
 
 namespace how {

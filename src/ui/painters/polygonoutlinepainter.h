@@ -1,7 +1,7 @@
 #ifndef POLYGONOUTLINEPAINTER_H
 #define POLYGONOUTLINEPAINTER_H
 
-#include "../../model/entities/voronoicell.h"
+#include "../../model/entities/terrain/voronoicell.h"
 #include "./painteritem.h"
 
 namespace how {

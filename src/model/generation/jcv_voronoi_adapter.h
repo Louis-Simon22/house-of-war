@@ -3,7 +3,7 @@
 
 #include "../../../lib/voronoi/src/jc_voronoi.h"
 
-#include "../entities/tile.h"
+#include "../entities/terrain/tile.h"
 #include "../modeltypes.h"
 
 namespace how {

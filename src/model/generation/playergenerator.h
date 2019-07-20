@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "../entities/player.h"
+#include "../entities/players/player.h"
 #include "../graphtypes.h"
 
 namespace how {

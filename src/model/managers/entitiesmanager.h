@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "../entities/player.h"
+#include "../entities/players/player.h"
 #include "../graphtypes.h"
 #include "../utils/influencezonertree.h"
 

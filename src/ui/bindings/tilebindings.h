@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "../../model/entities/tile.h"
+#include "../../model/entities/terrain/tile.h"
 #include "./entitybindings.h"
 
 namespace how {

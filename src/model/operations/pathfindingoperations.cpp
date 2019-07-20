@@ -1,9 +1,7 @@
 #include "pathfindingoperations.h"
 
-#include "../entities/delaunayedge.h"
+#include "../entities/terrain/delaunayedge.h"
 #include "../operations/graphoperations.h"
-
-#include <iostream>
 
 namespace how {
 namespace model {

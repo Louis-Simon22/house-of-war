@@ -6,7 +6,7 @@ namespace how {
 namespace model {
 
 SelectionManager::SelectionManager(EntitiesManager &entitiesManager)
-    : armySelectedSignal(), characterSelectedSignal(), tileSelectedSignal(),
+    : armySelectedSignal(), tileSelectedSignal(),
       entitiesManager(entitiesManager), selection(nullptr) {}
 
 void SelectionManager::selectByPosition(const types::point_t &position) {

@@ -9,10 +9,7 @@ namespace model {
 class SelectionManager {
 public:
   using army_selected_signal_t = ::boost::signals2::signal<void(Army *)>;
-  using character_selected_signal_t =
-      ::boost::signals2::signal<void(Character *)>;
-  using tile_selected_signal_t =
-      ::boost::signals2::signal<void(Tile *)>;
+  using tile_selected_signal_t = ::boost::signals2::signal<void(Tile *)>;
 
 public:
   SelectionManager(EntitiesManager &entitiesManager);
@@ -28,7 +25,6 @@ private:
 
 public:
   army_selected_signal_t armySelectedSignal;
-  character_selected_signal_t characterSelectedSignal;
   tile_selected_signal_t tileSelectedSignal;
 
 private:

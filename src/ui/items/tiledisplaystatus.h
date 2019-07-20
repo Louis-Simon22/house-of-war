@@ -10,6 +10,10 @@ class TileDisplayStatusWrapper : public QObject {
   Q_GADGET
 
 public:
+  TileDisplayStatusWrapper();
+  ~TileDisplayStatusWrapper();
+
+public:
   enum TileDisplayStatus {
     TILE_DISPLAY_STATUS_TERRAIN,
     TILE_DISPLAY_STATUS_ALTITUDE,

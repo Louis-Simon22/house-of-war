@@ -4,7 +4,7 @@ import QtQuick.Controls 2.5
 import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
 import com.louissimonmcnicoll.how.ui.entitiescontroller 1.0
 import com.louissimonmcnicoll.how.ui.tilescontroller 1.0
-import com.louissimonmcnicoll.how.ui.tiledisplaystatuswrapper 1.0
+import com.louissimonmcnicoll.how.ui.tiledisplaystatus 1.0
 
 Item {
     id: mapOverlay
@@ -52,10 +52,8 @@ Item {
 
             Button {
                 text: qsTr("Altitude")
-                onClicked: {
-                    var greg = TileDisplayStatusWrapper.TILE_DISPLAY_STATUS_ALTITUDE
-                    tilesController.tileDisplayStatus = greg
-                }
+                onClicked: tilesController.tileDisplayStatus
+                           = TileDisplayStatusWrapper.TILE_DISPLAY_STATUS_ALTITUDE
             }
 
             Button {

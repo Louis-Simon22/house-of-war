@@ -3,13 +3,12 @@
 
 #include "../modeltypes.h"
 #include "./player.h"
+#include "./terrain.h"
+#include "./terraincharacvalue.h"
 #include "./voronoicell.h"
 
 namespace how {
 namespace model {
-namespace {
-using charac_t = types::carac_t;
-} // namespace
 
 class Tile : public VoronoiCell {
 public:
@@ -21,19 +20,17 @@ public:
   bool isSelectable() const override;
 
 public:
-  const charac_t &getAltitude() const;
-  charac_t &getAltitude();
-  void setAltitude(charac_t altitude);
-  charac_t getResources() const;
-  charac_t &getResources();
+  void setAltitude(TerrainCharacValue altitude);
+  const types::charac_t &getResources() const;
   void setResources(charac_t resources);
   const Player *getOwner() const;
   void setOwner(const Player *owner);
 
 private:
   // TODO see notebook
-  charac_t altitude;
-  charac_t resources;
+  TerrainCharacValue altitude;
+  types::charac_t altitude;
+  types::charac_t resources;
   const Player *owner;
 };
 } // namespace model

@@ -1,7 +1,7 @@
 #ifndef TILEITEM_H
 #define TILEITEM_H
 
-#include "../../model/entities/tile.h"
+#include "../../model/entities/terrain/tile.h"
 #include "../../model/modeltypes.h"
 #include "../control/tilescontroller.h"
 #include "../painters/polygonoutlinepainter.h"

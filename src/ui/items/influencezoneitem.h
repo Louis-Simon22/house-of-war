@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QQuickItem>
 
-#include "../../model/entities/circularinfluencezone.h"
+#include "../../model/entities/influencezones/circularinfluencezone.h"
 #include "../painters/circlepainter.h"
 #include "./entityitem.h"
 

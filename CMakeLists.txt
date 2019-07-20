@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.14)
 
 set(CMAKE_BUILD_TYPE "Debug")
 set(CMAKE_CXX_FLAGS "-O0")
@@ -10,132 +10,17 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(HEADER_FILES
-    src/model/entities/army.h
-    src/model/entities/character.h
-    src/model/entities/circularinfluencezone.h
-    src/model/entities/delaunayedge.h
-    src/model/entities/entity.h
-    src/model/entities/entitypositionchange.h
-    src/model/entities/interactiveentity.h
-    src/model/entities/influencezone.h
-    src/model/entities/player.h
-    src/model/entities/polygoninfluencezone.h
-    src/model/entities/tile.h
-    src/model/entities/voronoicell.h
-    src/model/graphtypes.h
-    src/model/managers/graphmanager.h
-    src/model/managers/entitiesmanager.h
-    src/model/managers/modelmanager.h
-    src/model/managers/selectionmanager.h
-    src/model/modeltypes.h
-    src/model/operations/celldataoperations.h
-    src/model/generation/celldatagenerator.h
-    src/model/generation/delaunayextrapolator.h
-    src/model/generation/elevationgenerator.h
-    src/model/generation/graphgenerator.h
-    src/model/generation/jcv_voronoi_adapter.h
-    src/model/generation/playergenerator.h
-    src/model/generation/poissondisksamplingadapter.h
-    src/model/generation/walkingdistancescalculator.h
-    src/model/generation/worldgenerationconfig.h
-    src/model/operations/modeliterators.h
-    src/model/operations/collisiondetector.h
-    src/model/operations/graphoperations.h
-    src/model/operations/pathfindingoperations.h
-    src/model/persistence/savefilesmanager.h
-    src/model/persistence/modeldeserializer.h
-    src/model/persistence/modelserializer.h
-    src/model/random/utilsrandom.h
-    src/model/utils/clockwisepointcomparator.h
-    src/model/utils/easingfunctions.h
-    src/model/utils/influencezonertree.h
-    src/model/utils/pointcomparator.h
-    src/model/utils/segmentcomparator.h
-    src/ui/bindings/armybindings.h
-    src/ui/bindings/entitybindings.h
-    src/ui/bindings/tilebindings.h
-    src/ui/control/entitiescontroller.h
-    src/ui/control/modelcontroller.h
-    src/ui/control/savefile.h
-    src/ui/control/tilescontroller.h
-    src/ui/conversion/converter.h
-    src/ui/items/armyitem.h
-    src/ui/items/entityitem.h
-    src/ui/items/influencezoneitem.h
-    src/ui/items/tiledisplaystatus.h
-    src/ui/items/tileitem.h
-    src/ui/painters/circlepainter.h
-    src/ui/painters/painteritem.h
-    src/ui/painters/rectanglepainter.h
-    src/ui/painters/polygonoutlinepainter.h
-    src/ui/painters/polygonpainter.h
-    src/ui/painters/segmentspainter.h
-    src/ui/threading/iterationtimermanager.h
-    src/ui/threading/modelthreadmanager.h
-    )
-
-set(CPP_FILES
-    src/model/entities/army.cpp
-    src/model/entities/character.cpp
-    src/model/entities/circularinfluencezone.cpp
-    src/model/entities/delaunayedge.cpp
-    src/model/entities/entity.cpp
-    src/model/entities/entitypositionchange.cpp
-    src/model/entities/interactiveentity.cpp
-    src/model/entities/influencezone.cpp
-    src/model/entities/player.cpp
-    src/model/entities/polygoninfluencezone.cpp
-    src/model/entities/tile.cpp
-    src/model/entities/voronoicell.cpp
-    src/model/managers/graphmanager.cpp
-    src/model/managers/entitiesmanager.cpp
-    src/model/managers/modelmanager.cpp
-    src/model/managers/selectionmanager.cpp
-    src/model/generation/celldatagenerator.cpp
-    src/model/generation/delaunayextrapolator.cpp
-    src/model/generation/elevationgenerator.cpp
-    src/model/generation/graphgenerator.cpp
-    src/model/generation/jcv_voronoi_adapter.cpp
-    src/model/generation/playergenerator.cpp
-    src/model/generation/poissondisksamplingadapter.cpp
-    src/model/generation/walkingdistancescalculator.cpp
-    src/model/generation/worldgenerationconfig.cpp
-    src/model/operations/modeliterators.cpp
-    src/model/operations/collisiondetector.cpp
-    src/model/operations/graphoperations.cpp
-    src/model/operations/pathfindingoperations.cpp
-    src/model/persistence/savefilesmanager.cpp
-    src/model/persistence/modeldeserializer.cpp
-    src/model/persistence/modelserializer.cpp
-    src/model/utils/clockwisepointcomparator.cpp
-    src/model/utils/easingfunctions.cpp
-    src/model/utils/pointcomparator.cpp
-    src/model/utils/segmentcomparator.cpp
-    src/ui/bindings/armybindings.cpp
-    src/ui/bindings/entitybindings.cpp
-    src/ui/bindings/tilebindings.cpp
-    src/ui/control/entitiescontroller.cpp
-    src/ui/control/modelcontroller.cpp
-    src/ui/control/savefile.cpp
-    src/ui/control/tilescontroller.cpp
-    src/ui/conversion/converter.cpp
-    src/ui/items/armyitem.cpp
-    src/ui/items/entityitem.cpp
-    src/ui/items/influencezoneitem.cpp
-    src/ui/items/tileitem.cpp
-    src/ui/painters/circlepainter.cpp
-    src/ui/painters/painteritem.cpp
-    src/ui/painters/rectanglepainter.cpp
-    src/ui/painters/polygonoutlinepainter.cpp
-    src/ui/painters/polygonpainter.cpp
-    src/ui/painters/segmentspainter.cpp
-    src/ui/threading/modelthreadmanager.cpp
-    src/ui/threading/iterationtimermanager.cpp
-    )
-
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+
+file(GLOB_RECURSE CPP_FILES "src/*.cpp")
+file(GLOB_RECURSE HEADER_FILES "src/*.h")
+
+set (INCLUDE_DIRS "")
+foreach (_headerFile ${HEADER_FILES})
+    get_filename_component(_dir ${_headerFile} PATH)
+    list (APPEND INCLUDE_DIRS ${_dir})
+endforeach()
+list(REMOVE_DUPLICATES INCLUDE_DIRS)
 
 find_package(LibNoise REQUIRED)
 find_package(Qt5 REQUIRED COMPONENTS Core Quick)
@@ -144,13 +29,13 @@ find_package(Boost REQUIRED COMPONENTS graph)
 # Puts the files in the qml.qrc in the QML_FILES variable
 qt5_add_resources(QML_FILES qml.qrc)
 
-add_executable(${PROJECT_NAME} src/main.cpp ${HEADER_FILES} ${CPP_FILES} ${QML_FILES})
+add_executable(${PROJECT_NAME} ${CPP_FILES} ${QML_FILES})
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Quick)
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 
-target_include_directories(${PROJECT_NAME} INTERFACE ${Boost_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PRIVATE Boost::graph)
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${LIBNOISE_INCLUDE_DIRS})
 
-target_include_directories(${PROJECT_NAME} INTERFACE ${LIBNOISE_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBNOISE_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    Qt5::Core Qt5::Quick Boost::graph ${LIBNOISE_LIBRARIES})

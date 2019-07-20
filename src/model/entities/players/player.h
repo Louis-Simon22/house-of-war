@@ -3,8 +3,7 @@
 
 #include <memory>
 
-#include "./army.h"
-#include "./character.h"
+#include "../characters/army.h"
 
 namespace how {
 namespace model {

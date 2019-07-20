@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "../../model/entities/army.h"
+#include "../../model/entities/characters/army.h"
 #include "./entitybindings.h"
 
 namespace how {

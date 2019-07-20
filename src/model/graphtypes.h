@@ -5,8 +5,8 @@
 
 #include <boost/graph/adjacency_list.hpp>
 
-#include "./entities/delaunayedge.h"
-#include "./entities/tile.h"
+#include "./entities/terrain/delaunayedge.h"
+#include "./entities/terrain/tile.h"
 #include "./modeltypes.h"
 
 namespace how {

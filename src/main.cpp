@@ -6,8 +6,6 @@
 #include <QSurfaceFormat>
 #include <QThread>
 
-#include <iostream>
-
 #define BOOST_UUID_NO_SIMD
 #define BOOST_UUID_NO_TYPE_TRAITS
 // Remove this define when boost is updated to 1.70
@@ -17,6 +15,7 @@
 #define QSG_RENDERER_DEBUG = render
 
 #include "./ui/control/modelcontroller.h"
+#include "./ui/items/tiledisplaystatus.h"
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -25,6 +24,7 @@ int main(int argc, char *argv[]) {
 
   QSurfaceFormat format;
   format.setSamples(8);
+  format.setRenderableType(QSurfaceFormat::OpenGL);
   QSurfaceFormat::setDefaultFormat(format);
   QQmlApplicationEngine engine;
 
@@ -50,15 +50,13 @@ int main(int argc, char *argv[]) {
       uncreatableTypeErrorMessage);
   // ENUMS
   qmlRegisterUncreatableType<::how::ui::TileDisplayStatusWrapper>(
-      "com.louissimonmcnicoll.how.ui.tiledisplaystatuswrapper", 1, 0,
-      "TileDisplayStatusWrapper", uncreatableTypeErrorMessage);
+      "com.louissimonmcnicoll.how.ui.tiledisplaystatus", 1, 0,
+      "TileDisplayStatus", uncreatableTypeErrorMessage);
 
   engine.load(QUrl(QStringLiteral("qrc:/qml/Window.qml")));
   if (engine.rootObjects().isEmpty()) {
     return -1;
   }
-
-  std::cout << "Main thread " << app.thread() << std::endl;
 
   return app.exec();
 }
