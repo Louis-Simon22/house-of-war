@@ -11,6 +11,7 @@ const std::string SAVES_FOLDER_NAME = "./saves/";
 } // namespace
 
 void serializeToFile(std::string fileName, json j) {
+  fs::create_directory(SAVES_FOLDER_NAME);
   auto ofstream = std::ofstream(SAVES_FOLDER_NAME + fileName, ios::trunc);
   ofstream << std::setw(4) << j;
   ofstream.close();
@@ -25,6 +26,7 @@ json deserializeFile(std::string fileName) {
 
 std::vector<std::string> getAllSaveFileNames() {
   auto saves = std::vector<std::string>();
+  fs::create_directory(SAVES_FOLDER_NAME);
   for (const auto &entry : fs::directory_iterator(SAVES_FOLDER_NAME)) {
     saves.push_back(entry.path());
   }

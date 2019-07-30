@@ -7,7 +7,6 @@ Rectangle {
     height: text.height + textInput.height + paddingVertical * 3
 
     color: "#e9e9e9"
-    // round edges
     radius: 10
 
     property int paddingHorizontal: 10

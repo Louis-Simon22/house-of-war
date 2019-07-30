@@ -77,28 +77,34 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         height: parent.height * 0.3
 
+        ButtonGroup {
+            buttons: editPanelButtonsColumn.children
+        }
+
         Column {
+            id: editPanelButtonsColumn
             anchors.fill: parent
 
-            SelectButton {
+            MenuButton {
                 anchors.left: parent.left
                 anchors.right: parent.right
+                checked:true
                 text: qsTr("Plain")
-                //                onSelected: console.log("greg1")
+                onClicked: console.log("greg1")
             }
 
-            SelectButton {
+            MenuButton {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 text: qsTr("Forest")
-                //                onSelected: console.log("greg2")
+                onClicked: console.log("greg2")
             }
 
-            SelectButton {
+            MenuButton {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 text: qsTr("Mountain")
-                //                onSelected: console.log("greg3")
+                onClicked: console.log("greg3")
             }
         }
     }

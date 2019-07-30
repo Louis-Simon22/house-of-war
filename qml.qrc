@@ -4,7 +4,6 @@
         <file>qml/components/MenuNumberInput.qml</file>
         <file>qml/components/BaseMenu.qml</file>
         <file>qml/components/MenuListItem.qml</file>
-        <file>qml/components/SelectButton.qml</file>
         <file>qml/game/GameView.qml</file>
         <file>qml/menu/CreditsMenu.qml</file>
         <file>qml/menu/MainMenu.qml</file>

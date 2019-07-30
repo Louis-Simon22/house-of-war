@@ -4,6 +4,7 @@ import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
 
 import "game/"
 import "menu/"
+import "./components"
 
 Item {
     id: swapper

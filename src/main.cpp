@@ -17,6 +17,8 @@
 #include "./ui/control/modelcontroller.h"
 #include "./ui/items/tiledisplaystatus.h"
 
+#include <iostream>
+
 int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
@@ -31,7 +33,6 @@ int main(int argc, char *argv[]) {
   const QString uncreatableTypeErrorMessage =
       "This object may not be created in QML";
 
-  // Registering c++ bindings for QML
   // Controllers
   qmlRegisterUncreatableType<::how::ui::EntitiesController>(
       "com.louissimonmcnicoll.how.ui.entitiescontroller", 1, 0,
@@ -48,7 +49,7 @@ int main(int argc, char *argv[]) {
   qmlRegisterUncreatableType<::how::ui::ArmyBindings>(
       "com.louissimonmcnicoll.how.ui.armybindings", 1, 0, "ArmyBindings",
       uncreatableTypeErrorMessage);
-  // ENUMS
+  // Enums
   qmlRegisterUncreatableType<::how::ui::TileDisplayStatusWrapper>(
       "com.louissimonmcnicoll.how.ui.tiledisplaystatus", 1, 0,
       "TileDisplayStatus", uncreatableTypeErrorMessage);
