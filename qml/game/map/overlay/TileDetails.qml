@@ -28,7 +28,6 @@ Item {
         id: altitudeValue
         anchors.top: altitudeLabel.top
         anchors.left: altitudeLabel.right
-        text: tileBindings.altitude
         horizontalAlignment: Text.AlignRight
         font.pixelSize: 12
     }

@@ -29,19 +29,18 @@ void TileItem::onGraphEntityUpdated() {
   QColor cellColor = Qt::black;
   switch (this->tilesController->getTileDisplayStatus()) {
   case TileDisplayStatusWrapper::TILE_DISPLAY_STATUS_TERRAIN: {
-    const auto altitude = this->tile->getAltitude();
-    cellColor = QColor(0, static_cast<int>(altitude * 255), 0);
-    break;
-  }
-  case TileDisplayStatusWrapper::TILE_DISPLAY_STATUS_ALTITUDE: {
-    const auto altitude = this->tile->getAltitude();
-    cellColor = QColor(0, static_cast<int>(altitude * 255), 0);
-    break;
-  }
-  case TileDisplayStatusWrapper::TILE_DISPLAY_STATUS_RESOURCES: {
-    const auto resources = this->tile->getResources();
-    cellColor = QColor(0, static_cast<int>(resources),
-                       static_cast<int>(255 - resources));
+    auto terrainType = this->tile->getTerrainType();
+    switch (terrainType) {
+    case model::TerrainType::FOREST:
+      cellColor = Qt::darkGreen;
+      break;
+    case model::TerrainType::MOUNTAIN:
+      cellColor = Qt::gray;
+      break;
+    case model::TerrainType::PLAIN:
+      cellColor = Qt::green;
+      break;
+    }
     break;
   }
   case TileDisplayStatusWrapper::TILE_DISPLAY_STATUS_OWNER: {

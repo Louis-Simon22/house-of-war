@@ -11,7 +11,6 @@ namespace ui {
 class TileBindings : public EntityBindings {
   Q_OBJECT
 
-  Q_PROPERTY(float altitude READ getAltitude NOTIFY updateBindings)
   Q_PROPERTY(float resources READ getResources NOTIFY updateBindings)
 
 public:
@@ -22,7 +21,6 @@ public:
   void bindTile(model::Tile *tile);
 
 private:
-  types::carac_t getAltitude() const;
   types::carac_t getResources() const;
 
 private:

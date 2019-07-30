@@ -8,7 +8,7 @@ namespace ui {
 TilesController::TilesController()
     : QObject(nullptr),
       currentTileDisplayStatus(
-          TileDisplayStatusWrapper::TILE_DISPLAY_STATUS_RESOURCES) {}
+          TileDisplayStatusWrapper::TILE_DISPLAY_STATUS_DEFAULT) {}
 
 TileDisplayStatusWrapper::TileDisplayStatus
 TilesController::getTileDisplayStatus() const {
@@ -16,7 +16,6 @@ TilesController::getTileDisplayStatus() const {
 }
 
 void TilesController::setTileDisplayStatus(int tileDisplayStatus) {
-  std::cout << "Greg" << std::endl;
   this->currentTileDisplayStatus =
       static_cast<TileDisplayStatusWrapper::TileDisplayStatus>(
           tileDisplayStatus);

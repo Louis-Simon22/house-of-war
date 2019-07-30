@@ -6,6 +6,8 @@ import com.louissimonmcnicoll.how.ui.entitiescontroller 1.0
 import com.louissimonmcnicoll.how.ui.tilescontroller 1.0
 import com.louissimonmcnicoll.how.ui.tiledisplaystatus 1.0
 
+import "../../../components"
+
 Item {
     id: mapOverlay
 
@@ -41,31 +43,62 @@ Item {
     }
 
     Item {
-        id: tilesControlPanel
+        id: tileDisplayStatusPanel
         height: 100
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         width: childrenRect.width
 
         Row {
-            id: buttonRow
-
-            Button {
+            MenuButton {
                 text: qsTr("Altitude")
                 onClicked: tilesController.tileDisplayStatus
                            = TileDisplayStatusWrapper.TILE_DISPLAY_STATUS_ALTITUDE
             }
 
-            Button {
+            MenuButton {
                 text: qsTr("Resources")
                 onClicked: tilesController.tileDisplayStatus
                            = TileDisplayStatusWrapper.TILE_DISPLAY_STATUS_RESOURCES
             }
 
-            Button {
+            MenuButton {
                 text: qsTr("Owner")
                 onClicked: tilesController.tileDisplayStatus
                            = TileDisplayStatusWrapper.TILE_DISPLAY_STATUS_OWNER
+            }
+        }
+    }
+
+    Item {
+        id: editPanel
+        width: 100
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        height: parent.height * 0.3
+
+        Column {
+            anchors.fill: parent
+
+            SelectButton {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                text: qsTr("Plain")
+                //                onSelected: console.log("greg1")
+            }
+
+            SelectButton {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                text: qsTr("Forest")
+                //                onSelected: console.log("greg2")
+            }
+
+            SelectButton {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                text: qsTr("Mountain")
+                //                onSelected: console.log("greg3")
             }
         }
     }

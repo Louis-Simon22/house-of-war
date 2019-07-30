@@ -17,11 +17,9 @@ void calculateWalkingDistances(types::graph_t &graph) {
     const auto &targetVertex = graph[targetVertexDesc];
     auto &edge = graph[edgeDesc];
 
-    const auto heightDifference =
-        targetVertex->getAltitude() - sourceVertex->getAltitude();
-    const auto walkingDistance =
-        edge->getDistanceAsCrowFlies() * (1 + heightDifference);
-    edge->setDistanceWalking(std::max(walkingDistance, 0.0F));
+    // TODO distance calculation based on terrain/roads
+
+    edge->setDistanceWalking(edge->getDistanceAsCrowFlies());
   }
 }
 

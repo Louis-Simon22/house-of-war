@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "../utils/easingfunctions.h"
-#include "./celldatagenerator.h"
 #include "./delaunayextrapolator.h"
 #include "./jcv_voronoi_adapter.h"
 #include "./poissondisksamplingadapter.h"
@@ -21,7 +20,7 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
   const auto randomSeed = config.randomSeed;
 
   // PDS points generation
-  const std::uint32_t maximumAttempts = 40;
+  std::uint32_t maximumAttempts = 40;
   const auto pdsPoints = generatePoissonDiskSamplingByMinimumDistance(
       config.minimumVoronoiCellDistance, boundingBox, maximumAttempts,
       randomSeed);
@@ -45,15 +44,6 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
   auto graph = createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
       tilePtrs, boundingBox);
   std::cout << "Generated graph "
-            << std::chrono::duration_cast<std::chrono::milliseconds>(
-                   std::chrono::system_clock::now() - startTime)
-                   .count()
-            << std::endl;
-  std::cout << "=============================" << std::endl;
-
-  // Cell data generation
-  generateHeightData(boundingBox, randomSeed, graph);
-  std::cout << "Generated cell data "
             << std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now() - startTime)
                    .count()

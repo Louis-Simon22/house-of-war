@@ -1,20 +1,21 @@
 <RCC>
     <qresource prefix="/">
+        <file>qml/components/MenuButton.qml</file>
+        <file>qml/components/MenuNumberInput.qml</file>
+        <file>qml/components/BaseMenu.qml</file>
+        <file>qml/components/MenuListItem.qml</file>
+        <file>qml/components/SelectButton.qml</file>
         <file>qml/game/GameView.qml</file>
         <file>qml/menu/CreditsMenu.qml</file>
         <file>qml/menu/MainMenu.qml</file>
         <file>qml/menu/LoadMenu.qml</file>
         <file>qml/menu/GenerateMenu.qml</file>
         <file>qml/menu/ParentMenu.qml</file>
-        <file>qml/menu/components/MenuButton.qml</file>
-        <file>qml/menu/components/MenuNumberInput.qml</file>
-        <file>qml/menu/components/BaseMenu.qml</file>
         <file>qml/Window.qml</file>
         <file>qml/Swapper.qml</file>
         <file>qml/game/map/MapItem.qml</file>
         <file>qml/game/map/overlay/MapOverlay.qml</file>
         <file>qml/game/map/overlay/TileDetails.qml</file>
         <file>qml/game/map/overlay/ArmyDetails.qml</file>
-        <file>qml/menu/components/MenuListItem.qml</file>
     </qresource>
 </RCC>

@@ -1,11 +1,7 @@
-#include "terrain.h"
+#include "terraintype.h"
 
 namespace how {
 namespace model {
-
-Terrain::Terrain() {}
-
-Terrain::~Terrain() {}
 
 } // namespace model
 } // namespace how

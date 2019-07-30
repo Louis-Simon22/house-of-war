@@ -1,6 +1,6 @@
 import QtQuick 2.11
 
-import "components/"
+import "../components"
 
 import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
 
