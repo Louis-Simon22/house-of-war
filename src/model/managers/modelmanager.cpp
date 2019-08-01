@@ -48,17 +48,21 @@ void ModelManager::iterateModel() {
   }
 }
 
-void ModelManager::onSelectionEvent(types::coordinate_t posX,
-                                    types::coordinate_t posY) {
+void ModelManager::onEvent(types::coordinate_t posX, types::coordinate_t posY,
+                           EventType eventType) {
   auto position = types::point_t(posX, posY);
-  this->selectionManager.selectByPosition(position);
-}
-
-void ModelManager::onTargetingEvent(types::coordinate_t posX,
-                                    types::coordinate_t posY) {
-  auto position = types::point_t(posX, posY);
-  this->setEntityPositionChange(this->selectionManager.getSelection(),
-                                position);
+  switch (eventType) {
+  case SELECT:
+    this->selectionManager.selectByPosition(position);
+    break;
+  case TARGET:
+    this->setEntityPositionChange(this->selectionManager.getSelection(),
+                                  position);
+    break;
+  case EDIT:
+    // TODO
+    break;
+  }
 }
 
 void ModelManager::setEntityPositionChange(

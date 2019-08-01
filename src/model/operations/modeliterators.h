@@ -11,7 +11,6 @@ void iterateMovement(EntitiesManager &entitiesManager);
 void iterateTiles(EntitiesManager &entitiesManager);
 void iterateArmies(EntitiesManager &entitiesManager);
 
-
 } // namespace model
 } // namespace how
 

@@ -30,7 +30,7 @@ public slots:
                 int randomSeed);
   void saveToFile(QString name);
   void loadFromFile(QString name);
-  void entitiesMouseEvent(int x, int y, int button);
+  void entitiesMouseEvent(int x, int y, int button, int controlMode);
 
 public:
   Q_INVOKABLE QList<QObject *> getAllSaveFiles();

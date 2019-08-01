@@ -6,6 +6,7 @@
 
 #include "../generation/worldgenerationconfig.h"
 #include "../persistence/savefilesmanager.h"
+#include "./eventtype.h"
 #include "./entitiesmanager.h"
 #include "./graphmanager.h"
 #include "./selectionmanager.h"
@@ -21,12 +22,12 @@ public:
 public:
   void newModel(const WorldGenerationConfig &config);
   void loadModel(const WorldGenerationConfig &config,
-                 std::vector<std::shared_ptr<Tile>>& tilePtrs);
+                 std::vector<std::shared_ptr<Tile>> &tilePtrs);
   void saveToFile(std::string fileName);
   void loadFromFile(std::string fileName);
   void iterateModel();
-  void onSelectionEvent(types::coordinate_t posX, types::coordinate_t posY);
-  void onTargetingEvent(types::coordinate_t posX, types::coordinate_t posY);
+  void onEvent(types::coordinate_t posX, types::coordinate_t posY,
+                  EventType controlMode);
 
 private:
   void setEntityPositionChange(Entity *source,

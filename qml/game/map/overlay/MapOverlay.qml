@@ -78,6 +78,7 @@ Item {
         height: parent.height * 0.3
 
         ButtonGroup {
+            id: terrainTypes
             buttons: editPanelButtonsColumn.children
         }
 
@@ -88,23 +89,19 @@ Item {
             MenuButton {
                 anchors.left: parent.left
                 anchors.right: parent.right
-                checked:true
                 text: qsTr("Plain")
-                onClicked: console.log("greg1")
             }
 
             MenuButton {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 text: qsTr("Forest")
-                onClicked: console.log("greg2")
             }
 
             MenuButton {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 text: qsTr("Mountain")
-                onClicked: console.log("greg3")
             }
         }
     }

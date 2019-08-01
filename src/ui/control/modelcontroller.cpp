@@ -2,6 +2,7 @@
 
 #include "../../model/generation/worldgenerationconfig.h"
 #include "../conversion/converter.h"
+#include "./eventtypewrapper.h"
 #include "./savefile.h"
 
 namespace how {
@@ -33,15 +34,24 @@ void ModelController::loadFromFile(QString name) {
   this->modelManager.loadFromFile(name.toStdString());
   this->iterationTimerManager.resumeIterations();
 }
+
 void ModelController::iterateModel() { this->modelManager.iterateModel(); }
 
-void ModelController::entitiesMouseEvent(int x, int y, int button) {
+void ModelController::entitiesMouseEvent(int x, int y, int button,
+                                         int eventType) {
   switch (button) {
   case Qt::LeftButton:
-    this->modelManager.onSelectionEvent(x, y);
+    this->modelManager.onEvent(x, y, model::EventType::SELECT);
     break;
   case Qt::RightButton:
-    this->modelManager.onTargetingEvent(x, y);
+    switch (eventType) {
+    case model::EventType::TARGET:
+      this->modelManager.onEvent(x, y, model::EventType::TARGET);
+      break;
+    case model::EventType::EDIT:
+      this->modelManager.onEvent(x, y, model::EventType::EDIT);
+      break;
+    }
     break;
   }
 }
