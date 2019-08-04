@@ -28,7 +28,7 @@ void TileItem::onTileDisplayStatusChanged() { this->onGraphEntityUpdated(); }
 void TileItem::onGraphEntityUpdated() {
   QColor cellColor = Qt::black;
   switch (this->tilesController->getTileDisplayStatus()) {
-  case TileDisplayStatusWrapper::TILE_DISPLAY_STATUS_TERRAIN: {
+  case TileDisplayStatusWrapper::TERRAIN: {
     auto terrainType = this->tile->getTerrainType();
     switch (terrainType) {
     case model::TerrainType::FOREST:
@@ -43,7 +43,7 @@ void TileItem::onGraphEntityUpdated() {
     }
     break;
   }
-  case TileDisplayStatusWrapper::TILE_DISPLAY_STATUS_OWNER: {
+  case TileDisplayStatusWrapper::OWNER: {
     const auto *owner = this->tile->getOwner();
     cellColor = owner ? Qt::blue : Qt::black;
     break;

@@ -7,6 +7,7 @@
 
 #include "../../model/managers/modelmanager.h"
 #include "../threading/iterationtimermanager.h"
+#include "./controlmodewrapper.h"
 #include "./entitiescontroller.h"
 
 namespace how {
@@ -18,6 +19,7 @@ class ModelController : public QObject {
       QRect worldBounds READ getWorldBounds NOTIFY newModelGenerated FINAL)
   Q_PROPERTY(EntitiesController *entitiesController READ getEntitiesController
                  CONSTANT FINAL)
+  Q_PROPERTY(int controlMode MEMBER currentControlMode FINAL)
 
 public:
   ModelController(QObject *parent = nullptr);
@@ -30,7 +32,7 @@ public slots:
                 int randomSeed);
   void saveToFile(QString name);
   void loadFromFile(QString name);
-  void entitiesMouseEvent(int x, int y, int button, int controlMode);
+  void entitiesMouseEvent(int x, int y, int button);
 
 public:
   Q_INVOKABLE QList<QObject *> getAllSaveFiles();
@@ -44,11 +46,13 @@ public:
 private:
   QRect getWorldBounds() const;
   ModelController *getModelController();
+  ControlModeWrapper::ControlMode getControlMode() const;
 
 private:
   model::ModelManager modelManager;
   EntitiesController entitiesController;
   IterationTimerManager iterationTimerManager;
+  int currentControlMode;
 };
 } // namespace ui
 } // namespace how

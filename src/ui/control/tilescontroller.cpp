@@ -8,11 +8,16 @@ namespace ui {
 TilesController::TilesController()
     : QObject(nullptr),
       currentTileDisplayStatus(
-          TileDisplayStatusWrapper::TILE_DISPLAY_STATUS_DEFAULT) {}
+          TileDisplayStatusWrapper::DEFAULT),
+      currentTerrainType(model::TerrainType::DEFAULT) {}
 
 TileDisplayStatusWrapper::TileDisplayStatus
 TilesController::getTileDisplayStatus() const {
   return this->currentTileDisplayStatus;
+}
+
+model::TerrainType TilesController::getTerrainType() const {
+  return static_cast<model::TerrainType>(this->currentTerrainType);
 }
 
 void TilesController::setTileDisplayStatus(int tileDisplayStatus) {

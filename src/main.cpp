@@ -54,8 +54,11 @@ int main(int argc, char *argv[]) {
       "com.louissimonmcnicoll.how.ui.tiledisplaystatus", 1, 0,
       "TileDisplayStatus", uncreatableTypeErrorMessage);
   qmlRegisterUncreatableType<::how::ui::ControlModeWrapper>(
-              "com.louissimonmcnicoll.how.ui.controlmode", 1, 0,
-              "ControlMode", uncreatableTypeErrorMessage);
+      "com.louissimonmcnicoll.how.ui.controlmode", 1, 0, "ControlMode",
+      uncreatableTypeErrorMessage);
+  qmlRegisterUncreatableType<::how::ui::TerrainTypeWrapper>(
+      "com.louissimonmcnicoll.how.ui.terraintype", 1, 0, "TerrainType",
+      uncreatableTypeErrorMessage);
 
   engine.load(QUrl(QStringLiteral("qrc:/qml/Window.qml")));
   if (engine.rootObjects().isEmpty()) {

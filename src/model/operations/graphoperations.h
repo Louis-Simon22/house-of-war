@@ -16,8 +16,8 @@ computeDijkstra(types::graph_vertex_desc_t source,
                 WeightCalculator weightCalculator,
                 const types::graph_t &graph) {
   // Map of the of the shortest path by predecessors (so in reverse order)
-  auto predecessors = std::vector<types::graph_vertex_desc_t>(
-      ::boost::num_vertices(graph));
+  auto predecessors =
+      std::vector<types::graph_vertex_desc_t>(::boost::num_vertices(graph));
   // Map of the distances from each vertex to the source
   auto distanceMap =
       std::vector<types::coordinate_t>(::boost::num_vertices(graph));
@@ -33,6 +33,12 @@ computeDijkstra(types::graph_vertex_desc_t source,
   return std::pair<std::vector<types::graph_vertex_desc_t>,
                    std::vector<types::coordinate_t>>(predecessors, distanceMap);
 }
+
+std::vector<types::segment_t>
+extractUniqueVoronoiSegments(const types::graph_t &graph);
+
+std::vector<types::segment_t>
+extractUniqueDelaunaySegments(const types::graph_t &graph);
 
 } // namespace model
 } // namespace how

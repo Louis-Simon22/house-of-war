@@ -10,14 +10,12 @@ namespace model {
 
 ModelManager::ModelManager()
     : worldGenerationConfig(), entitiesManager(),
-      selectionManager(this->entitiesManager), delaunayVoronoiGraphPtr(),
-      iterationsCount(0) {}
+      selectionManager(this->entitiesManager), iterationsCount(0) {}
 
 void ModelManager::newModel(const WorldGenerationConfig &config) {
   this->worldGenerationConfig = config;
   auto graph = generateGraph(config);
-  this->delaunayVoronoiGraphPtr = std::make_unique<GraphManager>(graph);
-  this->entitiesManager.addEntities(graph);
+  this->entitiesManager.resetEntities(graph);
   this->saveToFile("greg.json");
 }
 
@@ -25,9 +23,7 @@ void ModelManager::loadModel(const WorldGenerationConfig &config,
                              std::vector<std::shared_ptr<Tile>> &tilePtrs) {
   this->worldGenerationConfig = config;
   auto graph = generateGraph(config, tilePtrs);
-  this->delaunayVoronoiGraphPtr = std::make_unique<GraphManager>(graph);
-  this->entitiesManager.clearAllEntities();
-  this->entitiesManager.addEntities(graph);
+  this->entitiesManager.resetEntities(graph);
 }
 
 void ModelManager::saveToFile(std::string fileName) {
@@ -48,33 +44,8 @@ void ModelManager::iterateModel() {
   }
 }
 
-void ModelManager::onEvent(types::coordinate_t posX, types::coordinate_t posY,
-                           EventType eventType) {
-  auto position = types::point_t(posX, posY);
-  switch (eventType) {
-  case SELECT:
-    this->selectionManager.selectByPosition(position);
-    break;
-  case TARGET:
-    this->setEntityPositionChange(this->selectionManager.getSelection(),
-                                  position);
-    break;
-  case EDIT:
-    // TODO
-    break;
-  }
-}
-
-void ModelManager::setEntityPositionChange(
-    Entity *source, const types::point_t &destinationPos) {
-  const auto &sourceVertexDesc = this->entitiesManager.getVertexDescByPosition(
-      source->getAbsolutePosition());
-  const auto &destinationVertexDesc =
-      this->entitiesManager.getVertexDescByPosition(destinationPos);
-  auto destinations = this->delaunayVoronoiGraphPtr->getDestinationsBetween(
-      sourceVertexDesc, destinationVertexDesc);
-  source->setEntityPositionChange(
-      new EntityPositionChange(source, destinations));
+void ModelManager::onEvent(const ModelEvent &modelEvent) {
+  modelEvent.applyEvent(this->entitiesManager, this->selectionManager);
 }
 
 const WorldGenerationConfig &ModelManager::getWorldGenerationConfig() const {
@@ -91,10 +62,6 @@ EntitiesManager *ModelManager::getEntitiesManager() {
 
 const EntitiesManager &ModelManager::getEntitiesManager() const {
   return this->entitiesManager;
-}
-
-const GraphManager *ModelManager::getDelaunayVoronoiGraph() const {
-  return this->delaunayVoronoiGraphPtr.get();
 }
 
 SelectionManager *ModelManager::getSelectionManager() {

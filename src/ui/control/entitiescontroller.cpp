@@ -40,17 +40,23 @@ void EntitiesController::generateMapItems(QQuickItem *parent) {
   }
 
   auto *delaunaySegmentsPainter = new SegmentsPainter(
-      this->modelManager.getDelaunayVoronoiGraph()->getDelaunaySegments(),
-      parent);
+      this->entitiesManager->getUniqueDelaunaySegments(), parent);
   QQmlEngine::setObjectOwnership(delaunaySegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
   delaunaySegmentsPainter->setVisible(true);
   auto *voronoiSegmentsPainter = new SegmentsPainter(
-      this->modelManager.getDelaunayVoronoiGraph()->getVoronoiSegments(),
-      parent);
+      this->entitiesManager->getUniqueVoronoiSegments(), parent);
   QQmlEngine::setObjectOwnership(voronoiSegmentsPainter,
                                  QQmlEngine::JavaScriptOwnership);
   voronoiSegmentsPainter->setVisible(false);
+}
+
+const TilesController *EntitiesController::getTilesController() const {
+  return &this->tilesController;
+}
+
+TilesController *EntitiesController::getTilesController() {
+  return &this->tilesController;
 }
 
 ArmyBindings *EntitiesController::getArmyBindings() {
@@ -59,10 +65,6 @@ ArmyBindings *EntitiesController::getArmyBindings() {
 
 TileBindings *EntitiesController::getTileBindings() {
   return &this->tileBindings;
-}
-
-TilesController *EntitiesController::getTilesController() {
-  return &this->tilesController;
 }
 
 } // namespace ui

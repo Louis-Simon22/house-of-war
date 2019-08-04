@@ -1,8 +1,10 @@
 #include "modelcontroller.h"
 
+#include "../../model/events/editterrainevent.h"
+#include "../../model/events/selectevent.h"
+#include "../../model/events/targetevent.h"
 #include "../../model/generation/worldgenerationconfig.h"
 #include "../conversion/converter.h"
-#include "./eventtypewrapper.h"
 #include "./savefile.h"
 
 namespace how {
@@ -10,7 +12,7 @@ namespace ui {
 
 ModelController::ModelController(QObject *parent)
     : QObject(parent), modelManager(), entitiesController(this->modelManager),
-      iterationTimerManager() {
+      iterationTimerManager(), currentControlMode(ControlModeWrapper::EDIT) {
   connect(&this->iterationTimerManager, &IterationTimerManager::iterate, this,
           &ModelController::iterateModel, Qt::QueuedConnection);
 }
@@ -37,23 +39,28 @@ void ModelController::loadFromFile(QString name) {
 
 void ModelController::iterateModel() { this->modelManager.iterateModel(); }
 
-void ModelController::entitiesMouseEvent(int x, int y, int button,
-                                         int eventType) {
+void ModelController::entitiesMouseEvent(int x, int y, int button) {
   switch (button) {
   case Qt::LeftButton:
-    this->modelManager.onEvent(x, y, model::EventType::SELECT);
+    this->modelManager.onEvent(model::SelectEvent(x, y));
     break;
   case Qt::RightButton:
-    switch (eventType) {
-    case model::EventType::TARGET:
-      this->modelManager.onEvent(x, y, model::EventType::TARGET);
+    switch (this->getControlMode()) {
+    case ControlModeWrapper::PLAY:
+      this->modelManager.onEvent(model::TargetEvent(x, y));
       break;
-    case model::EventType::EDIT:
-      this->modelManager.onEvent(x, y, model::EventType::EDIT);
+    case ControlModeWrapper::EDIT:
+      auto terrainType = static_cast<model::TerrainType>(
+          this->entitiesController.getTilesController()->getTerrainType());
+      this->modelManager.onEvent(model::EditTerrainEvent(x, y, terrainType));
       break;
     }
     break;
   }
+}
+
+EntitiesController *ModelController::getEntitiesController() {
+  return &this->entitiesController;
 }
 
 QList<QObject *> ModelController::getAllSaveFiles() {
@@ -69,8 +76,8 @@ QRect ModelController::getWorldBounds() const {
   return convert(this->modelManager.getWorldBounds());
 }
 
-EntitiesController *ModelController::getEntitiesController() {
-  return &this->entitiesController;
+ControlModeWrapper::ControlMode ModelController::getControlMode() const {
+  return static_cast<ControlModeWrapper::ControlMode>(this->currentControlMode);
 }
 
 } // namespace ui

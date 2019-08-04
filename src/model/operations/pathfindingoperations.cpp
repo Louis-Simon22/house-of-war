@@ -9,7 +9,7 @@ namespace model {
 std::vector<types::point_t>
 graphEntityPathfinding(types::graph_vertex_desc_t sourceVertexDesc,
                        types::graph_vertex_desc_t destinationVertexDesc,
-                       types::graph_t &graph) {
+                       const types::graph_t &graph) {
   // Map of the shortest path by predecessors
   std::vector<types::graph_vertex_desc_t> predecessors;
   std::tie(predecessors, std::ignore) = computeDijkstra<>(

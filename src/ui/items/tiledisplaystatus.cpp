@@ -5,7 +5,5 @@ namespace ui {
 
 TileDisplayStatusWrapper::TileDisplayStatusWrapper() : QObject() {}
 
-TileDisplayStatusWrapper::~TileDisplayStatusWrapper() {}
-
 } // namespace ui
 } // namespace how

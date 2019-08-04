@@ -1,14 +1,12 @@
 #ifndef MODELMANAGER_H
 #define MODELMANAGER_H
 
-#include <memory>
 #include <string>
 
+#include "../events/modelevent.h"
 #include "../generation/worldgenerationconfig.h"
 #include "../persistence/savefilesmanager.h"
-#include "./eventtype.h"
 #include "./entitiesmanager.h"
-#include "./graphmanager.h"
 #include "./selectionmanager.h"
 
 namespace how {
@@ -26,19 +24,13 @@ public:
   void saveToFile(std::string fileName);
   void loadFromFile(std::string fileName);
   void iterateModel();
-  void onEvent(types::coordinate_t posX, types::coordinate_t posY,
-                  EventType controlMode);
-
-private:
-  void setEntityPositionChange(Entity *source,
-                               const types::point_t &destinationPos);
+  void onEvent(const ModelEvent &modelEvent);
 
 public:
   const WorldGenerationConfig &getWorldGenerationConfig() const;
   const types::box_t &getWorldBounds() const;
   EntitiesManager *getEntitiesManager();
   const EntitiesManager &getEntitiesManager() const;
-  const GraphManager *getDelaunayVoronoiGraph() const;
   SelectionManager *getSelectionManager();
   const SelectionManager &getSelectionManager() const;
 
@@ -46,7 +38,6 @@ private:
   WorldGenerationConfig worldGenerationConfig;
   EntitiesManager entitiesManager;
   SelectionManager selectionManager;
-  std::unique_ptr<GraphManager> delaunayVoronoiGraphPtr;
   std::size_t iterationsCount;
 };
 } // namespace model

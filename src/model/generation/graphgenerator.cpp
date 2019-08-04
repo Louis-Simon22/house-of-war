@@ -64,8 +64,8 @@ types::graph_t generateGraph(const WorldGenerationConfig &config) {
 
 types::graph_t generateGraph(const WorldGenerationConfig &config,
                              std::vector<std::shared_ptr<Tile>> tilePtrs) {
-    return createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
-                tilePtrs, config.boundingBox);
+  return createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
+      tilePtrs, config.boundingBox);
 }
 
 } // namespace model

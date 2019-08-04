@@ -23,7 +23,7 @@ public:
   const Player *getOwner() const;
   void setOwner(const Player *owner);
   TerrainType getTerrainType() const;
-  void setTerrain(TerrainType terrainType);
+  void setTerrainType(TerrainType terrainType);
 
 private:
   TerrainType terrainType;

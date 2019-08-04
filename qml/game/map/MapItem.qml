@@ -46,7 +46,7 @@ Item {
                 propagateComposedEvents: false
 
                 onClicked: {
-                    modelController.entitiesMouseEvent(mouseX, mouseY,
+                    modelController.entitiesMouseEvent(mouse.x, mouse.y,
                                                        mouse.button)
                 }
                 onWheel: {

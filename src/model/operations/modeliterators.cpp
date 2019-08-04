@@ -5,6 +5,7 @@
 namespace how {
 namespace model {
 
+// TODO these are events
 void iterateMovement(EntitiesManager &entitiesManager) {
   auto &armyPtrs = entitiesManager.getPlayers()[0].getArmyPtrs();
   for (auto &armyPtr : armyPtrs) {

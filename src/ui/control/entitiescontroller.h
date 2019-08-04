@@ -26,10 +26,13 @@ public:
 public slots:
   void generateMapItems(QQuickItem *parent);
 
+public:
+  const TilesController *getTilesController() const;
+  TilesController *getTilesController();
+
 private:
   ArmyBindings *getArmyBindings();
   TileBindings *getTileBindings();
-  TilesController *getTilesController();
 
 private:
   model::ModelManager &modelManager;

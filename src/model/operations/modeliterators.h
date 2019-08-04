@@ -2,7 +2,6 @@
 #define ARMIESITERATOR_H
 
 #include "../managers/entitiesmanager.h"
-#include "../managers/graphmanager.h"
 
 namespace how {
 namespace model {
