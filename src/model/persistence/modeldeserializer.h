@@ -11,7 +11,8 @@ namespace {
 using json = ::nlohmann::json;
 }
 
-void deserializeModel(ModelManager &modelManager, json j);
+std::tuple<WorldGenerationConfig, std::vector<std::shared_ptr<Tile>>>
+deserializeModel(json j);
 
 } // namespace model
 } // namespace how

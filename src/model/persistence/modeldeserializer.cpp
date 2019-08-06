@@ -14,12 +14,12 @@ types::point_t deserializePoint(json j);
 types::box_t deserializeBox(json j);
 WorldGenerationConfig deserializeWorldGenerationConfig(json j);
 
-void deserializeModel(ModelManager &modelManager, json j) {
+std::tuple<WorldGenerationConfig, std::vector<std::shared_ptr<Tile>>>
+deserializeModel(json j) {
   auto tilePtrs = deserializeEntities(j["entities"]);
   auto worldGenerationConfig =
       deserializeWorldGenerationConfig(j["worldGenerationConfig"]);
-  // TODO this call is awkward, maybe return a tuple or a custom object?
-  modelManager.loadModel(worldGenerationConfig, tilePtrs);
+  return std::make_tuple<>(worldGenerationConfig, tilePtrs);
 }
 
 std::vector<std::shared_ptr<Tile>> deserializeEntities(json j) {
@@ -54,8 +54,7 @@ types::box_t deserializeBox(json j) {
 }
 
 WorldGenerationConfig deserializeWorldGenerationConfig(json j) {
-  return WorldGenerationConfig(
-      deserializeBox(j["boundingBox"]),
+  return WorldGenerationConfig(deserializeBox(j["boundingBox"]),
       j["minimumVoronoiCellDistance"].get<types::coordinate_t>(),
       j["randomSeed"].get<std::uint32_t>());
 }

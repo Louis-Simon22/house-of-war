@@ -19,6 +19,8 @@ class ModelController : public QObject {
       QRect worldBounds READ getWorldBounds NOTIFY newModelGenerated FINAL)
   Q_PROPERTY(EntitiesController *entitiesController READ getEntitiesController
                  CONSTANT FINAL)
+  Q_PROPERTY(IterationTimerManager *iterationTimerManager READ
+                 getIterationTimerManager FINAL CONSTANT)
   Q_PROPERTY(int controlMode MEMBER currentControlMode FINAL)
 
 public:
@@ -28,9 +30,9 @@ signals:
   void newModelGenerated();
 
 public slots:
-  void newModel(int width, int height, float minimumVoronoiCellDistance,
-                int randomSeed);
-  void saveToFile(QString name);
+  void newModel(QString fileName, int width, int height,
+                float minimumVoronoiCellDistance, int randomSeed);
+  void saveToFile();
   void loadFromFile(QString name);
   void entitiesMouseEvent(int x, int y, int button);
 
@@ -46,6 +48,7 @@ public:
 private:
   QRect getWorldBounds() const;
   ModelController *getModelController();
+  IterationTimerManager *getIterationTimerManager();
   ControlModeWrapper::ControlMode getControlMode() const;
 
 private:

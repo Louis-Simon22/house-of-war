@@ -16,9 +16,8 @@ json serializePoint(const types::point_t &point);
 json serializeModel(const ModelManager &modelManager) {
   return {
       {"entities", serializeEntities(modelManager.getEntitiesManager())},
-      {"worldGenerationConfig",
-       serializeWorldGenerationConfig(modelManager.getWorldGenerationConfig())}
-  };
+      {"worldGenerationConfig", serializeWorldGenerationConfig(
+                                    modelManager.getWorldGenerationConfig())}};
   // TODO other model data
 }
 

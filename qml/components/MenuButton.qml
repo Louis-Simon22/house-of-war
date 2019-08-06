@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.12
 Button {
     id: button
 
-    text: "Greg"
+    text: ""
     hoverEnabled: true
     onPressed: button.opacity = 0.5
     onReleased: button.opacity = 1

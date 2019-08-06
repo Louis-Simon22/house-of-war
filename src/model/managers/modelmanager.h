@@ -18,9 +18,8 @@ public:
   ModelManager();
 
 public:
-  void newModel(const WorldGenerationConfig &config);
-  void loadModel(const WorldGenerationConfig &config,
-                 std::vector<std::shared_ptr<Tile>> &tilePtrs);
+  void newModel(std::string fileName, const WorldGenerationConfig &config);
+  void saveToFile();
   void saveToFile(std::string fileName);
   void loadFromFile(std::string fileName);
   void iterateModel();
@@ -35,6 +34,7 @@ public:
   const SelectionManager &getSelectionManager() const;
 
 private:
+  std::string fileName;
   WorldGenerationConfig worldGenerationConfig;
   EntitiesManager entitiesManager;
   SelectionManager selectionManager;

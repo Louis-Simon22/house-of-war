@@ -1,6 +1,7 @@
 import QtQuick 2.11
 
 import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
+import com.louissimonmcnicoll.how.ui.controlmode 1.0
 
 Item {
     id: parentMenu
@@ -13,8 +14,14 @@ Item {
         id: mainMenu
         anchors.fill: parent
 
-        onNewGamePressed: parentMenu.state = "new"
-        onLoadGamePressed: parentMenu.state = "load"
+        onPlayPressed: {
+            modelController.controlMode = ControlMode.PLAY
+            parentMenu.state = "load"
+        }
+        onEditorPressed: {
+            modelController.controlMode = ControlMode.EDIT
+            parentMenu.state = "load"
+        }
         onCreditsPressed: parentMenu.state = "credits"
         onBack: {
             Qt.quit()
@@ -35,6 +42,7 @@ Item {
         anchors.fill: parent
 
         modelController: parentMenu.modelController
+        onNewModel: parentMenu.state = "new"
         onModelLoaded: parentMenu.startGame()
         onBack: parentMenu.state = "main"
     }

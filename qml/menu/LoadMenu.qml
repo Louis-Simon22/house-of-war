@@ -9,25 +9,37 @@ BaseMenu {
 
     property ModelController modelController
 
+    signal newModel
     signal modelLoaded
 
     ListView {
         id: saveFilesList
-
-        width: childrenRect.width
-        height: childrenRect.height
-
+        width: contentItem.childrenRect.width
+        height: contentItem.childrenRect.height
         anchors.centerIn: parent
 
         model: loadScene.modelController.getAllSaveFiles()
         delegate: MenuListItem {
-            labelText: modelData.name
-            buttonText: "Load"
+            anchors.left: parent.left
 
+            labelText: modelData.name
+            buttonText: qsTr("Load")
             onClicked: {
                 loadScene.modelController.loadFromFile(modelData.name)
                 loadScene.modelLoaded()
             }
+        }
+    }
+
+    MenuButton {
+        id: newGameButton
+        anchors.right: saveFilesList.right
+        anchors.top: saveFilesList.bottom
+        anchors.topMargin: 5
+
+        text: qsTr("New")
+        onClicked: {
+            loadScene.newModel()
         }
     }
 

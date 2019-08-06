@@ -14,6 +14,7 @@ public:
   ~IterationTimerManager();
 
 public slots:
+  void toggleIterations();
   void pauseIterations();
   void resumeIterations();
   void setIterationInterval(int msec);

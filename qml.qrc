@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/components/MenuButton.qml</file>
-        <file>qml/components/MenuNumberInput.qml</file>
+        <file>qml/components/MenuInput.qml</file>
         <file>qml/components/BaseMenu.qml</file>
         <file>qml/components/MenuListItem.qml</file>
         <file>qml/game/GameView.qml</file>

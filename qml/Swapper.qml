@@ -48,8 +48,11 @@ Item {
         if (event.key === Qt.Key_Escape) {
             swapper.state = "menu"
             event.accepted = true
+        } else {
+            event.accepted = false
         }
     }
+    Keys.forwardTo: gameLoader.item
 
     state: "menu"
 

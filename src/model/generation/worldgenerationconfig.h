@@ -1,6 +1,8 @@
 #ifndef WORLDGENERATIONCONFIG_H
 #define WORLDGENERATIONCONFIG_H
 
+#include <string>
+
 #include "../modeltypes.h"
 
 namespace how {

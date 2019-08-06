@@ -27,37 +27,48 @@ BaseMenu {
             onClicked: {
                 generateMenu.modelController.newModelGenerated.connect(
                             generateMenu.newModelGenerated)
-                generateMenu.modelController.newModel(parseInt(worldWidth.input, 10),
-                                         parseInt(worldHeight.input, 10),
-                                         parseFloat(
-                                             minimumVoronoiCellDistance.input),
-                                         parseInt(randomSeed.input, 10))
+                generateMenu.modelController.newModel(
+                            fileName.input, parseInt(worldWidth.input, 10),
+                            parseInt(worldHeight.input, 10),
+                            parseFloat(minimumVoronoiCellDistance.input),
+                            parseInt(randomSeed.input, 10))
                 generateMenu.modelController.newModelGenerated.disconnect(
                             generateMenu.newModelGenerated)
             }
         }
 
-        MenuNumberInput {
+        MenuInput {
+            id: fileName
             Layout.alignment: Qt.AlignCenter
+            inputMethodHints: Qt.ImhLowercaseOnly
+            label: "File Name"
+            input: "greg.json"
+        }
+        MenuInput {
             id: worldWidth
+            Layout.alignment: Qt.AlignCenter
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             label: "World Width"
             input: "300"
         }
-        MenuNumberInput {
-            Layout.alignment: Qt.AlignCenter
+        MenuInput {
             id: worldHeight
+            Layout.alignment: Qt.AlignCenter
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             label: "World Height"
             input: "200"
         }
-        MenuNumberInput {
-            Layout.alignment: Qt.AlignCenter
+        MenuInput {
             id: minimumVoronoiCellDistance
+            Layout.alignment: Qt.AlignCenter
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             label: "Minimum Voronoi Cell Distance"
             input: "25"
         }
-        MenuNumberInput {
-            Layout.alignment: Qt.AlignCenter
+        MenuInput {
             id: randomSeed
+            Layout.alignment: Qt.AlignCenter
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             label: "Random Seed"
             input: "100"
         }

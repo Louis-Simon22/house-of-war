@@ -34,14 +34,17 @@ int main(int argc, char *argv[]) {
       "This object may not be created in QML";
 
   // Controllers
+  qmlRegisterType<::how::ui::ModelController>(
+      "com.louissimonmcnicoll.how.ui.modelcontroller", 1, 0, "ModelController");
   qmlRegisterUncreatableType<::how::ui::EntitiesController>(
       "com.louissimonmcnicoll.how.ui.entitiescontroller", 1, 0,
       "EntitiesController", uncreatableTypeErrorMessage);
-  qmlRegisterType<::how::ui::ModelController>(
-      "com.louissimonmcnicoll.how.ui.modelcontroller", 1, 0, "ModelController");
   qmlRegisterUncreatableType<::how::ui::TilesController>(
       "com.louissimonmcnicoll.how.ui.tilescontroller", 1, 0, "TilesController",
       uncreatableTypeErrorMessage);
+  qmlRegisterUncreatableType<::how::ui::IterationTimerManager>(
+      "com.louissimonmcnicoll.how.ui.iterationtimermanager", 1, 0,
+      "IterationTimerManager", uncreatableTypeErrorMessage);
   // Bindings
   qmlRegisterUncreatableType<::how::ui::TileBindings>(
       "com.louissimonmcnicoll.how.ui.tilebindings", 1, 0, "TileBindings",

@@ -12,6 +12,14 @@ IterationTimerManager::IterationTimerManager(QObject *parent)
 
 IterationTimerManager::~IterationTimerManager() {}
 
+void IterationTimerManager::toggleIterations() {
+  if (this->modelIterationTimer.isActive()) {
+    this->pauseIterations();
+  } else {
+    this->resumeIterations();
+  }
+}
+
 void IterationTimerManager::pauseIterations() {
   this->modelIterationTimer.stop();
 }

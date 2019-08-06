@@ -5,6 +5,7 @@ import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
 import com.louissimonmcnicoll.how.ui.entitiescontroller 1.0
 import com.louissimonmcnicoll.how.ui.tilescontroller 1.0
 import com.louissimonmcnicoll.how.ui.terraintype 1.0
+import com.louissimonmcnicoll.how.ui.controlmode 1.0
 import com.louissimonmcnicoll.how.ui.tiledisplaystatus 1.0
 
 import "../../../components"
@@ -49,6 +50,7 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         height: parent.height * 0.3
+        visible: modelController.controlMode === ControlMode.EDIT
 
         Column {
             id: editPanelButtonsColumn

@@ -14,6 +14,7 @@ Rectangle {
 
     property alias label: text.text
     property alias input: textInput.text
+    property alias inputMethodHints: textInput.inputMethodHints
 
     Text {
         id: text
@@ -28,7 +29,6 @@ Rectangle {
     TextInput {
         id: textInput
         color: "black"
-        inputMethodHints: Qt.ImhFormattedNumbersOnly
         anchors {
             horizontalCenter: parent.horizontalCenter
             top: text.bottom

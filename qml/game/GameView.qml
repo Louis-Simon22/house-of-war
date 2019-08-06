@@ -14,6 +14,24 @@ Item {
     onInstantiateGame: {
         gameView.state = "map"
     }
+    focus: true
+    Keys.onPressed: {
+        if (gameView.state === "map") {
+            if (event.modifiers & Qt.ControlModifier) {
+                switch (event.key) {
+                case Qt.Key_S:
+                    modelController.saveToFile()
+                    break
+                }
+            } else {
+                switch (event.key) {
+                case Qt.Key_Space:
+                    modelController.iterationTimerManager.toggleIterations()
+                    break
+                }
+            }
+        }
+    }
 
     Text {
         id: loadingView

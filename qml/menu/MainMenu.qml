@@ -5,8 +5,8 @@ import "../components"
 BaseMenu {
     id: menuScene
 
-    signal newGamePressed
-    signal loadGamePressed
+    signal playPressed
+    signal editorPressed
     signal creditsPressed
 
     Rectangle {
@@ -21,17 +21,16 @@ BaseMenu {
         text: "Main Menu"
     }
 
-    // TODO editor menu
     Column {
         anchors.centerIn: parent
         spacing: 10
         MenuButton {
-            text: "New Game"
-            onClicked: newGamePressed()
+            text: "Play"
+            onClicked: playPressed()
         }
         MenuButton {
-            text: "Load Game"
-            onClicked: loadGamePressed()
+            text: "Editor"
+            onClicked: editorPressed()
         }
         MenuButton {
             text: "Credits"

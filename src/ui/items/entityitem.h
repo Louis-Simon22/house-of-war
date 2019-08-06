@@ -5,8 +5,6 @@
 
 #include "../../model/entities/entity.h"
 
-// TODO change preview (put affected tiles in a list and reinitialize them when
-// new event)
 namespace how {
 namespace ui {
 class EntityItem : public QQuickItem {

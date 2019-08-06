@@ -9,29 +9,33 @@ namespace how {
 namespace model {
 
 ModelManager::ModelManager()
-    : worldGenerationConfig(), entitiesManager(),
+    : fileName(""), worldGenerationConfig(), entitiesManager(),
       selectionManager(this->entitiesManager), iterationsCount(0) {}
 
-void ModelManager::newModel(const WorldGenerationConfig &config) {
+void ModelManager::newModel(std::string fileName,
+                            const WorldGenerationConfig &config) {
   this->worldGenerationConfig = config;
   auto graph = generateGraph(config);
   this->entitiesManager.resetEntities(graph);
-  this->saveToFile("greg.json");
+  this->saveToFile(fileName);
 }
 
-void ModelManager::loadModel(const WorldGenerationConfig &config,
-                             std::vector<std::shared_ptr<Tile>> &tilePtrs) {
-  this->worldGenerationConfig = config;
-  auto graph = generateGraph(config, tilePtrs);
-  this->entitiesManager.resetEntities(graph);
+void ModelManager::saveToFile() {
+  serializeToFile(this->fileName, serializeModel(*this));
 }
 
 void ModelManager::saveToFile(std::string fileName) {
-  serializeToFile(fileName, serializeModel(*this));
+  this->fileName = fileName;
+  this->saveToFile();
 }
 
 void ModelManager::loadFromFile(std::string fileName) {
-  deserializeModel(*this, deserializeFile(fileName));
+  this->fileName = fileName;
+  auto deserializedModelTuple = deserializeModel(deserializeFile(fileName));
+  this->worldGenerationConfig = std::get<0>(deserializedModelTuple);
+  auto tilePtrs = std::get<1>(deserializedModelTuple);
+  auto graph = generateGraph(this->worldGenerationConfig, tilePtrs);
+  this->entitiesManager.resetEntities(graph);
 }
 
 void ModelManager::iterateModel() {
