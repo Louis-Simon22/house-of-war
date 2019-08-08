@@ -13,9 +13,9 @@ namespace {
 using json = ::nlohmann::json;
 }
 
-void serializeToFile(std::string fileName, json j);
+void writeToFile(std::string fileName, json j);
 
-json deserializeFile(std::string fileName);
+json readFromFile(std::string fileName);
 
 std::vector<std::string> getAllSaveFileNames();
 

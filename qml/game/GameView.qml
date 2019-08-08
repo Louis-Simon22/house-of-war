@@ -17,6 +17,7 @@ Item {
     focus: true
     Keys.onPressed: {
         if (gameView.state === "map") {
+            event.accepted = true
             if (event.modifiers & Qt.ControlModifier) {
                 switch (event.key) {
                 case Qt.Key_S:

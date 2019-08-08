@@ -20,14 +20,16 @@ class ModelController : public QObject {
   Q_PROPERTY(EntitiesController *entitiesController READ getEntitiesController
                  CONSTANT FINAL)
   Q_PROPERTY(IterationTimerManager *iterationTimerManager READ
-                 getIterationTimerManager FINAL CONSTANT)
-  Q_PROPERTY(int controlMode MEMBER currentControlMode FINAL)
+                 getIterationTimerManager CONSTANT FINAL)
+  Q_PROPERTY(int controlMode READ getControlMode WRITE setControlMode NOTIFY
+                 controlModeChanged FINAL)
 
 public:
   ModelController(QObject *parent = nullptr);
 
 signals:
   void newModelGenerated();
+  void controlModeChanged(int controlMode);
 
 public slots:
   void newModel(QString fileName, int width, int height,
@@ -49,13 +51,14 @@ private:
   QRect getWorldBounds() const;
   ModelController *getModelController();
   IterationTimerManager *getIterationTimerManager();
-  ControlModeWrapper::ControlMode getControlMode() const;
+  int getControlMode() const;
+  void setControlMode(int controlMode);
 
 private:
   model::ModelManager modelManager;
   EntitiesController entitiesController;
   IterationTimerManager iterationTimerManager;
-  int currentControlMode;
+  ControlModeWrapper::ControlMode currentControlMode;
 };
 } // namespace ui
 } // namespace how

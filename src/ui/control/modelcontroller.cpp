@@ -56,7 +56,6 @@ void ModelController::entitiesMouseEvent(int x, int y, int button) {
 }
 
 QList<QObject *> ModelController::getAllSaveFiles() {
-  // TODO maybe memory leak
   auto saveFiles = QList<QObject *>();
   for (auto &fileName : model::getAllSaveFileNames()) {
     saveFiles.append(new SaveFile(QString::fromStdString(fileName)));
@@ -76,8 +75,12 @@ IterationTimerManager *ModelController::getIterationTimerManager() {
   return &this->iterationTimerManager;
 }
 
-ControlModeWrapper::ControlMode ModelController::getControlMode() const {
-  return static_cast<ControlModeWrapper::ControlMode>(this->currentControlMode);
+int ModelController::getControlMode() const { return this->currentControlMode; }
+
+void ModelController::setControlMode(int controlMode) {
+  this->currentControlMode =
+      static_cast<ControlModeWrapper::ControlMode>(controlMode);
+  this->controlModeChanged(controlMode);
 }
 
 } // namespace ui

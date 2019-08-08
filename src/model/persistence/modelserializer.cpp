@@ -37,6 +37,7 @@ json serializeTile(const Tile &tile) {
   for (const auto &outlinePoint : tile.getOutlinePoints()) {
     serializedOutlinePoints.push_back(serializePoint(outlinePoint));
   }
+  // TODO serialize terrain
 
   serializedEntity["outlinePoints"] = serializedOutlinePoints;
   return serializedEntity;

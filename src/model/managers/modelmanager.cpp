@@ -5,6 +5,8 @@
 #include "../persistence/modeldeserializer.h"
 #include "../persistence/modelserializer.h"
 
+#include <iostream>
+
 namespace how {
 namespace model {
 
@@ -21,7 +23,7 @@ void ModelManager::newModel(std::string fileName,
 }
 
 void ModelManager::saveToFile() {
-  serializeToFile(this->fileName, serializeModel(*this));
+  writeToFile(this->fileName, serializeModel(*this));
 }
 
 void ModelManager::saveToFile(std::string fileName) {
@@ -31,7 +33,7 @@ void ModelManager::saveToFile(std::string fileName) {
 
 void ModelManager::loadFromFile(std::string fileName) {
   this->fileName = fileName;
-  auto deserializedModelTuple = deserializeModel(deserializeFile(fileName));
+  auto deserializedModelTuple = deserializeModel(readFromFile(fileName));
   this->worldGenerationConfig = std::get<0>(deserializedModelTuple);
   auto tilePtrs = std::get<1>(deserializedModelTuple);
   auto graph = generateGraph(this->worldGenerationConfig, tilePtrs);
