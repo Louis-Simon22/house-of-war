@@ -10,4 +10,7 @@ Window {
     Swapper {
         anchors.fill: parent
     }
+
+    onActiveFocusItemChanged: console.log(
+                                  "Focus changed to : " + activeFocusItem)
 }

@@ -7,6 +7,7 @@ Button {
 
     text: ""
     hoverEnabled: true
+    focusPolicy: Qt.NoFocus
     onPressed: button.opacity = 0.5
     onReleased: button.opacity = 1
     onCanceled: released()

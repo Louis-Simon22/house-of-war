@@ -8,7 +8,6 @@ import "./components"
 
 Item {
     id: swapper
-    focus: true
 
     ModelController {
         id: modelController
@@ -44,15 +43,13 @@ Item {
         }
     }
 
+    focus: true
     Keys.onPressed: {
         if (event.key === Qt.Key_Escape) {
             swapper.state = "menu"
             event.accepted = true
-        } else {
-            event.accepted = false
         }
     }
-    Keys.forwardTo: gameLoader.item
 
     state: "menu"
 

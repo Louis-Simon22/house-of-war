@@ -33,14 +33,18 @@ std::vector<std::shared_ptr<Tile>> deserializeEntities(json j) {
 
 std::shared_ptr<Tile> deserializeTile(json j) {
   auto position = deserializePoint(j["position"]);
+
   auto outlinePointsJson = j["outlinePoints"];
   auto outlinePoints = std::vector<types::point_t>();
-
   for (auto &outlinePointJson : outlinePointsJson) {
     outlinePoints.push_back(deserializePoint(outlinePointJson));
   }
 
-  return std::make_shared<Tile>(position, outlinePoints);
+  auto tilePtr = std::make_shared<Tile>(position, outlinePoints);
+
+  tilePtr->setTerrainType(static_cast<TerrainType>(j["terrainType"]));
+  tilePtr->setResources(j["resources"]);
+  return tilePtr;
 }
 
 types::point_t deserializePoint(json j) {
@@ -54,7 +58,8 @@ types::box_t deserializeBox(json j) {
 }
 
 WorldGenerationConfig deserializeWorldGenerationConfig(json j) {
-  return WorldGenerationConfig(deserializeBox(j["boundingBox"]),
+  return WorldGenerationConfig(
+      deserializeBox(j["boundingBox"]),
       j["minimumVoronoiCellDistance"].get<types::coordinate_t>(),
       j["randomSeed"].get<std::uint32_t>());
 }
