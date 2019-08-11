@@ -11,3 +11,6 @@
 [submodule "lib/json"]
 	path = lib/json
 	url = https://github.com/nlohmann/json.git
+[submodule "lib/nod"]
+	path = lib/nod
+	url = https://github.com/fr00b0/nod
