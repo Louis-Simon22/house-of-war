@@ -43,11 +43,22 @@ Item {
                 anchors.fill: parent
 
                 acceptedButtons: Qt.AllButtons
-                propagateComposedEvents: false
+//                propagateComposedEvents: true
+                preventStealing: true
 
                 onClicked: {
                     modelController.entitiesMouseEvent(mouse.x, mouse.y,
-                                                       mouse.button)
+                                                       mouse.buttons)
+                    mouse.accepted = true
+                }
+                onPositionChanged: {
+                    if (mouse.modifiers & Qt.ShiftModifier) {
+                        modelController.entitiesMouseEvent(mouse.x, mouse.y,
+                                                           mouse.buttons)
+                        mouse.accepted = true
+                    } else {
+                        mouse.accepted = false
+                    }
                 }
                 onWheel: {
                     mapItem.scale = Math.max(

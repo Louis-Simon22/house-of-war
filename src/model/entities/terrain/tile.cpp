@@ -17,21 +17,21 @@ const types::carac_t &Tile::getResources() const { return this->resources; }
 
 void Tile::setResources(types::carac_t resources) {
   this->resources = resources;
-  this->changedSignal();
+  this->changeSignal();
 }
 
 const Player *Tile::getOwner() const { return this->owner; }
 
 void Tile::setOwner(const Player *owner) {
   this->owner = owner;
-  this->changedSignal();
+  this->changeSignal();
 }
 
 TerrainType Tile::getTerrainType() const { return this->terrainType; }
 
 void Tile::setTerrainType(TerrainType terrainType) {
   this->terrainType = terrainType;
-  this->changedSignal();
+  this->changeSignal();
 }
 
 } // namespace model

@@ -15,18 +15,17 @@ EntitiesController::EntitiesController(model::ModelManager &modelManager)
       entitiesManager(modelManager.getEntitiesManager()), armyBindings(),
       tileBindings(), tilesController() {
   auto *selectionManager = modelManager.getSelectionManager();
-  selectionManager->armySelectedSignal.connect(
-      ::boost::bind(&ArmyBindings::bindArmy, &this->armyBindings, _1));
-  selectionManager->tileSelectedSignal.connect(
-      ::boost::bind(&TileBindings::bindTile, &this->tileBindings, _1));
+  selectionManager->armySelectedSignal.connect(std::bind(
+      &ArmyBindings::bindArmy, &this->armyBindings, std::placeholders::_1));
+  selectionManager->tileSelectedSignal.connect(std::bind(
+      &TileBindings::bindTile, &this->tileBindings, std::placeholders::_1));
 }
 
 void EntitiesController::generateMapItems(QQuickItem *parent) {
   auto *entitiesManager = this->modelManager.getEntitiesManager();
   auto &armyPtrs = entitiesManager->getPlayers()[0].getArmyPtrs();
   for (auto &armyPtr : armyPtrs) {
-    auto *armyItem = new ArmyItem(armyPtr.get(), parent);
-    QQmlEngine::setObjectOwnership(armyItem, QQmlEngine::JavaScriptOwnership);
+    new ArmyItem(armyPtr.get(), parent);
   }
 
   auto &tilePtrs = entitiesManager->getTilePtrs();
@@ -36,18 +35,13 @@ void EntitiesController::generateMapItems(QQuickItem *parent) {
     connect(&this->tilesController,
             &TilesController::onTileDisplayStatusChanged, tileItem,
             &TileItem::onTileDisplayStatusChanged);
-    QQmlEngine::setObjectOwnership(tileItem, QQmlEngine::JavaScriptOwnership);
   }
 
   auto *delaunaySegmentsPainter = new SegmentsPainter(
       this->entitiesManager->getUniqueDelaunaySegments(), parent);
-  QQmlEngine::setObjectOwnership(delaunaySegmentsPainter,
-                                 QQmlEngine::JavaScriptOwnership);
   delaunaySegmentsPainter->setVisible(true);
   auto *voronoiSegmentsPainter = new SegmentsPainter(
       this->entitiesManager->getUniqueVoronoiSegments(), parent);
-  QQmlEngine::setObjectOwnership(voronoiSegmentsPainter,
-                                 QQmlEngine::JavaScriptOwnership);
   voronoiSegmentsPainter->setVisible(false);
 }
 

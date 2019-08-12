@@ -14,10 +14,18 @@ Entity::Entity(types::layer_t layer, const Entity *parent)
 
 Entity::Entity(types::layer_t layer, types::point_t position,
                const Entity *parent)
-    : changedSignal(), parent(parent), layer(layer), position(position),
+    : changeSignal(), parent(parent), layer(layer), position(position),
       entityPositionChangePtr() {}
 
 Entity::~Entity() {}
+
+void Entity::progressEntityPositionChange() {
+  if (entityPositionChangePtr) {
+    if (entityPositionChangePtr->progress()) {
+      this->entityPositionChangePtr.reset(nullptr);
+    }
+  }
+}
 
 types::layer_t Entity::getLayer() const { return this->layer; }
 
@@ -48,15 +56,7 @@ types::point_t Entity::getAbsolutePosition() const {
 void Entity::setPosition(const types::point_t &position) {
   bg::set<0>(this->position, bg::get<0>(position));
   bg::set<1>(this->position, bg::get<1>(position));
-  this->changedSignal();
-}
-
-void Entity::progressEntityPositionChange() {
-  if (entityPositionChangePtr) {
-    if (entityPositionChangePtr->progress()) {
-      this->entityPositionChangePtr.reset(nullptr);
-    }
-  }
+  this->changeSignal();
 }
 
 void Entity::setEntityPositionChange(

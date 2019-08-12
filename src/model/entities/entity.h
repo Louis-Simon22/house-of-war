@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <boost/signals2.hpp>
+#include "../../lib/nod/include/nod/nod.hpp"
 
 #include "../modeltypes.h"
 
@@ -11,7 +11,7 @@ class EntityPositionChange;
 
 class Entity {
 public:
-  using changed_signal_t = ::boost::signals2::signal<void()>;
+  using change_signal_t = ::nod::signal<void()>;
 
 public:
   Entity(const Entity *parent);
@@ -19,6 +19,9 @@ public:
   Entity(types::layer_t layer, types::point_t position,
          const Entity *parent = nullptr);
   virtual ~Entity() = 0;
+
+public:
+  void progressEntityPositionChange();
 
 public:
   types::layer_t getLayer() const;
@@ -29,11 +32,10 @@ public:
   types::coordinate_t getAbsolutePosY() const;
   types::point_t getAbsolutePosition() const;
   void setPosition(const types::point_t &position);
-  void progressEntityPositionChange();
   void setEntityPositionChange(EntityPositionChange *entityPositionChange);
 
 public:
-  changed_signal_t changedSignal;
+  change_signal_t changeSignal;
 
 protected:
   const Entity *parent;

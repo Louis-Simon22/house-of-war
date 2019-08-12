@@ -4,17 +4,15 @@ namespace how {
 namespace ui {
 
 EntityBindings::EntityBindings()
-    : QObject(nullptr), interactiveEntity(nullptr), entityChangedConnection() {}
+    : QObject(nullptr), interactiveEntity(nullptr), entityChangeConnection() {}
 
-EntityBindings::~EntityBindings() {
-  this->entityChangedConnection.disconnect();
-}
+EntityBindings::~EntityBindings() {}
 
 void EntityBindings::bindEntity(model::InteractiveEntity *interactiveEntity) {
   this->interactiveEntity = interactiveEntity;
-  this->entityChangedConnection.disconnect();
-  this->entityChangedConnection = interactiveEntity->changedSignal.connect(
-      ::boost::bind(&EntityBindings::updateBindings, this));
+  this->entityChangeConnection.disconnect();
+  this->entityChangeConnection = interactiveEntity->changeSignal.connect(
+      std::bind(&EntityBindings::updateBindings, this));
   this->updateBindings();
 }
 

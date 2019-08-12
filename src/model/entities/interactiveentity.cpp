@@ -13,7 +13,7 @@ bool InteractiveEntity::isSelected() const { return this->selected; }
 
 void InteractiveEntity::setSelected(bool selected) {
   this->selected = selected;
-  this->changedSignal();
+  this->changeSignal();
 }
 
 } // namespace model

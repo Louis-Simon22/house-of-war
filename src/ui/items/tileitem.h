@@ -16,6 +16,7 @@ class TileItem : public EntityItem {
 public:
   TileItem(model::Tile *tile, const TilesController *tilesController,
            QQuickItem *parent);
+  ~TileItem() override;
 
 public slots:
   void onTileDisplayStatusChanged();

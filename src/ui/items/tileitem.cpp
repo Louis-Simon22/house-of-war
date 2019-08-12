@@ -2,6 +2,8 @@
 
 #include "../conversion/converter.h"
 
+#include <iostream>
+
 namespace how {
 namespace ui {
 namespace {
@@ -22,6 +24,8 @@ TileItem::TileItem(model::Tile *tile, const TilesController *tilesController,
   this->onTileDisplayStatusChanged();
   this->onGraphEntityUpdated();
 }
+
+TileItem::~TileItem() {}
 
 void TileItem::onTileDisplayStatusChanged() { this->onGraphEntityUpdated(); }
 

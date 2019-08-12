@@ -1,11 +1,15 @@
 #include "delaunayextrapolator.h"
 
+#include <algorithm>
+
 #include <boost/geometry/algorithms/intersects.hpp>
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
 
 #include "../../../lib/delaunay/include/delaunator.hpp"
 #include "../utils/influencezonertree.h"
+#include "../utils/pointcomparator.h"
+#include "../utils/segmentcomparator.h"
 
 namespace how {
 namespace model {
@@ -27,25 +31,36 @@ bool isVoronoiCellOnBounds(const types::box_t &bounds,
   return false;
 }
 
-bool isSegmentIntersectingMoreThanTwoVoronoiCells(
-    const types::segment_t &segment,
-    InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &voronoiCellsRTree) {
-  auto intersectingValues =
+// An edge is invalid if the segment joining them overlaps more than two edge
+// cells
+bool isEdgeValid(
+    const types::box_t &bounds,
+    InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &voronoiCellsRTree,
+    const VoronoiCell *voronoiCellPtr1, const VoronoiCell *voronoiCellPtr2) {
+  if (!isVoronoiCellOnBounds(bounds, voronoiCellPtr1) ||
+      !isVoronoiCellOnBounds(bounds, voronoiCellPtr2)) {
+    return true;
+  }
+  auto segment = types::segment_t(voronoiCellPtr1->getPosition(),
+                                  voronoiCellPtr2->getPosition());
+  auto intersectingCellPtrs =
       voronoiCellsRTree.getValuesBySegmentIntersection(segment);
-  return intersectingValues.size() > 2;
+  int intersectingEdgeCells = 0;
+  for (auto &intersectingCellPtr : intersectingCellPtrs) {
+    if (isVoronoiCellOnBounds(bounds, intersectingCellPtr.get())) {
+      intersectingEdgeCells++;
+    }
+  }
+  return intersectingEdgeCells <= 2;
 }
 
 void addEdgeToGraph(
     types::graph_t &graph, const types::box_t &bounds,
     InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &voronoiCellsRTree,
     const VoronoiCell *voronoiCellPtr1, const VoronoiCell *voronoiCellPtr2) {
-  auto segment = types::segment_t(voronoiCellPtr1->getPosition(),
-                                  voronoiCellPtr2->getPosition());
   // This doesn't include the edges that wrap around edge cells
-  if (!(isVoronoiCellOnBounds(bounds, voronoiCellPtr1) &&
-        isVoronoiCellOnBounds(bounds, voronoiCellPtr2) &&
-        isSegmentIntersectingMoreThanTwoVoronoiCells(segment,
-                                                     voronoiCellsRTree))) {
+  if (isEdgeValid(bounds, voronoiCellsRTree, voronoiCellPtr1,
+                  voronoiCellPtr2)) {
     auto vertexDesc1 = voronoiCellPtr1->getVertexDesc();
     auto vertexDesc2 = voronoiCellPtr2->getVertexDesc();
     if (!::boost::edge(vertexDesc1, vertexDesc2, graph).second) {
@@ -64,7 +79,7 @@ void addEdgeToGraph(
 }
 
 types::graph_t createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
-    std::vector<std::shared_ptr<Tile>>& tiles, const types::box_t &bounds) {
+    std::vector<std::shared_ptr<Tile>> &tiles, const types::box_t &bounds) {
   auto graph = types::graph_t();
   auto spatialIndexTree = InfluenceZoneRTree<std::shared_ptr<VoronoiCell>>();
   auto coords = std::vector<double>();

@@ -27,7 +27,7 @@ private:
 
 private:
   model::InteractiveEntity *interactiveEntity;
-  boost::signals2::connection entityChangedConnection;
+  ::nod::scoped_connection entityChangeConnection;
 };
 } // namespace ui
 } // namespace how

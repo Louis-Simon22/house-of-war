@@ -9,6 +9,7 @@
 #include <boost/geometry/algorithms/intersects.hpp>
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/geometry/strategies/strategies.hpp>
+#include <boost/iterator/function_output_iterator.hpp>
 
 #include "../entities/influencezones/influencezone.h"
 #include "../modeltypes.h"

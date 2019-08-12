@@ -8,8 +8,8 @@ namespace how {
 namespace model {
 class SelectionManager {
 public:
-  using army_selected_signal_t = ::boost::signals2::signal<void(Army *)>;
-  using tile_selected_signal_t = ::boost::signals2::signal<void(Tile *)>;
+  using army_selected_signal_t = ::nod::signal<void(Army *)>;
+  using tile_selected_signal_t = ::nod::signal<void(Tile *)>;
 
 public:
   SelectionManager(EntitiesManager &entitiesManager);

@@ -22,7 +22,7 @@ private slots:
 
 private:
   const model::Entity *entity;
-  boost::signals2::connection entityChangedConnection;
+  ::nod::scoped_connection entityChangeConnection;
 };
 } // namespace ui
 } // namespace how
