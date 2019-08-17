@@ -1,17 +1,17 @@
-#ifndef CIRCULARINFLUENCEZONE_H
-#define CIRCULARINFLUENCEZONE_H
+#ifndef CIRCULARZONE_H
+#define CIRCULARZONE_H
 
-#include "./influencezone.h"
+#include "./zone.h"
 
 namespace how {
 namespace model {
-class CircularInfluenceZone : public InfluenceZone {
+class CircularZone : public Zone {
 public:
-  CircularInfluenceZone(types::coordinate_t radius, const Entity *parentEntity);
-  ~CircularInfluenceZone() override;
+  CircularZone(types::coordinate_t radius, const Entity *parentEntity);
+  ~CircularZone() override;
 
 public:
-  bool isPointWithinZone(const types::point_t &position) const override;
+  bool isPointOverlappingZone(const types::point_t &position) const override;
   bool isPolygonOverlappingZone(const types::polygon_t &polygon) const override;
   bool isSegmentOverlappingZone(const types::segment_t &segment) const override;
   types::box_t getEnvelope() const override;
@@ -26,4 +26,4 @@ private:
 } // namespace model
 } // namespace how
 
-#endif // CIRCULARINFLUENCEZONE_H
+#endif // CIRCULARZONE_H

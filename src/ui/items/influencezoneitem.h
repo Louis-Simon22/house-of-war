@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QQuickItem>
 
-#include "../../model/entities/influencezones/circularinfluencezone.h"
+#include "../../model/entities/zones/circularzone.h"
 #include "../painters/circlepainter.h"
 #include "./entityitem.h"
 
@@ -17,15 +17,13 @@ class InfluenceZoneItem : public EntityItem {
   const QColor CIRCLE_COLOR = Qt::red;
 
 public:
-  InfluenceZoneItem(
-      model::CircularInfluenceZone* influenceZone,
-      QQuickItem *parent);
+  InfluenceZoneItem(model::CircularZone *influenceZone, QQuickItem *parent);
 
 private slots:
   void onGraphEntityUpdated();
 
 private:
-  const model::CircularInfluenceZone* influenceZone;
+  const model::CircularZone *influenceZone;
   CirclePainter *circlePainter;
 };
 } // namespace ui

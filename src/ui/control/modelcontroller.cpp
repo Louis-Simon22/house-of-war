@@ -36,9 +36,10 @@ void ModelController::loadFromFile(QString name) {
 void ModelController::iterateModel() { this->modelManager.iterateModel(); }
 
 void ModelController::entitiesMouseEvent(int x, int y, int button) {
+  // TODO able to select with a line, circle, square (no need to use zones)
   switch (button) {
   case Qt::LeftButton:
-    this->modelManager.onEvent(model::SelectEvent(x, y));
+    this->modelManager.onEvent(model::SingleSelectEvent(x, y));
     break;
   case Qt::RightButton:
     switch (this->getControlMode()) {
@@ -48,7 +49,7 @@ void ModelController::entitiesMouseEvent(int x, int y, int button) {
     case ControlModeWrapper::EDIT:
       auto terrainType = static_cast<model::TerrainType>(
           this->entitiesController.getTilesController()->getTerrainType());
-      this->modelManager.onEvent(model::EditTerrainEvent(x, y, terrainType));
+      this->modelManager.onEvent(model::SingleEditTerrainEvent(x, y, terrainType));
       break;
     }
     break;

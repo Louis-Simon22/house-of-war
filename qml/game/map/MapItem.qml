@@ -52,7 +52,7 @@ Item {
                     mouse.accepted = true
                 }
                 onPositionChanged: {
-                    if (mouse.modifiers & Qt.ShiftModifier) {
+                    if (containsMouse && mouse.modifiers & Qt.ShiftModifier) {
                         modelController.entitiesMouseEvent(mouse.x, mouse.y,
                                                            mouse.buttons)
                         mouse.accepted = true

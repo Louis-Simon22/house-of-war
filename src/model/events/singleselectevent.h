@@ -1,19 +1,19 @@
 #ifndef SELECTEVENT_H
 #define SELECTEVENT_H
 
-#include "./spatialevent.h"
+#include "./singlepositionevent.h"
 
 namespace how {
 namespace model {
-class SelectEvent : public SpatialEvent {
+class SingleSelectEvent : public SinglePositionEvent {
 public:
-  SelectEvent(types::coordinate_t posX, types::coordinate_t posY);
+  SingleSelectEvent(const types::point_t &position);
 
 public:
-  ~SelectEvent() override;
+  ~SingleSelectEvent() override;
 
 public:
-  void applyEvent(EntitiesManager &,
+  void applyEvent(EntitiesManager &entitiesManager,
                   SelectionManager &selectionManager) const override;
 };
 } // namespace model

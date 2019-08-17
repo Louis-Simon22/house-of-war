@@ -5,8 +5,8 @@
 namespace how {
 namespace model {
 
-TargetEvent::TargetEvent(types::coordinate_t posX, types::coordinate_t posY)
-    : SpatialEvent(posX, posY) {}
+TargetEvent::TargetEvent(const types::point_t &position)
+    : SinglePositionEvent(position) {}
 
 TargetEvent::~TargetEvent() {}
 

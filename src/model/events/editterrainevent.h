@@ -2,17 +2,16 @@
 #define EDITTERRAINEVENT_H
 
 #include "../entities/terrain/terraintype.h"
-#include "./spatialevent.h"
+#include "./singlepositionevent.h"
 
 namespace how {
 namespace model {
-class EditTerrainEvent : public SpatialEvent {
+class SingleEditTerrainEvent : public SinglePositionEvent {
 public:
-  EditTerrainEvent(types::coordinate_t posX, types::coordinate_t posY,
-                   TerrainType terrainType);
+  SingleEditTerrainEvent(const types::point_t &position, TerrainType terrainType);
 
 public:
-  ~EditTerrainEvent() override;
+  ~SingleEditTerrainEvent() override;
 
 public:
   void applyEvent(EntitiesManager &entitiesManager,

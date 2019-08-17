@@ -1,4 +1,4 @@
-#include "polygoninfluencezone.h"
+#include "polygonzone.h"
 
 #include <boost/geometry/algorithms/convert.hpp>
 #include <boost/geometry/algorithms/covered_by.hpp>
@@ -13,48 +13,48 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-PolygonInfluenceZone::PolygonInfluenceZone(const Entity *parentEntity)
-    : InfluenceZone(parentEntity), envelope(), polygon() {}
+PolygonZone::PolygonZone(const Entity *parentEntity)
+    : Zone(parentEntity), envelope(), polygon() {}
 
-PolygonInfluenceZone::PolygonInfluenceZone(const types::box_t &envelope,
+PolygonZone::PolygonZone(const types::box_t &envelope,
                                            const Entity *parentEntity)
-    : PolygonInfluenceZone(parentEntity) {
+    : PolygonZone(parentEntity) {
   this->setPolygon(envelope);
 }
 
-PolygonInfluenceZone::PolygonInfluenceZone(const types::polygon_t &polygon,
+PolygonZone::PolygonZone(const types::polygon_t &polygon,
                                            const Entity *parentEntity)
-    : PolygonInfluenceZone(parentEntity) {
+    : PolygonZone(parentEntity) {
   this->setPolygon(polygon);
 }
 
-PolygonInfluenceZone::~PolygonInfluenceZone() {}
+PolygonZone::~PolygonZone() {}
 
-bool PolygonInfluenceZone::isPointWithinZone(
+bool PolygonZone::isPointOverlappingZone(
     const types::point_t &position) const {
   return bg::covered_by(position, this->polygon);
 }
 
-bool PolygonInfluenceZone::isPolygonOverlappingZone(
+bool PolygonZone::isPolygonOverlappingZone(
    const types::polygon_t &polygon) const {
   return bg::overlaps(polygon, this->polygon);
 }
 
-bool PolygonInfluenceZone::isSegmentOverlappingZone(
+bool PolygonZone::isSegmentOverlappingZone(
   const  types::segment_t &segment) const {
   return bg::intersects(segment, this->polygon);
 }
 
-types::box_t PolygonInfluenceZone::getEnvelope() const {
+types::box_t PolygonZone::getEnvelope() const {
   return this->envelope;
 }
 
-void PolygonInfluenceZone::setPolygon(const types::box_t &envelope) {
+void PolygonZone::setPolygon(const types::box_t &envelope) {
   this->envelope = envelope;
   bg::convert(envelope, this->polygon);
 }
 
-void PolygonInfluenceZone::setPolygon(const types::polygon_t &polygon) {
+void PolygonZone::setPolygon(const types::polygon_t &polygon) {
   this->polygon = polygon;
   bg::envelope(polygon, this->envelope);
 }

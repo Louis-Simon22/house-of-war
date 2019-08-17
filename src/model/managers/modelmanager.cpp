@@ -12,7 +12,7 @@ namespace model {
 
 ModelManager::ModelManager()
     : fileName(""), worldGenerationConfig(), entitiesManager(),
-      selectionManager(this->entitiesManager), iterationsCount(0) {}
+      selectionManager(), iterationsCount(0) {}
 
 void ModelManager::newModel(std::string fileName,
                             const WorldGenerationConfig &config) {

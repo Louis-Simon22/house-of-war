@@ -4,7 +4,7 @@ namespace how {
 namespace ui {
 
 InfluenceZoneItem::InfluenceZoneItem(
-    model::CircularInfluenceZone* influenceZone,
+    model::CircularZone* influenceZone,
     QQuickItem *parent)
     : EntityItem(influenceZone, parent), influenceZone(influenceZone),
       circlePainter(new CirclePainter(this, CIRCLE_LINE_WIDTH, CIRCLE_COLOR)) {

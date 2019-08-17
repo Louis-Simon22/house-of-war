@@ -1,7 +1,7 @@
 #ifndef ARMY_H
 #define ARMY_H
 
-#include "./circularinfluencezone.h"
+#include "./circularzone.h"
 #include "./interactiveentity.h"
 
 namespace how {
@@ -14,16 +14,16 @@ public:
 public:
   bool isTargetable() const override;
   bool isSelectable() const override;
-  CircularInfluenceZone *getSelectionZone();
-  CircularInfluenceZone *getEngagementZone();
-  CircularInfluenceZone *getForagingZone();
-  CircularInfluenceZone *getScoutingZone();
+  CircularZone *getSelectionZone();
+  CircularZone *getEngagementZone();
+  CircularZone *getForagingZone();
+  CircularZone *getScoutingZone();
 
 private:
-  CircularInfluenceZone selectionZone;
-  CircularInfluenceZone engagementZone;
-  CircularInfluenceZone foragingZone;
-  CircularInfluenceZone scoutingZone;
+  CircularZone selectionZone;
+  CircularZone engagementZone;
+  CircularZone foragingZone;
+  CircularZone scoutingZone;
 };
 } // namespace model
 } // namespace how

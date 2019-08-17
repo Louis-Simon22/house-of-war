@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../entities/players/player.h"
+#include "../entities/terrain/tile.h"
 #include "../graphtypes.h"
 #include "../utils/influencezonertree.h"
 

@@ -1,13 +1,13 @@
 #ifndef TARGETEVENT_H
 #define TARGETEVENT_H
 
-#include "./spatialevent.h"
+#include "./singlepositionevent.h"
 
 namespace how {
 namespace model {
-class TargetEvent : public SpatialEvent {
+class TargetEvent : public SinglePositionEvent {
 public:
-  TargetEvent(types::coordinate_t posX, types::coordinate_t posY);
+  TargetEvent(const types::point_t &position);
 
 public:
   ~TargetEvent() override;

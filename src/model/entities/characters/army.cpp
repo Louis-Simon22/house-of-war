@@ -17,15 +17,15 @@ bool Army::isTargetable() const { return false; }
 
 bool Army::isSelectable() const { return true; }
 
-CircularInfluenceZone *Army::getSelectionZone() { return &this->selectionZone; }
+CircularZone *Army::getSelectionZone() { return &this->selectionZone; }
 
-CircularInfluenceZone *Army::getEngagementZone() {
+CircularZone *Army::getEngagementZone() {
   return &this->engagementZone;
 }
 
-CircularInfluenceZone *Army::getForagingZone() { return &this->foragingZone; }
+CircularZone *Army::getForagingZone() { return &this->foragingZone; }
 
-CircularInfluenceZone *Army::getScoutingZone() { return &this->scoutingZone; }
+CircularZone *Army::getScoutingZone() { return &this->scoutingZone; }
 
 } // namespace model
 } // namespace how

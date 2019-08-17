@@ -1,51 +1,49 @@
 #include "selectionmanager.h"
 
-#include "../operations/collisiondetector.h"
-
 namespace how {
 namespace model {
 
-SelectionManager::SelectionManager(EntitiesManager &entitiesManager)
-    : armySelectedSignal(), tileSelectedSignal(),
-      entitiesManager(entitiesManager), selection(nullptr) {}
-
-void SelectionManager::selectByPosition(const types::point_t &position) {
-  const auto &armyPtrs = this->entitiesManager.getPlayers()[0].getArmyPtrs();
-  auto selectedArmies = getCollisions<>(
-      armyPtrs, [&position](const std::shared_ptr<Army> &armyPtr) {
-        return armyPtr->getSelectionZone()->isPointWithinZone(position);
-      });
-  if (selectedArmies.size() > 0) {
-    auto *selectedArmy = selectedArmies[0].get();
-    this->setSelection(selectedArmy);
-    this->armySelectedSignal(selectedArmy);
-  } else {
-    const auto &selectedTilePtr =
-        this->entitiesManager.getTilesRtree().getValuesByPosition(position);
-    if (selectedTilePtr.size() > 0) {
-      auto *selectedTile = selectedTilePtr[0].get();
-      this->setSelection(selectedTile);
-      this->tileSelectedSignal(selectedTile);
-    }
-  }
-}
+SelectionManager::SelectionManager()
+    : armySelectedSignal(), tileSelectedSignal(), selections() {}
 
 model::InteractiveEntity *SelectionManager::getSelection() const {
-  return this->selection;
+  return this->hasSelection() ? nullptr : this->selections[0];
 }
 
-bool SelectionManager::hasSelection() const { return this->selection; }
+std::vector<InteractiveEntity *> SelectionManager::getSelections() const {
+  return this->selections;
+}
 
-void SelectionManager::clearSelection() { this->setSelection(nullptr); }
+bool SelectionManager::hasSelection() const { return this->selections.empty(); }
 
-void SelectionManager::setSelection(InteractiveEntity *newSelection) {
+void SelectionManager::clearSelection() {
+  for (auto *selection : this->selections) {
+    selection->setSelected(false);
+  }
+  this->selections.clear();
+}
+
+void SelectionManager::addTileSelection(Tile *tileSelection) {
   if (this->hasSelection()) {
-    this->selection->setSelected(false);
+    this->multiSelectionSignal();
+  } else {
+    this->tileSelectedSignal(tileSelection);
   }
-  if (newSelection) {
-    newSelection->setSelected(true);
+  this->addSelection(tileSelection);
+}
+
+void SelectionManager::addArmySelection(Army *armySelection) {
+  if (this->hasSelection()) {
+    this->multiSelectionSignal();
+  } else {
+    this->armySelectedSignal(armySelection);
   }
-  this->selection = newSelection;
+  this->addSelection(armySelection);
+}
+
+void SelectionManager::addSelection(InteractiveEntity *selection) {
+  selection->setSelected(true);
+  this->selections.push_back(selection);
 }
 
 } // namespace model

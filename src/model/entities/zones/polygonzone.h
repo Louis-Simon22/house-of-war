@@ -1,21 +1,21 @@
-#ifndef BOXINFLUENCEZONE_H
-#define BOXINFLUENCEZONE_H
+#ifndef POLYGONZONE_H
+#define POLYGONZONE_H
 
-#include "./influencezone.h"
+#include "./zone.h"
 
 namespace how {
 namespace model {
-class PolygonInfluenceZone : public InfluenceZone {
+class PolygonZone : public Zone {
 public:
-  PolygonInfluenceZone(const Entity *parentEntity);
-  PolygonInfluenceZone(const types::box_t &envelope,
+  PolygonZone(const Entity *parentEntity);
+  PolygonZone(const types::box_t &envelope,
                        const Entity *parentEntity);
-  PolygonInfluenceZone(const types::polygon_t &polygon,
+  PolygonZone(const types::polygon_t &polygon,
                        const Entity *parentEntity);
-  ~PolygonInfluenceZone() override;
+  ~PolygonZone() override;
 
 public:
-  bool isPointWithinZone(const types::point_t &position) const override;
+  bool isPointOverlappingZone(const types::point_t &position) const override;
   bool isPolygonOverlappingZone(const types::polygon_t &polygon) const override;
   bool isSegmentOverlappingZone(const types::segment_t &segment) const override;
   types::box_t getEnvelope() const override;
@@ -31,4 +31,4 @@ private:
 } // namespace model
 } // namespace how
 
-#endif // BOXINFLUENCEZONE_H
+#endif // POLYGONZONE_H

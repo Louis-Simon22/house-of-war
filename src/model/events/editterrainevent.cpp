@@ -3,14 +3,13 @@
 namespace how {
 namespace model {
 
-EditTerrainEvent::EditTerrainEvent(types::coordinate_t posX,
-                                   types::coordinate_t posY,
+SingleEditTerrainEvent::SingleEditTerrainEvent(const types::point_t &position,
                                    TerrainType terrainType)
-    : SpatialEvent(posX, posY), terrainType(terrainType) {}
+    : SinglePositionEvent(position), terrainType(terrainType) {}
 
-EditTerrainEvent::~EditTerrainEvent() {}
+SingleEditTerrainEvent::~SingleEditTerrainEvent() {}
 
-void EditTerrainEvent::applyEvent(EntitiesManager &entitiesManager,
+void SingleEditTerrainEvent::applyEvent(EntitiesManager &entitiesManager,
                                   SelectionManager &) const {
   auto tilePtr = entitiesManager.getTilePtrByPosition(this->getPosition());
   tilePtr->setTerrainType(this->terrainType);

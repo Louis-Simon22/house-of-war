@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "./interactiveentity.h"
-#include "./polygoninfluencezone.h"
+#include "./polygonzone.h"
 
 namespace how {
 namespace model {
@@ -25,14 +25,14 @@ public:
   const std::vector<types::point_t> &getOutlinePoints() const;
   const std::vector<types::point_t> &getRelativeOutlinePoints() const;
   const std::vector<types::segment_t> &getOutlineSegments() const;
-  PolygonInfluenceZone *getPolygonInfluenceZone();
+  PolygonZone *getPolygonInfluenceZone();
 
 private:
   std::size_t vertexDesc;
   std::vector<types::point_t> outlinePoints;
   std::vector<types::point_t> relativeOutlinePoints;
   types::polygon_t polygon;
-  PolygonInfluenceZone polygonInfluenceZone;
+  PolygonZone polygonInfluenceZone;
   std::vector<types::segment_t> outlineSegments;
 };
 

@@ -59,7 +59,7 @@ const std::vector<types::segment_t> &VoronoiCell::getOutlineSegments() const {
   return this->outlineSegments;
 }
 
-PolygonInfluenceZone *VoronoiCell::getPolygonInfluenceZone() {
+PolygonZone *VoronoiCell::getPolygonInfluenceZone() {
   return &this->polygonInfluenceZone;
 }
 
