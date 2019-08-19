@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include <boost/geometry/algorithms/convert.hpp>
 #include <boost/geometry/algorithms/covered_by.hpp>
 #include <boost/geometry/algorithms/intersects.hpp>
 #include <boost/geometry/index/rtree.hpp>
@@ -17,6 +18,7 @@
 namespace how {
 namespace model {
 namespace {
+namespace bg = ::boost::geometry;
 namespace bgi = ::boost::geometry::index;
 }
 template <typename Value> class InfluenceZoneRTree {
@@ -56,6 +58,11 @@ public:
     return coveredValues;
   }
 
+  Value getValueByPosition(const types::point_t &position) {
+    auto valuesByPosition = this->getValuesByPosition(position);
+    return valuesByPosition.empty() ? Value() : valuesByPosition[0];
+  }
+
   std::vector<Value>
   getValuesBySegmentIntersection(const types::segment_t &segment) {
     auto coveredValues = std::vector<Value>();
@@ -69,22 +76,6 @@ public:
                 coveredValues.push_back(
                     this->influenceZoneToValueMap[influenceZone]);
               }
-            }));
-
-    return coveredValues;
-  }
-
-  std::vector<Value>
-  getValuesByEnvelopeIntersection(const types::box_t &envelope) {
-    auto coveredValues = std::vector<Value>();
-
-    this->indexRTree.query(
-        bgi::intersects(envelope),
-        ::boost::make_function_output_iterator(
-            [&coveredValues, this](const index_rtree_value_t &value) {
-              auto *influenceZone = std::get<1>(value);
-              coveredValues.push_back(
-                  this->influenceZoneToValueMap[influenceZone]);
             }));
 
     return coveredValues;
@@ -106,6 +97,13 @@ public:
             }));
 
     return coveredValues;
+  }
+
+  std::vector<Value>
+  getValuesByBoxIntersection(const types::box_t &box) {
+    auto polygon = types::polygon_t();
+    bg::convert(box, polygon);
+    return getValuesByPolygonIntersection(polygon);
   }
 
 private:

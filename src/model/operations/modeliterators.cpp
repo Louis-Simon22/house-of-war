@@ -23,7 +23,7 @@ void iterateArmies(EntitiesManager &entitiesManager) {
   auto &armyPtrs = entitiesManager.getPlayers()[0].getArmyPtrs();
   for (auto &armyPtr : armyPtrs) {
     auto intersectingTiles =
-        entitiesManager.getTilesRtree().getValuesByEnvelopeIntersection(
+        entitiesManager.getTilesRTree().getValuesByBoxIntersection(
             armyPtr->getForagingZone()->getEnvelope());
     for (auto intersectingTile : intersectingTiles) {
       if (armyPtr->getForagingZone()->isPolygonOverlappingZone(

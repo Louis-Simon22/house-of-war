@@ -1,20 +1,21 @@
 #ifndef TARGETEVENT_H
 #define TARGETEVENT_H
 
-#include "./singlepositionevent.h"
+#include "./modelevent.h"
 
 namespace how {
 namespace model {
-class TargetEvent : public SinglePositionEvent {
+class TargetEvent : public ModelEvent {
 public:
   TargetEvent(const types::point_t &position);
-
-public:
   ~TargetEvent() override;
 
 public:
   void applyEvent(EntitiesManager &entitiesManager,
                   SelectionManager &selectionManager) const;
+
+private:
+  types::point_t position;
 };
 } // namespace model
 } // namespace how

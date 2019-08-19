@@ -40,25 +40,52 @@ Item {
             }
 
             MouseArea {
+                id: mapItemMouseArea
                 anchors.fill: parent
 
                 acceptedButtons: Qt.AllButtons
-//                propagateComposedEvents: true
+                propagateComposedEvents: true
                 preventStealing: true
+
+                property point previousMousePosition: null
+                property point holdPosition: null
 
                 onClicked: {
                     modelController.entitiesMouseEvent(mouse.x, mouse.y,
                                                        mouse.buttons)
-                    mouse.accepted = true
+                    mouse.accepted = false
+                }
+                onPressAndHold: {
+                    if (mouse.buttons & Qt.LeftButton) {
+                        holdPosition = new Point(mouse.x, mouse.y)
+                    }
+                    mouse.accepted = false
                 }
                 onPositionChanged: {
-                    if (containsMouse && mouse.modifiers & Qt.ShiftModifier) {
-                        modelController.entitiesMouseEvent(mouse.x, mouse.y,
-                                                           mouse.buttons)
-                        mouse.accepted = true
+                    if (containsMouse) {
+                        mouse.accepted = false
+                        if (previousMousePosition) {
+                            modelController.entitiesSegmentEvent(
+                                        previousMousePosition.x,
+                                        previousMousePosition.y, mouse.x,
+                                        mouse.y, mouse.buttons, mouse.modifiers)
+                        }
+                        previousMousePosition = new Point(mouse.x, mouse.y)
                     } else {
                         mouse.accepted = false
                     }
+                }
+                onReleased: {
+                    if (containsMouse && holdPosition) {
+                        modelController.entitiesBoxEvent(holdPosition.x,
+                                                         holdPosition.y,
+                                                         mouse.x, mouse.y,
+                                                         mouse.buttons,
+                                                         mouse.modifiers)
+                    }
+                    previousMousePosition = null
+                    holdPosition = null
+                    mouse.accepted = false
                 }
                 onWheel: {
                     mapItem.scale = Math.max(

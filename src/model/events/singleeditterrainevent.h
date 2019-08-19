@@ -1,14 +1,15 @@
-#ifndef EDITTERRAINEVENT_H
-#define EDITTERRAINEVENT_H
+#ifndef SINGLEEDITTERRAINEVENT_H
+#define SINGLEEDITTERRAINEVENT_H
 
 #include "../entities/terrain/terraintype.h"
-#include "./singlepositionevent.h"
+#include "./modelevent.h"
 
 namespace how {
 namespace model {
-class SingleEditTerrainEvent : public SinglePositionEvent {
+class SingleEditTerrainEvent : public ModelEvent {
 public:
-  SingleEditTerrainEvent(const types::point_t &position, TerrainType terrainType);
+  SingleEditTerrainEvent(const types::point_t &position,
+                         TerrainType terrainType);
 
 public:
   ~SingleEditTerrainEvent() override;
@@ -18,9 +19,10 @@ public:
                   SelectionManager &) const override;
 
 private:
+  types::point_t position;
   TerrainType terrainType;
 };
 } // namespace model
 } // namespace how
 
-#endif // EDITTERRAINEVENT_H
+#endif // SINGLEEDITTERRAINEVENT_H

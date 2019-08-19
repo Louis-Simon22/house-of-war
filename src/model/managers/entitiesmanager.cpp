@@ -22,7 +22,7 @@ void EntitiesManager::clearAllEntities() {
   this->uniqueDelaunaySegments.clear();
   this->players.clear();
   this->tilePtrs.clear();
-  this->tilesRtree.clearAllValues();
+  this->tilesRTree.clearAllValues();
 }
 
 void EntitiesManager::addTilesFromGraph() {
@@ -37,20 +37,10 @@ void EntitiesManager::addTilesFromGraph() {
 
 void EntitiesManager::addTile(std::shared_ptr<Tile> tilePtr) {
   this->tilePtrs.push_back(tilePtr);
-  this->tilesRtree.addValue(tilePtr->getPolygonInfluenceZone(), tilePtr);
+  this->tilesRTree.addValue(tilePtr->getPolygonInfluenceZone(), tilePtr);
 }
 
 const types::graph_t &EntitiesManager::getGraph() { return this->graph; }
-
-std::shared_ptr<Tile>
-EntitiesManager::getTilePtrByPosition(const types::point_t &position) {
-  return this->tilesRtree.getValuesByPosition(position)[0];
-}
-
-types::graph_vertex_desc_t
-EntitiesManager::getVertexDescByPosition(const types::point_t &position) {
-  return this->getTilePtrByPosition(position)->getVertexDesc();
-}
 
 const std::vector<types::segment_t> &
 EntitiesManager::getUniqueVoronoiSegments() const {
@@ -76,8 +66,8 @@ const std::vector<std::shared_ptr<Tile>> &EntitiesManager::getTilePtrs() const {
   return this->tilePtrs;
 }
 
-InfluenceZoneRTree<std::shared_ptr<Tile>> &EntitiesManager::getTilesRtree() {
-  return this->tilesRtree;
+InfluenceZoneRTree<std::shared_ptr<Tile>> &EntitiesManager::getTilesRTree() {
+  return this->tilesRTree;
 }
 
 } // namespace model

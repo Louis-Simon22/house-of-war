@@ -21,7 +21,7 @@ public:
   void bindArmy(model::Army *army);
 
 private:
-  types::carac_t getSize() const;
+  float getSize() const;
 
 private:
   model::Army *army;

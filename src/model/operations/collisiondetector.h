@@ -1,16 +1,17 @@
 #ifndef COLLISIONDETECTOR_H
 #define COLLISIONDETECTOR_H
 
+#include <algorithm>
 #include <vector>
 
 namespace how {
 namespace model {
 
-template <typename CollidableItems, typename CollisionDetector>
-std::vector<CollidableItems>
-getCollisions(const std::vector<CollidableItems> &items,
+template <typename CollidableItem, typename CollisionDetector>
+std::vector<CollidableItem>
+getCollisions(const std::vector<CollidableItem> &items,
               CollisionDetector collisionDetector) {
-  auto collidedItems = std::vector<CollidableItems>();
+  auto collidedItems = std::vector<CollidableItem>();
 
   for (auto &item : items) {
     if (collisionDetector(item)) {

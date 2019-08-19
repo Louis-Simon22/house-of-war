@@ -25,16 +25,13 @@ private:
 
 public:
   const types::graph_t &getGraph();
-  std::shared_ptr<Tile> getTilePtrByPosition(const types::point_t &position);
-  types::graph_vertex_desc_t
-  getVertexDescByPosition(const types::point_t &position);
   const std::vector<types::segment_t> &getUniqueVoronoiSegments() const;
   const std::vector<types::segment_t> &getUniqueDelaunaySegments() const;
   std::vector<Player> &getPlayers();
   const std::vector<Player> &getPlayers() const;
   std::vector<std::shared_ptr<Tile>> &getTilePtrs();
   const std::vector<std::shared_ptr<Tile>> &getTilePtrs() const;
-  InfluenceZoneRTree<std::shared_ptr<Tile>> &getTilesRtree();
+  InfluenceZoneRTree<std::shared_ptr<Tile>> &getTilesRTree();
 
 private:
   types::graph_t graph;
@@ -42,7 +39,7 @@ private:
   std::vector<types::segment_t> uniqueDelaunaySegments;
   std::vector<Player> players;
   std::vector<std::shared_ptr<Tile>> tilePtrs;
-  InfluenceZoneRTree<std::shared_ptr<Tile>> tilesRtree;
+  InfluenceZoneRTree<std::shared_ptr<Tile>> tilesRTree;
 };
 } // namespace model
 } // namespace how

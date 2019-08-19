@@ -1,7 +1,9 @@
 #include "modelcontroller.h"
 
-#include "../../model/events/editterrainevent.h"
-#include "../../model/events/selectevent.h"
+#include "../../model/events/boxselectevent.h"
+#include "../../model/events/segmenteditterrainevent.h"
+#include "../../model/events/singleeditterrainevent.h"
+#include "../../model/events/singleselectevent.h"
 #include "../../model/events/targetevent.h"
 #include "../../model/generation/worldgenerationconfig.h"
 #include "../conversion/converter.h"
@@ -33,27 +35,55 @@ void ModelController::loadFromFile(QString name) {
   this->modelManager.loadFromFile(name.toStdString());
 }
 
-void ModelController::iterateModel() { this->modelManager.iterateModel(); }
-
-void ModelController::entitiesMouseEvent(int x, int y, int button) {
-  // TODO able to select with a line, circle, square (no need to use zones)
+void ModelController::entitiesClickEvent(int x, int y, unsigned int button,
+                                         unsigned int modifiers) {
+  auto position = types::point_t(x, y);
   switch (button) {
   case Qt::LeftButton:
-    this->modelManager.onEvent(model::SingleSelectEvent(x, y));
+    this->modelManager.onEvent(
+        model::SingleSelectEvent(position, modifiers & Qt::ShiftModifier));
     break;
   case Qt::RightButton:
     switch (this->getControlMode()) {
     case ControlModeWrapper::PLAY:
-      this->modelManager.onEvent(model::TargetEvent(x, y));
+      this->modelManager.onEvent(model::TargetEvent(position));
       break;
     case ControlModeWrapper::EDIT:
       auto terrainType = static_cast<model::TerrainType>(
           this->entitiesController.getTilesController()->getTerrainType());
-      this->modelManager.onEvent(model::SingleEditTerrainEvent(x, y, terrainType));
+      this->modelManager.onEvent(
+          model::SingleEditTerrainEvent(position, terrainType));
       break;
     }
     break;
   }
+}
+
+void ModelController::entitiesSegmentEvent(int x1, int y1, int x2, int y2,
+                                           unsigned int button,
+                                           unsigned int modifiers) {
+  auto segment =
+      types::segment_t(types::point_t(x1, y1), types::point_t(x2, y2));
+  switch (button) {
+  case Qt::RightButton:
+    switch (this->getControlMode()) {
+    case ControlModeWrapper::EDIT:
+      auto terrainType = static_cast<model::TerrainType>(
+          this->entitiesController.getTilesController()->getTerrainType());
+      this->modelManager.onEvent(
+          model::SegmentEditTerrainEvent(segment, terrainType));
+      break;
+    }
+    break;
+  }
+}
+
+void ModelController::entitiesBoxEvent(int x1, int y1, int x2, int y2,
+                                       unsigned int button,
+                                       unsigned int modifiers) {
+  auto box = types::box_t(types::point_t(x1, y1), types::point_t(x2, y2));
+  this->modelManager.onEvent(
+      model::BoxSelectEvent(box, modifiers & Qt::ShiftModifier));
 }
 
 QList<QObject *> ModelController::getAllSaveFiles() {
@@ -63,6 +93,8 @@ QList<QObject *> ModelController::getAllSaveFiles() {
   }
   return saveFiles;
 }
+
+void ModelController::iterateModel() { this->modelManager.iterateModel(); }
 
 QRect ModelController::getWorldBounds() const {
   return convert(this->modelManager.getWorldBounds());

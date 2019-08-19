@@ -36,7 +36,12 @@ public slots:
                 float minimumVoronoiCellDistance, int randomSeed);
   void saveToFile();
   void loadFromFile(QString name);
-  void entitiesMouseEvent(int x, int y, int button);
+  void entitiesClickEvent(int x, int y, unsigned int button,
+                          unsigned int modifiers);
+  void entitiesSegmentEvent(int x1, int y1, int x2, int y2, unsigned int button,
+                            unsigned int modifiers);
+  void entitiesBoxEvent(int x1, int y1, int x2, int y2, unsigned int button,
+                        unsigned int modifiers);
 
 public:
   Q_INVOKABLE QList<QObject *> getAllSaveFiles();

@@ -12,7 +12,7 @@ void ArmyBindings::bindArmy(model::Army *army) {
   this->bindEntity(army);
 }
 
-types::carac_t ArmyBindings::getSize() const { return this->army ? 20 : 0; }
+float ArmyBindings::getSize() const { return this->army ? 20 : 0; }
 
 } // namespace ui
 } // namespace how
