@@ -1,6 +1,4 @@
 import QtQuick 2.12
-import QtQuick.Shapes 1.12
-import QtQml 2.12
 
 import com.louissimonmcnicoll.how.ui.modelcontroller 1.0
 
@@ -8,6 +6,7 @@ import "./overlay"
 
 Item {
     id: mapContainer
+    clip: true
 
     property ModelController modelController
 
@@ -16,85 +15,92 @@ Item {
         modelController.entitiesController.generateMapItems(mapItem)
     }
 
-    Flickable {
-        id: mapItemFlickable
-        anchors.fill: parent
-        contentWidth: mapItem.width * mapItem.scale
-        contentHeight: mapItem.height * mapItem.scale
-        boundsBehavior: Flickable.DragAndOvershootBounds
-        clip: true
+    Item {
+        id: mapItem
+        x: 0
+        y: 0
+        width: modelController.worldBounds.width
+        height: modelController.worldBounds.height
+        property real minScale: Math.max(mapContainer.width / width,
+                                         mapContainer.height / height)
+        property real scale: minScale
+        transform: Scale {
+            xScale: mapItem.scale
+            yScale: mapItem.scale
+        }
 
-        Item {
-            id: mapItem
-            x: modelController.worldBounds.x
-            y: modelController.worldBounds.y
-            width: modelController.worldBounds.width
-            height: modelController.worldBounds.height
-            property real minScale: Math.max(
-                                        mapItemFlickable.width / mapItem.width,
-                                        mapItemFlickable.height / mapItem.height)
-            property real scale: minScale
-            transform: Scale {
-                xScale: mapItem.scale
-                yScale: mapItem.scale
+        MouseArea {
+            id: mapItemMouseArea
+            anchors.fill: parent
+
+            acceptedButtons: Qt.AllButtons
+            propagateComposedEvents: false
+            preventStealing: true
+
+            property point previousMousePosition
+            property point initialMousePosition
+
+            onPressed: {
+                mapItemMouseArea.initialMousePosition = Qt.point(mouse.x,
+                                                                 mouse.y)
+                mapItemMouseArea.previousMousePosition = mapItemMouseArea.initialMousePosition
             }
-
-            MouseArea {
-                id: mapItemMouseArea
-                anchors.fill: parent
-
-                acceptedButtons: Qt.AllButtons
-                propagateComposedEvents: true
-                preventStealing: true
-
-                property point previousMousePosition: null
-                property point holdPosition: null
-
-                onClicked: {
-                    modelController.entitiesMouseEvent(mouse.x, mouse.y,
-                                                       mouse.buttons)
-                    mouse.accepted = false
-                }
-                onPressAndHold: {
-                    if (mouse.buttons & Qt.LeftButton) {
-                        holdPosition = new Point(mouse.x, mouse.y)
-                    }
-                    mouse.accepted = false
-                }
-                onPositionChanged: {
-                    if (containsMouse) {
-                        mouse.accepted = false
-                        if (previousMousePosition) {
-                            modelController.entitiesSegmentEvent(
-                                        previousMousePosition.x,
-                                        previousMousePosition.y, mouse.x,
-                                        mouse.y, mouse.buttons, mouse.modifiers)
-                        }
-                        previousMousePosition = new Point(mouse.x, mouse.y)
+            onPositionChanged: {
+                if (containsMouse) {
+                    if (mouse.buttons & Qt.MiddleButton) {
+                        var deltaX = mouse.x - mapItemMouseArea.previousMousePosition.x
+                        var deltaY = mouse.y - mapItemMouseArea.previousMousePosition.y
+                        mapItem.x += deltaX * 1.25
+                        mapItem.y += deltaY * 1.25
+                    } else if (mouse.buttons & Qt.LeftButton) {
+                        selectionRect.width = mouse.x - mapItemMouseArea.initialMousePosition.x
+                        selectionRect.height = mouse.y - mapItemMouseArea.initialMousePosition.y
+                        selectionRect.visible = true
                     } else {
-                        mouse.accepted = false
+                        modelController.entitiesSegmentEvent(
+                                    mapItemMouseArea.previousMousePosition.x,
+                                    mapItemMouseArea.previousMousePosition.y,
+                                    mouse.x, mouse.y, mouse.buttons,
+                                    mouse.modifiers)
                     }
+                    mapItemMouseArea.previousMousePosition = Qt.point(mouse.x,
+                                                                      mouse.y)
                 }
-                onReleased: {
-                    if (containsMouse && holdPosition) {
-                        modelController.entitiesBoxEvent(holdPosition.x,
-                                                         holdPosition.y,
-                                                         mouse.x, mouse.y,
-                                                         mouse.buttons,
-                                                         mouse.modifiers)
-                    }
-                    previousMousePosition = null
-                    holdPosition = null
-                    mouse.accepted = false
+            }
+            onReleased: {
+                if (containsMouse) {
+                    modelController.entitiesBoxEvent(
+                                mapItemMouseArea.initialMousePosition.x,
+                                mapItemMouseArea.initialMousePosition.y,
+                                mouse.x, mouse.y, mouse.buttons,
+                                mouse.modifiers)
                 }
-                onWheel: {
-                    mapItem.scale = Math.max(
-                                mapItem.minScale,
-                                mapItem.scale * (wheel.angleDelta.y > 0 ? 1.05 : 0.95))
-                    wheel.accepted = true
-                }
+                selectionRect.visible = false
+                mouse.accepted = true
+            }
+            onClicked: {
+                modelController.entitiesClickEvent(mouse.x, mouse.y,
+                                                   mouse.button,
+                                                   mouse.modifiers)
+                mouse.accepted = true
+            }
+            onWheel: {
+                mapItem.scale = Math.max(
+                            mapItem.minScale,
+                            mapItem.scale * (wheel.angleDelta.y > 0 ? 1.05 : 0.95))
+                wheel.accepted = true
             }
         }
+    }
+
+    Rectangle {
+        id: selectionRect
+        x: mapItemMouseArea.initialMousePosition.x
+        y: mapItemMouseArea.initialMousePosition.y
+
+        visible: false
+        border.color: "red"
+        border.width: 3
     }
 
     MapOverlay {

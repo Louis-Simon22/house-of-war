@@ -34,6 +34,7 @@ Item {
         id: gameLoader
         anchors.fill: parent
         active: false
+        focus: true
         sourceComponent: GameView {
             id: gameView
         }
@@ -43,7 +44,6 @@ Item {
         }
     }
 
-    focus: true
     Keys.onPressed: {
         if (event.key === Qt.Key_Escape) {
             swapper.state = "menu"

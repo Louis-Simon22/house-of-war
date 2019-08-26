@@ -7,14 +7,16 @@ SelectionManager::SelectionManager()
     : armySelectedSignal(), tileSelectedSignal(), selections() {}
 
 model::InteractiveEntity *SelectionManager::getSelection() const {
-  return this->hasSelection() ? nullptr : this->selections[0];
+  return this->hasSelection() ? this->selections[0] : nullptr;
 }
 
 std::vector<InteractiveEntity *> SelectionManager::getSelections() const {
   return this->selections;
 }
 
-bool SelectionManager::hasSelection() const { return this->selections.empty(); }
+bool SelectionManager::hasSelection() const {
+  return !this->selections.empty();
+}
 
 void SelectionManager::clearSelection() {
   for (auto *selection : this->selections) {

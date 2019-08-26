@@ -17,17 +17,19 @@ Item {
     focus: true
     Keys.onPressed: {
         if (gameView.state === "map") {
-            event.accepted = true
+            event.accepted = false
             if (event.modifiers & Qt.ControlModifier) {
                 switch (event.key) {
                 case Qt.Key_S:
                     modelController.saveToFile()
+                    event.accepted = true
                     break
                 }
             } else {
                 switch (event.key) {
                 case Qt.Key_Space:
                     modelController.iterationTimerManager.toggleIterations()
+                    event.accepted = true
                     break
                 }
             }
