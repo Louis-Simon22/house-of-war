@@ -20,7 +20,7 @@ SegmentsPainter::SegmentsPainter(const std::vector<types::segment_t> &segments,
   this->setFlag(QQuickItem::ItemHasContents, true);
   this->setX(parent->x());
   this->setY(parent->y());
-  this->setZ(static_cast<double>(model::Layers::MAP_ELEMENTS));
+  this->setZ(static_cast<double>(Layers::MAP_ELEMENTS));
   this->setWidth(parent->width());
   this->setHeight(parent->height());
 }

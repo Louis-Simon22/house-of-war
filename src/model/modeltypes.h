@@ -22,9 +22,7 @@ using ring_t = ::boost::geometry::model::ring<point_t, true, true>;
 
 } // namespace types
 
-namespace model {
-enum Layers { TILES = 0, MAP_ELEMENTS = 1, CHARACTERS = 2 };
-}
+enum Layers { TILES = 0, MAP_ELEMENTS, CHARACTERS, UI };
 } // namespace how
 
 #endif // MODELTYPES_H

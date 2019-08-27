@@ -34,8 +34,6 @@ Item {
             anchors.fill: parent
 
             acceptedButtons: Qt.AllButtons
-            propagateComposedEvents: false
-            preventStealing: true
 
             property point previousMousePosition
             property point initialMousePosition
@@ -69,19 +67,22 @@ Item {
             }
             onReleased: {
                 if (containsMouse) {
-                    modelController.entitiesBoxEvent(
-                                mapItemMouseArea.initialMousePosition.x,
-                                mapItemMouseArea.initialMousePosition.y,
-                                mouse.x, mouse.y, mouse.buttons,
-                                mouse.modifiers)
+                    if (selectionRect.visible) {
+                        modelController.entitiesBoxEvent(
+                                    mapItemMouseArea.initialMousePosition.x,
+                                    mapItemMouseArea.initialMousePosition.y,
+                                    mouse.x, mouse.y, mouse.buttons,
+                                    mouse.modifiers)
+                    } else {
+                        modelController.entitiesClickEvent(
+                                    mapItemMouseArea.initialMousePosition.x,
+                                    mapItemMouseArea.initialMousePosition.y,
+                                    mouse.x, mouse.y, mouse.buttons,
+                                    mouse.modifiers)
+                    }
                 }
-                selectionRect.visible = false
-                mouse.accepted = true
-            }
-            onClicked: {
-                modelController.entitiesClickEvent(mouse.x, mouse.y,
-                                                   mouse.button,
-                                                   mouse.modifiers)
+                selectionRect.width = 0
+                selectionRect.height = 0
                 mouse.accepted = true
             }
             onWheel: {
@@ -91,16 +92,18 @@ Item {
                 wheel.accepted = true
             }
         }
-    }
 
-    Rectangle {
-        id: selectionRect
-        x: mapItemMouseArea.initialMousePosition.x
-        y: mapItemMouseArea.initialMousePosition.y
+        Rectangle {
+            id: selectionRect
+            x: mapItemMouseArea.initialMousePosition.x
+            y: mapItemMouseArea.initialMousePosition.y
+            z: modelController.UI_LAYER
 
-        visible: false
-        border.color: "red"
-        border.width: 3
+            visible: width > 5 && height > 5
+            border.color: "red"
+            border.width: 3
+            color: "transparent"
+        }
     }
 
     MapOverlay {

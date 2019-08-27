@@ -116,5 +116,7 @@ void ModelController::setControlMode(int controlMode) {
   this->controlModeChanged(controlMode);
 }
 
+int ModelController::getUiLayer() const { return Layers::UI; }
+
 } // namespace ui
 } // namespace how

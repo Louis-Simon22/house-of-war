@@ -23,6 +23,7 @@ class ModelController : public QObject {
                  getIterationTimerManager CONSTANT FINAL)
   Q_PROPERTY(int controlMode READ getControlMode WRITE setControlMode NOTIFY
                  controlModeChanged FINAL)
+    Q_PROPERTY(int UI_LAYER READ getUiLayer CONSTANT FINAL)
 
 public:
   ModelController(QObject *parent = nullptr);
@@ -58,6 +59,7 @@ private:
   IterationTimerManager *getIterationTimerManager();
   int getControlMode() const;
   void setControlMode(int controlMode);
+  int getUiLayer() const;
 
 private:
   model::ModelManager modelManager;
