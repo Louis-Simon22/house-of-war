@@ -20,7 +20,7 @@ namespace model {
 namespace {
 namespace bg = ::boost::geometry;
 namespace bgi = ::boost::geometry::index;
-}
+} // namespace
 template <typename Value> class InfluenceZoneRTree {
   using index_rtree_value_t = std::pair<types::box_t, const Zone *>;
   using index_rtree_t = bgi::rtree<index_rtree_value_t, bgi::quadratic<16>>;
@@ -81,29 +81,21 @@ public:
     return coveredValues;
   }
 
-  std::vector<Value>
-  getValuesByPolygonIntersection(const types::polygon_t &polygon) {
+  std::vector<Value> getValuesByBoxIntersection(const types::box_t &box) {
     auto coveredValues = std::vector<Value>();
 
     this->indexRTree.query(
-        bgi::intersects(polygon),
+        bgi::intersects(box),
         ::boost::make_function_output_iterator(
-            [&coveredValues, &polygon, this](const index_rtree_value_t &value) {
+            [&coveredValues, &box, this](const index_rtree_value_t &value) {
               auto *influenceZone = std::get<1>(value);
-              if (influenceZone->isPolygonOverlappingZone(polygon)) {
+              if (influenceZone->isBoxOverlappingZone(box)) {
                 coveredValues.push_back(
                     this->influenceZoneToValueMap[influenceZone]);
               }
             }));
 
     return coveredValues;
-  }
-
-  std::vector<Value>
-  getValuesByBoxIntersection(const types::box_t &box) {
-    auto polygon = types::polygon_t();
-    bg::convert(box, polygon);
-    return getValuesByPolygonIntersection(polygon);
   }
 
 private:

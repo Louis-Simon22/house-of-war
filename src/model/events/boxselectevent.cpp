@@ -22,17 +22,18 @@ void BoxSelectEvent::applyEvent(EntitiesManager &entitiesManager,
   }
   const auto &box = this->box;
   const auto &armyPtrs = entitiesManager.getPlayers()[0].getArmyPtrs();
-  auto selectedArmies =
+  auto selectedArmyPtrs =
       getCollisions<>(armyPtrs, [&box](const std::shared_ptr<Army> &armyPtr) {
         return armyPtr->getSelectionZone()->isBoxOverlappingZone(box);
       });
-  if (!selectedArmies.empty()) {
-    selectionManager.addArmySelection(selectedArmies[0].get());
-  } else {
-    const auto &selectedTilePtrs =
+  for (auto &selectedArmyPtr : selectedArmyPtrs) {
+    selectionManager.addArmySelection(selectedArmyPtr.get());
+  }
+  if (selectedArmyPtrs.empty()) {
+    auto selectedTilePtrs =
         entitiesManager.getTilesRTree().getValuesByBoxIntersection(box);
-    if (!selectedTilePtrs.empty()) {
-      selectionManager.addTileSelection(selectedTilePtrs[0].get());
+    for (auto &selectedTilePtr : selectedTilePtrs) {
+      selectionManager.addTileSelection(selectedTilePtr.get());
     }
   }
 }

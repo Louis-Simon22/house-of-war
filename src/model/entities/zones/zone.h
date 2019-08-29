@@ -13,7 +13,7 @@ public:
 
 public:
   virtual bool isPointOverlappingZone(const types::point_t &position) const = 0;
-  bool isBoxOverlappingZone(const types::box_t &box) const;
+  virtual bool isBoxOverlappingZone(const types::box_t &box) const = 0;
   virtual bool
   isSegmentOverlappingZone(const types::segment_t &segment) const = 0;
   virtual bool

@@ -51,9 +51,18 @@ Item {
                         mapItem.x += deltaX * 1.25
                         mapItem.y += deltaY * 1.25
                     } else if (mouse.buttons & Qt.LeftButton) {
-                        selectionRect.width = mouse.x - mapItemMouseArea.initialMousePosition.x
-                        selectionRect.height = mouse.y - mapItemMouseArea.initialMousePosition.y
-                        selectionRect.visible = true
+                        selectionRect.x = Math.min(
+                                    mapItemMouseArea.initialMousePosition.x,
+                                    mouse.x)
+                        selectionRect.y = Math.min(
+                                    mapItemMouseArea.initialMousePosition.y,
+                                    mouse.y)
+                        selectionRect.width = Math.max(
+                                    mapItemMouseArea.initialMousePosition.x,
+                                    mouse.x) - selectionRect.x
+                        selectionRect.height = Math.max(
+                                    mapItemMouseArea.initialMousePosition.y,
+                                    mouse.y) - selectionRect.y
                     } else {
                         modelController.entitiesSegmentEvent(
                                     mapItemMouseArea.previousMousePosition.x,
@@ -69,20 +78,18 @@ Item {
                 if (containsMouse) {
                     if (selectionRect.visible) {
                         modelController.entitiesBoxEvent(
-                                    mapItemMouseArea.initialMousePosition.x,
-                                    mapItemMouseArea.initialMousePosition.y,
-                                    mouse.x, mouse.y, mouse.buttons,
-                                    mouse.modifiers)
+                                    selectionRect.x, selectionRect.y,
+                                    selectionRect.x + selectionRect.width,
+                                    selectionRect.y + selectionRect.height,
+                                    mouse.buttons, mouse.modifiers)
                     } else {
                         modelController.entitiesClickEvent(
                                     mapItemMouseArea.initialMousePosition.x,
                                     mapItemMouseArea.initialMousePosition.y,
-                                    mouse.x, mouse.y, mouse.buttons,
-                                    mouse.modifiers)
+                                    mouse.button, mouse.modifiers)
                     }
                 }
                 selectionRect.width = 0
-                selectionRect.height = 0
                 mouse.accepted = true
             }
             onWheel: {
@@ -95,8 +102,6 @@ Item {
 
         Rectangle {
             id: selectionRect
-            x: mapItemMouseArea.initialMousePosition.x
-            y: mapItemMouseArea.initialMousePosition.y
             z: modelController.UI_LAYER
 
             visible: width > 5 && height > 5

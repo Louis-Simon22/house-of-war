@@ -10,7 +10,7 @@ namespace bg = ::boost::geometry;
 }
 
 CircularZone::CircularZone(types::coordinate_t radius,
-                                             const Entity *parentEntity)
+                           const Entity *parentEntity)
     : Zone(parentEntity), radius(radius) {}
 
 CircularZone::~CircularZone() {}
@@ -21,15 +21,20 @@ bool CircularZone::isPointOverlappingZone(
   return static_cast<float>(distance) < radius;
 }
 
-bool CircularZone::isPolygonOverlappingZone(
-    const types::polygon_t &polygon) const {
-  auto distance = bg::distance(this->parent->getAbsolutePosition(), polygon);
+bool CircularZone::isBoxOverlappingZone(const types::box_t &box) const {
+  auto distance = bg::distance(this->parent->getAbsolutePosition(), box);
   return static_cast<float>(distance) < radius;
 }
 
 bool CircularZone::isSegmentOverlappingZone(
     const types::segment_t &segment) const {
   auto distance = bg::distance(this->parent->getAbsolutePosition(), segment);
+  return static_cast<float>(distance) < radius;
+}
+
+bool CircularZone::isPolygonOverlappingZone(
+    const types::polygon_t &polygon) const {
+  auto distance = bg::distance(this->parent->getAbsolutePosition(), polygon);
   return static_cast<float>(distance) < radius;
 }
 
@@ -40,9 +45,7 @@ types::box_t CircularZone::getEnvelope() const {
                       types::point_t(posX + this->radius, posY + this->radius));
 }
 
-types::coordinate_t CircularZone::getRadius() const {
-  return this->radius;
-}
+types::coordinate_t CircularZone::getRadius() const { return this->radius; }
 
 void CircularZone::setRadius(types::coordinate_t radius) {
   this->radius = radius;
