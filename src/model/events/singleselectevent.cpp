@@ -12,21 +12,27 @@ SingleSelectEvent::~SingleSelectEvent() {}
 
 void SingleSelectEvent::applyEvent(EntitiesManager &entitiesManager,
                                    SelectionManager &selectionManager) const {
-  if (!this->addToSelection) {
-    selectionManager.clearSelection();
-  }
   const auto &position = this->position;
   const auto &armyPtrs = entitiesManager.getPlayers()[0].getArmyPtrs();
-  auto selectedArmies = getCollisions<>(
+  auto selectedArmyPtrs = getCollisions<>(
       armyPtrs, [&position](const std::shared_ptr<Army> &armyPtr) {
         return armyPtr->getSelectionZone()->isPointOverlappingZone(position);
       });
-  if (!selectedArmies.empty()) {
-    selectionManager.addArmySelection(selectedArmies[0].get());
+  if (!selectedArmyPtrs.empty()) {
+    if (!this->addToSelection) {
+      selectionManager.clearSelection();
+    }
+    auto &selectedArmyPtr = selectedArmyPtrs[0];
+    if (selectedArmyPtr->isSelected()) {
+      selectionManager.removeSelection(selectedArmyPtr.get());
+    } else {
+      selectionManager.addArmySelection(selectedArmyPtr.get());
+    }
   } else {
     const auto &selectedTilePtrs =
         entitiesManager.getTilesRTree().getValuesByPosition(position);
     if (!selectedTilePtrs.empty()) {
+      selectionManager.clearSelection();
       selectionManager.addTileSelection(selectedTilePtrs[0].get());
     }
   }

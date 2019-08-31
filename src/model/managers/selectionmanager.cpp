@@ -1,5 +1,7 @@
 #include "selectionmanager.h"
 
+#include <algorithm>
+
 namespace how {
 namespace model {
 
@@ -26,11 +28,7 @@ void SelectionManager::clearSelection() {
 }
 
 void SelectionManager::addTileSelection(Tile *tileSelection) {
-  if (this->hasSelection()) {
-    this->multiSelectionSignal();
-  } else {
-    this->tileSelectedSignal(tileSelection);
-  }
+  this->tileSelectedSignal(tileSelection);
   this->addSelection(tileSelection);
 }
 
@@ -41,6 +39,13 @@ void SelectionManager::addArmySelection(Army *armySelection) {
     this->armySelectedSignal(armySelection);
   }
   this->addSelection(armySelection);
+}
+
+void SelectionManager::removeSelection(InteractiveEntity *selection) {
+  selection->setSelected(false);
+  this->selections.erase(
+      std::remove(this->selections.begin(), this->selections.end(), selection),
+      this->selections.end());
 }
 
 void SelectionManager::addSelection(InteractiveEntity *selection) {

@@ -22,6 +22,7 @@ public:
   void clearSelection();
   void addTileSelection(Tile *tileSelection);
   void addArmySelection(Army *armySelection);
+  void removeSelection(InteractiveEntity *selection);
 
 private:
   void addSelection(InteractiveEntity *selection);

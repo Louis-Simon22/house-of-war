@@ -10,8 +10,8 @@ namespace how {
 namespace model {
 namespace {
 namespace bg = ::boost::geometry;
+using vertex_desc_t = unsigned long;
 } // namespace
-
 class VoronoiCell : public InteractiveEntity {
 public:
   VoronoiCell(types::point_t position,
@@ -19,8 +19,8 @@ public:
   virtual ~VoronoiCell() = 0;
 
 public:
-  std::size_t getVertexDesc() const;
-  void setVertexDesc(std::size_t vertexDesc);
+  vertex_desc_t getVertexDesc() const;
+  void setVertexDesc(vertex_desc_t vertexDesc);
   const types::polygon_t &getPolygon() const;
   const std::vector<types::point_t> &getOutlinePoints() const;
   const std::vector<types::point_t> &getRelativeOutlinePoints() const;
@@ -28,7 +28,7 @@ public:
   PolygonZone *getPolygonInfluenceZone();
 
 private:
-  std::size_t vertexDesc;
+  vertex_desc_t vertexDesc;
   std::vector<types::point_t> outlinePoints;
   std::vector<types::point_t> relativeOutlinePoints;
   types::polygon_t polygon;

@@ -29,13 +29,6 @@ void BoxSelectEvent::applyEvent(EntitiesManager &entitiesManager,
   for (auto &selectedArmyPtr : selectedArmyPtrs) {
     selectionManager.addArmySelection(selectedArmyPtr.get());
   }
-  if (selectedArmyPtrs.empty()) {
-    auto selectedTilePtrs =
-        entitiesManager.getTilesRTree().getValuesByBoxIntersection(box);
-    for (auto &selectedTilePtr : selectedTilePtrs) {
-      selectionManager.addTileSelection(selectedTilePtr.get());
-    }
-  }
 }
 
 } // namespace model

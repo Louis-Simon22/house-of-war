@@ -28,18 +28,18 @@ extractUniqueVoronoiSegments(const types::graph_t &graph) {
 
 std::vector<types::segment_t>
 extractUniqueDelaunaySegments(const types::graph_t &graph) {
-    types::graph_edge_iterator_t edgeItBegin, edgeItEnd;
-    std::tie(edgeItBegin, edgeItEnd) = ::boost::edges(graph);
-    auto uniqueDelaunaySegmentsSet =
-        std::set<types::segment_t, SegmentComparator>();
-    for (auto edgeIt = edgeItBegin; edgeIt != edgeItEnd; edgeIt++) {
-      auto edgeDesc = *edgeIt;
-      auto &delaunayEdgePtr = graph[edgeDesc];
-      const auto &edgeSegment = delaunayEdgePtr->getSegment();
-      uniqueDelaunaySegmentsSet.insert(edgeSegment);
-    }
-    return std::vector<types::segment_t>(uniqueDelaunaySegmentsSet.begin(),
-                                         uniqueDelaunaySegmentsSet.end());
+  types::graph_edge_iterator_t edgeItBegin, edgeItEnd;
+  std::tie(edgeItBegin, edgeItEnd) = ::boost::edges(graph);
+  auto uniqueDelaunaySegmentsSet =
+      std::set<types::segment_t, SegmentComparator>();
+  for (auto edgeIt = edgeItBegin; edgeIt != edgeItEnd; edgeIt++) {
+    auto edgeDesc = *edgeIt;
+    auto &delaunayEdgePtr = graph[edgeDesc];
+    const auto &edgeSegment = delaunayEdgePtr->getSegment();
+    uniqueDelaunaySegmentsSet.insert(edgeSegment);
+  }
+  return std::vector<types::segment_t>(uniqueDelaunaySegmentsSet.begin(),
+                                       uniqueDelaunaySegmentsSet.end());
 }
 
 } // namespace model

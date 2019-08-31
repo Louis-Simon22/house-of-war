@@ -19,7 +19,7 @@ public:
   void resetEntities(types::graph_t &graph);
 
 private:
-  void clearAllEntities();
+  void clearAllEntities(types::graph_t &graph);
   void addTilesFromGraph();
   void addTile(std::shared_ptr<Tile> tilePtr);
 

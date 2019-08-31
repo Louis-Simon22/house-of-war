@@ -1,9 +1,21 @@
 #include "walkingdistancescalculator.h"
 
-#include <algorithm>
 #include <iostream>
+
 namespace how {
 namespace model {
+
+types::coordinate_t getDistanceMultiplier(Tile *tile) {
+  switch (tile->getTerrainType()) {
+  case FOREST:
+    return 2;
+  case PLAIN:
+    return 1.3f;
+  case MOUNTAIN:
+    return std::numeric_limits<types::coordinate_t>::infinity();
+  }
+  return std::numeric_limits<types::coordinate_t>::infinity();
+}
 
 void calculateWalkingDistances(types::graph_t &graph) {
   types::graph_edge_iterator_t edgeItBegin;
@@ -11,15 +23,18 @@ void calculateWalkingDistances(types::graph_t &graph) {
   std::tie(edgeItBegin, edgeItEnd) = ::boost::edges(graph);
   for (auto edgeIt = edgeItBegin; edgeIt != edgeItEnd; edgeIt++) {
     const auto &edgeDesc = *edgeIt;
-    const auto &sourceVertexDesc = ::boost::source(edgeDesc, graph);
-    const auto &targetVertexDesc = ::boost::target(edgeDesc, graph);
-    const auto &sourceVertex = graph[sourceVertexDesc];
-    const auto &targetVertex = graph[targetVertexDesc];
     auto &edge = graph[edgeDesc];
+    const auto &sourceTilePtr = graph[::boost::source(edgeDesc, graph)];
+    const auto &targetTilePtr = graph[::boost::target(edgeDesc, graph)];
 
-    // TODO distance calculation based on terrain/roads
-
-    edge->setDistanceWalking(edge->getDistanceAsCrowFlies());
+    auto walkingDistanceMultiplier = types::coordinate_t(1);
+    if (!(sourceTilePtr->hasRoad() && targetTilePtr->hasRoad())) {
+      walkingDistanceMultiplier =
+          getDistanceMultiplier(sourceTilePtr.get()) * 0.5f +
+          getDistanceMultiplier(targetTilePtr.get()) * 0.5f;
+    }
+    edge->setWalkingDistance(edge->getDistanceAsCrowFlies() *
+                             walkingDistanceMultiplier);
   }
 }
 

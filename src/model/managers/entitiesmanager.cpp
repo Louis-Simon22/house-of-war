@@ -9,15 +9,14 @@ namespace model {
 EntitiesManager::EntitiesManager() : players(), tilePtrs() {}
 
 void EntitiesManager::resetEntities(types::graph_t &graph) {
-  this->clearAllEntities();
-  this->graph = graph;
+  this->clearAllEntities(graph);
   this->addTilesFromGraph();
   this->uniqueVoronoiSegments = extractUniqueVoronoiSegments(graph);
   this->uniqueDelaunaySegments = extractUniqueDelaunaySegments(graph);
 }
 
-void EntitiesManager::clearAllEntities() {
-  this->graph = types::graph_t();
+void EntitiesManager::clearAllEntities(types::graph_t &graph) {
+  this->graph = graph;
   this->uniqueVoronoiSegments.clear();
   this->uniqueDelaunaySegments.clear();
   this->players.clear();

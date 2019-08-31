@@ -36,9 +36,9 @@ VoronoiCell::VoronoiCell(types::point_t position,
 
 VoronoiCell::~VoronoiCell() {}
 
-std::size_t VoronoiCell::getVertexDesc() const { return this->vertexDesc; }
+vertex_desc_t VoronoiCell::getVertexDesc() const { return this->vertexDesc; }
 
-void VoronoiCell::setVertexDesc(std::size_t vertexDesc) {
+void VoronoiCell::setVertexDesc(vertex_desc_t vertexDesc) {
   this->vertexDesc = vertexDesc;
 }
 

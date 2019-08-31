@@ -34,9 +34,9 @@ bool isVoronoiCellOnBounds(const types::box_t &bounds,
 // An edge is invalid if the segment joining them overlaps more than two edge
 // cells
 bool isEdgeValid(
+    const VoronoiCell *voronoiCellPtr1, const VoronoiCell *voronoiCellPtr2,
     const types::box_t &bounds,
-    InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &voronoiCellsRTree,
-    const VoronoiCell *voronoiCellPtr1, const VoronoiCell *voronoiCellPtr2) {
+    InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &voronoiCellsRTree) {
   if (!isVoronoiCellOnBounds(bounds, voronoiCellPtr1) ||
       !isVoronoiCellOnBounds(bounds, voronoiCellPtr2)) {
     return true;
@@ -54,27 +54,29 @@ bool isEdgeValid(
   return intersectingEdgeCells <= 2;
 }
 
+void addDelaunayEdgeToGraph(const VoronoiCell *voronoiCellPtr1,
+                            const VoronoiCell *voronoiCellPtr2,
+                            types::graph_t &graph) {
+  auto delaunayEdge =
+      std::shared_ptr<DelaunayEdge>(new DelaunayEdge(types::segment_t(
+          voronoiCellPtr1->getPosition(), voronoiCellPtr2->getPosition())));
+  auto addedEdgePair =
+      ::boost::add_edge(voronoiCellPtr1->getVertexDesc(),
+                        voronoiCellPtr2->getVertexDesc(), delaunayEdge, graph);
+  delaunayEdge->setEdgeDesc(addedEdgePair.first);
+}
+
 void addEdgeToGraph(
-    types::graph_t &graph, const types::box_t &bounds,
+    const VoronoiCell *voronoiCellPtr1, const VoronoiCell *voronoiCellPtr2,
+    const types::box_t &bounds,
     InfluenceZoneRTree<std::shared_ptr<VoronoiCell>> &voronoiCellsRTree,
-    const VoronoiCell *voronoiCellPtr1, const VoronoiCell *voronoiCellPtr2) {
-  // This doesn't include the edges that wrap around edge cells
-  if (isEdgeValid(bounds, voronoiCellsRTree, voronoiCellPtr1,
-                  voronoiCellPtr2)) {
-    auto vertexDesc1 = voronoiCellPtr1->getVertexDesc();
-    auto vertexDesc2 = voronoiCellPtr2->getVertexDesc();
-    if (!::boost::edge(vertexDesc1, vertexDesc2, graph).second) {
-      auto delaunayEdge1 =
-          std::shared_ptr<DelaunayEdge>(new DelaunayEdge(types::segment_t(
-              voronoiCellPtr1->getPosition(), voronoiCellPtr2->getPosition())));
-      ::boost::add_edge(vertexDesc1, vertexDesc2, delaunayEdge1, graph);
-    }
-    if (!::boost::edge(vertexDesc2, vertexDesc1, graph).second) {
-      auto delaunayEdge2 =
-          std::shared_ptr<DelaunayEdge>(new DelaunayEdge(types::segment_t(
-              voronoiCellPtr1->getPosition(), voronoiCellPtr2->getPosition())));
-      ::boost::add_edge(vertexDesc2, vertexDesc1, delaunayEdge2, graph);
-    }
+    types::graph_t &graph) {
+  if (!std::get<1>(::boost::edge(voronoiCellPtr1->getVertexDesc(),
+                                 voronoiCellPtr2->getVertexDesc(), graph)) &&
+      isEdgeValid(voronoiCellPtr1, voronoiCellPtr2, bounds,
+                  voronoiCellsRTree)) {
+    addDelaunayEdgeToGraph(voronoiCellPtr1, voronoiCellPtr2, graph);
+    addDelaunayEdgeToGraph(voronoiCellPtr2, voronoiCellPtr1, graph);
   }
 }
 
@@ -83,29 +85,26 @@ types::graph_t createGraphFromVoronoiCellsAndComputeDelaunayTriangulation(
   auto graph = types::graph_t();
   auto spatialIndexTree = InfluenceZoneRTree<std::shared_ptr<VoronoiCell>>();
   auto coords = std::vector<double>();
-
   for (const auto &tilePtr : tiles) {
     const auto &position = tilePtr->getPosition();
     coords.push_back(static_cast<double>(bg::get<0>(position)));
     coords.push_back(static_cast<double>(bg::get<1>(position)));
-    auto vertexDesc = ::boost::add_vertex(tilePtr, graph);
-    tilePtr->setVertexDesc(vertexDesc);
+    tilePtr->setVertexDesc(::boost::add_vertex(tilePtr, graph));
     spatialIndexTree.addValue(tilePtr->getPolygonInfluenceZone(), tilePtr);
   }
 
   auto delaunator = delaunator::Delaunator(coords);
   const auto &triangles = delaunator.triangles;
-
   for (std::size_t i = 0; i < triangles.size(); i += 3) {
     const auto *voronoiCellPtr1 = tiles[triangles[i]].get();
     const auto *voronoiCellPtr2 = tiles[triangles[i + 1]].get();
     const auto *voronoiCellPtr3 = tiles[triangles[i + 2]].get();
-    addEdgeToGraph(graph, bounds, spatialIndexTree, voronoiCellPtr1,
-                   voronoiCellPtr2);
-    addEdgeToGraph(graph, bounds, spatialIndexTree, voronoiCellPtr2,
-                   voronoiCellPtr3);
-    addEdgeToGraph(graph, bounds, spatialIndexTree, voronoiCellPtr3,
-                   voronoiCellPtr1);
+    addEdgeToGraph(voronoiCellPtr1, voronoiCellPtr2, bounds, spatialIndexTree,
+                   graph);
+    addEdgeToGraph(voronoiCellPtr2, voronoiCellPtr3, bounds, spatialIndexTree,
+                   graph);
+    addEdgeToGraph(voronoiCellPtr3, voronoiCellPtr1, bounds, spatialIndexTree,
+                   graph);
   }
 
   return graph;

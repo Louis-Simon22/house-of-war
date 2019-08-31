@@ -24,11 +24,14 @@ public:
   void setOwner(const Player *owner);
   TerrainType getTerrainType() const;
   void setTerrainType(TerrainType terrainType);
+  bool hasRoad();
+  void setHasRoad(bool hasRoad);
 
 private:
   TerrainType terrainType;
   types::carac_t resources;
   const Player *owner;
+  bool road;
 };
 } // namespace model
 } // namespace how

@@ -8,25 +8,30 @@ namespace model {
 
 DelaunayEdge::DelaunayEdge(types::segment_t segment)
     : segment(segment),
-      distanceAsCrowFlies(static_cast<float>(bg::length(segment))),
-      distanceWalking(distanceAsCrowFlies) {}
+      distanceAsCrowFlies(static_cast<float>(bg::length(segment))) {}
 
 DelaunayEdge::~DelaunayEdge() {}
+
+const edge_desc_t &DelaunayEdge::getEdgeDesc() const { return this->edgeDesc; }
+
+void DelaunayEdge::setEdgeDesc(const edge_desc_t &edgeDesc) {
+  this->edgeDesc = edgeDesc;
+}
 
 const types::segment_t &DelaunayEdge::getSegment() const {
   return this->segment;
 }
 
-const types::coordinate_t &DelaunayEdge::getDistanceAsCrowFlies() const {
+types::coordinate_t DelaunayEdge::getDistanceAsCrowFlies() const {
   return this->distanceAsCrowFlies;
 }
 
-const types::coordinate_t &DelaunayEdge::getDistanceWalking() const {
-  return this->distanceWalking;
+types::coordinate_t DelaunayEdge::getWalkingDistance() const {
+  return this->walkingDistance;
 }
 
-void DelaunayEdge::setDistanceWalking(types::coordinate_t distanceWalking) {
-  this->distanceWalking = distanceWalking;
+void DelaunayEdge::setWalkingDistance(types::coordinate_t walkingDistance) {
+  this->walkingDistance = walkingDistance;
 }
 
 } // namespace model

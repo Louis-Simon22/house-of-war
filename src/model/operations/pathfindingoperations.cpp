@@ -14,8 +14,12 @@ graphEntityPathfinding(types::graph_vertex_desc_t sourceVertexDesc,
   std::vector<types::graph_vertex_desc_t> predecessors;
   std::tie(predecessors, std::ignore) = computeDijkstra<>(
       sourceVertexDesc,
-      [](const std::shared_ptr<DelaunayEdge> &edgePtr) -> types::coordinate_t {
-        return edgePtr->getDistanceWalking();
+      [&graph](
+          const std::shared_ptr<DelaunayEdge> &edgePtr) -> types::coordinate_t {
+        const auto &edgeDesc = edgePtr->getEdgeDesc();
+        auto sourceVoronoiCellPtr = graph[::boost::source(edgeDesc, graph)];
+        auto targetVoronoiCellPtr = graph[::boost::target(edgeDesc, graph)];
+        return edgePtr->getWalkingDistance();
       },
       graph);
 
