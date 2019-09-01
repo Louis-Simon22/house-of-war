@@ -16,22 +16,16 @@ Item {
     }
     focus: true
     Keys.onPressed: {
-        if (gameView.state === "map") {
+        if (gameView.state === "map" && !event.isAutoRepeat) {
             event.accepted = false
             if (event.modifiers & Qt.ControlModifier) {
-                switch (event.key) {
-                case Qt.Key_S:
+                if (event.key === Qt.Key_S) {
                     modelController.saveToFile()
                     event.accepted = true
-                    break
                 }
-            } else {
-                switch (event.key) {
-                case Qt.Key_Space:
-                    modelController.iterationTimerManager.toggleIterations()
-                    event.accepted = true
-                    break
-                }
+            } else if (event.key === Qt.Key_Space) {
+                modelController.iterationTimerManager.toggleIterations()
+                event.accepted = true
             }
         }
     }

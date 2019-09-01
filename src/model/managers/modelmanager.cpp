@@ -4,6 +4,7 @@
 #include "../operations/modeliterators.h"
 #include "../persistence/modeldeserializer.h"
 #include "../persistence/modelserializer.h"
+#include "../persistence/savefilesmanager.h"
 
 #include <iostream>
 
@@ -14,24 +15,26 @@ ModelManager::ModelManager()
     : fileName(""), worldGenerationConfig(), entitiesManager(),
       selectionManager(), iterationsCount(0) {}
 
-void ModelManager::newModel(std::string fileName,
+void ModelManager::newModel(const std::string &fileName,
                             const WorldGenerationConfig &config) {
   this->worldGenerationConfig = config;
   auto graph = generateGraph(config);
   this->entitiesManager.resetEntities(graph);
-  this->saveToFile(fileName);
+  this->saveToFile(SAVES_FOLDER_NAME + fileName);
+}
+
+void ModelManager::saveToFile(const std::string &fileName) {
+  std::cout << "Saving : " << fileName << std::endl;
+  this->fileName = fileName;
+  this->saveToFile();
 }
 
 void ModelManager::saveToFile() {
   writeToFile(this->fileName, serializeModel(*this));
 }
 
-void ModelManager::saveToFile(std::string fileName) {
-  this->fileName = fileName;
-  this->saveToFile();
-}
-
-void ModelManager::loadFromFile(std::string fileName) {
+void ModelManager::loadFromFile(const std::string &fileName) {
+  std::cout << "Loading : " << fileName << std::endl;
   this->fileName = fileName;
   auto deserializedModelTuple = deserializeModel(readFromFile(fileName));
   this->worldGenerationConfig = std::get<0>(deserializedModelTuple);

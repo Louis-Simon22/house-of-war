@@ -44,13 +44,13 @@ Item {
                 mapItemMouseArea.previousMousePosition = mapItemMouseArea.initialMousePosition
             }
             onPositionChanged: {
-                if (containsMouse) {
-                    if (mouse.buttons & Qt.MiddleButton) {
-                        var deltaX = mouse.x - mapItemMouseArea.previousMousePosition.x
-                        var deltaY = mouse.y - mapItemMouseArea.previousMousePosition.y
-                        mapItem.x += deltaX * 1.25
-                        mapItem.y += deltaY * 1.25
-                    } else if (mouse.buttons & Qt.LeftButton) {
+                if (mouse.buttons & Qt.MiddleButton) {
+                    var deltaX = mouse.x - mapItemMouseArea.previousMousePosition.x
+                    var deltaY = mouse.y - mapItemMouseArea.previousMousePosition.y
+                    mapItem.x += deltaX * 1.5
+                    mapItem.y += deltaY * 1.5
+                } else if (containsMouse) {
+                    if (mouse.buttons & Qt.LeftButton) {
                         selectionRect.x = Math.min(
                                     mapItemMouseArea.initialMousePosition.x,
                                     mouse.x)
@@ -70,9 +70,9 @@ Item {
                                     mouse.x, mouse.y, mouse.buttons,
                                     mouse.modifiers)
                     }
-                    mapItemMouseArea.previousMousePosition = Qt.point(mouse.x,
-                                                                      mouse.y)
                 }
+                mapItemMouseArea.previousMousePosition = Qt.point(mouse.x,
+                                                                  mouse.y)
             }
             onReleased: {
                 if (containsMouse) {

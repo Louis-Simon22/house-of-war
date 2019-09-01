@@ -11,11 +11,12 @@ namespace how {
 namespace model {
 namespace {
 using json = ::nlohmann::json;
+static const std::string SAVES_FOLDER_NAME = "./saves/";
 }
 
-void writeToFile(std::string fileName, json j);
+void writeToFile(const std::string &fileName, const json &j);
 
-json readFromFile(std::string fileName);
+json readFromFile(const std::string &fileName);
 
 std::vector<std::string> getAllSaveFileNames();
 

@@ -49,6 +49,7 @@ Item {
             swapper.state = "menu"
             event.accepted = true
         }
+        event.accepted = false
     }
 
     state: "menu"

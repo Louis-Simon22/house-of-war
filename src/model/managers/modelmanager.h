@@ -5,7 +5,6 @@
 
 #include "../events/modelevent.h"
 #include "../generation/worldgenerationconfig.h"
-#include "../persistence/savefilesmanager.h"
 #include "./entitiesmanager.h"
 #include "./selectionmanager.h"
 
@@ -18,10 +17,10 @@ public:
   ModelManager();
 
 public:
-  void newModel(std::string fileName, const WorldGenerationConfig &config);
+  void newModel(const std::string & fileName, const WorldGenerationConfig &config);
+  void saveToFile(const std::string & fileName);
   void saveToFile();
-  void saveToFile(std::string fileName);
-  void loadFromFile(std::string fileName);
+  void loadFromFile(const std::string &fileName);
   void iterateModel();
   void onEvent(const ModelEvent &modelEvent);
 

@@ -6,6 +6,7 @@
 #include "../../model/events/singleselectevent.h"
 #include "../../model/events/targetevent.h"
 #include "../../model/generation/worldgenerationconfig.h"
+#include "../../model/persistence/savefilesmanager.h"
 #include "../conversion/converter.h"
 #include "./savefile.h"
 

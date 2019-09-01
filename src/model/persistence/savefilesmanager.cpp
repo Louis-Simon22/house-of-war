@@ -7,17 +7,16 @@ namespace model {
 namespace {
 using ios = ::std::ios;
 namespace fs = ::std::filesystem;
-const std::string SAVES_FOLDER_NAME = "./saves/";
 } // namespace
 
-void writeToFile(std::string fileName, json j) {
+void writeToFile(const std::string &fileName, const json &j) {
   fs::create_directory(SAVES_FOLDER_NAME);
-  auto ofstream = std::ofstream(SAVES_FOLDER_NAME + fileName, ios::trunc);
-  ofstream << std::setw(4) << j;
+  auto ofstream = std::ofstream(fileName);
+  ofstream << std::setw(4) << j << std::endl;
   ofstream.close();
 }
 
-json readFromFile(std::string fileName) {
+json readFromFile(const std::string &fileName) {
   auto ifstream = std::ifstream(fileName);
   auto j = ::nlohmann::json();
   ifstream >> j;

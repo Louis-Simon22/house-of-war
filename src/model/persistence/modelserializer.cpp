@@ -1,5 +1,9 @@
 #include "modelserializer.h"
 
+#include <iostream>
+
+#include "keys.h"
+
 namespace how {
 namespace model {
 namespace {
@@ -14,10 +18,10 @@ json serializeBox(const types::box_t &box);
 json serializePoint(const types::point_t &point);
 
 json serializeModel(const ModelManager &modelManager) {
-  return {
-      {"entities", serializeEntities(modelManager.getEntitiesManager())},
-      {"worldGenerationConfig", serializeWorldGenerationConfig(
-                                    modelManager.getWorldGenerationConfig())}};
+  return {{KEY_ENTITIES, serializeEntities(modelManager.getEntitiesManager())},
+          {KEY_WORLD_GENERATION_CONFIG,
+           serializeWorldGenerationConfig(
+               modelManager.getWorldGenerationConfig())}};
   // TODO other model data
 }
 
@@ -27,7 +31,7 @@ json serializeEntities(const EntitiesManager &entitiesManager) {
     serializedTiles.push_back(serializeTile(*tilePtr));
   }
   // TODO armies
-  return {{"tiles", serializedTiles}};
+  return {{KEY_TILES, serializedTiles}};
 }
 
 json serializeTile(const Tile &tile) {
@@ -37,32 +41,34 @@ json serializeTile(const Tile &tile) {
   for (const auto &outlinePoint : tile.getOutlinePoints()) {
     serializedOutlinePoints.push_back(serializePoint(outlinePoint));
   }
-  serializedEntity["outlinePoints"] = serializedOutlinePoints;
-  serializedEntity["terrainType"] = static_cast<int>(tile.getTerrainType());
-  serializedEntity["resources"] = tile.getResources();
+  serializedEntity[KEY_TILE_OUTLINE_POINTS] = serializedOutlinePoints;
+  serializedEntity[KEY_TILE_OUTLINE_TERRAIN_TYPE] =
+      static_cast<int>(tile.getTerrainType());
+  serializedEntity[KEY_TILE_OUTLINE_RESOURCES] = tile.getResources();
 
   return serializedEntity;
 }
 
 json serializeEntity(const Entity &entity) {
-  return {{"layer", entity.getLayer()},
-          {"position", serializePoint(entity.getPosition())}};
+  return {{KEY_ENTITY_POSITION, serializePoint(entity.getPosition())}};
   // TODO serialize position changes
 }
 
 json serializePoint(const types::point_t &point) {
-  return {{"x", bg::get<0>(point)}, {"y", bg::get<1>(point)}};
+  return {{KEY_POINT_X, bg::get<0>(point)}, {KEY_POINT_Y, bg::get<1>(point)}};
 }
 
 json serializeBox(const types::box_t &box) {
-  return {{"minCorner", serializePoint(box.min_corner())},
-          {"maxCorner", serializePoint(box.max_corner())}};
+  return {{KEY_BOX_MIN_CORNER, serializePoint(box.min_corner())},
+          {KEY_BOX_MAX_CORNER, serializePoint(box.max_corner())}};
 }
 
 json serializeWorldGenerationConfig(const WorldGenerationConfig &config) {
-  return {{"boundingBox", serializeBox(config.boundingBox)},
-          {"minimumVoronoiCellDistance", config.minimumVoronoiCellDistance},
-          {"randomSeed", config.randomSeed}};
+  return {{KEY_WORLD_GENERATION_CONFIG_BOUNDING_BOX,
+           serializeBox(config.boundingBox)},
+          {KEY_WORLD_GENERATION_CONFIG_MINIMUM_VORONOI_CELL_DISTANCE,
+           config.minimumVoronoiCellDistance},
+          {KEY_WORLD_GENERATION_CONFIG_RANDOM_SEED, config.randomSeed}};
 }
 
 } // namespace model
