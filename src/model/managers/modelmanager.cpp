@@ -6,8 +6,6 @@
 #include "../persistence/modelserializer.h"
 #include "../persistence/savefilesmanager.h"
 
-#include <iostream>
-
 namespace how {
 namespace model {
 
@@ -24,7 +22,6 @@ void ModelManager::newModel(const std::string &fileName,
 }
 
 void ModelManager::saveToFile(const std::string &fileName) {
-  std::cout << "Saving : " << fileName << std::endl;
   this->fileName = fileName;
   this->saveToFile();
 }
@@ -34,7 +31,6 @@ void ModelManager::saveToFile() {
 }
 
 void ModelManager::loadFromFile(const std::string &fileName) {
-  std::cout << "Loading : " << fileName << std::endl;
   this->fileName = fileName;
   auto deserializedModelTuple = deserializeModel(readFromFile(fileName));
   this->worldGenerationConfig = std::get<0>(deserializedModelTuple);

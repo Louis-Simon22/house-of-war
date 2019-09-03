@@ -2,14 +2,14 @@
 #define CELLOUTLINESPAINTER_H
 
 #include <QPainter>
-#include <QQuickItem>
 
 #include "../../model/modeltypes.h"
+#include "./painteritem.h"
 
 namespace how {
 namespace ui {
 
-class SegmentsPainter : public QQuickItem {
+class SegmentsPainter : public PainterItem {
   Q_OBJECT
 
 public:

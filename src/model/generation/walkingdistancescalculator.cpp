@@ -1,7 +1,5 @@
 #include "walkingdistancescalculator.h"
 
-#include <iostream>
-
 namespace how {
 namespace model {
 

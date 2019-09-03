@@ -64,5 +64,9 @@ void Entity::setEntityPositionChange(
   this->entityPositionChangePtr.reset(entityPositionChange);
 }
 
+const EntityPositionChange *Entity::getEntityPositionChange() const {
+  return this->entityPositionChangePtr.get();
+}
+
 } // namespace model
 } // namespace how

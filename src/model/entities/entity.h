@@ -33,6 +33,7 @@ public:
   types::point_t getAbsolutePosition() const;
   void setPosition(const types::point_t &position);
   void setEntityPositionChange(EntityPositionChange *entityPositionChange);
+  const EntityPositionChange *getEntityPositionChange() const;
 
 public:
   change_signal_t changeSignal;

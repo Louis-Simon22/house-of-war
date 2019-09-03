@@ -5,8 +5,6 @@
 #include <QSGGeometryNode>
 #include <QSGNode>
 
-#include <iostream>
-
 namespace how {
 namespace ui {
 namespace {
@@ -15,7 +13,7 @@ namespace bg = ::boost::geometry;
 
 SegmentsPainter::SegmentsPainter(const std::vector<types::segment_t> &segments,
                                  QQuickItem *parent)
-    : QQuickItem(parent), segments(segments) {
+    : PainterItem(parent), segments(segments) {
   this->setAntialiasing(true);
   this->setFlag(QQuickItem::ItemHasContents, true);
   this->setX(parent->x());

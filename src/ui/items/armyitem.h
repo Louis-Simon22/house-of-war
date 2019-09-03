@@ -4,9 +4,10 @@
 #include <QQuickItem>
 
 #include "../../model/entities/characters/army.h"
+#include "../painters/pathpainter.h"
 #include "../painters/rectanglepainter.h"
-#include "./influencezoneitem.h"
 #include "./entityitem.h"
+#include "./influencezoneitem.h"
 
 namespace how {
 namespace ui {
@@ -20,14 +21,15 @@ private:
   const QColor scoutingZoneColor = QColor(255, 0, 0, 0);
 
 public:
-  ArmyItem(model::Army* army, QQuickItem *parent);
+  ArmyItem(model::Army *army, QQuickItem *parent);
 
 protected:
   void onGraphEntityUpdated() override;
 
 private:
-  const model::Army* army;
+  const model::Army *army;
   RectanglePainter *rectanglePainter;
+  PathPainter *pathPainter;
   InfluenceZoneItem *engagementZoneItem;
   InfluenceZoneItem *foragingZoneItem;
   InfluenceZoneItem *scoutingZoneItem;
