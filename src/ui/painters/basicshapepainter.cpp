@@ -1,7 +1,6 @@
-#include "polygonoutlinepainter.h"
+#include "basicshapepainter.h"
 
 #include <QSGFlatColorMaterial>
-#include <QSGGeometryNode>
 
 namespace how {
 namespace ui {
@@ -9,41 +8,42 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-PolygonOutlinePainter::PolygonOutlinePainter(QQuickItem *parent,
-                                             std::vector<types::point_t> points)
-    : PainterItem(parent), points(points) {}
+BasicShapePainter::BasicShapePainter(QSGGeometry::DrawingMode drawingMode,
+                                     QColor color, QQuickItem *parent,
+                                     std::vector<types::point_t> points,
+                                     float lineWidth)
+    : PainterItem(parent), points(points), color(color),
+      drawingMode(drawingMode), lineWidth(lineWidth) {}
 
-PolygonOutlinePainter::~PolygonOutlinePainter() {}
+BasicShapePainter::~BasicShapePainter() {}
 
 // TODO Pulsing outline
 // TODO No gaps between outlines
-// TODO move this boilerplate code in a parent
-// TODO QSGTransformNode as parent of QSGGeometryNode to apply rotations?
-QSGNode *PolygonOutlinePainter::updatePaintNode(QSGNode *oldNode,
-                                                UpdatePaintNodeData *) {
+QSGNode *BasicShapePainter::updatePaintNode(QSGNode *oldNode,
+                                            UpdatePaintNodeData *) {
   QSGGeometryNode *node = nullptr;
   QSGGeometry *geometry = nullptr;
   QSGFlatColorMaterial *material = nullptr;
 
   const int pointsCount = static_cast<int>(this->points.size());
 
-  if (!node) {
+  if (oldNode) {
+    node = static_cast<QSGGeometryNode *>(oldNode);
+    geometry = node->geometry();
+    material = static_cast<QSGFlatColorMaterial *>(node->material());
+  } else {
     node = new QSGGeometryNode();
     geometry =
         new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), pointsCount);
-    geometry->setDrawingMode(QSGGeometry::DrawLineLoop);
-    geometry->setLineWidth(10);
+    geometry->setLineWidth(this->lineWidth);
+    geometry->setDrawingMode(this->drawingMode);
+    geometry->allocate(pointsCount);
     node->setGeometry(geometry);
     node->setFlag(QSGNode::OwnsGeometry);
 
     material = new QSGFlatColorMaterial();
     node->setMaterial(material);
     node->setFlag(QSGNode::OwnsMaterial);
-  } else {
-    node = static_cast<QSGGeometryNode *>(oldNode);
-    geometry = node->geometry();
-    geometry->allocate(pointsCount);
-    material = static_cast<QSGFlatColorMaterial *>(node->material());
   }
 
   auto *vertices = geometry->vertexDataAsPoint2D();
@@ -59,9 +59,9 @@ QSGNode *PolygonOutlinePainter::updatePaintNode(QSGNode *oldNode,
   return node;
 }
 
-void PolygonOutlinePainter::setColor(QColor color) {
+void BasicShapePainter::setColor(QColor color) {
   this->color = color;
-  this->update();
+    this->update();
 }
 
 } // namespace ui

@@ -3,11 +3,8 @@
 #include <QColor>
 #include <QSGFlatColorMaterial>
 #include <QSGGeometryNode>
-#include <QSGNode>
 
 #include "../conversion/converter.h"
-
-#include <iostream>
 
 namespace how {
 namespace ui {

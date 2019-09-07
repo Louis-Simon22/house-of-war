@@ -27,7 +27,6 @@ QSGNode *PolygonPainter::updatePaintNode(QSGNode *oldNode,
 
   if (!oldNode) {
     node = new QSGGeometryNode();
-
     geometry =
         new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), pointsCount);
     geometry->setDrawingMode(QSGGeometry::DrawTriangleFan);

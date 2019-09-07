@@ -23,11 +23,8 @@ Item {
         height: modelController.worldBounds.height
         property real minScale: Math.max(mapContainer.width / width,
                                          mapContainer.height / height)
-        property real scale: minScale
-        transform: Scale {
-            xScale: mapItem.scale
-            yScale: mapItem.scale
-        }
+        transformOrigin: Item.TopLeft
+        scale: minScale
 
         MouseArea {
             id: mapItemMouseArea
@@ -37,6 +34,7 @@ Item {
 
             property point previousMousePosition
             property point initialMousePosition
+            property rect selectionRect
 
             onPressed: {
                 mapItemMouseArea.initialMousePosition = Qt.point(mouse.x,
@@ -76,12 +74,13 @@ Item {
             }
             onReleased: {
                 if (containsMouse) {
-                    if (selectionRect.visible) {
-                        modelController.entitiesBoxEvent(
-                                    selectionRect.x, selectionRect.y,
-                                    selectionRect.x + selectionRect.width,
-                                    selectionRect.y + selectionRect.height,
-                                    mouse.buttons, mouse.modifiers)
+                    if (visibleSelectionRect.visible) {
+                        modelController.entitiesBoxEvent(selectionRect.left,
+                                                         selectionRect.top,
+                                                         selectionRect.right,
+                                                         selectionRect.bottom,
+                                                         mouse.buttons,
+                                                         mouse.modifiers)
                     } else {
                         modelController.entitiesClickEvent(
                                     mapItemMouseArea.initialMousePosition.x,
@@ -99,16 +98,20 @@ Item {
                 wheel.accepted = true
             }
         }
+    }
 
-        Rectangle {
-            id: selectionRect
-            z: modelController.UI_LAYER
+    Rectangle {
+        id: visibleSelectionRect
+        x: mapItemMouseArea.selectionRect.x * mapItem.scale
+        y: mapItemMouseArea.selectionRect.y * mapItem.scale
+        z: modelController.UI_LAYER
+        width: mapItemMouseArea.selectionRect.width * mapItem.scale
+        height: mapItemMouseArea.selectionRect.height * mapItem.scale
 
-            visible: width > 5 && height > 5
-            border.color: "red"
-            border.width: 3
-            color: "transparent"
-        }
+        visible: width > 5 && height > 5
+        border.color: "red"
+        border.width: 3
+        color: "transparent"
     }
 
     MapOverlay {

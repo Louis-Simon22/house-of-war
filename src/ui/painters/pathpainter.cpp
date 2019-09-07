@@ -59,6 +59,7 @@ QSGNode *PathPainter::updatePaintNode(QSGNode *oldNode,
 
 void PathPainter::setPoints(std::vector<types::point_t> points) {
   this->points = points;
+  this->update();
 }
 
 } // namespace ui

@@ -4,8 +4,8 @@
 #include <QQuickItem>
 
 #include "../../model/entities/characters/army.h"
+#include "../painters/basicshapepainter.h"
 #include "../painters/pathpainter.h"
-#include "../painters/rectanglepainter.h"
 #include "./entityitem.h"
 #include "./influencezoneitem.h"
 
@@ -28,7 +28,7 @@ protected:
 
 private:
   const model::Army *army;
-  RectanglePainter *rectanglePainter;
+  BasicShapePainter *basicShapePainter;
   PathPainter *pathPainter;
   InfluenceZoneItem *engagementZoneItem;
   InfluenceZoneItem *foragingZoneItem;
