@@ -2,8 +2,6 @@
 
 #include "../conversion/converter.h"
 
-#include <iostream>
-
 namespace how {
 namespace ui {
 namespace {
@@ -14,15 +12,15 @@ TileItem::TileItem(model::Tile *tile, const TilesController *tilesController,
                    QQuickItem *parent)
     : EntityItem(tile, parent), tile(tile), tilesController(tilesController),
       voronoiCellPainter(
-          new PolygonPainter(tile->getRelativeOutlinePoints(), this)),
-      voronoiCellOutlinePainter(
-          new PolygonOutlinePainter(this, tile->getRelativeOutlinePoints())) {
+          new BasicShapePainter(this, QSGGeometry::DrawTriangleFan, Qt::red,
+                                tile->getRelativeOutlinePoints())),
+      selectionOutlinePainter(new BasicShapePainter(
+          this, QSGGeometry::DrawLineLoop, Qt::yellow,
+          tile->getRelativeOutlinePoints(), SELECTION_OUTLINE_WIDTH)) {
   this->setX(this->tile->getPosX());
   this->setY(this->tile->getPosY());
   this->setZ(this->tile->getLayer());
-  this->voronoiCellOutlinePainter->setColor(QColor(255, 255, 0));
   this->onTileDisplayStatusChanged();
-  this->onGraphEntityUpdated();
 }
 
 TileItem::~TileItem() {}
@@ -56,7 +54,7 @@ void TileItem::onGraphEntityUpdated() {
 
   this->voronoiCellPainter->setColor(cellColor);
 
-  this->voronoiCellOutlinePainter->setVisible(this->tile->isSelected());
+  this->selectionOutlinePainter->setVisible(this->tile->isSelected());
 }
 
 } // namespace ui

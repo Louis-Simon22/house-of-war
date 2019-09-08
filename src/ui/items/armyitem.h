@@ -5,7 +5,6 @@
 
 #include "../../model/entities/characters/army.h"
 #include "../painters/basicshapepainter.h"
-#include "../painters/pathpainter.h"
 #include "./entityitem.h"
 #include "./influencezoneitem.h"
 
@@ -14,11 +13,7 @@ namespace ui {
 class ArmyItem : public EntityItem {
   Q_OBJECT
 
-private:
-  const QColor armyColor = Qt::red;
-  const QColor engagementZoneColor = QColor(255, 0, 0, 0);
-  const QColor foragingZoneColor = QColor(255, 0, 0, 0);
-  const QColor scoutingZoneColor = QColor(255, 0, 0, 0);
+  constexpr static float PATH_LINE_WIDTH = 3;
 
 public:
   ArmyItem(model::Army *army, QQuickItem *parent);
@@ -28,8 +23,8 @@ protected:
 
 private:
   const model::Army *army;
-  BasicShapePainter *basicShapePainter;
-  PathPainter *pathPainter;
+  BasicShapePainter *armyShapePainter;
+  BasicShapePainter *pathPainter;
   InfluenceZoneItem *engagementZoneItem;
   InfluenceZoneItem *foragingZoneItem;
   InfluenceZoneItem *scoutingZoneItem;

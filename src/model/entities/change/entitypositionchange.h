@@ -16,7 +16,7 @@ public:
   ~EntityPositionChange();
 
 public:
-  std::vector<types::point_t> getRemainingDestinations() const;
+  std::vector<types::point_t> getPathAsRelativePoints() const;
   bool progress();
   bool isDone();
 

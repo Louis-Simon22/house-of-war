@@ -5,7 +5,7 @@
 #include <QQuickItem>
 
 #include "../../model/entities/zones/circularzone.h"
-#include "../painters/circlepainter.h"
+#include "../painters/basicshapepainter.h"
 #include "./entityitem.h"
 
 namespace how {
@@ -14,7 +14,6 @@ class InfluenceZoneItem : public EntityItem {
   Q_OBJECT
 
   constexpr static float CIRCLE_LINE_WIDTH = 3;
-  const QColor CIRCLE_COLOR = Qt::red;
 
 public:
   InfluenceZoneItem(model::CircularZone *influenceZone, QQuickItem *parent);
@@ -24,7 +23,7 @@ private slots:
 
 private:
   const model::CircularZone *influenceZone;
-  CirclePainter *circlePainter;
+  BasicShapePainter *circlePainter;
 };
 } // namespace ui
 } // namespace how

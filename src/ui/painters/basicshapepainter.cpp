@@ -8,16 +8,17 @@ namespace {
 namespace bg = ::boost::geometry;
 }
 
-BasicShapePainter::BasicShapePainter(QSGGeometry::DrawingMode drawingMode,
-                                     QColor color, QQuickItem *parent,
+BasicShapePainter::BasicShapePainter(QQuickItem *parent,
+                                     QSGGeometry::DrawingMode drawingMode,
+                                     QColor color,
                                      std::vector<types::point_t> points,
                                      float lineWidth)
-    : PainterItem(parent), points(points), color(color),
+    : PainterItem(parent), points(points), pointsChanged(true), color(color),
       drawingMode(drawingMode), lineWidth(lineWidth) {}
 
 BasicShapePainter::~BasicShapePainter() {}
 
-// TODO Pulsing outline
+// TODO Pulsing selection outline
 // TODO No gaps between outlines
 QSGNode *BasicShapePainter::updatePaintNode(QSGNode *oldNode,
                                             UpdatePaintNodeData *) {
@@ -37,7 +38,6 @@ QSGNode *BasicShapePainter::updatePaintNode(QSGNode *oldNode,
         new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), pointsCount);
     geometry->setLineWidth(this->lineWidth);
     geometry->setDrawingMode(this->drawingMode);
-    geometry->allocate(pointsCount);
     node->setGeometry(geometry);
     node->setFlag(QSGNode::OwnsGeometry);
 
@@ -46,12 +46,17 @@ QSGNode *BasicShapePainter::updatePaintNode(QSGNode *oldNode,
     node->setFlag(QSGNode::OwnsMaterial);
   }
 
-  auto *vertices = geometry->vertexDataAsPoint2D();
-  for (std::size_t i = 0; i < points.size(); i++) {
-    const auto &point = points[i];
-    vertices[i].set(bg::get<0>(point), bg::get<1>(point));
+  if (pointsChanged) {
+    geometry->allocate(pointsCount);
+    auto *vertices = geometry->vertexDataAsPoint2D();
+    for (std::size_t i = 0; i < points.size(); i++) {
+      const auto &point = points[i];
+      // TODO path points are absolute. Maybe make it have its own object
+      vertices[i].set(bg::get<0>(point), bg::get<1>(point));
+    }
+    this->pointsChanged = false;
+    node->markDirty(QSGNode::DirtyGeometry);
   }
-  node->markDirty(QSGNode::DirtyGeometry);
 
   material->setColor(this->color);
   node->markDirty(QSGNode::DirtyMaterial);
@@ -61,7 +66,24 @@ QSGNode *BasicShapePainter::updatePaintNode(QSGNode *oldNode,
 
 void BasicShapePainter::setColor(QColor color) {
   this->color = color;
-    this->update();
+  this->update();
+}
+
+void BasicShapePainter::setPoints(std::vector<types::point_t> points) {
+  this->points = points;
+  this->pointsChanged = true;
+  this->update();
+}
+
+void BasicShapePainter::clearPoints() {
+  this->points.clear();
+  this->pointsChanged = true;
+  this->update();
+}
+
+void BasicShapePainter::setLineWidth(float lineWidth) {
+  this->lineWidth = lineWidth;
+  this->update();
 }
 
 } // namespace ui

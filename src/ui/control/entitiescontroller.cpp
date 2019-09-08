@@ -5,7 +5,8 @@
 #include "../conversion/converter.h"
 #include "../items/armyitem.h"
 #include "../items/tileitem.h"
-#include "../painters/segmentspainter.h"
+#include "../painters/basicshapepainter.h"
+#include "../painters/painterutils.h"
 
 namespace how {
 namespace ui {
@@ -37,11 +38,15 @@ void EntitiesController::generateMapItems(QQuickItem *parent) {
             &TileItem::onTileDisplayStatusChanged);
   }
 
-  auto *delaunaySegmentsPainter = new SegmentsPainter(
-      this->entitiesManager->getUniqueDelaunaySegments(), parent);
+  auto *delaunaySegmentsPainter = new BasicShapePainter(
+      parent, QSGGeometry::DrawLines, Qt::black,
+      utils::getPointsFromSegments(
+          this->entitiesManager->getUniqueDelaunaySegments()));
   delaunaySegmentsPainter->setVisible(true);
-  auto *voronoiSegmentsPainter = new SegmentsPainter(
-      this->entitiesManager->getUniqueVoronoiSegments(), parent);
+  auto *voronoiSegmentsPainter = new BasicShapePainter(
+      parent, QSGGeometry::DrawLines, Qt::black,
+      utils::getPointsFromSegments(
+          this->entitiesManager->getUniqueVoronoiSegments()));
   voronoiSegmentsPainter->setVisible(false);
 }
 

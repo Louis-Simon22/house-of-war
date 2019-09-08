@@ -22,7 +22,7 @@ Entity::~Entity() {}
 void Entity::progressEntityPositionChange() {
   if (entityPositionChangePtr) {
     if (entityPositionChangePtr->progress()) {
-      this->entityPositionChangePtr.reset(nullptr);
+      this->resetEntityPositionChange();
     }
   }
 }
@@ -62,6 +62,11 @@ void Entity::setPosition(const types::point_t &position) {
 void Entity::setEntityPositionChange(
     EntityPositionChange *entityPositionChange) {
   this->entityPositionChangePtr.reset(entityPositionChange);
+  this->changeSignal();
+}
+
+void Entity::resetEntityPositionChange() {
+  this->setEntityPositionChange(nullptr);
 }
 
 const EntityPositionChange *Entity::getEntityPositionChange() const {
