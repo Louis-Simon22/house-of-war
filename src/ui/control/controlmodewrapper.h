@@ -12,7 +12,7 @@ private:
   ControlModeWrapper();
 
 public:
-  enum ControlMode { PLAY = 0, EDIT, DEFAULT = PLAY };
+  enum ControlMode { PLAY = 0, EDIT_TERRAIN, EDIT_ROADS, DEFAULT = PLAY };
   Q_ENUM(ControlMode);
 };
 } // namespace ui

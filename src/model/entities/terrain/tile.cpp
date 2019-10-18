@@ -5,7 +5,7 @@ namespace model {
 
 Tile::Tile(types::point_t position, std::vector<types::point_t> outlinePoints)
     : VoronoiCell(position, outlinePoints), terrainType(TerrainType::DEFAULT),
-      resources(0), owner(nullptr), road(false) {}
+      resources(0), owner(nullptr), roads() {}
 
 Tile::~Tile() {}
 
@@ -34,10 +34,21 @@ void Tile::setTerrainType(TerrainType terrainType) {
   this->changeSignal();
 }
 
-bool Tile::hasRoad() { return this->road; }
+const std::set<std::shared_ptr<Tile>> &Tile::getRoads() const {
+  return this->roads;
+}
 
-void Tile::setHasRoad(bool hasRoad) {
-  this->road = hasRoad;
+std::vector<types::point_t> Tile::getRoadSegmentsAsPoints() const {
+  auto points = std::vector<types::point_t>();
+  for (const auto &tilePtr : this->roads) {
+    points.push_back(this->getPosition());
+    points.push_back(tilePtr->getPosition());
+  }
+  return points;
+}
+
+void Tile::addRoadTo(const std::shared_ptr<Tile> &tilePtr) {
+  this->roads.insert(tilePtr);
   this->changeSignal();
 }
 

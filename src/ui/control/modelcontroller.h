@@ -23,7 +23,7 @@ class ModelController : public QObject {
                  getIterationTimerManager CONSTANT FINAL)
   Q_PROPERTY(int controlMode READ getControlMode WRITE setControlMode NOTIFY
                  controlModeChanged FINAL)
-    Q_PROPERTY(int UI_LAYER READ getUiLayer CONSTANT FINAL)
+  Q_PROPERTY(int UI_LAYER READ getUiLayer CONSTANT FINAL)
 
 public:
   ModelController(QObject *parent = nullptr);
@@ -40,8 +40,8 @@ public slots:
   void entitiesClickEvent(int x, int y, unsigned int button,
                           unsigned int modifiers);
   void entitiesSegmentEvent(int x1, int y1, int x2, int y2, unsigned int button,
-                            unsigned int modifiers);
-  void entitiesBoxEvent(int x1, int y1, int x2, int y2, unsigned int button,
+                            unsigned int);
+  void entitiesBoxEvent(int x1, int y1, int x2, int y2, unsigned int,
                         unsigned int modifiers);
 
 public:

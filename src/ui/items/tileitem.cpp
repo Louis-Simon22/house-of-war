@@ -16,7 +16,10 @@ TileItem::TileItem(model::Tile *tile, const TilesController *tilesController,
                                 tile->getRelativeOutlinePoints())),
       selectionOutlinePainter(new BasicShapePainter(
           this, QSGGeometry::DrawLineLoop, Qt::yellow,
-          tile->getRelativeOutlinePoints(), SELECTION_OUTLINE_WIDTH)) {
+          tile->getRelativeOutlinePoints(), SELECTION_OUTLINE_WIDTH)),
+      roadsPainter(
+          new BasicShapePainter(this, QSGGeometry::DrawLines, Qt::black,
+                                tile->getRoadSegmentsAsPoints(), ROADS_WIDTH)) {
   this->setX(this->tile->getPosX());
   this->setY(this->tile->getPosY());
   this->setZ(this->tile->getLayer());
@@ -31,8 +34,7 @@ void TileItem::onGraphEntityUpdated() {
   QColor cellColor = Qt::black;
   switch (this->tilesController->getTileDisplayStatus()) {
   case TileDisplayStatusWrapper::TERRAIN: {
-    auto terrainType = this->tile->getTerrainType();
-    switch (terrainType) {
+    switch (this->tile->getTerrainType()) {
     case model::TerrainType::FOREST:
       cellColor = Qt::darkGreen;
       break;

@@ -1,6 +1,7 @@
 #include "modelcontroller.h"
 
 #include "../../model/events/boxselectevent.h"
+#include "../../model/events/roadeditevent.h"
 #include "../../model/events/segmenteditterrainevent.h"
 #include "../../model/events/singleeditterrainevent.h"
 #include "../../model/events/singleselectevent.h"
@@ -10,12 +11,15 @@
 #include "../conversion/converter.h"
 #include "./savefile.h"
 
+#include <iostream>
+
 namespace how {
 namespace ui {
 
 ModelController::ModelController(QObject *parent)
     : QObject(parent), modelManager(), entitiesController(this->modelManager),
-      iterationTimerManager(), currentControlMode(ControlModeWrapper::EDIT) {
+      iterationTimerManager(),
+      currentControlMode(ControlModeWrapper::EDIT_TERRAIN) {
   connect(&this->iterationTimerManager, &IterationTimerManager::iterate, this,
           &ModelController::iterateModel, Qt::QueuedConnection);
 }
@@ -49,7 +53,7 @@ void ModelController::entitiesClickEvent(int x, int y, unsigned int button,
     case ControlModeWrapper::PLAY:
       this->modelManager.onEvent(model::TargetEvent(position));
       break;
-    case ControlModeWrapper::EDIT:
+    case ControlModeWrapper::EDIT_TERRAIN:
       auto terrainType = static_cast<model::TerrainType>(
           this->entitiesController.getTilesController()->getTerrainType());
       this->modelManager.onEvent(
@@ -61,27 +65,31 @@ void ModelController::entitiesClickEvent(int x, int y, unsigned int button,
 }
 
 void ModelController::entitiesSegmentEvent(int x1, int y1, int x2, int y2,
-                                           unsigned int button,
-                                           unsigned int modifiers) {
+                                           unsigned int button, unsigned int) {
   auto segment =
       types::segment_t(types::point_t(x1, y1), types::point_t(x2, y2));
   switch (button) {
   case Qt::RightButton:
     switch (this->getControlMode()) {
-    case ControlModeWrapper::EDIT:
+    case ControlModeWrapper::EDIT_TERRAIN: {
       auto terrainType = static_cast<model::TerrainType>(
           this->entitiesController.getTilesController()->getTerrainType());
       this->modelManager.onEvent(
           model::SegmentEditTerrainEvent(segment, terrainType));
       break;
     }
+    case ControlModeWrapper::EDIT_ROADS: {
+      // TODO check why this doesnt show
+      this->modelManager.onEvent(model::RoadEditEvent(segment));
+      break;
+    }
+    }
     break;
   }
 }
 
 void ModelController::entitiesBoxEvent(int x1, int y1, int x2, int y2,
-                                       unsigned int button,
-                                       unsigned int modifiers) {
+                                       unsigned int, unsigned int modifiers) {
   auto box = types::box_t(types::point_t(x1, y1), types::point_t(x2, y2));
   this->modelManager.onEvent(
       model::BoxSelectEvent(box, modifiers & Qt::ShiftModifier));

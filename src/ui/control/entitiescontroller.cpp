@@ -42,7 +42,7 @@ void EntitiesController::generateMapItems(QQuickItem *parent) {
       parent, QSGGeometry::DrawLines, Qt::black,
       utils::getPointsFromSegments(
           this->entitiesManager->getUniqueDelaunaySegments()));
-  delaunaySegmentsPainter->setVisible(true);
+  delaunaySegmentsPainter->setVisible(false);
   auto *voronoiSegmentsPainter = new BasicShapePainter(
       parent, QSGGeometry::DrawLines, Qt::black,
       utils::getPointsFromSegments(

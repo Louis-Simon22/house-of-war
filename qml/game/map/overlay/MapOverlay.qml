@@ -50,7 +50,15 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         height: parent.height * 0.3
-        visible: modelController.controlMode === ControlMode.EDIT
+        visible: modelController.controlMode !== ControlMode.PLAY
+
+        ButtonGroup {
+            id: editTerrainButtonGroup
+            onClicked: {
+                button.checked = true
+                modelController.controlMode = ControlMode.EDIT_TERRAIN
+            }
+        }
 
         Column {
             id: editPanelButtonsColumn
@@ -59,25 +67,36 @@ Item {
             MenuButton {
                 anchors.left: parent.left
                 anchors.right: parent.right
+                text: qsTr("Roads")
+                checked: modelController.controlMode === ControlMode.EDIT_ROADS
+                onClicked: {
+                    modelController.controlMode = ControlMode.EDIT_ROADS
+                    editTerrainButtonGroup.checkState = Qt.Unchecked
+                }
+            }
+
+            MenuButton {
+                anchors.left: parent.left
+                anchors.right: parent.right
                 text: qsTr("Plain")
-                checked: tilesController.terrainType === TerrainType.PLAIN
                 onClicked: tilesController.terrainType = TerrainType.PLAIN
+                ButtonGroup.group: editTerrainButtonGroup
             }
 
             MenuButton {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 text: qsTr("Forest")
-                checked: tilesController.terrainType === TerrainType.FOREST
                 onClicked: tilesController.terrainType = TerrainType.FOREST
+                ButtonGroup.group: editTerrainButtonGroup
             }
 
             MenuButton {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 text: qsTr("Mountain")
-                checked: tilesController.terrainType === TerrainType.MOUNTAIN
                 onClicked: tilesController.terrainType = TerrainType.MOUNTAIN
+                ButtonGroup.group: editTerrainButtonGroup
             }
         }
     }

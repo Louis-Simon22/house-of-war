@@ -51,7 +51,6 @@ QSGNode *BasicShapePainter::updatePaintNode(QSGNode *oldNode,
     auto *vertices = geometry->vertexDataAsPoint2D();
     for (std::size_t i = 0; i < points.size(); i++) {
       const auto &point = points[i];
-      // TODO path points are absolute. Maybe make it have its own object
       vertices[i].set(bg::get<0>(point), bg::get<1>(point));
     }
     this->pointsChanged = false;

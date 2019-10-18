@@ -26,7 +26,8 @@ void calculateWalkingDistances(types::graph_t &graph) {
     const auto &targetTilePtr = graph[::boost::target(edgeDesc, graph)];
 
     auto walkingDistanceMultiplier = types::coordinate_t(1);
-    if (!(sourceTilePtr->hasRoad() && targetTilePtr->hasRoad())) {
+    const auto &sourceTileRoads = sourceTilePtr->getRoads();
+    if (sourceTileRoads.find(targetTilePtr) == sourceTileRoads.end()) {
       walkingDistanceMultiplier =
           getDistanceMultiplier(sourceTilePtr.get()) * 0.5f +
           getDistanceMultiplier(targetTilePtr.get()) * 0.5f;

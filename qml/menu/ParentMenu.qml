@@ -19,7 +19,7 @@ Item {
             parentMenu.state = "load"
         }
         onEditorPressed: {
-            modelController.controlMode = ControlMode.EDIT
+            modelController.controlMode = ControlMode.EDIT_TERRAIN
             parentMenu.state = "load"
         }
         onCreditsPressed: parentMenu.state = "credits"

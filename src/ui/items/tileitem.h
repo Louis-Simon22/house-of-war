@@ -13,6 +13,7 @@ class TileItem : public EntityItem {
   Q_OBJECT
 
   constexpr static float SELECTION_OUTLINE_WIDTH = 4;
+  constexpr static float ROADS_WIDTH = 7;
 
 public:
   TileItem(model::Tile *tile, const TilesController *tilesController,
@@ -30,6 +31,7 @@ private:
   const TilesController *tilesController;
   BasicShapePainter *voronoiCellPainter;
   BasicShapePainter *selectionOutlinePainter;
+  BasicShapePainter *roadsPainter;
 };
 } // namespace ui
 } // namespace how
