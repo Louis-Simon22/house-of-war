@@ -11,7 +11,7 @@ ArmyItem::ArmyItem(model::Army *army, QQuickItem *parent)
           this, QSGGeometry::DrawTriangleFan, Qt::red,
           utils::getRectanglePointsClockwise(0, 0, 5, 5))),
       pathPainter(
-          new BasicShapePainter(this, QSGGeometry::DrawLineStrip, Qt::yellow)),
+          new BasicShapePainter(this, QSGGeometry::DrawLineStrip, Qt::black)),
       engagementZoneItem(
           new InfluenceZoneItem(army->getEngagementZone(), this)),
       foragingZoneItem(new InfluenceZoneItem(army->getForagingZone(), this)),
@@ -24,8 +24,8 @@ void ArmyItem::onGraphEntityUpdated() {
   this->setX(this->army->getPosX());
   this->setY(this->army->getPosY());
   this->setZ(static_cast<double>(this->army->getLayer()));
-  this->armyShapePainter->setColor(this->army->isSelected() ? Qt::yellow
-                                                            : Qt::red);
+  this->armyShapePainter->setColor(this->army->isSelected() ? Qt::darkBlue
+                                                            : Qt::darkBlue);
   auto entityPositionChange = this->army->getEntityPositionChange();
   if (entityPositionChange) {
     this->pathPainter->setPoints(

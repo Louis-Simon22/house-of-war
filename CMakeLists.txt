@@ -34,6 +34,8 @@ add_executable(${PROJECT_NAME} ${CPP_FILES} ${QML_FILES})
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 
+message(${Boost_INCLUDE_DIRS})
+
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${LIBNOISE_INCLUDE_DIRS})
 

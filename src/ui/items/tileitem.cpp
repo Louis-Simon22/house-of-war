@@ -42,7 +42,7 @@ void TileItem::onGraphEntityUpdated() {
       cellColor = Qt::gray;
       break;
     case model::TerrainType::PLAIN:
-      cellColor = Qt::green;
+      cellColor = Qt::darkGreen;
       break;
     }
     break;

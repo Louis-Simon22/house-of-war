@@ -15,8 +15,8 @@ InfluenceZoneItem::InfluenceZoneItem(model::CircularZone *influenceZone,
 }
 
 void InfluenceZoneItem::onGraphEntityUpdated() {
-  this->circlePainter->setPoints(
-      utils::getCirclePoints(0, 0, this->influenceZone->getRadius()));
+//  this->circlePainter->setPoints(
+//      utils::getCirclePoints(0, 0, this->influenceZone->getRadius()));
   this->circlePainter->update();
 }
 
